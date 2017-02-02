@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<string name="category">Category</string>
+	<string name="app_name">Idea Bag 2</string>
+	<string name="appVersion">IdeaBag 2 v1.4</string>
+	<string name="appNumber">1.4</string>
+	<string name="title">Title</string>
+	<string name="itemId">Item ID</string>
+	<string name="difficulty">Difficulty</string>
+	<string name="description">Description</string>
+	<string name="share">Share Idea</string>
+	<string name="bookmark">Bookmark Idea</string>
+	<string name="loadingText">Retrieving Ideas...</string>
+	<string name="overviewText">
+		This app was developed to provide programmers of all proficiency levels, ideas for pet projects to work on when they are
+		looking to increase their proficiency in a particular programming language. Idea Bag is ideal for hands-on learners.
+		The ideas featured in this application can be programmed in popular programming languages like C#, Java, Go, Python, Ruby,
+		Javascript and PHP for either the Web, MacOS, Windows PC, Android, Windows Phone or iOS. Just fire up your favorite IDE,
+		start a new project and begin work on any of the projects featured in this app.
+	</string>
+	<string name="authorHint">Enter your name</string>
+	<string-array name="categories">
+		<item>Numbers</item>
+		<item>Text</item>
+		<item>Networking</item>
+		<item>Enterprise Applications</item>
+		<item>Threading</item>
+		<item>Web</item>
+		<item>Files</item>
+		<item>Databases</item>
+		<item>Graphics and Multimedia</item>
+		<item>Games</item>
+	</string-array>
+	<string name="helpText">Post your issues in our Programming Ideas Google+ community and other users
+	would be glad to provide you with assistance. You can join the community via this link>
+	https://plus.google.com/communities/105361187156121163553 </string>
+	<string name="notes_sample_content">You have no notes for this idea. Tap the button below to add one.</string>
+    <string name="edit_text">Edit this note</string>
+	<string name="notesHint">Enter your note..</string>
+	<string name="editNote">Edit this note</string>
+    <string name="undecidedText">Undecided</string>
+    <string name="completedText">Completed</string>
+    <string name="in_progressText">In Progress</string>
+    <string name="markProgressText">Mark your progress on this idea</string>
+</resources>

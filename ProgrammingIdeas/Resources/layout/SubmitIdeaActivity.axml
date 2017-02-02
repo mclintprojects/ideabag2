@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <ScrollView
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="16dp">
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Author name"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="4dp" />
+            <EditText
+                android:id="@+id/authorTb"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter your name"
+                android:textColor="#ffffff"
+                android:singleLine="true"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/submitRoundBtn" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Idea title"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="4dp" />
+            <EditText
+                android:id="@+id/submitTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Enter the idea's title"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/submitRoundBtn" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Select the idea's category"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="4dp" />
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/cardSubtitle"
+                android:layout_marginBottom="8dp" />
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="wrap_content"
+                android:text="Idea description"
+                android:textSize="16dp"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="4dp" />
+            <EditText
+                android:id="@+id/ideaDescription"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:hint="Enter an indepth description of the idea"
+                android:textColor="#ffffff"
+                android:layout_marginBottom="24dp"
+                android:background="@drawable/submitRoundBtn" />
+            <Button
+                android:id="@+id/submitBtn"
+                android:layout_height="wrap_content"
+                android:layout_width="match_parent"
+                android:text="SUBMIT IDEA"
+                android:background="@drawable/submitbtn"
+                android:layout_gravity="bottom"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginBottom="16dp"
+                android:layout_weight="1" />
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+		android:id="@+id/bookmarkItem"
+		android:showAsAction="always"
+		android:title="Bookmark idea"
+		android:icon="@mipmap/ic_bookmark_border_white_24dp" />
+
+	<item
+		android:id="@+id/shareItem"
+		android:showAsAction="always"
+		android:title="Share idea"
+		android:icon="@mipmap/ic_share_white_24dp" />
+</menu>

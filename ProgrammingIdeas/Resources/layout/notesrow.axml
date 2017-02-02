@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:cardview="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginRight="16dp"
+    android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp">
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        cardview:cardUseCompatPadding="true"
+        cardview:cardElevation="4dp"
+        cardview:cardCornerRadius="5dp"
+        cardview:contentPadding="16dp">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+            <TextView
+                android:id="@+id/notesTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/title"
+                android:textSize="16sp"
+                android:textColor="@color/windowBackground" />
+            <ViewSwitcher
+                android:id="@+id/notesActivitySwitcher"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/notesTitle">
+                <TextView
+                    android:id="@+id/notesContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/notes_sample_content"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    android:textSize="14sp"
+                    android:layout_marginTop="4dip"
+                    android:textColor="@color/cardSubtitle" />
+                <EditText
+                    android:id="@+id/notesEdit"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/notesHint"
+                    android:linksClickable="true"
+                    android:autoLink="web"
+                    android:textSize="14sp"
+                    android:textColor="@color/cardSubtitle" />
+            </ViewSwitcher>
+            <TextView
+                android:id="@+id/notesCategory"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/edit_text"
+                android:layout_marginTop="8dp"
+                android:textSize="14sp"
+                android:textColor="#ffffff"
+                android:background="@drawable/roundbtn"
+                android:layout_below="@+id/notesActivitySwitcher"
+                android:layout_alignParentRight="true" />
+        </RelativeLayout>
+    </android.support.v7.widget.CardView>
+</LinearLayout>

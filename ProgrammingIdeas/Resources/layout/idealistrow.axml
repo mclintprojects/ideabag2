@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingLeft="16dip"
+    android:paddingRight="16dip"
+    android:paddingTop="8.0dip"
+    android:id="@+id/layoutRoot">
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/title"
+        android:textSize="16sp"
+        android:textColor="@color/titleColor" />
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:paddingBottom="16dp">
+        <ImageView
+            android:layout_height="@dimen/itemProgressDimen"
+            android:layout_width="@dimen/itemProgressDimen"
+            android:id="@+id/progressState"
+            android:src="@drawable/undecided"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="4dp" />
+        <TextView
+            android:id="@+id/difficulty"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:text="@string/difficulty"
+            android:gravity="left"
+            android:textColor="@color/subtitleColor"
+            android:layout_marginLeft="16dp" />
+        <TextView
+            android:id="@+id/itemId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="13sp"
+            android:gravity="center"
+            android:text="@string/itemId"
+            android:textColor="@color/windowBackground"
+            android:background="@drawable/circle"
+            android:layout_alignParentRight="true" />
+    </RelativeLayout>
+</LinearLayout>
