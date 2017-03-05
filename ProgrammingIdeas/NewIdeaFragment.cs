@@ -8,10 +8,10 @@ namespace ProgrammingIdeas
 {
     public class NewIdeaFragment : DialogFragment
     {
-        RecyclerView recycler;
-        NewIdeaAdapter adapter;
-        RecyclerView.LayoutManager manager;
-        List<CategoryItem> newIdeas;
+        private RecyclerView recycler;
+        private NewIdeaAdapter adapter;
+        private RecyclerView.LayoutManager manager;
+        private List<CategoryItem> newIdeas;
 
         public NewIdeaFragment(List<CategoryItem> newIdeas)
         {

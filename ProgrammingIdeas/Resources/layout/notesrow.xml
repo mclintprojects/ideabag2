@@ -53,7 +53,7 @@
                     android:textColor="@color/cardSubtitle" />
             </ViewSwitcher>
             <TextView
-                android:id="@+id/notesCategory"
+                android:id="@+id/notesEditBtn"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/edit_text"

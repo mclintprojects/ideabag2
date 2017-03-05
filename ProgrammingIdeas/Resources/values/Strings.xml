@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v1.4</string>
-	<string name="appNumber">1.4</string>
+	<string name="appVersion">IdeaBag 2 v1.7</string>
+	<string name="appNumber">1.7</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -17,6 +17,9 @@
 		The ideas featured in this application can be programmed in popular programming languages like C#, Java, Go, Python, Ruby,
 		Javascript and PHP for either the Web, MacOS, Windows PC, Android, Windows Phone or iOS. Just fire up your favorite IDE,
 		start a new project and begin work on any of the projects featured in this app.
+	</string>
+	<string name="changelog">
+		1. Bug fixes and improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">
@@ -42,4 +45,25 @@
     <string name="completedText">Completed</string>
     <string name="in_progressText">In Progress</string>
     <string name="markProgressText">Mark your progress on this idea</string>
+	<string name="note">Note</string>
+	<string name="need_help_with_the_solution_to_this_idea">Need help with the solution to this idea?</string>
+	<string name="completed">Completed</string>
+	<string name="in_progress">In Progress</string>
+	<string name="undecided">Undecided</string>
+	<string name="alansa_2016">© 2016 Alansa</string>
+	<string name="bug_reports">Bug reports</string>
+	<string name="overview">Overview</string>
+	<string name="idea_bag_icon">Idea Bag icon</string>
+	<string name="idea_category">Idea category</string>
+	<string name="idea_contents">Idea contents</string>
+	<string name="new_ideas_in_this_update">New ideas in this update</string>
+	<string name="you_have_no_notes_yet">You have no notes yet.</string>
+	<string name="enter_an_indepth_description_of_the_idea">Enter an indepth description of the idea</string>
+	<string name="author_name">Author name</string>
+	<string name="enter_the_idea_s_title">Enter the idea\'s title</string>
+	<string name="enter_your_name">Enter your name</string>
+	<string name="idea_description">Idea description</string>
+	<string name="idea_title">Idea title</string>
+	<string name="submit_idea">SUBMIT IDEA</string>
+	<string name="select_the_idea_s_category">Select the idea\'s category</string>
 </resources>

@@ -10,9 +10,9 @@ namespace ProgrammingIdeas
     [Activity(Label = "SubmitIdeaActivity", Theme = "@style/SubmitTheme")]
     public class SubmitIdeaActivity : Activity
     {
-        string selectedCategory = "";
-        Button submitBtn;
-        EditText author, ideaTitle, description;
+        private string selectedCategory = "";
+        private Button submitBtn;
+        private EditText author, ideaTitle, description;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -48,7 +48,7 @@ namespace ProgrammingIdeas
             };
         }
 
-        void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
+        private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
             Spinner spinner = (Spinner)sender;
             selectedCategory = spinner.GetItemAtPosition(e.Position).ToString();

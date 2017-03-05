@@ -6,7 +6,7 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:paddingBottom="8dp"
@@ -18,7 +18,8 @@
             cardview:cardUseCompatPadding="true"
             cardview:cardElevation="4dp"
             cardview:cardCornerRadius="5dp"
-            cardview:contentPadding="16dp">
+            cardview:contentPadding="16dp"
+            android:id="@+id/ideaCard">
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
@@ -60,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Note"
+                    android:text="@string/note"
                     android:textColor="@color/windowBackground" />
                 <ViewSwitcher
                     android:id="@+id/notesSwitcher"
@@ -114,7 +115,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textSize="18sp"
-                    android:text="Need help with the solution to this idea?"
+                    android:text="@string/need_help_with_the_solution_to_this_idea"
                     android:textColor="@color/windowBackground" />
                 <TextView
                     android:layout_width="match_parent"

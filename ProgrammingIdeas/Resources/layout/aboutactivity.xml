@@ -12,7 +12,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
             <android.support.v7.widget.CardView
                 android:id="@+id/fuckyouLinker"
                 android:layout_width="match_parent"
@@ -30,7 +30,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:src="@mipmap/icon"
-                        android:layout_marginRight="16dp" />
+                        android:layout_marginRight="16dp"
+                        android:contentDescription="@string/idea_bag_icon" />
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
@@ -45,7 +46,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="© 2016 Alansa"
+                            android:text="@string/alansa_2016"
                             android:textColor="#3F5E7F"
                             android:textSize="14sp" />
                     </LinearLayout>
@@ -66,7 +67,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Overview"
+                        android:text="@string/overview"
                         android:textColor="#243749"
                         android:textSize="18sp"
                         android:paddingBottom="8dp" />
@@ -93,7 +94,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Bug reports"
+                        android:text="@string/bug_reports"
                         android:textColor="#243749"
                         android:textSize="18sp"
                         android:paddingBottom="8dp" />

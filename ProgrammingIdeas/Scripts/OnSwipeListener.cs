@@ -1,41 +1,39 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 using Android.App;
 using Android.Content;
-using Android.OS;
-using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using System;
 using static Android.Views.GestureDetector;
 
-namespace ProgrammingIdeas.Scripts
+namespace ProgrammingIdeas.Helpers
 {
-    enum Swipe
+    internal enum Swipe
     {
         Left,
         Right
     }
 
-    class OnSwipeListener : Java.Lang.Object, View.IOnTouchListener
+    public class OnSwipeListener : Java.Lang.Object, View.IOnTouchListener
     {
         private static GestureDetector detector;
-        private event EventHandler OnSwipeLeft;
-        private event EventHandler OnSwipeRight;
+
+        public event EventHandler OnSwipeLeft;
+
+        public event EventHandler OnSwipeRight;
+
         public OnSwipeListener(Context ctx)
         {
             detector = new GestureDetector(ctx, new GestureListener(SwipeRecieved));
         }
 
-        void SwipeRecieved(Swipe swipe)
+        private void SwipeRecieved(Swipe swipe)
         {
-            switch(swipe)
+            switch (swipe)
             {
                 case Swipe.Left:
                     OnSwipeLeft(this, new EventArgs());
                     break;
+
                 case Swipe.Right:
                     OnSwipeRight(this, new EventArgs());
                     break;
@@ -49,12 +47,13 @@ namespace ProgrammingIdeas.Scripts
 
         private class GestureListener : SimpleOnGestureListener
         {
-            private static int SWIPE_THRESHOLD = 100;
-            private static int SWIPE_VELOCITY_THRESHOLD = 100;
-            Action<Swipe> listener;
+            private static int SWIPE_THRESHOLD = 150;
+            private static int SWIPE_VELOCITY_THRESHOLD = 80;
+            private Action<Swipe> baseListener;
+
             public GestureListener(Action<Swipe> listener)
             {
-                this.listener = listener;
+                baseListener = listener;
             }
 
             public override bool OnDown(MotionEvent e)
@@ -67,22 +66,19 @@ namespace ProgrammingIdeas.Scripts
                 bool result = false;
                 try
                 {
-                    // Get vertical swipe distance. 
+                    // Get vertical swipe distance.
                     float diffY = e2.GetY() - e1.GetY();
 
                     // Get horizontal swipe distance.
                     float diffX = e2.GetX() - e1.GetX();
 
                     // calculating swipe for x-axis.
-                    if (Math.Abs(diffX) > Math.Abs(diffY))
+                    if (Math.Abs(diffX) > Math.Abs(diffY) && (Math.Abs(diffX) > SWIPE_THRESHOLD && Math.Abs(velocityX) > SWIPE_VELOCITY_THRESHOLD))
                     {
-                        if (Math.Abs(diffX) > SWIPE_THRESHOLD && Math.Abs(velocityX) > SWIPE_VELOCITY_THRESHOLD)
-                        {
-                            if (diffX > 0)
-                                SwipeRight();
-                            else
-                                SwipeLeft();
-                        }
+                        if (diffX > 0)
+                            SwipeRight();
+                        else
+                            SwipeLeft();
                         result = true;
                     }
                 }
@@ -95,12 +91,12 @@ namespace ProgrammingIdeas.Scripts
 
             private void SwipeLeft()
             {
-                listener(Swipe.Left);
+                baseListener(Swipe.Left);
             }
 
             private void SwipeRight()
             {
-                listener(Swipe.Right);
+                baseListener(Swipe.Right);
             }
         }
     }

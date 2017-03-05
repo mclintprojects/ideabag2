@@ -12,8 +12,8 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:textSize="16dp"
-        android:text="You have no notes yet."
+        android:textSize="16sp"
+        android:text="@string/you_have_no_notes_yet"
         android:gravity="center"
         android:textColor="#ffffff" />
 </ViewSwitcher>

@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="New ideas in this update"
+            android:text="@string/new_ideas_in_this_update"
             android:textColor="@color/titleColor"
             android:textSize="18sp"
             android:gravity="center" />
@@ -43,7 +43,7 @@
                 android:id="@+id/newIdeaCategory"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Idea category"
+                android:text="@string/idea_category"
                 android:textSize="14sp"
                 android:layout_marginTop="8dip"
                 android:textColor="@color/cardSubtitle" />
@@ -51,7 +51,7 @@
                 android:id="@+id/newIdeaContent"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="Idea contents"
+                android:text="@string/idea_contents"
                 android:linksClickable="true"
                 android:autoLink="web"
                 android:textSize="14sp"

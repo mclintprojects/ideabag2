@@ -26,7 +26,8 @@
             android:id="@+id/undecided"
             android:src="@drawable/undecided"
             android:layout_marginLeft="8dp"
-            android:layout_alignParentLeft="false" />
+            android:layout_alignParentLeft="false"
+            android:contentDescription="@string/undecided" />
         <TextView
             android:text="@string/undecidedText"
             android:layout_width="wrap_content"
@@ -39,9 +40,10 @@
             android:layout_height="@dimen/progressDimensions"
             android:layout_width="@dimen/progressDimensions"
             android:id="@+id/inProgress"
-            android:src="@drawable/inProgress"
+            android:src="@drawable/inprogress"
             android:layout_marginLeft="48dp"
-            android:layout_toRightOf="@+id/undecided" />
+            android:layout_toRightOf="@+id/undecided"
+            android:contentDescription="@string/in_progress" />
         <TextView
             android:text="@string/in_progressText"
             android:layout_width="wrap_content"
@@ -59,7 +61,8 @@
             android:src="@drawable/done"
             android:layout_marginLeft="48dp"
             android:layout_alignParentRight="false"
-            android:layout_toRightOf="@+id/inProgress" />
+            android:layout_toRightOf="@+id/inProgress"
+            android:contentDescription="@string/completed" />
         <TextView
             android:text="@string/completedText"
             android:layout_width="wrap_content"

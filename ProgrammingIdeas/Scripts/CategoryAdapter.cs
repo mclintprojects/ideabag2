@@ -9,20 +9,20 @@ namespace ProgrammingIdeas
 {
     public class mAdapter : RecyclerView.Adapter
     {
-        List<Category> categories;
-        public event EventHandler<int> ItemClick;
-        Context parentContext;
-        int[] icons;
-		int scrollPos;
-		bool isFirst;
+        private List<Category> categories;
 
-        public mAdapter(List<Category> category, Context context, int[] icons, int scrollPos, bool isFirst)
+        public event EventHandler<int> ItemClick;
+
+        private Context parentContext;
+        private int[] icons;
+        private int scrollPos;
+
+        public mAdapter(List<Category> category, Context context, int[] icons, int scrollPos)
         {
             categories = category;
             parentContext = context;
             this.icons = icons;
-			this.scrollPos = scrollPos;
-			this.isFirst = isFirst;
+            this.scrollPos = scrollPos;
         }
 
         public override int ItemCount
@@ -35,7 +35,6 @@ namespace ProgrammingIdeas
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-			
             var category = categories[position];
 
             var viewHolder = holder as mViewHolder;
@@ -43,11 +42,9 @@ namespace ProgrammingIdeas
             viewHolder.completionCount.Text = $"Ideas: {category.CategoryCount}";
             viewHolder.description.Text = category.Description;
             viewHolder.imageView.SetImageResource(icons[position]);
-			viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
-			if (position == scrollPos && scrollPos != 0)
-				viewHolder.Root.SetBackgroundResource(Resource.Color.highlight);
-			if (position == 0 && isFirst == true)
-				viewHolder.Root.SetBackgroundResource(Resource.Color.highlight);
+            viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
+            if (position == scrollPos)
+                viewHolder.Root.SetBackgroundResource(Resource.Color.highlight);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -71,7 +68,7 @@ namespace ProgrammingIdeas
         public TextView categoryLabel { get; set; }
         public TextView completionCount { get; set; }
         public TextView description { get; set; }
-		public LinearLayout Root { get; set; }
+        public LinearLayout Root { get; set; }
 
         public mViewHolder(View itemView, Action<int> listener) : base(itemView)
         {
@@ -81,7 +78,7 @@ namespace ProgrammingIdeas
             categoryLabel = itemView.FindViewById<TextView>(Resource.Id.categoryLbl);
             completionCount = itemView.FindViewById<TextView>(Resource.Id.completedLbl);
             description = itemView.FindViewById<TextView>(Resource.Id.descriptionLbl);
-			Root = itemView.FindViewById<LinearLayout>(Resource.Id.categoryRoot);
+            Root = itemView.FindViewById<LinearLayout>(Resource.Id.categoryRoot);
         }
     }
 }

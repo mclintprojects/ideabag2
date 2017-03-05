@@ -13,20 +13,19 @@ using System.IO;
 
 namespace ProgrammingIdeas
 {
-	//Main activity.
+    //Main activity.
     [Activity(Label = "Idea Bag 2", MainLauncher = true, Icon = "@mipmap/icon")]
     public class MainActivity : Activity
     {
-        RecyclerView recyclerView;
-        mAdapter adapter;
-        LinearLayoutManager manager;
-        List<Category> categoryList = new List<Category>();
-        string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
-        string jsonString, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
-        int scrollPosition = 0;
-		bool wasFirstViewClickedMain;
+        private RecyclerView recyclerView;
+        private mAdapter adapter;
+        private LinearLayoutManager manager;
+        private List<Category> categoryList = new List<Category>();
+        private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
+        private string ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
+        private int scrollPosition = 0;
 
-         int[] icons = {Resource.Mipmap.numbers, Resource.Mipmap.text, Resource.Mipmap.network, Resource.Mipmap.enterprise,
+        private int[] icons = {Resource.Mipmap.numbers, Resource.Mipmap.text, Resource.Mipmap.network, Resource.Mipmap.enterprise,
                                        Resource.Mipmap.cpu, Resource.Mipmap.web, Resource.Mipmap.file, Resource.Mipmap.database,
                                        Resource.Mipmap.multimedia, Resource.Mipmap.games};
 
@@ -36,56 +35,30 @@ namespace ProgrammingIdeas
             SetContentView(Resource.Layout.categoryactivity);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             scrollPosition = Intent.GetIntExtra("mainscrollPos", 0);
-			wasFirstViewClickedMain = Intent.GetBooleanExtra("isHomeFirst", false);
             setupUI();
         }
 
-        void setupUI() //first launch, gets json from packaged assets
+        private void setupUI() //first launch, gets json from packaged assets
         {
-            if (!File.Exists(notesdb))
-            {
-                using (StreamWriter w = new StreamWriter(notesdb))
-                    w.Write("");
-            }
-            AssetManager assets = Assets;
-            using (StreamReader reader = new StreamReader(assets.Open("output.json")))
-            {
-                var prefManager = PreferenceManager.GetDefaultSharedPreferences(this);
+			using (StreamWriter w = new StreamWriter(new FileStream(ideasdb, FileMode.OpenOrCreate)))
+			{
+				using (StreamReader r = new StreamReader(Assets.Open("output.json")))
+					w.Write(r.ReadToEnd());
+			}
 
-                #region Code that copies database from Assets to internal storage
-
-                /*var teditor = prefManager.Edit();
-				teditor.PutBoolean("opened", false);
-				teditor.Commit();*/
-
-                #endregion Code that copies database from Assets to internal storage
-
-                if (prefManager.GetBoolean("opened", false) == false) //first launch, copies ideas from app assets to internal storage
-                {
-                    jsonString = reader.ReadToEnd();
-                    var editor = prefManager.Edit();
-                    editor.PutBoolean("opened", true);
-                    editor.Commit();
-                    using (StreamWriter writer = new StreamWriter(ideasdb))
-                        writer.Write(jsonString);
-					categoryList = JsonConvert.DeserializeObject<List<Category>>(jsonString);
-                }
-                else //assets already copied to internal storage, proceeds to deserialize
-                    categoryList = (List<Category>)DBAssist.DeserializeDB(ideasdb, categoryList);
-                //jsonString = reader.ReadToEnd();
-            }
+			categoryList = (List<Category>)DBAssist.GetDB(Assets, categoryList);
             manager = new LinearLayoutManager(this);
             RunOnUiThread(() =>
             {
                 recyclerView.SetLayoutManager(manager);
-                adapter = new mAdapter(categoryList, this, icons, scrollPosition, wasFirstViewClickedMain);
+                adapter = new mAdapter(categoryList, this, icons, scrollPosition);
                 adapter.ItemClick += OnItemClick;
                 recyclerView.SetAdapter(adapter);
                 manager.ScrollToPosition(scrollPosition);
             });
         }
 
-        public override bool OnCreateOptionsMenu(Android.Views.IMenu menu)
+		public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return base.OnCreateOptionsMenu(menu);
@@ -109,8 +82,8 @@ namespace ProgrammingIdeas
 
                 case Resource.Id.changelog:
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
-					builder.SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}");
-                    builder.SetMessage("1. Added 4 new ideas.");
+                    builder.SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}");
+                    builder.SetMessage(Resources.GetString(Resource.String.changelog));
                     builder.SetPositiveButton("DISMISS", (sender, e) => { return; });
                     Dialog dialog = builder.Create();
                     dialog.Show();
@@ -123,8 +96,8 @@ namespace ProgrammingIdeas
                     return true;
 
                 case Resource.Id.newIdeas:
-                    var manager = FragmentManager;
-                    var transaction = manager.BeginTransaction();
+                    var fragmentManager = FragmentManager;
+                    var transaction = fragmentManager.BeginTransaction();
                     transaction.Add(new NewIdeaFragment(GetNewIdeas()), "NewIdeaFragment");
                     transaction.Commit();
                     return true;
@@ -138,13 +111,13 @@ namespace ProgrammingIdeas
             return base.OnOptionsItemSelected(item);
         }
 
-		/// <summary>
-		/// To indicate which ideas where new, I created a text file. A new idea was represented by {categoryIndex}-{ideaIndex}.
-		/// So, "1-2" means that the idea is in Category 1 ie Numbers and was idea number 2 ie Tax Calculator.
-		/// This method reads in the text file and generates the respective idea.
-		/// </summary>
-		/// <returns>The new ideas.</returns>
-        List<CategoryItem> GetNewIdeas()
+        /// <summary>
+        /// To indicate which ideas where new, I created a text file. A new idea was represented by {categoryIndex}-{ideaIndex}.
+        /// So, "1-2" means that the idea is in Category 1 ie Numbers and was idea number 2 ie Tax Calculator.
+        /// This method reads in the text file and generates the respective idea.
+        /// </summary>
+        /// <returns>The new ideas.</returns>
+        private List<CategoryItem> GetNewIdeas()
         {
             List<CategoryItem> newItems = new List<CategoryItem>();
             string newIdeas = new StreamReader(Assets.Open("newideasdb.txt")).ReadToEnd();
@@ -157,9 +130,8 @@ namespace ProgrammingIdeas
             return newItems;
         }
 
-        void OnItemClick(object sender, int position)
+        private void OnItemClick(object sender, int position)
         {
-			wasFirstViewClickedMain = true;
             var categoryItem = categoryList[position].Items;
             var title = categoryList[position].CategoryLbl;
             var itemsJson = JsonConvert.SerializeObject(categoryItem);
@@ -168,7 +140,6 @@ namespace ProgrammingIdeas
             intent.PutExtra("title", title); //category title for item activity
             intent.PutExtra("sender", "MainActivity"); //get sender to fix ambiguity in items activity
             intent.PutExtra("mainscrollPos", position); //position to scroll to onresume
-			intent.PutExtra("wasFirstViewClickedMain", wasFirstViewClickedMain); //if first view was clicked to handle double view highlight
             StartActivity(intent);
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }

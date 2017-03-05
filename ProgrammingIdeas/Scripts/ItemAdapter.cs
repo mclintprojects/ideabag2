@@ -5,25 +5,25 @@ using Android.Views;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 
 namespace ProgrammingIdeas
 {
     public class itemAdapter : RecyclerView.Adapter
     {
-        List<CategoryItem> itemsList;
-        public event EventHandler<int> ItemClick;
-        public event EventHandler<string> StateClicked;
-        Context ctx;
-		int scrollPos;
-		bool isFirst;
+        private List<CategoryItem> itemsList;
 
-        public itemAdapter(List<CategoryItem> list, Context ctx, int scrollPos, bool isFirst)
+        public event EventHandler<int> ItemClick;
+
+        public event EventHandler<string> StateClicked;
+
+        private Context ctx;
+        private int scrollPos;
+
+        public itemAdapter(List<CategoryItem> list, Context ctx, int scrollPos)
         {
             this.ctx = ctx;
             itemsList = list;
-			this.scrollPos = scrollPos;
-			this.isFirst = isFirst;
+            this.scrollPos = scrollPos;
         }
 
         public override int ItemCount
@@ -43,7 +43,7 @@ namespace ProgrammingIdeas
             itemHolder.title.Text = item.Title;
             itemHolder.id.Text = item.Id.ToString();
             itemHolder.State.SetImageResource(Resource.Drawable.undecided);
-			itemHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
+            itemHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
             switch (item.State)
             {
                 case "undecided":
@@ -58,20 +58,18 @@ namespace ProgrammingIdeas
                     itemHolder.State.SetImageResource(Resource.Drawable.done);
                     break;
             }
-			if (position == scrollPos && scrollPos != 0)
-				itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
-			if (position == scrollPos && isFirst == true)
-				itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
+            if (position == scrollPos)
+                itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.idealistrow, parent, false);
-			row.SetBackgroundColor(Android.Graphics.Color.Transparent);
+            row.SetBackgroundColor(Android.Graphics.Color.Transparent);
             return new itemViewHolder(row, OnClick, ctx, ref StateClicked);
         }
 
-        void OnClick(int position)
+        private void OnClick(int position)
         {
             if (ItemClick != null)
                 ItemClick?.Invoke(this, position);
@@ -84,11 +82,11 @@ namespace ProgrammingIdeas
         public TextView difficulty { get; set; }
         public TextView id { get; set; }
         public ImageView State { get; set; }
-		public LinearLayout Root { get; set; }
-        Context ctx;
-        ImageView inprogress, done, undecided;
+        public LinearLayout Root { get; set; }
+        private Context ctx;
+        private ImageView inprogress, done, undecided;
 
-        event EventHandler<string> stateClick;
+        private event EventHandler<string> stateClick;
 
         public itemViewHolder(View itemView, Action<int> listener, Context ctx, ref EventHandler<string> stateClick) : base(itemView)
         {
@@ -101,7 +99,7 @@ namespace ProgrammingIdeas
             difficulty = itemView.FindViewById<TextView>(Resource.Id.difficulty);
             id = itemView.FindViewById<TextView>(Resource.Id.itemId);
             State = itemView.FindViewById<ImageView>(Resource.Id.progressState);
-			Root = itemView.FindViewById<LinearLayout>(Resource.Id.layoutRoot);
+            Root = itemView.FindViewById<LinearLayout>(Resource.Id.layoutRoot);
         }
 
         public bool OnLongClick(View v)

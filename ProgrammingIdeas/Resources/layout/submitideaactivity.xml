@@ -10,46 +10,46 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp">
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Author name"
-                android:textSize="16dp"
+                android:text="@string/author_name"
+                android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="4dp" />
             <EditText
                 android:id="@+id/authorTb"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter your name"
+                android:hint="@string/enter_your_name"
                 android:textColor="#ffffff"
-                android:singleLine="true"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/submitRoundBtn" />
+                android:background="@drawable/submitroundbtn"
+                android:maxLines="1" />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Idea title"
-                android:textSize="16dp"
+                android:text="@string/idea_title"
+                android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="4dp" />
             <EditText
                 android:id="@+id/submitTitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="Enter the idea's title"
+                android:hint="@string/enter_the_idea_s_title"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="8dp"
-                android:background="@drawable/submitRoundBtn" />
+                android:background="@drawable/submitroundbtn" />
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Select the idea's category"
-                android:textSize="16dp"
+                android:text="@string/select_the_idea_s_category"
+                android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="4dp" />
             <Spinner
@@ -61,23 +61,23 @@
             <TextView
                 android:layout_height="wrap_content"
                 android:layout_width="wrap_content"
-                android:text="Idea description"
-                android:textSize="16dp"
+                android:text="@string/idea_description"
+                android:textSize="16sp"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="4dp" />
             <EditText
                 android:id="@+id/ideaDescription"
                 android:layout_height="wrap_content"
                 android:layout_width="match_parent"
-                android:hint="Enter an indepth description of the idea"
+                android:hint="@string/enter_an_indepth_description_of_the_idea"
                 android:textColor="#ffffff"
                 android:layout_marginBottom="24dp"
-                android:background="@drawable/submitRoundBtn" />
+                android:background="@drawable/submitroundbtn" />
             <Button
                 android:id="@+id/submitBtn"
-                android:layout_height="wrap_content"
+                android:layout_height="0dp"
                 android:layout_width="match_parent"
-                android:text="SUBMIT IDEA"
+                android:text="@string/submit_idea"
                 android:background="@drawable/submitbtn"
                 android:layout_gravity="bottom"
                 android:layout_marginRight="16dp"

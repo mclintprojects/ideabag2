@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System.IO;
+using Android.Content.Res;
 
 namespace ProgrammingIdeas.Helpers
 {
@@ -7,20 +8,41 @@ namespace ProgrammingIdeas.Helpers
     {
         public static object DeserializeDB<T>(string path, T type)
         {
-            using (StreamReader r = new StreamReader(path))
+            try
             {
-                string data = r.ReadToEnd();
-                return JsonConvert.DeserializeAnonymousType(data, type);
+				using (StreamReader r = new StreamReader(new FileStream(path, FileMode.OpenOrCreate)))
+                {
+                    string data = r.ReadToEnd();
+                    return JsonConvert.DeserializeAnonymousType(data, type);
+                }
             }
+            catch { return ""; }
         }
+
+		public static object GetDB<T>(AssetManager manager, T type)
+		{
+			try
+			{
+				using (StreamReader r = new StreamReader(manager.Open("output.json")))
+				{
+					string data = r.ReadToEnd();
+					return JsonConvert.DeserializeAnonymousType(data, type);
+				}
+			}
+			catch { return ""; }
+		}
 
         public static void SerializeDB(string location, object database)
         {
-            if (database != null)
+            try
             {
-                using (StreamWriter s = new StreamWriter(location))
-                    s.Write(JsonConvert.SerializeObject(database));
+                if (database != null)
+                {
+					using (StreamWriter s = new StreamWriter(new FileStream(location, FileMode.OpenOrCreate)))
+                        s.Write(JsonConvert.SerializeObject(database));
+                }
             }
+			catch { return; }
         }
     }
 }

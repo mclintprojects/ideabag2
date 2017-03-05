@@ -7,8 +7,8 @@ namespace ProgrammingIdeas
 {
     public class NewIdeaAdapter : RecyclerView.Adapter
     {
-        List<CategoryItem> newIdeas;
-		int count;
+        private List<CategoryItem> newIdeas;
+        private int count;
 
         public NewIdeaAdapter(List<CategoryItem> newIdeas)
         {
@@ -27,12 +27,12 @@ namespace ProgrammingIdeas
         {
             var newIdea = newIdeas[position];
             var idHolder = holder as NewIdeasViewHolder;
-			if (count != 0)
-				idHolder.NewIdeasText.Visibility = ViewStates.Gone;
+            if (count != 0)
+                idHolder.NewIdeasText.Visibility = ViewStates.Gone;
             idHolder.NewIdeaTitle.Text = newIdea.Title;
             idHolder.NewIdeaCategory.Text = newIdea.Category;
             idHolder.NewIdeaContent.Text = newIdea.Description;
-			count++;
+            count++;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
@@ -47,14 +47,14 @@ namespace ProgrammingIdeas
         public TextView NewIdeaTitle { get; set; }
         public TextView NewIdeaCategory { get; set; }
         public TextView NewIdeaContent { get; set; }
-		public LinearLayout NewIdeasText { get; set; }
+        public LinearLayout NewIdeasText { get; set; }
 
         public NewIdeasViewHolder(View itemView) : base(itemView)
         {
             NewIdeaTitle = itemView.FindViewById<TextView>(Resource.Id.newIdeaTitle);
             NewIdeaCategory = itemView.FindViewById<TextView>(Resource.Id.newIdeaCategory);
             NewIdeaContent = itemView.FindViewById<TextView>(Resource.Id.newIdeaContent);
-			NewIdeasText = itemView.FindViewById<LinearLayout>(Resource.Id.newIdeasText);
+            NewIdeasText = itemView.FindViewById<LinearLayout>(Resource.Id.newIdeasText);
         }
     }
 }
