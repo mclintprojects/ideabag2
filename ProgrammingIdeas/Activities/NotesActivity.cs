@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -20,7 +20,7 @@ namespace ProgrammingIdeas
 		private RecyclerView.LayoutManager manager;
 		private NotesAdapter adapter;
 		private ViewSwitcher switcher, notesActivitySwitcher;
-		private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
+		private readonly string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
 		string noteText;
 		bool isNoteEditing = false;
 
@@ -126,7 +126,7 @@ namespace ProgrammingIdeas
 
 		private void NavigateAway()
 		{
-			Intent intent = new Intent(this, typeof(MainActivity));
+			var intent = new Intent(this, typeof(CategoryActivity));
 			NavigateUpTo(intent);
 			OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
 		}

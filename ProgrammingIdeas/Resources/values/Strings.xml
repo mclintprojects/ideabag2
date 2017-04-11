@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v1.7</string>
-	<string name="appNumber">1.7</string>
+	<string name="appVersion">IdeaBag 2 v1.8</string>
+	<string name="appNumber">1.8</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. Bug fixes and improvements.
+		1. Added 8 new ideas.\r\n2. Fixed issue with idea completion status.\r\n3. Fixed issue with idea bookmarking.\r\n4. Several bug fixes and improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">

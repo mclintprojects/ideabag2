@@ -5,7 +5,6 @@ namespace ProgrammingIdeas
     public class Category
     {
         public string CategoryLbl { get; set; }
-        public int CompletedCount { get; set; }
         public int CategoryCount { get; set; }
         public string Description { get; set; }
         public List<CategoryItem> Items { get; set; }

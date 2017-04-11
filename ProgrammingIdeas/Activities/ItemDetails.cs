@@ -67,17 +67,18 @@ namespace ProgrammingIdeas
 
             title.Text = item.Title;
             itemDescription.Text = item.Description;
-            db = (List<Category>)DBAssist.GetDB(Assets, db);
-			notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
+            db = DBAssist.GetDB(ideasdb);
+            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
 
             FindNotes();
 
             using (BusyHandler.Handle(RemoveBookmarkedItems))
-                Task.Run(() => { 
-				bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
-					if (bookmarkedItems == null)
-						bookmarkedItems = new List<CategoryItem>();
-			});
+                Task.Run(() =>
+                {
+                    bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
+                    if (bookmarkedItems == null)
+                        bookmarkedItems = new List<CategoryItem>();
+                });
 
             editNote.Click += (sender, e) =>
             {
@@ -151,7 +152,7 @@ namespace ProgrammingIdeas
                 itemscrollPosition = index;
                 item = itemsList[index];
                 CheckAndSetBookmark();
-				isBookmarked = CheckIfBookmarked(item);
+                isBookmarked = CheckIfBookmarked(item);
                 title.Text = item.Title;
                 itemDescription.Text = item.Description;
                 FindNotes();
@@ -160,11 +161,11 @@ namespace ProgrammingIdeas
 
         private void RemoveBookmarkedItems()
         {
-			if (bookmarkedItems.Count > 0)
-			{
-				foreach (CategoryItem item in bookmarkedItems)
-					itemsList.Remove(item);
-			}
+            if (bookmarkedItems.Count > 0)
+            {
+                foreach (CategoryItem item in bookmarkedItems)
+                    itemsList.Remove(item);
+            }
         }
 
         private void FindNotes()
@@ -172,10 +173,10 @@ namespace ProgrammingIdeas
             if (notes != null)
             {
                 var foundItem = notes.FirstOrDefault(x => x.Title == item.Title);
-				if (foundItem != null)
-					notesLbl.Text = foundItem.Content;
-				else
-					notesLbl.Text = Resources.GetString(Resource.String.notes_sample_content);
+                if (foundItem != null)
+                    notesLbl.Text = foundItem.Content;
+                else
+                    notesLbl.Text = Resources.GetString(Resource.String.notes_sample_content);
                 foundItem = null;
             }
         }
@@ -193,7 +194,7 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-					GoAway();
+                    GoAway();
                     return true;
 
                 case Resource.Id.bookmarkItem:
@@ -203,26 +204,23 @@ namespace ProgrammingIdeas
                         {
                             bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
                             if (this.item != null)
-								bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Description == this.item.Description));
+                                bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Description == this.item.Description));
                             Toast.MakeText(this, "Idea removed from bookmarks", ToastLength.Short).Show();
                             isBookmarked = false;
                         }
                         else // not bookmarked
                         {
-							if (sendingActivity == "details")
-                            	itemsList.RemoveAt(itemscrollPosition);
                             bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
-							if (bookmarkedItems.FirstOrDefault(x => x.Description == this.item.Description) == null)
-								bookmarkedItems.Add(this.item);
+                            if (bookmarkedItems.FirstOrDefault(x => x.Description == this.item.Description) == null)
+                                bookmarkedItems.Add(this.item);
                             Toast.MakeText(this, "Idea added to bookmarks", ToastLength.Short).Show();
                             isBookmarked = true;
                         }
                     }
-                    writeEntirety();
                     return true;
 
                 case Resource.Id.shareItem:
-                    Intent share = new Intent();
+                    var share = new Intent();
                     share.SetAction(Intent.ActionSend);
                     share.SetType("text/plain");
                     string textToShare = $"Can you code this challenge?\r\n\r\n" +
@@ -248,7 +246,7 @@ namespace ProgrammingIdeas
 
         private bool CheckIfBookmarked(CategoryItem item)
         {
-			if (bookmarkedItems.FirstOrDefault(x => x.Description == item.Description) != null)
+            if (bookmarkedItems.FirstOrDefault(x => x.Description == item.Description) != null)
                 return true;
             else
                 return false;
@@ -256,12 +254,9 @@ namespace ProgrammingIdeas
 
         private void writeEntirety()
         {
-            Task.Run(() =>
-            {
-                DBAssist.SerializeDB(path, bookmarkedItems);
-                DBAssist.SerializeDB(ideasdb, db);
-                DBAssist.SerializeDB(notesdb, notes);
-            });
+            DBAssist.SerializeDB(path, bookmarkedItems);
+            DBAssist.SerializeDB(ideasdb, db);
+            DBAssist.SerializeDB(notesdb, notes);
         }
 
         public override void OnBackPressed()
@@ -270,24 +265,24 @@ namespace ProgrammingIdeas
             base.OnBackPressed();
         }
 
-		protected override void OnPause()
-		{
-			writeEntirety();
-			base.OnPause();
-		}
+        protected override void OnPause()
+        {
+            writeEntirety();
+            base.OnPause();
+        }
 
-		void GoAway()
-		{
-			writeEntirety();
-			Intent intent = new Intent(this, sendingActivity == "idealistactivity" ? typeof(ItemActivity) : typeof(Bookmarks));
-			intent.PutExtra("jsonString", JsonConvert.SerializeObject(itemsList)); //itemlist json for itemactivity header
-			intent.PutExtra("title", itemTitle); //title for itemactivity header
-			intent.PutExtra("itemscrollPos", itemscrollPosition);
-			intent.PutExtra("mainscrollPos", mainscrollPos);
-			intent.PutExtra("wasFirstViewClickedMain", wasFirstViewClickedMain);
-			intent.PutExtra("wasFirstViewClickedItem", wasFirstViewClickedItem);
-			NavigateUpTo(intent);
-			OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
-		}
+        private void GoAway()
+        {
+            writeEntirety();
+            var intent = new Intent(this, sendingActivity == "idealistactivity" ? typeof(ItemActivity) : typeof(BookmarksActivity));
+            intent.PutExtra("jsonString", JsonConvert.SerializeObject(itemsList)); //itemlist json for itemactivity header
+            intent.PutExtra("title", itemTitle); //title for itemactivity header
+            intent.PutExtra("itemscrollPos", itemscrollPosition);
+            intent.PutExtra("mainscrollPos", mainscrollPos);
+            intent.PutExtra("wasFirstViewClickedMain", wasFirstViewClickedMain);
+            intent.PutExtra("wasFirstViewClickedItem", wasFirstViewClickedItem);
+            NavigateUpTo(intent);
+            OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
+        }
     }
 }

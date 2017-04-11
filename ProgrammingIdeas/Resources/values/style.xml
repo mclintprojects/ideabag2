@@ -1,20 +1,21 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+﻿<?xml version="1.0" encoding="UTF-8" ?>
 <resources>
-	<style name="MyTheme" parent="MyTheme.Base"></style>
-	<style name="MyTheme.Base" parent="@android:style/Theme.Holo.Light.DarkActionBar">
+    <style name="AppTheme" parent="BaseTheme">
+        <item name="windowActionModeOverlay">true</item>
         <item name="android:windowBackground">@color/windowBackground</item>
-        <item name="android:textColor">@color/accent</item>
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
-		<item name="android:windowDisablePreview">true</item>
     </style>
-    <style name="MyActionBar" parent="@android:style/Widget.Holo.Light.ActionBar">
-        <item name="android:textColor">#ffffffff</item>
-        <item name="android:background">@color/primary</item>
-		<item name="android:icon">@android:color/transparent</item>
+
+    <style name="AppFullscreen" parent="BaseTheme">
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowFullscreen">true</item>
     </style>
-	<style name="SubmitTheme" parent="@android:style/Theme.Holo">
-        <item name="android:windowBackground">@color/windowBackground</item>
-        <item name="android:textColor">#ffffff</item>
-        <item name="android:actionBarStyle">@style/MyActionBar</item>
+
+    <style name="BaseTheme" parent="Theme.AppCompat.Light">
+        <item name="colorPrimary">@color/primary</item>
+        <item name="colorPrimaryDark">@color/primaryDark</item>
+        <item name="colorAccent">@color/accent</item>
+        <item name="windowNoTitle">true</item>
+        <item name="windowActionBar">false</item>
+        <item name="android:windowDisablePreview">true</item>
     </style>
 </resources>

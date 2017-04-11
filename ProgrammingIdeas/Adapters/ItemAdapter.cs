@@ -41,7 +41,7 @@ namespace ProgrammingIdeas
 
             itemHolder.difficulty.Text = item.Difficulty;
             itemHolder.title.Text = item.Title;
-            itemHolder.id.Text = item.Id.ToString();
+			itemHolder.id.Text = item.Id.ToString();
             itemHolder.State.SetImageResource(Resource.Drawable.undecided);
             itemHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
             switch (item.State)
@@ -104,7 +104,7 @@ namespace ProgrammingIdeas
 
         public bool OnLongClick(View v)
         {
-            View addView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.ideaprogressfragment, null);
+            var addView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.ideaprogressfragment, null);
             inprogress = addView.FindViewById<ImageView>(Resource.Id.inProgress);
             undecided = addView.FindViewById<ImageView>(Resource.Id.undecided);
             done = addView.FindViewById<ImageView>(Resource.Id.done);

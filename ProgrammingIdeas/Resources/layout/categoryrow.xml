@@ -1,44 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal"
+    android:id="@+id/categoryRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?android:attr/selectableItemBackground"
+    android:orientation="horizontal"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="8.0dip"
-    android:paddingBottom="8.0dip"
-    android:id="@+id/categoryRoot">
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/categoryIcon"
-        android:layout_marginRight="8.0dip"
-        android:contentDescription="" />
-    <LinearLayout
-        android:orientation="vertical"
+    android:paddingTop="16dp">
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="90dp">
+
+        <LinearLayout
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@color/windowBackground"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/categoryIcon"
+                android:layout_width="48dp"
+                android:layout_height="48dp"
+                android:layout_marginRight="8.0dip"
+                android:src="@mipmap/cpu" />
+        </LinearLayout>
+
         <TextView
             android:id="@+id/categoryLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|left"
+            android:layout_marginLeft="125dp"
+            android:layout_marginTop="24dp"
             android:text="@string/category"
-            android:textSize="16sp"
-            android:textColor="@color/titleColor" />
+            android:textColor="@color/primaryText"
+            android:textSize="20sp" />
+
         <TextView
-            android:id="@+id/completedLbl"
+            android:id="@+id/ideaCountLbl"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/category"
-            android:paddingTop="4.0dip"
-            android:textSize="13sp"
-            android:textColor="@color/subtitleColor" />
-        <TextView
-            android:id="@+id/descriptionLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/category"
-            android:textSize="13sp"
-            android:textColor="@color/subtitleColor" />
+            android:layout_gravity="center_horizontal|left"
+            android:layout_marginLeft="125dp"
+            android:layout_marginTop="48dp"
+            android:text="Ideas count"
+            android:textColor="@color/secondaryText"
+            android:textSize="13sp" />
+
+    </android.support.v7.widget.CardView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
     </LinearLayout>
 </LinearLayout>

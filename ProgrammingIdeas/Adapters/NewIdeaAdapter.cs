@@ -37,7 +37,7 @@ namespace ProgrammingIdeas
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            View row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.newideasrow, null);
+            var row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.newideasrow, null);
             return new NewIdeasViewHolder(row);
         }
     }

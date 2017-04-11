@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -10,34 +10,49 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using ProgrammingIdeas.Activities;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "ItemActivity", Theme = "@style/MyTheme")]
-    public class ItemActivity : Activity
+    [Activity(Label = "ItemActivity", Theme = "@style/AppTheme")]
+    public class ItemActivity : BaseActivity
     {
         private RecyclerView recyclerView;
         private RecyclerView.LayoutManager manager;
         private itemAdapter adapter;
         private List<Category> allItems = new List<Category>();
-		private List<CategoryItem> itemsList;
-		private List<CategoryItem> bookmarkedList;
+        private List<CategoryItem> itemsList;
+        private List<CategoryItem> bookmarkedList;
         private string itemTitle, path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
+        private string progressingListPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "progressdb");
         private int count = 0, mainscrollPosition = 0, itemscrollPosition = 0;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+		public override int LayoutResource
+		{
+			get
+			{
+				return Resource.Layout.idealistactivity;
+			}
+		}
+
+		public override bool HomeAsUpEnabled
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.idealistactivity);
-            ActionBar.SetHomeButtonEnabled(true);
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
-            itemscrollPosition = Intent.GetIntExtra("itemscrollPos", 0);
-            mainscrollPosition = Intent.GetIntExtra("mainscrollPos", 0);
-            path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
+            Global.IsWrittenDB = true;
+            path = Path.Combine(Global.APP_PATH, "bookmarks.json");
             manager = new LinearLayoutManager(this);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.itemRecyclerView);
-			allItems = (List<Category>)DBAssist.GetDB(Assets, allItems);
-			bookmarkedList = (List<CategoryItem>)DBAssist.DeserializeDB(path, bookmarkedList);
+            //allItems = (List<Category>)DBAssist.GetDB(Assets, allItems);
+            allItems = DBAssist.GetDB(ideasdb);
+            bookmarkedList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
             setupMainIntent();
         }
 
@@ -46,15 +61,12 @@ namespace ProgrammingIdeas
             string jsonString = Intent.GetStringExtra("jsonString");
             string title = Intent.GetStringExtra("title");
             itemTitle = title;
-			itemsList = allItems[mainscrollPosition].Items;
+			itemsList = JsonConvert.DeserializeObject<List<CategoryItem>>(jsonString);
             count = itemsList.Count;
             if (bookmarkedList != null && bookmarkedList.Count != 0)
             {
                 foreach (CategoryItem item in bookmarkedList)
-                {
-                    var bmkItem = itemsList.FirstOrDefault(x => x.Title == item.Title);
-                    itemsList.Remove(bmkItem);
-                }
+                    itemsList.Remove(itemsList.FirstOrDefault(x => x.Title == item.Title));
             }
 
             RunOnUiThread(() =>
@@ -75,7 +87,6 @@ namespace ProgrammingIdeas
                         itemsList[position].State = state;
                         adapter.NotifyDataSetChanged();
                         allItems.FirstOrDefault(x => x.CategoryLbl == title).Items.FirstOrDefault(y => y.Description == itemsList[position].Description).State = state;
-                        DBAssist.SerializeDB(ideasdb, allItems);
                     }
                     Toast.MakeText(this, $"Idea progress successfully changed.", ToastLength.Short).Show();
                 };
@@ -87,7 +98,7 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    Intent intent = new Intent(this, typeof(MainActivity));
+                    Intent intent = new Intent(this, typeof(CategoryActivity));
                     intent.PutExtra("mainscrollPos", mainscrollPosition);
                     NavigateUpTo(intent);
                     OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
@@ -96,6 +107,11 @@ namespace ProgrammingIdeas
             return base.OnOptionsItemSelected(item);
         }
 
+		protected override void OnPause()
+		{
+			DBAssist.SerializeDB(ideasdb, allItems);
+			base.OnPause();
+		}
         private void OnItemClick(object sender, int position)
         {
             Intent intent = new Intent(this, typeof(ItemDetails));
@@ -111,7 +127,7 @@ namespace ProgrammingIdeas
 
         public override void OnBackPressed()
         {
-            Intent intent = new Intent(this, typeof(MainActivity));
+            Intent intent = new Intent(this, typeof(CategoryActivity));
             intent.PutExtra("mainscrollPos", mainscrollPosition);
             NavigateUpTo(intent);
             OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);

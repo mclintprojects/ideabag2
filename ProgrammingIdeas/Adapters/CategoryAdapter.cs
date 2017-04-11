@@ -39,8 +39,8 @@ namespace ProgrammingIdeas
 
             var viewHolder = holder as mViewHolder;
             viewHolder.categoryLabel.Text = category.CategoryLbl;
-            viewHolder.completionCount.Text = $"Ideas: {category.CategoryCount}";
-            viewHolder.description.Text = category.Description;
+			viewHolder.ideasCount.Text = $"Ideas: {category.Items.Count}";
+            //viewHolder.description.Text = category.Description;
             viewHolder.imageView.SetImageResource(icons[position]);
             viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
             if (position == scrollPos)
@@ -66,8 +66,8 @@ namespace ProgrammingIdeas
     {
         public ImageView imageView { get; set; }
         public TextView categoryLabel { get; set; }
-        public TextView completionCount { get; set; }
-        public TextView description { get; set; }
+        public TextView ideasCount { get; set; }
+        //public TextView description { get; set; }
         public LinearLayout Root { get; set; }
 
         public mViewHolder(View itemView, Action<int> listener) : base(itemView)
@@ -76,8 +76,7 @@ namespace ProgrammingIdeas
             row.Click += (sender, e) => listener(AdapterPosition);
             imageView = itemView.FindViewById<ImageView>(Resource.Id.categoryIcon);
             categoryLabel = itemView.FindViewById<TextView>(Resource.Id.categoryLbl);
-            completionCount = itemView.FindViewById<TextView>(Resource.Id.completedLbl);
-            description = itemView.FindViewById<TextView>(Resource.Id.descriptionLbl);
+            ideasCount = itemView.FindViewById<TextView>(Resource.Id.ideaCountLbl);
             Root = itemView.FindViewById<LinearLayout>(Resource.Id.categoryRoot);
         }
     }

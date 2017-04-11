@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.Widget;
@@ -15,14 +15,14 @@ using System.Threading.Tasks;
 namespace ProgrammingIdeas
 {
     [Activity(Label = "Bookmarks")]
-    public class Bookmarks : Activity
+    public class BookmarksActivity : Activity
     {
-        private List<Category> allItems = new List<Category>();
+        private List<Category> allItems;
         private RecyclerView recyclerView;
         private RecyclerView.LayoutManager manager;
         private itemAdapter adapter;
         private ViewSwitcher parent;
-        private List<CategoryItem> itemsList = new List<CategoryItem>();
+        private List<CategoryItem> bookmarksList = new List<CategoryItem>();
         private string itemTitle, path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private int scrollPosition = 0;
 
@@ -44,13 +44,13 @@ namespace ProgrammingIdeas
         {
             if (File.Exists(path))
             {
-				itemsList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
-                allItems = (List<Category>)DBAssist.GetDB(Assets, allItems);
-                if (itemsList.Count > 0)
+                bookmarksList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
+                allItems = DBAssist.GetDB(ideasdb);
+                if (bookmarksList != null && bookmarksList.Count > 0)
                 {
                     RunOnUiThread(() =>
                     {
-                        adapter = new itemAdapter(itemsList, this, scrollPosition);
+                        adapter = new itemAdapter(bookmarksList, this, scrollPosition);
                         adapter.ItemClick += OnItemClick;
                         recyclerView.SetAdapter(adapter);
                         recyclerView.SetLayoutManager(manager);
@@ -75,16 +75,15 @@ namespace ProgrammingIdeas
 
         private void StateClicked(object sender, string e)
         {
-            var contents = e.Split(new char[] { '-' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var contents = e.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
             int position = Convert.ToInt32(contents[0]);
             string state = contents[1];
-            if (itemsList != null && itemsList.Count != 0)
+            if (bookmarksList != null && bookmarksList.Count != 0)
             {
-                itemsList[position].State = state;
+                bookmarksList[position].State = state;
                 adapter.NotifyDataSetChanged();
-                allItems.FirstOrDefault(x => x.CategoryLbl == itemsList[position].Category).Items[position].State = state;
-                DBAssist.SerializeDB(ideasdb, allItems);
-                DBAssist.SerializeDB(path, itemsList);
+                allItems.FirstOrDefault(x => x.CategoryLbl == bookmarksList[position].Category).Items[position].State = state;
+                DBAssist.SerializeDB(path, bookmarksList);
             }
             Toast.MakeText(this, "Idea progress successfully changed.", ToastLength.Short).Show();
         }
@@ -94,7 +93,7 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    Intent intent = new Intent(this, typeof(MainActivity));
+                    Intent intent = new Intent(this, typeof(CategoryActivity));
                     NavigateUpTo(intent);
                     OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
                     return true;
@@ -102,13 +101,19 @@ namespace ProgrammingIdeas
             return base.OnOptionsItemSelected(item);
         }
 
+        protected override void OnPause()
+        {
+            DBAssist.SerializeDB(ideasdb, allItems);
+            base.OnPause();
+        }
+
         private void OnItemClick(object sender, int position)
         {
             Intent intent = new Intent(this, typeof(ItemDetails));
-            intent.PutExtra("item", JsonConvert.SerializeObject(itemsList[position]));
-            intent.PutExtra("itemsListJson", JsonConvert.SerializeObject(itemsList)); //itemsList to be brought back by details activity
-            itemTitle = itemsList[position].Title;
-            intent.PutExtra("title", itemsList[position].Category);
+            intent.PutExtra("item", JsonConvert.SerializeObject(bookmarksList[position]));
+            intent.PutExtra("itemsListJson", JsonConvert.SerializeObject(bookmarksList)); //itemsList to be brought back by details activity
+            itemTitle = bookmarksList[position].Title;
+            intent.PutExtra("title", bookmarksList[position].Category);
             intent.PutExtra("sender", "bmk");
             intent.PutExtra("itemscrollPos", position); //position to scroll to on activity create
             StartActivity(intent);
@@ -117,7 +122,7 @@ namespace ProgrammingIdeas
 
         public override void OnBackPressed()
         {
-            Intent intent = new Intent(this, typeof(MainActivity));
+            Intent intent = new Intent(this, typeof(CategoryActivity));
             NavigateUpTo(intent);
             OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
             base.OnBackPressed();

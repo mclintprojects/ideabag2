@@ -2,20 +2,21 @@
 using Android.Content;
 using Android.Content.Res;
 using Android.OS;
-using Android.Preferences;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Widget;
 using Newtonsoft.Json;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using ProgrammingIdeas.Activities;
 
 namespace ProgrammingIdeas
 {
     //Main activity.
-    [Activity(Label = "Idea Bag 2", MainLauncher = true, Icon = "@mipmap/icon")]
-    public class MainActivity : Activity
+    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme")]
+    public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;
         private mAdapter adapter;
@@ -23,42 +24,48 @@ namespace ProgrammingIdeas
         private List<Category> categoryList = new List<Category>();
         private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
         private string ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
-        private int scrollPosition = 0;
+        private int scrollPosition;
 
         private int[] icons = {Resource.Mipmap.numbers, Resource.Mipmap.text, Resource.Mipmap.network, Resource.Mipmap.enterprise,
                                        Resource.Mipmap.cpu, Resource.Mipmap.web, Resource.Mipmap.file, Resource.Mipmap.database,
                                        Resource.Mipmap.multimedia, Resource.Mipmap.games};
 
-        protected override void OnCreate(Bundle savedInstanceState)
+		public override int LayoutResource
+		{
+			get
+			{
+				return Resource.Layout.categoryactivity;
+			}
+		}
+
+		public override bool HomeAsUpEnabled
+		{
+			get
+			{
+				return false;
+			}
+		}
+
+		protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.categoryactivity);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
-            scrollPosition = Intent.GetIntExtra("mainscrollPos", 0);
+			var categoriesJson = Intent.GetStringExtra("categories");
+			categoryList = JsonConvert.DeserializeObject<List<Category>>(categoriesJson);
             setupUI();
         }
 
         private void setupUI() //first launch, gets json from packaged assets
         {
-			using (StreamWriter w = new StreamWriter(new FileStream(ideasdb, FileMode.OpenOrCreate)))
-			{
-				using (StreamReader r = new StreamReader(Assets.Open("output.json")))
-					w.Write(r.ReadToEnd());
-			}
-
-			categoryList = (List<Category>)DBAssist.GetDB(Assets, categoryList);
             manager = new LinearLayoutManager(this);
-            RunOnUiThread(() =>
-            {
-                recyclerView.SetLayoutManager(manager);
-                adapter = new mAdapter(categoryList, this, icons, scrollPosition);
-                adapter.ItemClick += OnItemClick;
-                recyclerView.SetAdapter(adapter);
-                manager.ScrollToPosition(scrollPosition);
-            });
+            recyclerView.SetLayoutManager(manager);
+            adapter = new mAdapter(categoryList, this, icons, Global.CategoryScrollPosition);
+            adapter.ItemClick += OnItemClick;
+            recyclerView.SetAdapter(adapter);
+			manager.ScrollToPosition(Global.CategoryScrollPosition);
         }
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
+        public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return base.OnCreateOptionsMenu(menu);
@@ -69,19 +76,19 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Resource.Id.about:
-                    Intent intentAbout = new Intent(this, typeof(About));
+                    var intentAbout = new Intent(this, typeof(AboutActivity));
                     StartActivity(intentAbout);
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
 
                 case Resource.Id.bookmarks:
-                    Intent intent = new Intent(this, typeof(Bookmarks));
+                    var intent = new Intent(this, typeof(BookmarksActivity));
                     StartActivity(intent);
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
 
                 case Resource.Id.changelog:
-                    AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                    var builder = new AlertDialog.Builder(this);
                     builder.SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}");
                     builder.SetMessage(Resources.GetString(Resource.String.changelog));
                     builder.SetPositiveButton("DISMISS", (sender, e) => { return; });
@@ -90,7 +97,7 @@ namespace ProgrammingIdeas
                     return true;
 
                 case Resource.Id.submitIdea:
-                    Intent intentSubmit = new Intent(this, typeof(SubmitIdeaActivity));
+                    var intentSubmit = new Intent(this, typeof(SubmitIdeaActivity));
                     StartActivity(intentSubmit);
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
@@ -103,7 +110,7 @@ namespace ProgrammingIdeas
                     return true;
 
                 case Resource.Id.notes:
-                    Intent intentNotes = new Intent(this, typeof(NotesActivity));
+                    var intentNotes = new Intent(this, typeof(NotesActivity));
                     StartActivity(intentNotes);
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
@@ -119,8 +126,8 @@ namespace ProgrammingIdeas
         /// <returns>The new ideas.</returns>
         private List<CategoryItem> GetNewIdeas()
         {
-            List<CategoryItem> newItems = new List<CategoryItem>();
-            string newIdeas = new StreamReader(Assets.Open("newideasdb.txt")).ReadToEnd();
+            var newItems = new List<CategoryItem>();
+            var newIdeas = new StreamReader(Assets.Open("newideasdb.txt")).ReadToEnd();
             var newIdeasContent = newIdeas.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < newIdeasContent.Length; i++)
             {
@@ -139,7 +146,6 @@ namespace ProgrammingIdeas
             intent.PutExtra("jsonString", itemsJson); //items in category json for item activity
             intent.PutExtra("title", title); //category title for item activity
             intent.PutExtra("sender", "MainActivity"); //get sender to fix ambiguity in items activity
-            intent.PutExtra("mainscrollPos", position); //position to scroll to onresume
             StartActivity(intent);
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }

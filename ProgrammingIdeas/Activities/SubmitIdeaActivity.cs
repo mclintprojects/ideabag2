@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Views;
@@ -7,7 +7,7 @@ using System;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "SubmitIdeaActivity", Theme = "@style/SubmitTheme")]
+    [Activity(Label = "SubmitIdeaActivity", Theme = "@style/AppTheme")]
     public class SubmitIdeaActivity : Activity
     {
         private string selectedCategory = "";
@@ -21,11 +21,11 @@ namespace ProgrammingIdeas
             ActionBar.SetHomeButtonEnabled(true);
             ActionBar.SetDisplayHomeAsUpEnabled(true);
             Title = "Submit an idea";
-            Spinner spinner = FindViewById<Spinner>(Resource.Id.spinner);
+            var spinner = FindViewById<Spinner>(Resource.Id.spinner);
             author = FindViewById<EditText>(Resource.Id.authorTb);
             ideaTitle = FindViewById<EditText>(Resource.Id.submitTitle);
             description = FindViewById<EditText>(Resource.Id.ideaDescription);
-            ArrayAdapter adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.categories, Android.Resource.Layout.SimpleSpinnerItem);
+            var adapter = ArrayAdapter.CreateFromResource(this, Resource.Array.categories, Android.Resource.Layout.SimpleSpinnerItem);
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
             spinner.ItemSelected += Spinner_ItemSelected;
@@ -34,7 +34,7 @@ namespace ProgrammingIdeas
             {
                 if (author.Text.Length > 0 && ideaTitle.Text.Length > 0 && description.Text.Length > 0)
                 {
-                    Intent submitIntent = new Intent(Intent.ActionSend);
+                    var submitIntent = new Intent(Intent.ActionSend);
                     submitIntent.SetData(Android.Net.Uri.Parse("mailto:"));
                     submitIntent.PutExtra(Intent.ExtraEmail, new string[] { "alansagh@gmail.com" });
                     submitIntent.PutExtra(Intent.ExtraSubject, $"IdeaBag 2 Submission {DateTime.Now.ToUniversalTime()}");
@@ -50,7 +50,7 @@ namespace ProgrammingIdeas
 
         private void Spinner_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
         {
-            Spinner spinner = (Spinner)sender;
+            var spinner = (Spinner)sender;
             selectedCategory = spinner.GetItemAtPosition(e.Position).ToString();
         }
 
@@ -74,7 +74,7 @@ namespace ProgrammingIdeas
                 builder.SetMessage("Are you sure you want to cancel submission?");
                 builder.SetPositiveButton("Yes", (sender, e) =>
                 {
-                    Intent intent = new Intent(this, typeof(MainActivity));
+                    var intent = new Intent(this, typeof(CategoryActivity));
                     NavigateUpTo(intent);
                     OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
                 });
@@ -85,7 +85,7 @@ namespace ProgrammingIdeas
             }
             else
             {
-                Intent intent = new Intent(this, typeof(MainActivity));
+                var intent = new Intent(this, typeof(CategoryActivity));
                 NavigateUpTo(intent);
                 OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
                 base.OnBackPressed();
@@ -101,7 +101,7 @@ namespace ProgrammingIdeas
                 builder.SetMessage("Are you sure you want to cancel submission?");
                 builder.SetPositiveButton("Yes", (sender, e) =>
                 {
-                    Intent intent = new Intent(this, typeof(MainActivity));
+                   var intent = new Intent(this, typeof(CategoryActivity));
                     NavigateUpTo(intent);
                     OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
                 });
@@ -112,7 +112,7 @@ namespace ProgrammingIdeas
             }
             else
             {
-                Intent intent = new Intent(this, typeof(MainActivity));
+                var intent = new Intent(this, typeof(CategoryActivity));
                 NavigateUpTo(intent);
                 OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
             }
@@ -122,8 +122,7 @@ namespace ProgrammingIdeas
         {
             if (author.Text.Length != 0 || ideaTitle.Text.Length != 0 || description.Text.Length != 0)
                 return true;
-            else
-                return false;
+           	return false;
         }
     }
 }

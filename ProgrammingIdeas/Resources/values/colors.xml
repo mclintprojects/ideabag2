@@ -7,6 +7,8 @@
 	<color name="windowBackground">#37474f</color>
 	<color name="subtitleColor">#B2B2B2</color>
 	<color name="titleColor">#ffffff</color>
+	<color name="primaryText">#212121</color>
+	<color name="secondaryText">#757575</color>
 	<color name="cardSubtitle">#3F5E7F</color>
 	<color name="undecidedColor">#d2d7d3</color>
 	<color name="inProgressColor">#F9bf3b</color>
