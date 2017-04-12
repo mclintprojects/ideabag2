@@ -1,21 +1,25 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
 		android:id="@+id/notes"
-		android:title="Notes"
+		android:icon="@mipmap/ic_note_white_24dp"
 		android:showAsAction="always"
-		android:icon="@mipmap/ic_note_white_24dp" />
+		android:title="Notes"
+		app:showAsAction="ifRoom" />
 	<item
 		android:id="@+id/bookmarks"
-		android:title="Bookmarks"
+		android:icon="@mipmap/ic_bookmark_border_white_24dp"
 		android:showAsAction="always"
-		android:icon="@mipmap/ic_bookmark_border_white_24dp" />
+		android:title="Bookmarks"
+		app:showAsAction="ifRoom" />
 	<item
 		android:id="@+id/submitIdea"
-		android:title="Submit Idea"
+		android:icon="@mipmap/ic_edit_white_24dp"
 		android:showAsAction="always"
-		android:icon="@mipmap/ic_edit_white_24dp" />
+		android:title="Submit Idea"
+		app:showAsAction="ifRoom" />
 	<item
 		android:id="@+id/newIdeas"
 		android:title="View new ideas"

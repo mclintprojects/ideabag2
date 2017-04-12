@@ -27,23 +27,23 @@ namespace ProgrammingIdeas
         private string progressingListPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "progressdb");
         private int count = 0, mainscrollPosition = 0, itemscrollPosition = 0;
 
-		public override int LayoutResource
-		{
-			get
-			{
-				return Resource.Layout.idealistactivity;
-			}
-		}
+        public override int LayoutResource
+        {
+            get
+            {
+                return Resource.Layout.idealistactivity;
+            }
+        }
 
-		public override bool HomeAsUpEnabled
-		{
-			get
-			{
-				return true;
-			}
-		}
+        public override bool HomeAsUpEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
 
-		protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
             Global.IsWrittenDB = true;
@@ -61,7 +61,7 @@ namespace ProgrammingIdeas
             string jsonString = Intent.GetStringExtra("jsonString");
             string title = Intent.GetStringExtra("title");
             itemTitle = title;
-			itemsList = JsonConvert.DeserializeObject<List<CategoryItem>>(jsonString);
+            itemsList = JsonConvert.DeserializeObject<List<CategoryItem>>(jsonString);
             count = itemsList.Count;
             if (bookmarkedList != null && bookmarkedList.Count != 0)
             {
@@ -107,11 +107,12 @@ namespace ProgrammingIdeas
             return base.OnOptionsItemSelected(item);
         }
 
-		protected override void OnPause()
-		{
-			DBAssist.SerializeDB(ideasdb, allItems);
-			base.OnPause();
-		}
+        protected override void OnPause()
+        {
+            DBAssist.SerializeDB(ideasdb, allItems);
+            base.OnPause();
+        }
+
         private void OnItemClick(object sender, int position)
         {
             Intent intent = new Intent(this, typeof(ItemDetails));

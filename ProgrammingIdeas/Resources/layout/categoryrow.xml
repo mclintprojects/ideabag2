@@ -3,20 +3,22 @@
     android:id="@+id/categoryRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="?android:attr/selectableItemBackground"
+    android:background="@color/accentLight"
     android:orientation="horizontal"
+    android:paddingBottom="8dp"
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
-    android:paddingTop="16dp">
+    android:paddingTop="8dp">
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="90dp">
+        android:layout_height="90dp"
+        android:background="?android:attr/selectableItemBackground">
 
         <LinearLayout
             android:layout_width="100dp"
             android:layout_height="match_parent"
-            android:background="@color/windowBackground"
+            android:background="@color/primaryLight"
             android:gravity="center">
 
             <ImageView
@@ -36,7 +38,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/category"
             android:textColor="@color/primaryText"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/ideaCountLbl"
@@ -47,7 +49,7 @@
             android:layout_marginTop="48dp"
             android:text="Ideas count"
             android:textColor="@color/secondaryText"
-            android:textSize="13sp" />
+            android:textSize="10sp" />
 
     </android.support.v7.widget.CardView>
 

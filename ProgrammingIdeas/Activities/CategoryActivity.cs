@@ -50,8 +50,7 @@ namespace ProgrammingIdeas
         {
             base.OnCreate(savedInstanceState);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
-			var categoriesJson = Intent.GetStringExtra("categories");
-			categoryList = JsonConvert.DeserializeObject<List<Category>>(categoriesJson);
+			categoryList = Global.Categories;
             setupUI();
         }
 

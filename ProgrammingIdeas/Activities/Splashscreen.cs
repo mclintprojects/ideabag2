@@ -21,13 +21,12 @@ namespace ProgrammingIdeas.Activities
 	public class Splashscreen : AppCompatActivity
 	{
 		private string ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
-		private List<Category> categoryList = new List<Category>();
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.splashscreen);
-			categoryList = DBAssist.GetDB(Assets);
+			Global.Categories = DBAssist.GetDB(Assets);
 		}
 
 		protected override void OnResume()
@@ -36,7 +35,7 @@ namespace ProgrammingIdeas.Activities
 			{
 				var ideas = DBAssist.GetDB(ideasdb);
 
-				if (NewIdeasAvailable(ideas, categoryList))
+				if (NewIdeasAvailable(ideas, Global.Categories))
 				{
 					//copy new ideas to saved ideas db. let the notes remain. use the new ideas txt file to add the new ideas
 					string newIdeas = new StreamReader(Assets.Open("newideasdb.txt")).ReadToEnd();
@@ -46,25 +45,23 @@ namespace ProgrammingIdeas.Activities
 						var sContents = newIdeasContent[i].Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
 						var categoryIndex = Convert.ToInt32(sContents[0]) - 1;
 						var itemIndex = Convert.ToInt32(sContents[1]) - 1;
-						ideas[categoryIndex].Items.Add((categoryList[categoryIndex].Items[itemIndex]));
+						ideas[categoryIndex].Items.Add((Global.Categories[categoryIndex].Items[itemIndex]));
 						ideas[categoryIndex].CategoryCount++;
 					}
 					DBAssist.SerializeDB(ideasdb, ideas);
-					categoryList = ideas;
+					Global.Categories = ideas;
 				}
 
 				else
-					categoryList = ideas;
+					Global.Categories = ideas;
 			}
 			else
 			{
 				//file does not exist, copy and save file
-				DBAssist.SerializeDB(ideasdb, categoryList);
+				DBAssist.SerializeDB(ideasdb, Global.Categories);
 			}
 
-			var intent = new Intent(this, typeof(CategoryActivity));
-			intent.PutExtra("categories", JsonConvert.SerializeObject(categoryList));
-			StartActivity(intent);
+            StartActivity(new Intent(this, typeof(CategoryActivity)));
 			OverridePendingTransition(Resource.Animation.design_bottom_sheet_slide_in, Resource.Animation.design_bottom_sheet_slide_out);
 			base.OnResume();
 		}

@@ -10,11 +10,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using ProgrammingIdeas.Activities;
+using System;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "Idea Details")]
-    public class ItemDetails : Activity
+    [Activity(Label = "Idea Details", Theme = "@style/AppTheme")]
+    public class ItemDetails : BaseActivity
     {
         private List<Category> db;
         private List<Note> notes;
@@ -32,13 +34,26 @@ namespace ProgrammingIdeas
         private EditText notesInput;
         private OnSwipeListener SwipeListener;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+		public override int LayoutResource
+		{
+			get
+			{
+				return Resource.Layout.ideadetailsactivity;
+			}
+		}
+
+		public override bool HomeAsUpEnabled
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		protected override void OnCreate(Bundle savedInstanceState)
         {
             path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.ideadetailsactivity);
-            ActionBar.SetHomeButtonEnabled(true);
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
 
             itemTitle = Intent.GetStringExtra("title");
             sendingActivity = Intent.GetStringExtra("sender");

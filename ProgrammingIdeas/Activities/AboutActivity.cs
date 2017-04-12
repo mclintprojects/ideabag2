@@ -7,7 +7,7 @@ using Android.Widget;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "About")]
+    [Activity(Label = "About", Theme = "@style/AppTheme")]
     public class AboutActivity : Activity
     {
         protected override void OnCreate(Bundle savedInstanceState)

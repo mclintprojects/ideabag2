@@ -1,14 +1,18 @@
 ﻿<resources>
-	<color name="primary">#ffb300</color>
-	<color name="primaryDark">#ffa000</color>
-	<color name="primaryLight">#344D68</color>
-	<color name="accent">#ffc107</color>
-	<color name="bgLight">#475B66</color>
-	<color name="windowBackground">#37474f</color>
+	<color name="primary">#55548f</color>
+	<color name="primaryDark">#272b61</color>
+	<color name="primaryLight">#8480c0</color>
+	<color name="accent">#41add9</color>
+	<color name="accentLight">#7cdfff</color>
+	<color name="accentDark">#007ea7</color>
+	<color name="bgLight">#E1E2E1</color>
+	<color name="bgDark">#475B66</color>
+	<color name="windowBackground">#F5F5F6</color>
 	<color name="subtitleColor">#B2B2B2</color>
 	<color name="titleColor">#ffffff</color>
 	<color name="primaryText">#212121</color>
 	<color name="secondaryText">#757575</color>
+	<color name="white">#fff</color>
 	<color name="cardSubtitle">#3F5E7F</color>
 	<color name="undecidedColor">#d2d7d3</color>
 	<color name="inProgressColor">#F9bf3b</color>
