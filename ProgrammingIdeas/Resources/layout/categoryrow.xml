@@ -3,7 +3,7 @@
     android:id="@+id/categoryRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/accentLight"
+    android:background="@color/windowBackground"
     android:orientation="horizontal"
     android:paddingBottom="8dp"
     android:paddingLeft="16dp"
@@ -12,8 +12,7 @@
 
     <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="90dp"
-        android:background="?android:attr/selectableItemBackground">
+        android:layout_height="90dp">
 
         <LinearLayout
             android:layout_width="100dp"
@@ -38,7 +37,7 @@
             android:layout_marginTop="24dp"
             android:text="@string/category"
             android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+            android:textSize="18sp" />
 
         <TextView
             android:id="@+id/ideaCountLbl"
@@ -48,8 +47,8 @@
             android:layout_marginLeft="125dp"
             android:layout_marginTop="48dp"
             android:text="Ideas count"
-            android:textColor="@color/secondaryText"
-            android:textSize="10sp" />
+            android:textColor="@color/primaryTextLight"
+            android:textSize="14sp" />
 
     </android.support.v7.widget.CardView>
 

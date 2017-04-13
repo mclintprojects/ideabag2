@@ -5,10 +5,12 @@ using Android.Views;
 using Android.Widget;
 using System;
 using System.Collections.Generic;
+using Android.Graphics;
+using Android.Support.V4.Content;
 
 namespace ProgrammingIdeas
 {
-    public class itemAdapter : RecyclerView.Adapter
+    public class ItemAdapter : RecyclerView.Adapter
     {
         private List<CategoryItem> itemsList;
 
@@ -17,13 +19,11 @@ namespace ProgrammingIdeas
         public event EventHandler<string> StateClicked;
 
         private Context ctx;
-        private int scrollPos;
 
-        public itemAdapter(List<CategoryItem> list, Context ctx, int scrollPos)
+        public ItemAdapter(List<CategoryItem> list, Context ctx)
         {
             this.ctx = ctx;
             itemsList = list;
-            this.scrollPos = scrollPos;
         }
 
         public override int ItemCount
@@ -41,31 +41,30 @@ namespace ProgrammingIdeas
 
             itemHolder.difficulty.Text = item.Difficulty;
             itemHolder.title.Text = item.Title;
-			itemHolder.id.Text = item.Id.ToString();
-            itemHolder.State.SetImageResource(Resource.Drawable.undecided);
-            itemHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
+            itemHolder.id.Text = item.Id.ToString();
+            itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.undecidedColor));
+			itemHolder.Root.Background?.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.white));
             switch (item.State)
             {
                 case "undecided":
-                    itemHolder.State.SetImageResource(Resource.Drawable.undecided);
+                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.undecidedColor));
                     break;
 
                 case "inprogress":
-                    itemHolder.State.SetImageResource(Resource.Drawable.inprogress);
+                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.inProgressColor));
                     break;
 
                 case "done":
-                    itemHolder.State.SetImageResource(Resource.Drawable.done);
+                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.doneColor));
                     break;
             }
-            if (position == scrollPos)
-                itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
+            if (position == Global.ItemScrollPosition)
+                itemHolder.Root.Background?.SetTint(Color.ParseColor("#ffff7b"));
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
             View row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.idealistrow, parent, false);
-            row.SetBackgroundColor(Android.Graphics.Color.Transparent);
             return new itemViewHolder(row, OnClick, ctx, ref StateClicked);
         }
 
@@ -81,7 +80,7 @@ namespace ProgrammingIdeas
         public TextView title { get; set; }
         public TextView difficulty { get; set; }
         public TextView id { get; set; }
-        public ImageView State { get; set; }
+        public View State { get; set; }
         public LinearLayout Root { get; set; }
         private Context ctx;
         private ImageView inprogress, done, undecided;
@@ -98,7 +97,7 @@ namespace ProgrammingIdeas
             title = itemView.FindViewById<TextView>(Resource.Id.title);
             difficulty = itemView.FindViewById<TextView>(Resource.Id.difficulty);
             id = itemView.FindViewById<TextView>(Resource.Id.itemId);
-            State = itemView.FindViewById<ImageView>(Resource.Id.progressState);
+            State = itemView.FindViewById<View>(Resource.Id.progressState);
             Root = itemView.FindViewById<LinearLayout>(Resource.Id.layoutRoot);
         }
 

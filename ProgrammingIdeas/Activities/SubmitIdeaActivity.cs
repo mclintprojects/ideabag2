@@ -3,24 +3,37 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
+using ProgrammingIdeas.Activities;
 using System;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "SubmitIdeaActivity", Theme = "@style/AppTheme")]
-    public class SubmitIdeaActivity : Activity
+    [Activity(Label = "Submit an idea", Theme = "@style/AppTheme")]
+    public class SubmitIdeaActivity : BaseActivity
     {
         private string selectedCategory = "";
         private Button submitBtn;
         private EditText author, ideaTitle, description;
 
+        public override int LayoutResource
+        {
+            get
+            {
+                return Resource.Layout.submitideaactivity;
+            }
+        }
+
+        public override bool HomeAsUpEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.submitideaactivity);
-            ActionBar.SetHomeButtonEnabled(true);
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
-            Title = "Submit an idea";
             var spinner = FindViewById<Spinner>(Resource.Id.spinner);
             author = FindViewById<EditText>(Resource.Id.authorTb);
             ideaTitle = FindViewById<EditText>(Resource.Id.submitTitle);
@@ -101,7 +114,7 @@ namespace ProgrammingIdeas
                 builder.SetMessage("Are you sure you want to cancel submission?");
                 builder.SetPositiveButton("Yes", (sender, e) =>
                 {
-                   var intent = new Intent(this, typeof(CategoryActivity));
+                    var intent = new Intent(this, typeof(CategoryActivity));
                     NavigateUpTo(intent);
                     OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
                 });
@@ -122,7 +135,7 @@ namespace ProgrammingIdeas
         {
             if (author.Text.Length != 0 || ideaTitle.Text.Length != 0 || description.Text.Length != 0)
                 return true;
-           	return false;
+            return false;
         }
     }
 }

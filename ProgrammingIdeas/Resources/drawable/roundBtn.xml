@@ -6,6 +6,6 @@
 		android:right="8dp"
 		android:top="8dp"
 		android:bottom="8dp" />
-    <solid android:color="@color/accent" />
+    <solid android:color="@color/primaryLight" />
     <corners android:radius="10dp" />
 </shape>
