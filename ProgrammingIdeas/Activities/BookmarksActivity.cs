@@ -5,6 +5,7 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using ProgrammingIdeas.Activities;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
@@ -14,28 +15,38 @@ using System.Threading.Tasks;
 
 namespace ProgrammingIdeas
 {
-    [Activity(Label = "Bookmarks")]
-    public class BookmarksActivity : Activity
+    [Activity(Label = "Bookmarks", Theme = "@style/AppTheme")]
+    public class BookmarksActivity : BaseActivity
     {
         private List<Category> allItems;
         private RecyclerView recyclerView;
-        private RecyclerView.LayoutManager manager;
-        private itemAdapter adapter;
-        private ViewSwitcher parent;
+		private LinearLayoutManager manager;
+        private ItemAdapter adapter;
         private List<CategoryItem> bookmarksList = new List<CategoryItem>();
         private string itemTitle, path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private int scrollPosition = 0;
 
+        public override int LayoutResource
+        {
+            get
+            {
+                return Resource.Layout.bookmarksactivity;
+            }
+        }
+
+        public override bool HomeAsUpEnabled
+        {
+            get
+            {
+                return true;
+            }
+        }
+
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.bookmarksactivity);
-            ActionBar.SetHomeButtonEnabled(true);
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
-            scrollPosition = Intent.GetIntExtra("itemscrollPos", 0);
             path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
             recyclerView = FindViewById<RecyclerView>(Resource.Id.bookmarkRecyclerView);
-            parent = FindViewById<ViewSwitcher>(Resource.Id.parent);
             manager = new LinearLayoutManager(this);
             Task.Run(() => { setupUI(); });
         }
@@ -50,7 +61,7 @@ namespace ProgrammingIdeas
                 {
                     RunOnUiThread(() =>
                     {
-                        adapter = new itemAdapter(bookmarksList, this, scrollPosition);
+                        adapter = new ItemAdapter(bookmarksList, this);
                         adapter.ItemClick += OnItemClick;
                         recyclerView.SetAdapter(adapter);
                         recyclerView.SetLayoutManager(manager);
@@ -58,19 +69,7 @@ namespace ProgrammingIdeas
                         adapter.StateClicked += StateClicked;
                     });
                 }
-                else
-                    RunOnUiThread(() => { parent.ShowNext(); });
             }
-            else
-                ShowEmptyState();
-        }
-
-        private void ShowEmptyState()
-        {
-            RunOnUiThread(() =>
-            {
-                parent.ShowNext();
-            });
         }
 
         private void StateClicked(object sender, string e)
@@ -109,6 +108,7 @@ namespace ProgrammingIdeas
 
         private void OnItemClick(object sender, int position)
         {
+            Global.ItemScrollPosition = position;
             Intent intent = new Intent(this, typeof(ItemDetails));
             intent.PutExtra("item", JsonConvert.SerializeObject(bookmarksList[position]));
             intent.PutExtra("itemsListJson", JsonConvert.SerializeObject(bookmarksList)); //itemsList to be brought back by details activity

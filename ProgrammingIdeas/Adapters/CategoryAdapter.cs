@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace ProgrammingIdeas
 {
-    public class mAdapter : RecyclerView.Adapter
+    public class CategoryAdapter : RecyclerView.Adapter
     {
         private List<Category> categories;
 
@@ -17,7 +17,7 @@ namespace ProgrammingIdeas
         private int[] icons;
         private int scrollPos;
 
-        public mAdapter(List<Category> category, Context context, int[] icons, int scrollPos)
+        public CategoryAdapter(List<Category> category, Context context, int[] icons, int scrollPos)
         {
             categories = category;
             parentContext = context;
@@ -40,7 +40,6 @@ namespace ProgrammingIdeas
             var viewHolder = holder as mViewHolder;
             viewHolder.categoryLabel.Text = category.CategoryLbl;
 			viewHolder.ideasCount.Text = $"Ideas: {category.Items.Count}";
-            //viewHolder.description.Text = category.Description;
             viewHolder.imageView.SetImageResource(icons[position]);
             viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
             if (position == scrollPos)
@@ -67,7 +66,6 @@ namespace ProgrammingIdeas
         public ImageView imageView { get; set; }
         public TextView categoryLabel { get; set; }
         public TextView ideasCount { get; set; }
-        //public TextView description { get; set; }
         public LinearLayout Root { get; set; }
 
         public mViewHolder(View itemView, Action<int> listener) : base(itemView)

@@ -1,23 +1,19 @@
 ﻿<resources>
-	<color name="primary">#55548f</color>
-	<color name="primaryDark">#272b61</color>
-	<color name="primaryLight">#8480c0</color>
-	<color name="accent">#41add9</color>
-	<color name="accentLight">#7cdfff</color>
-	<color name="accentDark">#007ea7</color>
-	<color name="bgLight">#E1E2E1</color>
-	<color name="bgDark">#475B66</color>
+	<color name="primary">#ffa000</color>
+	<color name="primaryDark">#c67100</color>
+	<color name="primaryLight">#ffd149</color>
+	<color name="accent">#3d5aff</color>
+	<color name="accentLight">#8187ff</color>
+	<color name="accentDark">#0031cb</color>
+	<color name="bgDark">#E1E2E1</color>
 	<color name="windowBackground">#F5F5F6</color>
-	<color name="subtitleColor">#B2B2B2</color>
-	<color name="titleColor">#ffffff</color>
+	<color name="secondaryText">#ffffff</color>
+	<color name="secondaryTextLight">#dadada</color>
 	<color name="primaryText">#212121</color>
-	<color name="secondaryText">#757575</color>
+	<color name="primaryTextLight">#757575</color>
 	<color name="white">#fff</color>
-	<color name="cardSubtitle">#3F5E7F</color>
 	<color name="undecidedColor">#d2d7d3</color>
 	<color name="inProgressColor">#F9bf3b</color>
 	<color name="doneColor">#2ecc71</color>
-	<color name="primary_pressed">#a7ffeb</color>
-	<color name="ripple">#64ffda</color>
-	<color name="highlight">#2C393F</color>
+	<color name="highlight">#ffff7b</color>
 </resources>

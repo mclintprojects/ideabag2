@@ -266,6 +266,7 @@
     <AndroidResource Include="Resources\drawable\submitRoundBtn.xml" />
     <AndroidResource Include="Resources\layout\toolbar.xml" />
     <AndroidResource Include="Resources\layout\splashscreen.xml" />
+    <AndroidResource Include="Resources\drawable\progress_drawable.xml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

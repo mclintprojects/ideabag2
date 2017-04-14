@@ -1,21 +1,36 @@
+using System;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using ProgrammingIdeas.Activities;
 
 namespace ProgrammingIdeas
 {
     [Activity(Label = "About", Theme = "@style/AppTheme")]
-    public class AboutActivity : Activity
+    public class AboutActivity : BaseActivity
     {
-        protected override void OnCreate(Bundle savedInstanceState)
+		public override int LayoutResource
+		{
+			get
+			{
+				return Resource.Layout.aboutactivity;
+			}
+		}
+
+		public override bool HomeAsUpEnabled
+		{
+			get
+			{
+				return true;
+			}
+		}
+
+		protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            SetContentView(Resource.Layout.aboutactivity);
-            ActionBar.SetHomeButtonEnabled(true);
-            ActionBar.SetDisplayHomeAsUpEnabled(true);
             var fuckyouLinker = FindViewById<CardView>(Resource.Id.fuckyouLinker);
             var bugsy = FindViewById<TextView>(Resource.Id.bugsy);
             bugsy.Text = "For bug reports, please join the Google Plus community here https://plus.google.com/communities/105361187156121163553\r\n\r\n" +

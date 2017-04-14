@@ -1,129 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout
-        android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:background="@color/windowBackground"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/ideaCard"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <include android:id="@+id/toolbar" layout="@layout/toolbar"/>
-        <android.support.v7.widget.CardView
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="24dp"
+        cardview:cardBackgroundColor="@color/accentLight"
+        cardview:cardCornerRadius="5dp"
+        cardview:cardElevation="4dp"
+        cardview:cardUseCompatPadding="true"
+        cardview:contentPadding="16dp">
+
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            cardview:cardUseCompatPadding="true"
-            cardview:cardElevation="4dp"
-            cardview:cardCornerRadius="5dp"
-            cardview:contentPadding="16dp"
-            android:id="@+id/ideaCard">
+            android:layout_height="match_parent">
+
             <LinearLayout
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/itemTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
                     android:text="@string/title"
-                    android:textColor="@color/windowBackground" />
+                    android:textColor="@color/secondaryText"
+                    android:textSize="20sp" />
+
                 <TextView
                     android:id="@+id/itemDescription"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="8dip"
+                    android:autoLink="web"
+                    android:linksClickable="true"
                     android:text="@string/description"
-                    android:linksClickable="true"
-                    android:autoLink="web"
-                    android:textSize="16sp"
-                    android:layout_marginTop="8dip"
-                    android:textColor="@color/cardSubtitle" />
+                    android:textColor="@color/secondaryTextLight"
+                    android:textSize="16sp" />
             </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:id="@+id/notesCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            cardview:cardUseCompatPadding="true"
-            cardview:cardElevation="4dp"
-            cardview:cardCornerRadius="5dp"
-            cardview:contentPadding="16dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/notesTitle"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/note"
-                    android:textColor="@color/windowBackground" />
-                <ViewSwitcher
-                    android:id="@+id/notesSwitcher"
-                    android:orientation="vertical"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-                    <TextView
-                        android:id="@+id/notesLbl"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@string/notes_sample_content"
-                        android:linksClickable="true"
-                        android:autoLink="web"
-                        android:textSize="14sp"
-                        android:layout_marginTop="4dip"
-                        android:textColor="@color/cardSubtitle" />
-                    <EditText
-                        android:id="@+id/notesInput"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:hint="@string/notesHint"
-                        android:linksClickable="true"
-                        android:autoLink="web"
-                        android:textSize="14sp"
-                        android:textColor="@color/cardSubtitle" />
-                </ViewSwitcher>
-                <TextView
-                    android:id="@+id/editNote"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/editNote"
-                    android:layout_marginTop="8dip"
-                    android:textColor="#ffffff"
-                    android:background="@drawable/roundbtn"
-                    android:gravity="center" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            cardview:cardUseCompatPadding="true"
-            cardview:cardElevation="4dp"
-            cardview:cardCornerRadius="5dp"
-            cardview:contentPadding="16dp">
-            <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textSize="18sp"
-                    android:text="@string/need_help_with_the_solution_to_this_idea"
-                    android:textColor="@color/windowBackground" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/helpText"
-                    android:linksClickable="true"
-                    android:autoLink="web"
-                    android:textSize="14sp"
-                    android:layout_marginTop="8dip"
-                    android:textColor="@color/cardSubtitle" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</ScrollView>
+        </ScrollView>
+
+    </android.support.v7.widget.CardView>
+</LinearLayout>

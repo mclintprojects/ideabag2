@@ -1,77 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:background="@color/windowBackground"
+    android:orientation="vertical">
+
     <TextView
-        android:text="@string/markProgressText"
         android:layout_width="match_parent"
         android:layout_height="48dp"
         android:background="@color/accent"
-        android:textSize="18sp"
         android:gravity="center"
-        android:textColor="@color/titleColor" />
+        android:text="@string/markProgressText"
+        android:textColor="@color/secondaryText"
+        android:textSize="18sp" />
+
     <RelativeLayout
-        android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
-        android:gravity="center">
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <ImageView
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_width="@dimen/progressDimensions"
             android:id="@+id/undecided"
-            android:src="@drawable/undecided"
-            android:layout_marginLeft="8dp"
+            android:layout_width="@dimen/progressDimensions"
+            android:layout_height="@dimen/progressDimensions"
             android:layout_alignParentLeft="false"
-            android:contentDescription="@string/undecided" />
+            android:layout_marginLeft="8dp"
+            android:contentDescription="@string/undecided"
+            android:src="@drawable/undecided" />
+
         <TextView
-            android:text="@string/undecidedText"
+            android:id="@+id/undecidedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/undecidedText"
             android:layout_below="@+id/undecided"
-            android:textColor="#424242"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:text="@string/undecidedText"
+            android:textColor="@color/primaryText" />
+
         <ImageView
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_width="@dimen/progressDimensions"
             android:id="@+id/inProgress"
-            android:src="@drawable/inprogress"
+            android:layout_width="@dimen/progressDimensions"
+            android:layout_height="@dimen/progressDimensions"
             android:layout_marginLeft="48dp"
             android:layout_toRightOf="@+id/undecided"
-            android:contentDescription="@string/in_progress" />
+            android:contentDescription="@string/in_progress"
+            android:src="@drawable/inprogress" />
+
         <TextView
-            android:text="@string/in_progressText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
             android:id="@+id/inprogressText"
-            android:layout_below="@+id/inProgress"
-            android:layout_toRightOf="@+id/undecidedText"
-            android:textColor="#424242"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp" />
-        <ImageView
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_width="@dimen/progressDimensions"
-            android:id="@+id/done"
-            android:src="@drawable/done"
-            android:layout_marginLeft="48dp"
-            android:layout_alignParentRight="false"
-            android:layout_toRightOf="@+id/inProgress"
-            android:contentDescription="@string/completed" />
-        <TextView
-            android:text="@string/completedText"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_below="@+id/inProgress"
+            android:layout_marginLeft="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/undecidedText"
+            android:text="@string/in_progressText"
+            android:textColor="@color/primaryText" />
+
+        <ImageView
+            android:id="@+id/done"
+            android:layout_width="@dimen/progressDimensions"
+            android:layout_height="@dimen/progressDimensions"
+            android:layout_alignParentRight="false"
+            android:layout_marginLeft="48dp"
+            android:layout_toRightOf="@+id/inProgress"
+            android:contentDescription="@string/completed"
+            android:src="@drawable/done" />
+
+        <TextView
             android:id="@+id/doneText"
-            android:textColor="#424242"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/done"
-            android:layout_toRightOf="@+id/inprogressText"
             android:layout_marginLeft="28dp"
-            android:layout_marginTop="8dp" />
+            android:layout_marginTop="8dp"
+            android:layout_toRightOf="@+id/inprogressText"
+            android:text="@string/completedText"
+            android:textColor="@color/primaryText" />
     </RelativeLayout>
 </LinearLayout>

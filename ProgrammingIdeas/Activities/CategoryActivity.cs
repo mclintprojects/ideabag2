@@ -1,4 +1,4 @@
-﻿using Android.App;
+using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.OS;
@@ -19,7 +19,7 @@ namespace ProgrammingIdeas
     public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;
-        private mAdapter adapter;
+        private CategoryAdapter adapter;
         private LinearLayoutManager manager;
         private List<Category> categoryList = new List<Category>();
         private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
@@ -58,7 +58,7 @@ namespace ProgrammingIdeas
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);
-            adapter = new mAdapter(categoryList, this, icons, Global.CategoryScrollPosition);
+            adapter = new CategoryAdapter(categoryList, this, icons, Global.CategoryScrollPosition);
             adapter.ItemClick += OnItemClick;
             recyclerView.SetAdapter(adapter);
 			manager.ScrollToPosition(Global.CategoryScrollPosition);
