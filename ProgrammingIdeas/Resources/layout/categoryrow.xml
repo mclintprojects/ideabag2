@@ -1,61 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/categoryRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/windowBackground"
+    android:background="?android:attr/selectableItemBackground"
     android:orientation="horizontal"
-    android:paddingBottom="8dp"
-    android:paddingLeft="16dp"
-    android:paddingRight="16dp"
-    android:paddingTop="8dp">
-
-    <android.support.v7.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="90dp">
-
-        <LinearLayout
-            android:layout_width="100dp"
-            android:layout_height="match_parent"
-            android:background="@color/primaryLight"
-            android:gravity="center">
-
-            <ImageView
-                android:id="@+id/categoryIcon"
-                android:layout_width="48dp"
-                android:layout_height="48dp"
-                android:layout_marginRight="8.0dip"
-                android:src="@mipmap/cpu" />
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/categoryLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|left"
-            android:layout_marginLeft="125dp"
-            android:layout_marginTop="24dp"
-            android:text="@string/category"
-            android:textColor="@color/primaryText"
-            android:textSize="18sp" />
-
-        <TextView
-            android:id="@+id/ideaCountLbl"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|left"
-            android:layout_marginLeft="125dp"
-            android:layout_marginTop="48dp"
-            android:text="Ideas count"
-            android:textColor="@color/primaryTextLight"
-            android:textSize="14sp" />
-
-    </android.support.v7.widget.CardView>
+    android:padding="16dp">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:id="@+id/imageBg"
+        android:layout_width="56dp"
+        android:layout_height="56dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_gravity="center_vertical"
+        android:background="@drawable/image_background"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/categoryIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@mipmap/cpu" />
 
     </LinearLayout>
-</LinearLayout>
+
+    <TextView
+        android:id="@+id/categoryLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_toRightOf="@+id/imageBg"
+        android:text="@string/category"
+        android:textColor="@color/primaryText"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/ideaCountLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/categoryLbl"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="4dp"
+        android:layout_toRightOf="@+id/imageBg"
+        android:text="@string/ideas_count"
+        android:textColor="@color/primaryTextLight"
+        android:textSize="14sp" />
+
+</RelativeLayout>

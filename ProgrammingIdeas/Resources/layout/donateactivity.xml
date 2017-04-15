@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/highlight"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/amountLbl"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/_1"
+        android:textColor="@color/primaryTextLight"
+        android:textSize="48sp" />
+
+    <Button
+        android:id="@+id/nextAmountBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="48dp"
+        android:background="@android:color/transparent"
+        android:text="@string/next"
+        android:textSize="16sp" />
+
+    <Button
+        android:id="@+id/donateAmountBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginTop="96dp"
+        android:background="@android:color/transparent"
+        android:text="@string/donate"
+        android:textSize="16sp"
+        android:textColor="@color/primaryText"/>
+</FrameLayout>

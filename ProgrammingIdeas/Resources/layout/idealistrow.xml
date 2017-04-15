@@ -4,7 +4,7 @@
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/windowBackground">
+    android:background="@color/white">
 
     <View
         android:id="@+id/progressState"
@@ -27,7 +27,7 @@
             android:background="@drawable/circle"
             android:gravity="center"
             android:text="@string/itemId"
-            android:textColor="@color/windowBackground"
+            android:textColor="@color/primaryText"
             android:textSize="20sp" />
 
         <TextView
@@ -35,11 +35,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/itemId"
             android:text="@string/title"
             android:textColor="@color/primaryText"
-            android:textSize="20sp" />
+            android:textSize="16sp" />
 
         <TextView
             android:id="@+id/difficulty"
@@ -47,11 +47,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/title"
             android:layout_marginLeft="16dp"
+            android:layout_marginTop="4dp"
             android:layout_toRightOf="@+id/itemId"
+            android:background="@drawable/roundbtn"
             android:gravity="left"
+            android:paddingBottom="2dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:paddingTop="2dp"
             android:text="@string/difficulty"
-            android:textColor="@color/primaryTextLight"
-            android:textSize="16sp" />
+            android:textColor="@color/secondaryText"
+            android:textSize="12sp" />
 
     </RelativeLayout>
 

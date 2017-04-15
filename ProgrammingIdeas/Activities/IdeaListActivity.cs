@@ -11,15 +11,16 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using ProgrammingIdeas.Activities;
+using ProgrammingIdeas.Adapters;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Activities
 {
     [Activity(Label = "ItemActivity", Theme = "@style/AppTheme")]
-    public class ItemActivity : BaseActivity
+    public class IdeaListActivity : BaseActivity
     {
         private RecyclerView recyclerView;
         private RecyclerView.LayoutManager manager;
-        private ItemAdapter adapter;
+        private IdeaListAdapter adapter;
         private List<Category> allItems = new List<Category>();
         private List<CategoryItem> itemsList;
         private List<CategoryItem> bookmarkedList;
@@ -52,7 +53,7 @@ namespace ProgrammingIdeas
             recyclerView = FindViewById<RecyclerView>(Resource.Id.itemRecyclerView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);
             allItems = Global.Categories;
-			progressBar.Max = allItems[Global.ItemScrollPosition].Items.Count;
+			progressBar.Max = allItems[Global.CategoryScrollPosition].Items.Count;
             ShowProgress();
             bookmarkedList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
             setupMainIntent();
@@ -60,7 +61,7 @@ namespace ProgrammingIdeas
 
         private void ShowProgress()
         {
-            var completedCount = allItems[Global.ItemScrollPosition].Items.FindAll(x => x.State == "done").Count;
+			var completedCount = allItems[Global.CategoryScrollPosition].Items.FindAll(x => x.State == "done").Count;
 			progressBar.Progress = 0;
 			progressBar.IncrementProgressBy(completedCount);
         }
@@ -80,11 +81,11 @@ namespace ProgrammingIdeas
             {
                 Title = title;
                 recyclerView.SetLayoutManager(manager);
-                adapter = new ItemAdapter(itemsList, this);
+                adapter = new IdeaListAdapter(itemsList, this);
                 adapter.ItemClick += OnItemClick;
                 recyclerView.SetAdapter(adapter);
                 manager.ScrollToPosition(Global.ItemScrollPosition);
-                adapter.StateClicked += (sender, e) =>
+                adapter.StateClicked += (e) =>
                 {
                     var contents = e.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
                     int position = Convert.ToInt32(contents[0]);
@@ -96,7 +97,6 @@ namespace ProgrammingIdeas
 						ShowProgress();
                         allItems.FirstOrDefault(x => x.CategoryLbl == title).Items.FirstOrDefault(y => y.Description == itemsList[position].Description).State = state;
                     }
-                    Toast.MakeText(this, $"Idea progress successfully changed.", ToastLength.Short).Show();
                 };
             });
         }
@@ -118,10 +118,10 @@ namespace ProgrammingIdeas
             base.OnPause();
         }
 
-        private void OnItemClick(object sender, int position)
+        private void OnItemClick(int position)
         {
-            Intent intent = new Intent(this, typeof(IdeaDetailsActivity));
-            intent.PutExtra("title", Title); //item title
+			Global.ItemScrollPosition = position;
+            var intent = new Intent(this, typeof(IdeaDetailsActivity));
             intent.PutExtra("sender", "idealistactivity"); //one recycler view for bookmark activity and idea list activity so i need to know the sender
             StartActivity(intent);
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
@@ -135,6 +135,7 @@ namespace ProgrammingIdeas
 
 		void NavigateAway()
 		{
+			Global.ItemScrollPosition = 0;
             NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
 			OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
 		}

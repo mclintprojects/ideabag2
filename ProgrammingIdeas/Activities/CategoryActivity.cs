@@ -11,16 +11,20 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using ProgrammingIdeas.Activities;
+using Android.Support.Design.Widget;
+using ProgrammingIdeas.Adapters;
+using ProgrammingIdeas.Fragment;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Activities
 {
     //Main activity.
-    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme")]
+    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
     public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;
         private CategoryAdapter adapter;
         private LinearLayoutManager manager;
+		FloatingActionButton bookmarksFab;
         private List<Category> categoryList = new List<Category>();
         private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
         private string ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
@@ -49,7 +53,9 @@ namespace ProgrammingIdeas
 		protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            App.SetupDB(Assets);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+			bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
 			categoryList = Global.Categories;
             setupUI();
         }
@@ -62,9 +68,16 @@ namespace ProgrammingIdeas
             adapter.ItemClick += OnItemClick;
             recyclerView.SetAdapter(adapter);
 			manager.ScrollToPosition(Global.CategoryScrollPosition);
+			bookmarksFab.Click += BookmarksFab_Click;
         }
 
-        public override bool OnCreateOptionsMenu(IMenu menu)
+		void BookmarksFab_Click(object sender, EventArgs e)
+		{
+			StartActivity(new Intent(this, typeof(BookmarksActivity)));
+			OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
+		}
+
+		public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return base.OnCreateOptionsMenu(menu);
@@ -75,14 +88,7 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Resource.Id.about:
-                    var intentAbout = new Intent(this, typeof(AboutActivity));
-                    StartActivity(intentAbout);
-                    OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
-                    return true;
-
-                case Resource.Id.bookmarks:
-                    var intent = new Intent(this, typeof(BookmarksActivity));
-                    StartActivity(intent);
+                    StartActivity(new Intent(this, typeof(AboutActivity)));
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
 
@@ -96,21 +102,22 @@ namespace ProgrammingIdeas
                     return true;
 
                 case Resource.Id.submitIdea:
-                    var intentSubmit = new Intent(this, typeof(SubmitIdeaActivity));
-                    StartActivity(intentSubmit);
+                    StartActivity(new Intent(this, typeof(SubmitIdeaActivity)));
+                    OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
+                    return true;
+
+                case Resource.Id.donate:
+                    StartActivity(new Intent(this, typeof(DonateActivity)));
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
 
                 case Resource.Id.newIdeas:
-                    var fragmentManager = FragmentManager;
-                    var transaction = fragmentManager.BeginTransaction();
-                    transaction.Add(new NewIdeaFragment(GetNewIdeas()), "NewIdeaFragment");
-                    transaction.Commit();
+                    var dialogFrag = new NewIdeaFragment(GetNewIdeas());
+                    dialogFrag.Show(FragmentManager, "DIALOGFRAG");
                     return true;
 
                 case Resource.Id.notes:
-                    var intentNotes = new Intent(this, typeof(NotesActivity));
-                    StartActivity(intentNotes);
+                    StartActivity(new Intent(this, typeof(NotesActivity)));
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
             }
@@ -138,14 +145,8 @@ namespace ProgrammingIdeas
 
         private void OnItemClick(object sender, int position)
         {
-            var categoryItem = categoryList[position].Items;
-            var title = categoryList[position].CategoryLbl;
-            var itemsJson = JsonConvert.SerializeObject(categoryItem);
-            Intent intent = new Intent(this, typeof(ItemActivity));
-            intent.PutExtra("jsonString", itemsJson); //items in category json for item activity
-            intent.PutExtra("title", title); //category title for item activity
-            intent.PutExtra("sender", "MainActivity"); //get sender to fix ambiguity in items activity
-            StartActivity(intent);
+			Global.CategoryScrollPosition = position;
+            StartActivity(new Intent(this, typeof(IdeaListActivity)));
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }
     }

@@ -1,19 +1,19 @@
 ﻿<resources>
-	<color name="primary">#ffa000</color>
+	<color name="primary">#FFA000</color>
 	<color name="primaryDark">#c67100</color>
 	<color name="primaryLight">#ffd149</color>
-	<color name="accent">#3d5aff</color>
-	<color name="accentLight">#8187ff</color>
-	<color name="accentDark">#0031cb</color>
+	<color name="accent">#ff6e40</color>
+	<color name="accentLight">#ffa06d</color>
+	<color name="accentDark">#c53d13</color>
 	<color name="bgDark">#E1E2E1</color>
-	<color name="windowBackground">#F5F5F6</color>
-	<color name="secondaryText">#ffffff</color>
-	<color name="secondaryTextLight">#dadada</color>
+	<color name="circleBackground">#969696</color>
+	<color name="secondaryText">#fff</color>
+	<color name="secondaryTextLight">#e5e5e5</color>
 	<color name="primaryText">#212121</color>
-	<color name="primaryTextLight">#757575</color>
+	<color name="primaryTextLight">#545454</color>
 	<color name="white">#fff</color>
-	<color name="undecidedColor">#d2d7d3</color>
+	<color name="undecidedColor">#bababa</color>
 	<color name="inProgressColor">#F9bf3b</color>
 	<color name="doneColor">#2ecc71</color>
-	<color name="highlight">#ffff7b</color>
+	<color name="highlight">#FFDDA8</color>
 </resources>

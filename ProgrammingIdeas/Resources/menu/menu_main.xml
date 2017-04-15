@@ -5,31 +5,27 @@
 	<item
 		android:id="@+id/notes"
 		android:icon="@mipmap/ic_note_white_24dp"
-		android:showAsAction="always"
-		android:title="Notes"
-		app:showAsAction="ifRoom" />
-	<item
-		android:id="@+id/bookmarks"
-		android:icon="@mipmap/ic_bookmark_border_white_24dp"
-		android:showAsAction="always"
-		android:title="Bookmarks"
-		app:showAsAction="ifRoom" />
+		android:title="@string/notes"
+		app:showAsAction="always" />
 	<item
 		android:id="@+id/submitIdea"
 		android:icon="@mipmap/ic_edit_white_24dp"
-		android:showAsAction="always"
-		android:title="Submit Idea"
-		app:showAsAction="ifRoom" />
+		android:title="@string/submit_idea"
+		app:showAsAction="always" />
 	<item
 		android:id="@+id/newIdeas"
-		android:title="View new ideas"
-		android:showAsAction="never" />
+		android:title="@string/view_new_ideas"
+		app:showAsAction="never" />
 	<item
 		android:id="@+id/about"
-		android:title="Help &amp; About"
-		android:showAsAction="never" />
+		android:title="@string/help_amp_about"
+		app:showAsAction="never" />
+	<item
+		android:id="@+id/donate"
+		android:title="@string/donate"
+		app:showAsAction="never" />
 	<item
 		android:id="@+id/changelog"
-		android:title="Changelog"
-		android:showAsAction="never" />
+		android:title="@string/changelog_text"
+		app:showAsAction="never" />
 </menu>

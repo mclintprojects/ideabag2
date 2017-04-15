@@ -3,7 +3,7 @@ using Android.Views;
 using Android.Widget;
 using System.Collections.Generic;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Adapters
 {
     public class NewIdeaAdapter : RecyclerView.Adapter
     {

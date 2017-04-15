@@ -11,8 +11,9 @@ using System.Linq;
 using Newtonsoft.Json;
 using ProgrammingIdeas.Activities;
 using System;
+using ProgrammingIdeas.Adapters;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Activities
 {
     [Activity(Label = "Notes", Theme = "@style/AppTheme")]
     public class NotesActivity : BaseActivity
@@ -25,6 +26,7 @@ namespace ProgrammingIdeas
         private readonly string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
         private string noteText;
         private bool isNoteEditing = false;
+		private View emptyState;
 
         public override int LayoutResource
         {
@@ -44,33 +46,32 @@ namespace ProgrammingIdeas
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
+            base.OnCreate(savedInstanceState);
             notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
-            if (notes == null)
-                notes = new List<Note>();
+			notes = notes ?? new List<Note>();
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
-            switcher = FindViewById<ViewSwitcher>(Resource.Id.notesSwitcher);
-            notesActivitySwitcher = FindViewById<ViewSwitcher>(Resource.Id.notesActivitySwitcher);
+			emptyState = FindViewById(Resource.Id.empty);
+			if (notes.Count == 0)
+				Adapter_OnAdapterEmpty(this, new EventArgs());
             manager = new LinearLayoutManager(this);
             adapter = new NotesAdapter(notes);
             adapter.EditClicked += Adapter_EditClicked;
             recycler.SetAdapter(adapter);
             recycler.SetLayoutManager(manager);
             recycler.SetItemAnimator(new DefaultItemAnimator());
-            if (notes.Count == 0)
-                switcher.ShowNext();
-            base.OnCreate(savedInstanceState);
         }
 
         private void Adapter_OnAdapterEmpty(object sender, System.EventArgs e)
         {
-            switcher.ShowNext();
+            recycler.Visibility = ViewStates.Gone;
+			emptyState.Visibility = ViewStates.Visible;
+			emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " notes.";
         }
 
         private void Adapter_EditClicked(object sender, int e)
         {
             var view = recycler.GetChildAt(e);
             var input = view.FindViewById<TextView>(Resource.Id.notesEdit);
-            var switcher = view.FindViewById<ViewSwitcher>(Resource.Id.notesActivitySwitcher);
             var editNote = view.FindViewById<TextView>(Resource.Id.notesEditBtn);
             var content = view.FindViewById<TextView>(Resource.Id.notesContent);
 
@@ -119,7 +120,7 @@ namespace ProgrammingIdeas
                 editNote.Text = "Save this note";
             }
             if (notes.Count == 0)
-                Adapter_OnAdapterEmpty(sender, new System.EventArgs());
+                Adapter_OnAdapterEmpty(sender, new EventArgs());
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

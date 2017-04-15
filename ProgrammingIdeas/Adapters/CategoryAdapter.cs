@@ -5,7 +5,7 @@ using Android.Widget;
 using System;
 using System.Collections.Generic;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Adapters
 {
     public class CategoryAdapter : RecyclerView.Adapter
     {
@@ -66,7 +66,7 @@ namespace ProgrammingIdeas
         public ImageView imageView { get; set; }
         public TextView categoryLabel { get; set; }
         public TextView ideasCount { get; set; }
-        public LinearLayout Root { get; set; }
+        public RelativeLayout Root { get; set; }
 
         public mViewHolder(View itemView, Action<int> listener) : base(itemView)
         {
@@ -75,7 +75,7 @@ namespace ProgrammingIdeas
             imageView = itemView.FindViewById<ImageView>(Resource.Id.categoryIcon);
             categoryLabel = itemView.FindViewById<TextView>(Resource.Id.categoryLbl);
             ideasCount = itemView.FindViewById<TextView>(Resource.Id.ideaCountLbl);
-            Root = itemView.FindViewById<LinearLayout>(Resource.Id.categoryRoot);
+            Root = itemView.FindViewById<RelativeLayout>(Resource.Id.categoryRoot);
         }
     }
 }

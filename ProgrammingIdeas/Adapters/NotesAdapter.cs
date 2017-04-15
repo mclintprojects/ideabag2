@@ -4,7 +4,7 @@ using Android.Widget;
 using System;
 using System.Collections.Generic;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Adapters
 {
     public class NotesAdapter : RecyclerView.Adapter
     {

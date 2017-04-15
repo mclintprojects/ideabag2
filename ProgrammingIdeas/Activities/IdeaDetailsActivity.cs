@@ -12,23 +12,32 @@ using System.Linq;
 using System.Threading.Tasks;
 using ProgrammingIdeas.Activities;
 using System;
+using ProgrammingIdeas.Adapters;
+using ProgrammingIdeas.Animation;
+using Android.Views.Animations;
+using Android.Support.Design.Widget;
+using ProgrammingIdeas.Fragments;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Activities
 {
-    [Activity(Label = "Idea Details", Theme = "@style/AppTheme")]
-    public class ItemDetails : BaseActivity
+    [Activity(Label = "Idea details", Theme = "@style/AppTheme")]
+    public class IdeaDetailsActivity : BaseActivity
     {
         private List<Category> db;
         private List<Note> notes;
         private List<CategoryItem> itemsList;
         private List<CategoryItem> bookmarkedItems = new List<CategoryItem>();
         private CategoryItem item;
-        private string itemTitle, noteText, path, sendingActivity, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
+        private string path, sendingActivity, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
         private string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
         private IMenuItem bookmarkIcon;
-        private CardView ideaCard;
-        private TextView title, itemDescription;
+        private TextView title, itemDescription, noteName, noteContent;
         private OnSwipeListener SwipeListener;
+		private LinearLayout detailsView;
+		FloatingActionButton addNoteFab;
+		Button editNoteBtn;
+		CardView noteHolder;
+        private bool IsBookmarked, IsInBookmarkMode;
 
         public override int LayoutResource
         {
@@ -54,61 +63,156 @@ namespace ProgrammingIdeas
         }
 
 		protected override void OnResume()
-		{
-            item = Global.Categories[Global.CategoryScrollPosition].Items[Global.ItemScrollPosition];
-            itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
+        {
             title = FindViewById<TextView>(Resource.Id.itemTitle);
             itemDescription = FindViewById<TextView>(Resource.Id.itemDescription);
-            ideaCard = FindViewById<CardView>(Resource.Id.ideaCard);
+			detailsView = FindViewById<LinearLayout>(Resource.Id.detailsView);
+			addNoteFab = FindViewById<FloatingActionButton>(Resource.Id.addNotefab);
+            editNoteBtn = FindViewById<Button>(Resource.Id.editNoteBtn);
+            noteHolder = FindViewById<CardView>(Resource.Id.noteHolder);
+            noteName = FindViewById<TextView>(Resource.Id.noteName);
+            noteContent = FindViewById<TextView>(Resource.Id.noteContent);
 
+			addNoteFab.Click += AddNoteFab_Click;
             SwipeListener = new OnSwipeListener(this);
-			ideaCard.SetOnTouchListener(SwipeListener);
             SwipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
             SwipeListener.OnSwipeLeft += SwipeListener_OnSwipeLeft;
             itemDescription.SetOnTouchListener(SwipeListener);
+			detailsView.SetOnTouchListener(SwipeListener);
 
-            title.Text = item.Title;
-            itemDescription.Text = item.Description;
-            db = DBAssist.GetDB(ideasdb);
+            editNoteBtn.Click += delegate
+            {
+                var dialog = new AddNoteDialog(itemsList[Global.ItemScrollPosition]);
+                dialog.Show(FragmentManager, "ADDNOTEFRAG");
+				dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
+            };
+
+			bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
+			bookmarkedItems = bookmarkedItems ?? new List<CategoryItem>();
+
+            if (sendingActivity == "bmk")
+                HandleBookmarkedItems();
+            else
+                HandleNonbookmarkedItems();
             notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
-
-            using (BusyHandler.Handle(RemoveBookmarkedItems))
-                Task.Run(() =>
-                {
-                    bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
-                    if (bookmarkedItems == null)
-                        bookmarkedItems = new List<CategoryItem>();
-                });
 			base.OnResume();
 		}
 
-        private void SwipeListener_OnSwipeRight(object sender, EventArgs e)
+        void HandleNonbookmarkedItems() //Using the same activity to show Bookmarked items and non-bookmarked items. this handle non-bookmarked
         {
-            ChangeItem(Global.ItemScrollPosition - 1);
+            item = Global.Categories[Global.CategoryScrollPosition].Items[Global.ItemScrollPosition];
+            itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
+            SetupUI();
+            RemoveBookmarkedItems();
         }
 
-        private void SwipeListener_OnSwipeLeft(object sender, EventArgs e)
+        void HandleBookmarkedItems() //handles ideas that were bookmarked 
         {
-            ChangeItem(Global.ItemScrollPosition + 1);
+			IsInBookmarkMode = true;
+			Global.ItemScrollPosition = Global.BookmarkScrollPosition; // To enable swipes work correctly
+            item = bookmarkedItems[Global.BookmarkScrollPosition];
+            SetupUI();
         }
 
-        private void ChangeItem(int index)
+        void SetupUI()
         {
-            if (index >= 0 && index <= itemsList.Count - 1)
-            {
-                Global.ItemScrollPosition = index;
-                item = itemsList[index];
-                title.Text = item.Title;
-                itemDescription.Text = item.Description;
+            title.Text = item.Title;
+            itemDescription.Text = item.Description;
+            db = Global.Categories;
+            if (item.Note != null)
+                ShowNote(item.Note);
+
+            else
+                noteHolder.Visibility = ViewStates.Gone;
+        }
+
+        void ShowNote(Note note)
+        {
+            noteHolder.Visibility = ViewStates.Visible;
+            noteName.Text = item.Note.Name;
+            noteContent.Text = item.Note.Content;
+        }
+
+		void HandleNoteSave(Note note)
+		{
+			var existingItem = notes.FirstOrDefault(x => x.Title == note.Title);
+			if (existingItem == null) //No existing note was found
+			{
+				notes.Add(note);
+				itemsList[Global.ItemScrollPosition].Note = note;
+			}
+
+			else //Existing note was found
+			{
+				existingItem = note;
+				itemsList[Global.ItemScrollPosition].Note = note;
+			}
+
+            ShowNote(note);
+			Snackbar.Make(addNoteFab, "Note added.", Snackbar.LengthLong).Show();
+		}
+
+		void AddNoteFab_Click(object sender, EventArgs e)
+		{
+			var dialog = new AddNoteDialog(itemsList[Global.ItemScrollPosition].Category, itemsList[Global.ItemScrollPosition].Title);
+			dialog.OnError += () => { Snackbar.Make(addNoteFab, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show(); };
+			dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
+			dialog.Show(FragmentManager, "ADDNOTEFRAG");
+		}
+
+		private void SwipeListener_OnSwipeRight()
+        {
+            ChangeItem(Global.ItemScrollPosition - 1, false);
+        }
+
+        private void SwipeListener_OnSwipeLeft()
+        {
+            ChangeItem(Global.ItemScrollPosition + 1, true);
+        }
+
+        private void ChangeItem(int index, bool WasLeftSwipe)
+        {
+			if (!IsInBookmarkMode)
+			{
+				if (index >= 0 && index <= itemsList.Count - 1)
+				{
+					Global.ItemScrollPosition = index;
+					item = itemsList[index];
+                    FinishItemChange(WasLeftSwipe);
+				}
+			}
+
+			else
+			{
+                if (index >= 0 && index <= bookmarkedItems.Count - 1)
+                {
+                    Global.BookmarkScrollPosition = index;
+					Global.ItemScrollPosition = index;
+                    item = bookmarkedItems[index];
+                    FinishItemChange(WasLeftSwipe);
+                } 
             }
+        }
+
+        private void FinishItemChange(bool WasLeftSwipe)
+        {
+			float direction = WasLeftSwipe ? 700 : -700;
+			AnimHelper.Animate(detailsView, "translationX", 700, new AnticipateOvershootInterpolator(), direction, 0);
+            title.Text = item.Title;
+            itemDescription.Text = item.Description;
+            if (item.Note == null)
+                noteHolder.Visibility = ViewStates.Gone;
+            else
+                ShowNote(item.Note);
+            CheckAndSetBookmark();
         }
 
         private void RemoveBookmarkedItems()
         {
-            if (bookmarkedItems.Count > 0)
+            if (bookmarkedItems.Count > 0 && !IsInBookmarkMode)
             {
-                foreach (CategoryItem item in bookmarkedItems)
-                    itemsList.Remove(item);
+				foreach (var bookmarkedItem in bookmarkedItems)
+                    itemsList.Remove(bookmarkedItem);
             }
         }
 
@@ -116,6 +220,7 @@ namespace ProgrammingIdeas
         {
             MenuInflater.Inflate(Resource.Menu.itemdetails_menu, menu);
             bookmarkIcon = menu.FindItem(Resource.Id.bookmarkItem);
+            CheckAndSetBookmark();
             return base.OnCreateOptionsMenu(menu);
         }
 
@@ -128,6 +233,7 @@ namespace ProgrammingIdeas
                     return true;
 
                 case Resource.Id.bookmarkItem:
+                    Bookmark();
                     return true;
 
                 case Resource.Id.shareItem:
@@ -151,6 +257,48 @@ namespace ProgrammingIdeas
             DBAssist.SerializeDB(notesdb, notes);
         }
 
+        private void Bookmark()
+        {
+			IsBookmarked = CheckIfBookmarked(item);
+            if (bookmarkedItems != null || bookmarkedItems.Count != 0)
+            {
+                if (IsBookmarked == true) // if bookmarked
+                {
+                    bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
+                    if (this.item != null)
+                        bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Description == this.item.Description));
+                    Snackbar.Make(addNoteFab, "Idea removed from bookmarks.", Snackbar.LengthLong).Show();
+                    IsBookmarked = false;
+                }
+                else // not bookmarked
+                {
+                    bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
+					bookmarkedItems.Add(this.item);
+                    Snackbar.Make(addNoteFab, "Idea added to bookmarks.", Snackbar.LengthLong).Show();
+                    IsBookmarked = true;
+                }
+            }
+        }
+
+        private void CheckAndSetBookmark()
+       {
+             if (CheckIfBookmarked(item) == true)
+             {
+                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
+                 IsBookmarked = true;
+             }
+             else
+                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
+         }
+ 
+         private bool CheckIfBookmarked(CategoryItem item)
+         {
+             if (bookmarkedItems.FirstOrDefault(x => x.Description == item.Description) != null)
+                 return true;
+             else
+                 return false;
+         }
+
         public override void OnBackPressed()
         {
             GoAway();
@@ -166,10 +314,7 @@ namespace ProgrammingIdeas
         private void GoAway()
         {
             writeEntirety();
-            var intent = new Intent(this, sendingActivity == "idealistactivity" ? typeof(ItemActivity) : typeof(BookmarksActivity));
-            intent.PutExtra("jsonString", JsonConvert.SerializeObject(itemsList)); //itemlist json for itemactivity header
-            intent.PutExtra("title", itemTitle); //title for itemactivity header
-            NavigateUpTo(intent);
+            NavigateUpTo(new Intent(this, sendingActivity == "idealistactivity" ? typeof(IdeaListActivity) : typeof(BookmarksActivity)));
             OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
         }
     }

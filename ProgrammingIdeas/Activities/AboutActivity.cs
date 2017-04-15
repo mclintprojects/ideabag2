@@ -7,7 +7,7 @@ using Android.Views;
 using Android.Widget;
 using ProgrammingIdeas.Activities;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Activities
 {
     [Activity(Label = "About", Theme = "@style/AppTheme")]
     public class AboutActivity : BaseActivity
@@ -43,12 +43,22 @@ namespace ProgrammingIdeas
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    var intent = new Intent(this, typeof(CategoryActivity));
-                    NavigateUpTo(intent);
-                    OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
+					NavigateAway();
                     return true;
             }
             return base.OnOptionsItemSelected(item);
         }
+
+		void NavigateAway()
+		{
+			NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
+			OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
+		}
+
+		public override void OnBackPressed()
+		{
+			NavigateAway();
+			base.OnBackPressed();
+		}
     }
 }

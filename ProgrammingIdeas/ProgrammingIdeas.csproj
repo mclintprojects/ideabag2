@@ -132,16 +132,16 @@
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CategoryActivity.cs" />
-    <Compile Include="Activities\Splashscreen.cs" />
+    <Compile Include="Activities\DonateActivity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\OnSwipeListener.cs" />
     <Compile Include="Helpers\POCOs.cs" />
     <Compile Include="Adapters\CategoryAdapter.cs" />
-    <Compile Include="Activities\ItemActivity.cs" />
-    <Compile Include="Adapters\ItemAdapter.cs" />
+    <Compile Include="Activities\IdeaListActivity.cs" />
+    <Compile Include="Adapters\IdeaListAdapter.cs" />
     <Compile Include="Activities\AboutActivity.cs" />
     <Compile Include="Activities\BookmarksActivity.cs" />
-    <Compile Include="Activities\ItemDetails.cs" />
+    <Compile Include="Activities\IdeaDetailsActivity.cs" />
     <Compile Include="Activities\SubmitIdeaActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Adapters\NewIdeaAdapter.cs" />
@@ -152,6 +152,9 @@
     <Compile Include="Helpers\BusyBoy.cs" />
     <Compile Include="Helpers\Global.cs" />
     <Compile Include="Activities\App.cs" />
+    <Compile Include="Helpers\Validator.cs" />
+    <Compile Include="Helpers\AnimHelper.cs" />
+    <Compile Include="Fragments\AddNoteFragment.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -265,8 +268,14 @@
     <AndroidResource Include="Resources\mipmap-xhdpi\ic_mode_edit_white_24dp.png" />
     <AndroidResource Include="Resources\drawable\submitRoundBtn.xml" />
     <AndroidResource Include="Resources\layout\toolbar.xml" />
-    <AndroidResource Include="Resources\layout\splashscreen.xml" />
     <AndroidResource Include="Resources\drawable\progress_drawable.xml" />
+    <AndroidResource Include="Resources\drawable\image_background.xml" />
+    <AndroidResource Include="Resources\drawable\sad.png" />
+    <AndroidResource Include="Resources\layout\empty_state.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_plus_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_plus_white_24dp.png" />
+    <AndroidResource Include="Resources\layout\add_note_layout.xml" />
+    <AndroidResource Include="Resources\layout\donateactivity.xml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
@@ -283,6 +292,10 @@
     <AndroidAsset Include="Assets\output.json" />
     <AndroidAsset Include="Assets\newideasdb.txt" />
     <AndroidAsset Include="Assets\fonts\RubikRegular.ttf" />
+    <AndroidAsset Include="Assets\fonts\OswaldBold.ttf" />
+    <AndroidAsset Include="Assets\fonts\OswaldRegular.ttf" />
+    <AndroidAsset Include="Assets\fonts\RalewayBold.ttf" />
+    <AndroidAsset Include="Assets\fonts\RalewayRegular.ttf" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

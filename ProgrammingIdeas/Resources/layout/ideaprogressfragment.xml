@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/windowBackground"
+    android:background="@color/white"
     android:orientation="vertical">
 
     <TextView
@@ -14,73 +14,48 @@
         android:textColor="@color/secondaryText"
         android:textSize="18sp" />
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="16dp"
-        android:gravity="center"
+        android:layout_height="100dp"
+        android:gravity="center_horizontal"
         android:orientation="horizontal">
-
-        <ImageView
-            android:id="@+id/undecided"
-            android:layout_width="@dimen/progressDimensions"
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_alignParentLeft="false"
-            android:layout_marginLeft="8dp"
-            android:contentDescription="@string/undecided"
-            android:src="@drawable/undecided" />
 
         <TextView
             android:id="@+id/undecidedText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/undecided"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:background="@color/undecidedColor"
+            android:gravity="center"
             android:text="@string/undecidedText"
             android:textColor="@color/primaryText" />
-
-        <ImageView
-            android:id="@+id/inProgress"
-            android:layout_width="@dimen/progressDimensions"
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_marginLeft="48dp"
-            android:layout_toRightOf="@+id/undecided"
-            android:contentDescription="@string/in_progress"
-            android:src="@drawable/inprogress" />
 
         <TextView
             android:id="@+id/inprogressText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/inProgress"
-            android:layout_marginLeft="24dp"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
             android:layout_toRightOf="@+id/undecidedText"
+            android:layout_weight="1"
+            android:background="@color/inProgressColor"
+            android:gravity="center"
             android:text="@string/in_progressText"
             android:textColor="@color/primaryText" />
-
-        <ImageView
-            android:id="@+id/done"
-            android:layout_width="@dimen/progressDimensions"
-            android:layout_height="@dimen/progressDimensions"
-            android:layout_alignParentRight="false"
-            android:layout_marginLeft="48dp"
-            android:layout_toRightOf="@+id/inProgress"
-            android:contentDescription="@string/completed"
-            android:src="@drawable/done" />
 
         <TextView
             android:id="@+id/doneText"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:layout_below="@+id/done"
-            android:layout_marginLeft="28dp"
-            android:layout_marginTop="8dp"
+            android:layout_gravity="center"
             android:layout_toRightOf="@+id/inprogressText"
+            android:layout_weight="1"
+            android:background="@color/doneColor"
+            android:gravity="center"
             android:text="@string/completedText"
             android:textColor="@color/primaryText" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>

@@ -16,26 +16,24 @@ namespace ProgrammingIdeas.Helpers
     public class OnSwipeListener : Java.Lang.Object, View.IOnTouchListener
     {
         private static GestureDetector detector;
-
-        public event EventHandler OnSwipeLeft;
-
-        public event EventHandler OnSwipeRight;
+        public Action OnSwipeLeft;
+        public Action OnSwipeRight;
 
         public OnSwipeListener(Context ctx)
         {
-            detector = new GestureDetector(ctx, new GestureListener(SwipeRecieved));
+            detector = new GestureDetector(ctx, new GestureListener(SwipeReceived));
         }
 
-        private void SwipeRecieved(Swipe swipe)
+        private void SwipeReceived(Swipe swipe)
         {
             switch (swipe)
             {
                 case Swipe.Left:
-                    OnSwipeLeft(this, new EventArgs());
+                    OnSwipeLeft?.Invoke();
                     break;
 
                 case Swipe.Right:
-                    OnSwipeRight(this, new EventArgs());
+                    OnSwipeRight?.Invoke();
                     break;
             }
         }

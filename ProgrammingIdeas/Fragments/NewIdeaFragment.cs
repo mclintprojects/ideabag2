@@ -3,8 +3,9 @@ using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using System.Collections.Generic;
+using ProgrammingIdeas.Adapters;
 
-namespace ProgrammingIdeas
+namespace ProgrammingIdeas.Fragment
 {
     public class NewIdeaFragment : DialogFragment
     {
