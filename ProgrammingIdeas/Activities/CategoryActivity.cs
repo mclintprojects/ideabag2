@@ -2,18 +2,17 @@ using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Newtonsoft.Json;
+using ProgrammingIdeas.Adapters;
+using ProgrammingIdeas.Fragment;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using ProgrammingIdeas.Activities;
-using Android.Support.Design.Widget;
-using ProgrammingIdeas.Adapters;
-using ProgrammingIdeas.Fragment;
+using System.Linq;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -24,60 +23,83 @@ namespace ProgrammingIdeas.Activities
         private RecyclerView recyclerView;
         private CategoryAdapter adapter;
         private LinearLayoutManager manager;
-		FloatingActionButton bookmarksFab;
+        private FloatingActionButton bookmarksFab;
         private List<Category> categoryList = new List<Category>();
         private string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
         private string ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
-        private int scrollPosition;
+        private ProgressBar loadingCircle;
 
-        private int[] icons = {Resource.Mipmap.numbers, Resource.Mipmap.text, Resource.Mipmap.network, Resource.Mipmap.enterprise,
-                                       Resource.Mipmap.cpu, Resource.Mipmap.web, Resource.Mipmap.file, Resource.Mipmap.database,
-                                       Resource.Mipmap.multimedia, Resource.Mipmap.games};
+        public override int LayoutResource
+        {
+            get
+            {
+                return Resource.Layout.categoryactivity;
+            }
+        }
 
-		public override int LayoutResource
-		{
-			get
-			{
-				return Resource.Layout.categoryactivity;
-			}
-		}
+        public override bool HomeAsUpEnabled
+        {
+            get
+            {
+                return false;
+            }
+        }
 
-		public override bool HomeAsUpEnabled
-		{
-			get
-			{
-				return false;
-			}
-		}
-
-		protected override void OnCreate(Bundle savedInstanceState)
+        protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            App.SetupDB(Assets);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
-			bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
-			categoryList = Global.Categories;
-            setupUI();
+            bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
+            loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
+            GetOnlineDb();
+        }
+
+        private void GetOnlineDb()
+        {
+            loadingCircle.Visibility = ViewStates.Visible;
+            var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
+            snack.Show();
+            CloudDB.Startup(GetOnlineDb, snack).ContinueWith((a) =>
+            {
+                RunOnUiThread(() =>
+                {
+                    if (Global.Categories != null)
+                    {
+                        loadingCircle.Visibility = ViewStates.Gone;
+                        snack.Dismiss();
+                        categoryList = Global.Categories;
+                        if (Global.IsNewIdeasAvailable)
+                        {
+                            snack.SetText("New ideas are available.").SetDuration(Snackbar.LengthLong);
+                            snack.Show();
+                            Global.IsNewIdeasAvailable = false;
+                        }
+                        setupUI();
+                    }
+                    else
+                        loadingCircle.Visibility = ViewStates.Gone;
+                });
+            });
         }
 
         private void setupUI() //first launch, gets json from packaged assets
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);
-            adapter = new CategoryAdapter(categoryList, this, icons, Global.CategoryScrollPosition);
+            adapter = new CategoryAdapter(categoryList, this);
             adapter.ItemClick += OnItemClick;
             recyclerView.SetAdapter(adapter);
-			manager.ScrollToPosition(Global.CategoryScrollPosition);
-			bookmarksFab.Click += BookmarksFab_Click;
+            manager.ScrollToPosition(Global.CategoryScrollPosition);
+            bookmarksFab.Click += BookmarksFab_Click;
         }
 
-		void BookmarksFab_Click(object sender, EventArgs e)
-		{
-			StartActivity(new Intent(this, typeof(BookmarksActivity)));
-			OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
-		}
+        private void BookmarksFab_Click(object sender, EventArgs e)
+        {
+            StartActivity(new Intent(this, typeof(BookmarksActivity)));
+            OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
+        }
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
+        public override bool OnCreateOptionsMenu(IMenu menu)
         {
             MenuInflater.Inflate(Resource.Menu.menu_main, menu);
             return base.OnCreateOptionsMenu(menu);
@@ -112,9 +134,15 @@ namespace ProgrammingIdeas.Activities
                     return true;
 
                 case Resource.Id.newIdeas:
-                    var dialogFrag = new NewIdeaFragment(GetNewIdeas());
-                    dialogFrag.Show(FragmentManager, "DIALOGFRAG");
-                    return true;
+					var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
+					if (File.Exists(newideastxtPath))
+					{
+						var dialogFrag = new NewIdeaFragment(GetNewIdeas());
+						dialogFrag.Show(FragmentManager, "DIALOGFRAG");
+					}
+					else
+						Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
+				    return true;
 
                 case Resource.Id.notes:
                     StartActivity(new Intent(this, typeof(NotesActivity)));
@@ -132,20 +160,22 @@ namespace ProgrammingIdeas.Activities
         /// <returns>The new ideas.</returns>
         private List<CategoryItem> GetNewIdeas()
         {
+            var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
             var newItems = new List<CategoryItem>();
-            var newIdeas = new StreamReader(Assets.Open("newideasdb.txt")).ReadToEnd();
+            var newIdeas = new StreamReader(newideastxtPath).ReadToEnd();
+            newIdeas = newIdeas.Replace("\"", "");
             var newIdeasContent = newIdeas.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < newIdeasContent.Length; i++)
             {
                 var sContents = newIdeasContent[i].Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                newItems.Add(categoryList[Convert.ToInt32(sContents[0]) - 1].Items[Convert.ToInt32(sContents[1]) - 1]);
+				newItems.Add(categoryList[Convert.ToInt32(sContents[0]) - 1].Items.FirstOrDefault(x => x.Id - 1 == Convert.ToInt32(sContents[1]) - 1));
             }
             return newItems;
         }
 
-        private void OnItemClick(object sender, int position)
+        private void OnItemClick(int position)
         {
-			Global.CategoryScrollPosition = position;
+            Global.CategoryScrollPosition = position;
             StartActivity(new Intent(this, typeof(IdeaListActivity)));
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }

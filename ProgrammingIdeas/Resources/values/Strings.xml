@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v1.8</string>
-	<string name="appNumber">1.8</string>
+	<string name="appVersion">IdeaBag 2 v1.9</string>
+	<string name="appNumber">1.9</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. Added 8 new ideas.\r\n2. Fixed issue with idea completion status.\r\n3. Fixed issue with idea bookmarking.\r\n4. Several bug fixes and improvements.
+		1. No need to update the entire app for new ideas. Ideas are automatically downloaded now.\r\n2. UI overhaul.\r\n3. Added a progress bar to show how many ideas you\'ve completed.\r\n4. Added 3 new ideas.\r\n5. Added a donate section for people who want to support development.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">
@@ -38,7 +38,7 @@
 	would be glad to provide you with assistance. You can join the community via this link>
 	https://plus.google.com/communities/105361187156121163553 </string>
 	<string name="notes_sample_content">You have no notes for this idea. Tap the button below to add one.</string>
-    <string name="edit_text">Edit this note</string>
+    <string name="edit_text">Edit</string>
 	<string name="notesHint">Enter your note..</string>
 	<string name="editNote">Edit this note</string>
     <string name="undecidedText">Undecided</string>
@@ -77,6 +77,8 @@
     <string name="empty_state_text">You don\'t have any</string>
 	<string name="_1">$1</string>
 	<string name="donate">Donate</string>
-	<string name="donateText">Please know that it is not required to donate and that development of Idea Bag 2 will continue regardless.\r\n\r\nHowever, if you like Idea Bag 2 a lot and/or want to support development despite the information above, thank you for your generosity.</string>
+	<string name="donateText">Please note that it is not required to donate and that development of Idea Bag 2 will continue regardless.\r\n\r\nHowever, if you like Idea Bag 2 a lot and/or want to support development despite the information above, thank you for your generosity.</string>
 	<string name="next">Next</string>
+	<string name="view">View</string>
+	<string name="delete">Delete</string>
 </resources>

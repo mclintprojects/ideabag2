@@ -21,8 +21,8 @@
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
             android:layout_marginTop="16dp"
-            cardview:cardBackgroundColor="@color/circleBackground"
-            cardview:cardCornerRadius="2dp"
+            cardview:cardBackgroundColor="@color/accent"
+            cardview:cardCornerRadius="5dp"
             cardview:cardElevation="2dp"
             cardview:cardUseCompatPadding="true"
             cardview:contentPadding="16dp">
@@ -69,8 +69,8 @@
             android:layout_gravity="center_horizontal"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            cardview:cardBackgroundColor="@color/circleBackground"
-            cardview:cardCornerRadius="2dp"
+            cardview:cardBackgroundColor="@color/accent"
+            cardview:cardCornerRadius="5dp"
             cardview:cardElevation="2dp"
             cardview:cardUseCompatPadding="true"
             cardview:contentPadding="16dp">
@@ -94,6 +94,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/overviewText"
                     android:textColor="@color/secondaryTextLight"
+                    android:textColorLink="@color/primaryText"
                     android:textSize="16sp" />
             </LinearLayout>
         </android.support.v7.widget.CardView>
@@ -105,8 +106,8 @@
             android:layout_marginBottom="16dp"
             android:layout_marginLeft="16dp"
             android:layout_marginRight="16dp"
-            cardview:cardBackgroundColor="@color/circleBackground"
-            cardview:cardCornerRadius="2dp"
+            cardview:cardBackgroundColor="@color/accent"
+            cardview:cardCornerRadius="5dp"
             cardview:cardElevation="2dp"
             cardview:cardUseCompatPadding="true"
             cardview:contentPadding="16dp">
@@ -131,6 +132,7 @@
                     android:autoLink="web"
                     android:linksClickable="true"
                     android:textColor="@color/secondaryTextLight"
+                    android:textColorLink="@color/primaryText"
                     android:textSize="16sp" />
             </LinearLayout>
         </android.support.v7.widget.CardView>

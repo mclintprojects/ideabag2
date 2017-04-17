@@ -1,15 +1,13 @@
 ﻿using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.Support.V7.Widget;
 using Android.Views;
+using Android.Views.Animations;
 using Android.Widget;
+using ProgrammingIdeas.Animation;
 using System;
 using System.Collections.Generic;
-using Android.Graphics;
-using Android.Support.V4.Content;
-using ProgrammingIdeas.Helpers;
-using ProgrammingIdeas.Animation;
-using Android.Views.Animations;
 
 namespace ProgrammingIdeas.Adapters
 {
@@ -18,8 +16,8 @@ namespace ProgrammingIdeas.Adapters
         private List<CategoryItem> itemsList;
         public Action<int> ItemClick;
         public Action<string> StateClicked;
-
         private Context ctx;
+		private int index = 1;
 
         public IdeaListAdapter(List<CategoryItem> list, Context ctx)
         {
@@ -42,49 +40,49 @@ namespace ProgrammingIdeas.Adapters
 
             itemHolder.Difficulty.Text = item.Difficulty;
             itemHolder.Title.Text = item.Title;
-            itemHolder.Id.Text = item.Id.ToString();
-            itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.undecidedColor));
-			itemHolder.Root.SetBackgroundColor(Color.Transparent);
+			itemHolder.Id.Text = (position + 1).ToString();
+            itemHolder.State.SetBackgroundResource(Resource.Color.undecidedColor);
+            itemHolder.Root.SetBackgroundColor(Color.Transparent);
             switch (item.State)
             {
                 case "undecided":
-                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.undecidedColor));
+                    itemHolder.State.SetBackgroundResource(Resource.Color.undecidedColor);
                     break;
 
                 case "inprogress":
-                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.inProgressColor));
+                    itemHolder.State.SetBackgroundResource(Resource.Color.inProgressColor);
                     break;
 
                 case "done":
-                    itemHolder.State.Background.SetTint(ContextCompat.GetColor(Application.Context, Resource.Color.doneColor));
+                    itemHolder.State.SetBackgroundResource(Resource.Color.doneColor);
                     break;
             }
             if (position == Global.ItemScrollPosition)
                 itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
         }
 
-		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
-		{
-			View row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.idealistrow, parent, false);
-			return new ItemViewHolder(row, (int obj) => { ItemClick?.Invoke(obj); }, ctx, StateClicked);
+        public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+        {
+            View row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.idealistrow, parent, false);
+            return new ItemViewHolder(row, (int obj) => { ItemClick?.Invoke(obj); }, ctx, StateClicked);
         }
     }
 
     public class ItemViewHolder : RecyclerView.ViewHolder, View.IOnLongClickListener
     {
-		public TextView Title { get; set; }
+        public TextView Title { get; set; }
         public TextView Difficulty { get; set; }
-		public TextView Id { get; set; }
+        public TextView Id { get; set; }
         public View State { get; set; }
         public LinearLayout Root { get; set; }
         private Context ctx;
         private TextView inprogress, done, undecided;
 
-		private Action<string> StateClicked;
+        private Action<string> StateClicked;
 
         public ItemViewHolder(View itemView, Action<int> listener, Context ctx, Action<string> StateClicked) : base(itemView)
         {
-			this.StateClicked = StateClicked;
+            this.StateClicked = StateClicked;
             this.ctx = ctx;
             itemView.Click += (sender, e) => listener(AdapterPosition);
             itemView.SetOnLongClickListener(this);

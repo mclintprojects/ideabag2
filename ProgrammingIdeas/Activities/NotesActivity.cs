@@ -1,17 +1,17 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
+using ProgrammingIdeas.Adapters;
+using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
-using ProgrammingIdeas.Activities;
-using System;
-using ProgrammingIdeas.Adapters;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -22,11 +22,8 @@ namespace ProgrammingIdeas.Activities
         private RecyclerView recycler;
         private RecyclerView.LayoutManager manager;
         private NotesAdapter adapter;
-        private ViewSwitcher switcher, notesActivitySwitcher;
-        private readonly string notesdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "notesdb");
-        private string noteText;
-        private bool isNoteEditing = false;
-		private View emptyState;
+        private readonly string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
+        private View emptyState;
 
         public override int LayoutResource
         {
@@ -47,80 +44,68 @@ namespace ProgrammingIdeas.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+        }
+
+        protected override void OnResume()
+        {
             notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
-			notes = notes ?? new List<Note>();
+            notes = notes ?? new List<Note>();
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
-			emptyState = FindViewById(Resource.Id.empty);
-			if (notes.Count == 0)
-				Adapter_OnAdapterEmpty(this, new EventArgs());
+            emptyState = FindViewById(Resource.Id.empty);
+            if (notes.Count == 0)
+                ShowEmptyState();
             manager = new LinearLayoutManager(this);
             adapter = new NotesAdapter(notes);
             adapter.EditClicked += Adapter_EditClicked;
+            adapter.ViewNoteClicked += (position) =>
+            {
+                new AlertDialog.Builder(this)
+                                .SetTitle(notes[position].Name)
+                                .SetMessage(notes[position].Content)
+                                .SetPositiveButton("Great", (sender, e) => { return; })
+                                .Create().Show();
+            };
+            adapter.DeleteClicked += (position) =>
+            {
+                Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title).Note = null;
+                notes.RemoveAt(position);
+                adapter.NotifyItemRemoved(position);
+                if (notes.Count == 0)
+                    ShowEmptyState();
+            };
             recycler.SetAdapter(adapter);
             recycler.SetLayoutManager(manager);
             recycler.SetItemAnimator(new DefaultItemAnimator());
+            base.OnResume();
         }
 
-        private void Adapter_OnAdapterEmpty(object sender, System.EventArgs e)
+        private void ShowEmptyState()
         {
             recycler.Visibility = ViewStates.Gone;
-			emptyState.Visibility = ViewStates.Visible;
-			emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " notes.";
+            emptyState.Visibility = ViewStates.Visible;
+            emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " notes.";
         }
 
-        private void Adapter_EditClicked(object sender, int e)
+        private void Adapter_EditClicked(int position)
         {
-            var view = recycler.GetChildAt(e);
-            var input = view.FindViewById<TextView>(Resource.Id.notesEdit);
-            var editNote = view.FindViewById<TextView>(Resource.Id.notesEditBtn);
+            var view = recycler.GetChildAt(position);
+            var vieNote = view.FindViewById<TextView>(Resource.Id.viewNote);
+            var editNote = view.FindViewById<TextView>(Resource.Id.noteEdit);
             var content = view.FindViewById<TextView>(Resource.Id.notesContent);
 
-            if (isNoteEditing == true) //user wants to save note
+            var dialog = new AddNoteDialog(notes[position]);
+            dialog.OnNoteSave += (Note note) =>
             {
-                noteText = input.Text;
-                switcher.ShowPrevious();
-                editNote.Text = noteText;
-                isNoteEditing = false;
-                editNote.Text = "Edit this note";
-                var note = notes[e];
-                var newNote = new Note() { Category = note.Category, Content = noteText.Length == 0 ? null : noteText, Title = note.Title };
-                var foundNote = notes.FirstOrDefault(x => x.Title == note.Title);
-                if (foundNote == null) // existing note wasn't found
-                {
-                    if (newNote.Content != null)
-                        notes.Add(newNote);
-                    else
-                        editNote.Text = "You have no notes for this idea. Tap the button below to add one.";
-                }
-                else //existing note was found
-                {
-                    if (newNote.Content == null)
-                    {
-                        editNote.Text = "You have no notes for this idea. Tap the button below to add one.";
-                        notes.Remove(foundNote);
-                        adapter.NotifyItemRemoved(e);
-                    }
-                    else
-                    {
-                        notes.Remove(foundNote);
-                        notes.Add(newNote);
-                    }
-                }
-                content.Text = noteText;
-            }
-            else
-            { //user wants to edit note
-                if (content.Text.Contains("You have no notes for this idea"))
-                    input.Text = "";
-                else
-                    input.Text = content.Text;
-                input.RequestFocus();
-                isNoteEditing = true;
-                switcher.ShowNext();
-                editNote.Text = "Save this note";
-            }
-            if (notes.Count == 0)
-                Adapter_OnAdapterEmpty(sender, new EventArgs());
+                notes[position] = note;
+                Global.Categories.FirstOrDefault(x => x.CategoryLbl == note.Category).Items.FirstOrDefault(y => y.Title == note.Title).Note = note;
+                adapter.NotifyItemChanged(position);
+            };
+
+            dialog.OnError += () =>
+            {
+                Snackbar.Make(recycler, "Invalid note. Please retry editing.", Snackbar.LengthLong).Show();
+            };
+            dialog.Show(FragmentManager, "NOTESFRAG");
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

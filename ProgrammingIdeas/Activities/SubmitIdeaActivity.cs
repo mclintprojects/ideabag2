@@ -3,9 +3,8 @@ using Android.Content;
 using Android.OS;
 using Android.Views;
 using Android.Widget;
-using ProgrammingIdeas.Activities;
-using System;
 using ProgrammingIdeas.Helpers;
+using System;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -15,7 +14,7 @@ namespace ProgrammingIdeas.Activities
         private string selectedCategory = "";
         private Button submitBtn;
         private EditText author, ideaTitle, description;
-		Validator validator;
+        private Validator validator;
 
         public override int LayoutResource
         {
@@ -36,7 +35,7 @@ namespace ProgrammingIdeas.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-			validator = new Validator(this);
+            validator = new Validator(this);
             var spinner = FindViewById<Spinner>(Resource.Id.spinner);
             author = FindViewById<EditText>(Resource.Id.authorTb);
             ideaTitle = FindViewById<EditText>(Resource.Id.submitTitle);
@@ -49,9 +48,9 @@ namespace ProgrammingIdeas.Activities
             submitBtn = FindViewById<Button>(Resource.Id.submitBtn);
             submitBtn.Click += (sender, e) =>
             {
-				validator.CheckIfEmpty(author, "Author name");
-				validator.CheckIfEmpty(ideaTitle, "Idea title");
-				validator.CheckIfEmpty(description, "Idea description");
+                validator.CheckIfEmpty(author, "Author name");
+                validator.CheckIfEmpty(ideaTitle, "Idea title");
+                validator.CheckIfEmpty(description, "Idea description");
                 if (validator.Result)
                 {
                     var submitIntent = new Intent(Intent.ActionSend);

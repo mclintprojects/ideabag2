@@ -9,7 +9,9 @@ namespace ProgrammingIdeas.Adapters
     public class NotesAdapter : RecyclerView.Adapter
     {
         private List<Note> notes = new List<Note>();
-		public event EventHandler<int> EditClicked;
+        public Action<int> EditClicked;
+        public Action<int> ViewNoteClicked;
+        public Action<int> DeleteClicked;
 
         public NotesAdapter(List<Note> notes)
         {
@@ -30,9 +32,17 @@ namespace ProgrammingIdeas.Adapters
             var view = holder as NoteViewHolder;
             view.Title.Text = $"{note.Category} >> {note.Title}";
             view.Content.Text = note.Content;
-            view.EditNote.Click += (sender, e) =>
+            view.EditNote.Click += delegate
             {
-				EditClicked?.Invoke(sender, position);
+                EditClicked?.Invoke(position);
+            };
+            view.ViewNote.Click += delegate
+            {
+                ViewNoteClicked?.Invoke(position);
+            };
+            view.DeleteNote.Click += delegate
+            {
+                DeleteClicked?.Invoke(position);
             };
         }
 
@@ -48,16 +58,16 @@ namespace ProgrammingIdeas.Adapters
         public TextView Title { get; set; }
         public TextView EditNote { get; set; }
         public TextView Content { get; set; }
-        public EditText NoteInput { get; set; }
-        public ViewSwitcher Switcher { get; set; }
+        public TextView ViewNote { get; set; }
+        public TextView DeleteNote { get; set; }
 
         public NoteViewHolder(View itemView) : base(itemView)
         {
             Title = itemView.FindViewById<TextView>(Resource.Id.notesTitle);
-			EditNote = itemView.FindViewById<TextView>(Resource.Id.notesEditBtn);
+            EditNote = itemView.FindViewById<TextView>(Resource.Id.noteEdit);
             Content = itemView.FindViewById<TextView>(Resource.Id.notesContent);
-            NoteInput = itemView.FindViewById<EditText>(Resource.Id.notesEdit);
-            Switcher = itemView.FindViewById<ViewSwitcher>(Resource.Id.notesActivitySwitcher);
+            ViewNote = itemView.FindViewById<TextView>(Resource.Id.viewNote);
+            DeleteNote = itemView.FindViewById<TextView>(Resource.Id.deleteNote);
         }
     }
 }

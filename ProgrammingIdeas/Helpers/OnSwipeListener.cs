@@ -7,7 +7,7 @@ using static Android.Views.GestureDetector;
 
 namespace ProgrammingIdeas.Helpers
 {
-    enum Swipe
+    internal enum Swipe
     {
         Left,
         Right

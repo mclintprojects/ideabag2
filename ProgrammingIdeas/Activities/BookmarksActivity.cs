@@ -1,20 +1,17 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
-using ProgrammingIdeas.Activities;
+using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
-using ProgrammingIdeas.Adapters;
-using System.Timers;
-using Android.Support.Design.Widget;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -23,13 +20,13 @@ namespace ProgrammingIdeas.Activities
     {
         private List<Category> allItems;
         private RecyclerView recyclerView;
-		private LinearLayoutManager manager;
+        private LinearLayoutManager manager;
         private IdeaListAdapter adapter;
         private List<CategoryItem> bookmarksList = new List<CategoryItem>();
         private string path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private int scrollPosition = 0;
-		private View emptyState;
-		private ProgressBar progressBar;
+        private View emptyState;
+        private ProgressBar progressBar;
 
         public override int LayoutResource
         {
@@ -52,8 +49,8 @@ namespace ProgrammingIdeas.Activities
             base.OnCreate(savedInstanceState);
             path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
             recyclerView = FindViewById<RecyclerView>(Resource.Id.bookmarkRecyclerView);
-			emptyState = FindViewById(Resource.Id.empty);
-			progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);
+            emptyState = FindViewById(Resource.Id.empty);
+            progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);
             manager = new LinearLayoutManager(this);
             setupUI();
         }
@@ -63,40 +60,42 @@ namespace ProgrammingIdeas.Activities
             if (File.Exists(path))
             {
                 bookmarksList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
+                bookmarksList = bookmarksList ?? new List<CategoryItem>();
                 allItems = Global.Categories;
-				if (bookmarksList != null && bookmarksList.Count > 0)
-				{
-					adapter = new IdeaListAdapter(bookmarksList, this);
-					adapter.ItemClick += OnItemClick;
-					recyclerView.SetAdapter(adapter);
-					recyclerView.SetLayoutManager(manager);
-					recyclerView.SetItemAnimator(new DefaultItemAnimator());
-					manager.ScrollToPosition(scrollPosition);
-					adapter.StateClicked += StateClicked;
-					ShowProgress();
-				}
-
-				else
-					ShowEmptyState();
+                if (bookmarksList.Count > 0)
+                {
+                    adapter = new IdeaListAdapter(bookmarksList, this);
+                    adapter.ItemClick += OnItemClick;
+                    recyclerView.SetAdapter(adapter);
+                    recyclerView.SetLayoutManager(manager);
+                    recyclerView.SetItemAnimator(new DefaultItemAnimator());
+                    manager.ScrollToPosition(scrollPosition);
+                    adapter.StateClicked += StateClicked;
+                    ShowProgress();
+                }
+                else
+                    ShowEmptyState();
             }
+            else
+                ShowEmptyState();
         }
 
-		void ShowProgress()
-		{
-			var completedCount = bookmarksList.FindAll(x => x.State == "done").Count;
-			progressBar.Max = bookmarksList.Count;
-			progressBar.Progress = 0;
-			progressBar.IncrementProgressBy(completedCount);
-		}
+        private void ShowProgress()
+        {
+            var completedCount = bookmarksList.FindAll(x => x.State == "done").Count;
+            progressBar.Max = bookmarksList.Count;
+            progressBar.Progress = 0;
+            progressBar.IncrementProgressBy(completedCount);
+        }
 
-		void ShowEmptyState()
-		{
-			recyclerView.Visibility = ViewStates.Gone;
-			emptyState.Visibility = ViewStates.Visible;
-			emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " bookmarks.";
-		}
+        private void ShowEmptyState()
+        {
+            recyclerView.Visibility = ViewStates.Gone;
+            emptyState.Visibility = ViewStates.Visible;
+            emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " bookmarks.";
+        }
 
-		/*void Adapter_OnSwipeLeft(int position) //TODO: Fix swipe left later.
+        /*void Adapter_OnSwipeLeft(int position) //TODO: Fix swipe left later.
 		{
             var timer = new Timer(5000);
             timer.Start();
@@ -111,7 +110,7 @@ namespace ProgrammingIdeas.Activities
             };
 		}*/
 
-		private void StateClicked(string e)
+        private void StateClicked(string e)
         {
             var contents = e.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
             int position = Convert.ToInt32(contents[0]);
@@ -123,8 +122,8 @@ namespace ProgrammingIdeas.Activities
                 allItems.FirstOrDefault(x => x.CategoryLbl == bookmarksList[position].Category).Items[position].State = state;
                 DBAssist.SerializeDB(path, bookmarksList);
             }
-			Snackbar.Make(recyclerView, $"Idea progress marked as {state}.", Snackbar.LengthLong).Show();
-			ShowProgress();
+            Snackbar.Make(recyclerView, $"Idea progress marked as {state}.", Snackbar.LengthLong).Show();
+            ShowProgress();
         }
 
         public override bool OnOptionsItemSelected(IMenuItem item)

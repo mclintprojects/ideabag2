@@ -133,6 +133,12 @@
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CategoryActivity.cs" />
     <Compile Include="Activities\DonateActivity.cs" />
+    <Compile Include="AppResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>AppResources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Helpers\CloudDB.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\OnSwipeListener.cs" />
     <Compile Include="Helpers\POCOs.cs" />
@@ -154,7 +160,7 @@
     <Compile Include="Activities\App.cs" />
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Helpers\AnimHelper.cs" />
-    <Compile Include="Fragments\AddNoteFragment.cs" />
+    <Compile Include="Fragments\AddNoteDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -276,8 +282,14 @@
     <AndroidResource Include="Resources\mipmap-mdpi\ic_plus_white_24dp.png" />
     <AndroidResource Include="Resources\layout\add_note_layout.xml" />
     <AndroidResource Include="Resources\layout\donateactivity.xml" />
+    <AndroidResource Include="Resources\drawable\paypal.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="AppResources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>AppResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamandroidsupportv7cardview">
       <Version>24.2.1.0</Version>
@@ -289,11 +301,6 @@
     </XamarinComponentReference>
   </ItemGroup>
   <ItemGroup>
-    <AndroidAsset Include="Assets\output.json" />
-    <AndroidAsset Include="Assets\newideasdb.txt" />
-    <AndroidAsset Include="Assets\fonts\RubikRegular.ttf" />
-    <AndroidAsset Include="Assets\fonts\OswaldBold.ttf" />
-    <AndroidAsset Include="Assets\fonts\OswaldRegular.ttf" />
     <AndroidAsset Include="Assets\fonts\RalewayBold.ttf" />
     <AndroidAsset Include="Assets\fonts\RalewayRegular.ttf" />
   </ItemGroup>

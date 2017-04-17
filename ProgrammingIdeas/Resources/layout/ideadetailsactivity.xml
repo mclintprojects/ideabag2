@@ -15,17 +15,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <android.support.design.widget.FloatingActionButton
-            android:id="@+id/addNotefab"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:src="@mipmap/ic_plus_white_24dp"
-            cardview:rippleColor="@color/accentDark"
-            cardview:srcCompat="@mipmap/ic_plus_white_24dp" />
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -56,6 +45,7 @@
                     android:linksClickable="true"
                     android:text="@string/description"
                     android:textColor="@color/primaryTextLight"
+                    android:textColorLink="@color/primaryText"
                     android:textSize="18sp" />
 
                 <android.support.v7.widget.CardView
@@ -64,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="36dp"
                     cardview:cardBackgroundColor="@color/accent"
-                    cardview:cardCornerRadius="2dp"
+                    cardview:cardCornerRadius="5dp"
                     cardview:cardElevation="2dp"
                     cardview:cardUseCompatPadding="true"
                     cardview:contentPadding="16dp">
@@ -82,21 +72,13 @@
                             android:textSize="16sp" />
 
                         <TextView
-                            android:id="@+id/noteName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="8dp"
-                            android:text="Note's name"
-                            android:textColor="@color/secondaryText"
-                            android:textSize="20sp" />
-
-                        <TextView
                             android:id="@+id/noteContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:text="Note's content"
                             android:textColor="@color/secondaryTextLight"
+                            android:textColorLink="@color/primaryText"
                             android:textSize="18sp" />
 
                         <Button
@@ -113,6 +95,17 @@
 
             </LinearLayout>
         </ScrollView>
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/addNotefab"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|right"
+            android:layout_margin="16dp"
+            android:clickable="true"
+            android:src="@mipmap/ic_plus_white_24dp"
+            cardview:rippleColor="@color/accentDark"
+            cardview:srcCompat="@mipmap/ic_plus_white_24dp" />
 
     </FrameLayout>
 

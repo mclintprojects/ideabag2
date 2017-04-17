@@ -5,13 +5,12 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using Newtonsoft.Json;
+using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using ProgrammingIdeas.Activities;
-using ProgrammingIdeas.Adapters;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -53,7 +52,7 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.itemRecyclerView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);
             allItems = Global.Categories;
-			progressBar.Max = allItems[Global.CategoryScrollPosition].Items.Count;
+            progressBar.Max = allItems[Global.CategoryScrollPosition].Items.Count;
             ShowProgress();
             bookmarkedList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
             setupMainIntent();
@@ -61,14 +60,14 @@ namespace ProgrammingIdeas.Activities
 
         private void ShowProgress()
         {
-			var completedCount = allItems[Global.CategoryScrollPosition].Items.FindAll(x => x.State == "done").Count;
-			progressBar.Progress = 0;
-			progressBar.IncrementProgressBy(completedCount);
+            var completedCount = allItems[Global.CategoryScrollPosition].Items.FindAll(x => x.State == "done").Count;
+            progressBar.Progress = 0;
+            progressBar.IncrementProgressBy(completedCount);
         }
 
         private void setupMainIntent()
         {
-			string title = Global.Categories[Global.CategoryScrollPosition].CategoryLbl;
+            string title = Global.Categories[Global.CategoryScrollPosition].CategoryLbl;
             itemTitle = title;
             itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
             if (bookmarkedList != null && bookmarkedList.Count != 0)
@@ -94,7 +93,7 @@ namespace ProgrammingIdeas.Activities
                     {
                         itemsList[position].State = state;
                         adapter.NotifyItemChanged(position);
-						ShowProgress();
+                        ShowProgress();
                         allItems.FirstOrDefault(x => x.CategoryLbl == title).Items.FirstOrDefault(y => y.Description == itemsList[position].Description).State = state;
                     }
                 };
@@ -106,7 +105,7 @@ namespace ProgrammingIdeas.Activities
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-					NavigateAway();
+                    NavigateAway();
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -120,7 +119,7 @@ namespace ProgrammingIdeas.Activities
 
         private void OnItemClick(int position)
         {
-			Global.ItemScrollPosition = position;
+            Global.ItemScrollPosition = position;
             var intent = new Intent(this, typeof(IdeaDetailsActivity));
             intent.PutExtra("sender", "idealistactivity"); //one recycler view for bookmark activity and idea list activity so i need to know the sender
             StartActivity(intent);
@@ -129,15 +128,15 @@ namespace ProgrammingIdeas.Activities
 
         public override void OnBackPressed()
         {
-			NavigateAway();
+            NavigateAway();
             base.OnBackPressed();
         }
 
-		void NavigateAway()
-		{
-			Global.ItemScrollPosition = 0;
+        private void NavigateAway()
+        {
+            Global.ItemScrollPosition = 0;
             NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
-			OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
-		}
+            OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
+        }
     }
 }

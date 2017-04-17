@@ -10,19 +10,17 @@ namespace ProgrammingIdeas.Adapters
     public class CategoryAdapter : RecyclerView.Adapter
     {
         private List<Category> categories;
-
-        public event EventHandler<int> ItemClick;
-
+        public Action<int> ItemClick;
         private Context parentContext;
-        private int[] icons;
-        private int scrollPos;
 
-        public CategoryAdapter(List<Category> category, Context context, int[] icons, int scrollPos)
+        private int[] icons = {Resource.Mipmap.numbers, Resource.Mipmap.text, Resource.Mipmap.network, Resource.Mipmap.enterprise,
+                                       Resource.Mipmap.cpu, Resource.Mipmap.web, Resource.Mipmap.file, Resource.Mipmap.database,
+                                       Resource.Mipmap.multimedia, Resource.Mipmap.games};
+
+        public CategoryAdapter(List<Category> category, Context context)
         {
             categories = category;
             parentContext = context;
-            this.icons = icons;
-            this.scrollPos = scrollPos;
         }
 
         public override int ItemCount
@@ -39,10 +37,10 @@ namespace ProgrammingIdeas.Adapters
 
             var viewHolder = holder as mViewHolder;
             viewHolder.categoryLabel.Text = category.CategoryLbl;
-			viewHolder.ideasCount.Text = $"Ideas: {category.Items.Count}";
+            viewHolder.ideasCount.Text = $"Ideas: {category.Items.Count}";
             viewHolder.imageView.SetImageResource(icons[position]);
             viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
-            if (position == scrollPos)
+            if (position == Global.CategoryScrollPosition)
                 viewHolder.Root.SetBackgroundResource(Resource.Color.highlight);
         }
 
@@ -54,10 +52,7 @@ namespace ProgrammingIdeas.Adapters
 
         private void OnClick(int position)
         {
-            if (ItemClick != null)
-            {
-                ItemClick?.Invoke(this, position);
-            }
+            ItemClick?.Invoke(position);
         }
     }
 
