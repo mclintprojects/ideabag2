@@ -53,6 +53,7 @@ namespace ProgrammingIdeas.Activities
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
 			DownloadIdeas();
+<<<<<<< HEAD
 			if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
 				ShowNewIdeasDialog();
         }
@@ -70,12 +71,20 @@ namespace ProgrammingIdeas.Activities
 		}
 
 		private void DownloadIdeas()
+=======
+        }
+
+        private void DownloadIdeas()
+>>>>>>> master
         {
 			PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
+<<<<<<< HEAD
 			CloudDB.Init(this);
+=======
+>>>>>>> master
             CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
@@ -85,7 +94,17 @@ namespace ProgrammingIdeas.Activities
                         loadingCircle.Visibility = ViewStates.Gone;
                         snack.Dismiss();
                         categoryList = Global.Categories;
+<<<<<<< HEAD
                         setupUI();
+=======
+                        if (Global.IsNewIdeasAvailable)
+                        {
+                            snack.SetText("New ideas are available.").SetDuration(Snackbar.LengthLong);
+                            snack.Show();
+                            Global.IsNewIdeasAvailable = false;
+                        }
+						SetupUI();
+>>>>>>> master
                     }
                     else
                         loadingCircle.Visibility = ViewStates.Gone;
@@ -93,7 +112,11 @@ namespace ProgrammingIdeas.Activities
             });
         }
 
+<<<<<<< HEAD
 		private void setupUI() //first launch, gets json from packaged assets
+=======
+        private void SetupUI() //first launch, gets json from packaged assets
+>>>>>>> master
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);

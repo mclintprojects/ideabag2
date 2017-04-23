@@ -107,6 +107,7 @@ namespace ProgrammingIdeas.Helpers
 
         private static async void StartLowkeyInvalidation()
         {
+<<<<<<< HEAD
 			try
 			{
 				if (!Global.LockRequests)
@@ -122,6 +123,30 @@ namespace ProgrammingIdeas.Helpers
 						if (newideasdbResponse.IsSuccessStatusCode)
 						{
 							newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
+=======
+            try
+            {
+                if (!Global.LockRequests)
+                {
+                    Global.Categories = DBAssist.GetDB(oldDBPath);
+                    var response = await client.GetAsync(AppResources.DbLink);
+                    if (response.IsSuccessStatusCode)
+                    {
+                        var payload = await response.Content.ReadAsStringAsync();
+                        newDB = JsonConvert.DeserializeObject<List<Category>>(payload);
+                        var newideasdbResponse = await client.GetAsync(AppResources.NewIdeasDbLink);
+                        if (newideasdbResponse.IsSuccessStatusCode)
+                        {
+                            newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
+                            if (NewIdeasAvailable(Global.Categories, newDB))
+                                InvalidateOldDB();
+                        }
+                    }
+                }
+            }
+            catch { }
+        }
+>>>>>>> master
 
 							if (NewIdeasAvailable(Global.Categories, newDB))
 							{
