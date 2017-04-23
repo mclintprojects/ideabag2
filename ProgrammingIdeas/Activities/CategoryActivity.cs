@@ -18,8 +18,7 @@ using Helpers;
 
 namespace ProgrammingIdeas.Activities
 {
-    //Main activity.
-    [Activity(Label = "Idea Bag Dev", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
+    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
     public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;
@@ -53,17 +52,31 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-            GetOnlineDb();
+			DownloadIdeas();
+			if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
+				ShowNewIdeasDialog();
         }
 
-        private void GetOnlineDb()
+		void ShowNewIdeasDialog()
+		{
+			var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
+			if (File.Exists(newideastxtPath))
+			{
+				var dialogFrag = new NewIdeaFragment(GetNewIdeas());
+				dialogFrag.Show(FragmentManager, "DIALOGFRAG");
+			}
+			else
+				Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
+		}
+
+		private void DownloadIdeas()
         {
 			PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
 			CloudDB.Init(this);
-            CloudDB.Startup(GetOnlineDb, snack).ContinueWith((a) =>
+            CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
                 {
@@ -132,15 +145,8 @@ namespace ProgrammingIdeas.Activities
                     return true;
 
                 case Resource.Id.newIdeas:
-					var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
-					if (File.Exists(newideastxtPath))
-					{
-						var dialogFrag = new NewIdeaFragment(GetNewIdeas());
-						dialogFrag.Show(FragmentManager, "DIALOGFRAG");
-					}
-					else
-						Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
-				    return true;
+					ShowNewIdeasDialog();
+					return true;
 
                 case Resource.Id.notes:
                     StartActivity(new Intent(this, typeof(NotesActivity)));

@@ -118,12 +118,10 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DbLink" xml:space="preserve">
-    <value>https://docs.google.com/document/d/1MLVV3X_Y90VC5DqbkWM7gqB9GFQYCJ9T5cpBxrNRiDI/export?format=txt</value>
-    <comment>https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt</comment>
+    <value>https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt</value>
   </data>
   <data name="NewIdeasDbLink" xml:space="preserve">
-    <value>https://docs.google.com/document/d/1ptfMnhdDPefN9irHpyqIp3R50sSHK4I9RX_YC1gBhCg/export?format=txt</value>
-    <comment>https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt</comment>
+    <value>https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt</value>
   </data>
   <data name="PaypalLink" xml:space="preserve">
     <value>https://www.paypal.me/elormvowotor/</value>

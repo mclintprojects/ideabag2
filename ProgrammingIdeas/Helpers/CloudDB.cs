@@ -52,6 +52,7 @@ namespace ProgrammingIdeas.Helpers
 							Global.Categories = newDB;
 							DBAssist.SerializeDB(oldDBPath, Global.Categories);
 							DBAssist.SerializeDB(newideastxtPath, newideastxt);
+							Notify(0);
 						}
 					}
 				}
@@ -79,9 +80,14 @@ namespace ProgrammingIdeas.Helpers
 		{
 			activity.RunOnUiThread(() => {
 				string notifContent = newIdeasCount == 1 ? $"1 new idea is available." : $"{newIdeasCount.ToString()} new ideas are available.";
+				var intent = new Intent(activity, typeof(CategoryActivity));
+				intent.PutExtra("NewIdeasNotif", true);
+				var pendingIntent = PendingIntent.GetActivity(activity, 1960, intent, PendingIntentFlags.UpdateCurrent);
+
 				var notif = new NotificationCompat.Builder(activity)
 												  .SetContentTitle("New ideas available.")
 												  .SetContentText(notifContent)
+				                                  .SetContentIntent(pendingIntent)
 				                                  .SetSmallIcon(Resource.Mipmap.notif_icon)
 												  .Build();
 				var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
