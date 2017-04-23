@@ -51,15 +51,15 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-            GetOnlineDb();
+			DownloadIdeas();
         }
 
-        private void GetOnlineDb()
+        private void DownloadIdeas()
         {
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
-            CloudDB.Startup(GetOnlineDb, snack).ContinueWith((a) =>
+            CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
                 {
@@ -74,7 +74,7 @@ namespace ProgrammingIdeas.Activities
                             snack.Show();
                             Global.IsNewIdeasAvailable = false;
                         }
-                        setupUI();
+						SetupUI();
                     }
                     else
                         loadingCircle.Visibility = ViewStates.Gone;
@@ -82,7 +82,7 @@ namespace ProgrammingIdeas.Activities
             });
         }
 
-        private void setupUI() //first launch, gets json from packaged assets
+        private void SetupUI() //first launch, gets json from packaged assets
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);

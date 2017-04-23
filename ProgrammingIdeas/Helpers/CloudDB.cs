@@ -78,9 +78,6 @@ namespace ProgrammingIdeas.Helpers
             {
                 if (!Global.LockRequests)
                 {
-#if DEBUG
-                    Toast.MakeText(Application.Context, "Starting lowkey invalidation", ToastLength.Long).Show();
-#endif
                     Global.Categories = DBAssist.GetDB(oldDBPath);
                     var response = await client.GetAsync(AppResources.DbLink);
                     if (response.IsSuccessStatusCode)
