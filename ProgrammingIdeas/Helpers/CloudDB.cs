@@ -8,6 +8,12 @@ using System.IO;
 using System.Net.Http;
 using System.Threading.Tasks;
 using System.Threading;
+using Helpers;
+using System.Linq;
+using ProgrammingIdeas.Activities;
+using Android.Content;
+using Android.Support.V4.App;
+using Android.Util;
 
 namespace ProgrammingIdeas.Helpers
 {
@@ -18,6 +24,13 @@ namespace ProgrammingIdeas.Helpers
         private static List<Category> newDB;
         private static string newideastxt;
         private static HttpClient client = new HttpClient();
+		private static Activity activity;
+		private const string TAG = "ALANSADEBUG";
+
+		public static void Init(Activity activity)
+		{
+			CloudDB.activity = activity;
+		}
 
         public static async Task Startup(Action retryMethod, Snackbar snack)
         {
@@ -62,7 +75,21 @@ namespace ProgrammingIdeas.Helpers
             }
         }
 
-        private static bool NewIdeasAvailable(List<Category> oldIdeas, List<Category> newIdeas)
+		static void Notify(int newIdeasCount)
+		{
+			activity.RunOnUiThread(() => {
+				string notifContent = newIdeasCount == 1 ? $"1 new idea is available." : $"{newIdeasCount.ToString()} new ideas are available.";
+				var notif = new NotificationCompat.Builder(activity)
+												  .SetContentTitle("New ideas available.")
+												  .SetContentText(notifContent)
+				                                  .SetSmallIcon(Resource.Mipmap.notif_icon)
+												  .Build();
+				var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
+				notifManager.Notify(1957, notif);
+			});
+		}
+
+		private static bool NewIdeasAvailable(List<Category> oldIdeas, List<Category> newIdeas)
         {
             for (int i = 0; i < oldIdeas.Count; i++)
             {
@@ -74,46 +101,71 @@ namespace ProgrammingIdeas.Helpers
 
         private static async void StartLowkeyInvalidation()
         {
-            try
-            {
-                if (!Global.LockRequests)
-                {
-#if DEBUG
-                    Toast.MakeText(Application.Context, "Starting lowkey invalidation", ToastLength.Long).Show();
-#endif
-                    Global.Categories = DBAssist.GetDB(oldDBPath);
-                    var response = await client.GetAsync(AppResources.DbLink);
-                    if (response.IsSuccessStatusCode)
-                    {
-                        var payload = await response.Content.ReadAsStringAsync();
-                        newDB = JsonConvert.DeserializeObject<List<Category>>(payload);
-                        var newideasdbResponse = await client.GetAsync(AppResources.NewIdeasDbLink);
-                        if (newideasdbResponse.IsSuccessStatusCode)
-                        {
-                            newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
-                            if (NewIdeasAvailable(Global.Categories, newDB))
-                                InvalidateOldDB();
-                        }
-                    }
-                }
-            }
-            catch { }
-        }
+			try
+			{
+				if (!Global.LockRequests)
+				{
+					Log.Debug(TAG, "Starting lowkey invalidation");
+					Global.Categories = DBAssist.GetDB(oldDBPath);
+					var response = await client.GetAsync(AppResources.DbLink);
+					if (response.IsSuccessStatusCode)
+					{
+						var payload = await response.Content.ReadAsStringAsync();
+						newDB = JsonConvert.DeserializeObject<List<Category>>(payload);
+						var newideasdbResponse = await client.GetAsync(AppResources.NewIdeasDbLink);
+						if (newideasdbResponse.IsSuccessStatusCode)
+						{
+							newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
 
-        private static void InvalidateOldDB()
-        {
-            var newIdeasContent = newideastxt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < newIdeasContent.Length; i++)
-            {
-                var sContents = newIdeasContent[i].Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-                var categoryIndex = Convert.ToInt32(sContents[0]) - 1;
-                var itemIndex = Convert.ToInt32(sContents[1]) - 1;
-                Global.Categories[categoryIndex].Items.Add((newDB[categoryIndex].Items[itemIndex]));
-                Global.Categories[categoryIndex].CategoryCount++;
-            }
-            DBAssist.SerializeDB(oldDBPath, Global.Categories);
-            DBAssist.SerializeDB(newideastxtPath, newideastxt);
-			Global.IsNewIdeasAvailable = true;
+							if (NewIdeasAvailable(Global.Categories, newDB))
+							{
+								Log.Debug(TAG, "New ideas available");
+								var newIdeasContent = newideastxt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+								Notify(newIdeasContent.Length);
+							}
+
+							Log.Debug(TAG, "Starting full invalidation");
+
+							var notesPath = Path.Combine(Global.APP_PATH, "notesdb");
+							File.Create(notesPath);
+							var notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesPath));
+							notes = notes ?? new List<Note>();
+							for (int i = 0; i < Global.Categories.Count; i++)
+							{
+								for (int j = 0; j < Global.Categories[i].Items.Count; j++)
+								{
+									var newItem = newDB[i].Items[j];
+									var oldItem = Global.Categories[i].Items.FirstOrDefault(x => x.Id == newItem.Id);
+									Note note = null;
+									if(oldItem != null)
+										note = notes.FirstOrDefault(x => x.Title == oldItem.Title);
+								
+									newItem.Note = note ?? note;
+									newItem.State = oldItem?.State;
+								}
+							}
+
+							if (PreferenceHelper.GetBoolean("bookmarksDeleted", false) == false)
+							{
+								var path = Path.Combine(Global.APP_PATH, "bookmarks.json");
+								if (File.Exists(path))
+									File.Delete(path);
+								PreferenceHelper.PutBoolean("bookmarksDeleted", true);
+							}
+
+							DBAssist.SerializeDB(oldDBPath, newDB);
+							DBAssist.SerializeDB(newideastxtPath, newideastxt);
+							Global.Categories = newDB;
+
+							Log.Debug(TAG, "Invalidation completed.");
+						}
+					}
+				}
+			}
+			catch (Exception e)
+			{
+				Log.Debug(TAG, e.Message + e.Source + e.StackTrace);
+			}
         }
-    }
+	}
 }

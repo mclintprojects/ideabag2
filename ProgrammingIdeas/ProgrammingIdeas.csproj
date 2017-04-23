@@ -161,6 +161,7 @@
     <Compile Include="Helpers\Validator.cs" />
     <Compile Include="Helpers\AnimHelper.cs" />
     <Compile Include="Fragments\AddNoteDialog.cs" />
+    <Compile Include="Helpers\PreferenceHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Properties\AndroidManifest.xml" />
@@ -283,6 +284,11 @@
     <AndroidResource Include="Resources\layout\add_note_layout.xml" />
     <AndroidResource Include="Resources\layout\donateactivity.xml" />
     <AndroidResource Include="Resources\drawable\paypal.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\notif_icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\notif_icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\notif_icon.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\notif_icon.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\notif_icon.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AppResources.resx">

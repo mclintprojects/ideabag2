@@ -17,7 +17,6 @@ namespace ProgrammingIdeas.Adapters
         public Action<int> ItemClick;
         public Action<string> StateClicked;
         private Context ctx;
-		private int index = 1;
 
         public IdeaListAdapter(List<CategoryItem> list, Context ctx)
         {
@@ -40,7 +39,7 @@ namespace ProgrammingIdeas.Adapters
 
             itemHolder.Difficulty.Text = item.Difficulty;
             itemHolder.Title.Text = item.Title;
-			itemHolder.Id.Text = (position + 1).ToString();
+			itemHolder.Id.Text = item.Id.ToString();
             itemHolder.State.SetBackgroundResource(Resource.Color.undecidedColor);
             itemHolder.Root.SetBackgroundColor(Color.Transparent);
             switch (item.State)

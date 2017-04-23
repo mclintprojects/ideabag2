@@ -37,7 +37,7 @@ namespace ProgrammingIdeas.Adapters
 
             var viewHolder = holder as mViewHolder;
             viewHolder.categoryLabel.Text = category.CategoryLbl;
-            viewHolder.ideasCount.Text = $"Ideas: {category.Items.Count}";
+			viewHolder.ideasCount.Text = $"Ideas: {category.CategoryCount}";
             viewHolder.imageView.SetImageResource(icons[position]);
             viewHolder.Root.SetBackgroundColor(Android.Graphics.Color.Transparent);
             if (position == Global.CategoryScrollPosition)

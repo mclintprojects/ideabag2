@@ -47,7 +47,7 @@ namespace ProgrammingIdeas.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
+            path = Path.Combine(Global.APP_PATH, "bookmarks.json");
             recyclerView = FindViewById<RecyclerView>(Resource.Id.bookmarkRecyclerView);
             emptyState = FindViewById(Resource.Id.empty);
             progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);

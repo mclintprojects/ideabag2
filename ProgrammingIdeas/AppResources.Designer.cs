@@ -61,7 +61,7 @@ namespace ProgrammingIdeas {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt.
+        ///   Looks up a localized string similar to https://docs.google.com/document/d/1MLVV3X_Y90VC5DqbkWM7gqB9GFQYCJ9T5cpBxrNRiDI/export?format=txt.
         /// </summary>
         internal static string DbLink {
             get {
@@ -70,7 +70,7 @@ namespace ProgrammingIdeas {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt.
+        ///   Looks up a localized string similar to https://docs.google.com/document/d/1ptfMnhdDPefN9irHpyqIp3R50sSHK4I9RX_YC1gBhCg/export?format=txt.
         /// </summary>
         internal static string NewIdeasDbLink {
             get {

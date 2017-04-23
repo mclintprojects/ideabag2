@@ -13,11 +13,13 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Android.Support.V4.App;
+using Helpers;
 
 namespace ProgrammingIdeas.Activities
 {
     //Main activity.
-    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
+    [Activity(Label = "Idea Bag Dev", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
     public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;
@@ -56,9 +58,11 @@ namespace ProgrammingIdeas.Activities
 
         private void GetOnlineDb()
         {
+			PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
+			CloudDB.Init(this);
             CloudDB.Startup(GetOnlineDb, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
@@ -68,12 +72,6 @@ namespace ProgrammingIdeas.Activities
                         loadingCircle.Visibility = ViewStates.Gone;
                         snack.Dismiss();
                         categoryList = Global.Categories;
-                        if (Global.IsNewIdeasAvailable)
-                        {
-                            snack.SetText("New ideas are available.").SetDuration(Snackbar.LengthLong);
-                            snack.Show();
-                            Global.IsNewIdeasAvailable = false;
-                        }
                         setupUI();
                     }
                     else
@@ -82,7 +80,7 @@ namespace ProgrammingIdeas.Activities
             });
         }
 
-        private void setupUI() //first launch, gets json from packaged assets
+		private void setupUI() //first launch, gets json from packaged assets
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);

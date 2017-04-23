@@ -54,7 +54,6 @@ namespace ProgrammingIdeas.Activities
             allItems = Global.Categories;
             progressBar.Max = allItems[Global.CategoryScrollPosition].Items.Count;
             ShowProgress();
-            bookmarkedList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
             setupMainIntent();
         }
 
@@ -70,11 +69,6 @@ namespace ProgrammingIdeas.Activities
             string title = Global.Categories[Global.CategoryScrollPosition].CategoryLbl;
             itemTitle = title;
             itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
-            if (bookmarkedList != null && bookmarkedList.Count != 0)
-            {
-                foreach (CategoryItem item in bookmarkedList)
-                    itemsList.Remove(itemsList.FirstOrDefault(x => x.Title == item.Title));
-            }
 
             RunOnUiThread(() =>
             {

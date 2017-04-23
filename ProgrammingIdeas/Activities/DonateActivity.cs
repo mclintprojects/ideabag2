@@ -4,6 +4,7 @@ using Android.OS;
 using Android.Support.V7.App;
 using Android.Views.Animations;
 using Android.Widget;
+using Helpers;
 using ProgrammingIdeas.Animation;
 
 namespace ProgrammingIdeas.Activities
@@ -64,20 +65,13 @@ namespace ProgrammingIdeas.Activities
                     .Create()
                     .Show();
 
-                PutBoolean(true);
+				PreferenceHelper.PutBoolean("dialogShown", true);
             }
-        }
-
-        private void PutBoolean(bool value)
-        {
-            var editor = GetPreferences(FileCreationMode.Private).Edit();
-            editor.PutBoolean("dialogShown", value);
-            editor.Commit();
         }
 
         public override void OnBackPressed()
         {
-            PutBoolean(false);
+            PreferenceHelper.PutBoolean("dialogShown", false);
             StartActivity(new Intent(this, typeof(CategoryActivity)));
             OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
             base.OnBackPressed();

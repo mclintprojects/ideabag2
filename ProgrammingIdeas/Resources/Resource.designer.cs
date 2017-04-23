@@ -3379,13 +3379,16 @@ namespace ProgrammingIdeas
 			public const int network = 2130903055;
 			
 			// aapt resource value: 0x7f030010
-			public const int numbers = 2130903056;
+			public const int notif_icon = 2130903056;
 			
 			// aapt resource value: 0x7f030011
-			public const int text = 2130903057;
+			public const int numbers = 2130903057;
 			
 			// aapt resource value: 0x7f030012
-			public const int web = 2130903058;
+			public const int text = 2130903058;
+			
+			// aapt resource value: 0x7f030013
+			public const int web = 2130903059;
 			
 			static Mipmap()
 			{
