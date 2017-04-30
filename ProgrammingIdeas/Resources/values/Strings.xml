@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. No need to update the entire app for new ideas. Ideas are automatically downloaded now.\r\n2. UI overhaul.\r\n3. Added a progress bar to show how many ideas you\'ve completed.\r\n4. Added 3 new ideas.\r\n5. Added a donate section for people who want to support development.
+		1. You get notified now when new ideas are available.\r\n2.Several bug fixes and usability improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">

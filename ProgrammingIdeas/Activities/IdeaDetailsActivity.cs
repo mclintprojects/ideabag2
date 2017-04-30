@@ -106,7 +106,7 @@ namespace ProgrammingIdeas.Activities
         {
             IsInBookmarkMode = true;
             Global.ItemScrollPosition = Global.BookmarkScrollPosition; // To enable swipes work correctly
-			itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
+            itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
             item = bookmarkedItems[Global.BookmarkScrollPosition];
             SetupUI();
         }
@@ -175,27 +175,27 @@ namespace ProgrammingIdeas.Activities
                     FinishItemChange(WasLeftSwipe);
                 }
                 else
-					ToastDirection(WasLeftSwipe);
+                    ToastDirection(WasLeftSwipe);
             }
             else
             {
-				if (index >= 0 && index <= bookmarkedItems.Count - 1)
-				{
-					Global.BookmarkScrollPosition = index;
-					Global.ItemScrollPosition = index;
-					item = bookmarkedItems[index];
-					FinishItemChange(WasLeftSwipe);
-				}
-				else
-					ToastDirection(WasLeftSwipe);
+                if (index >= 0 && index <= bookmarkedItems.Count - 1)
+                {
+                    Global.BookmarkScrollPosition = index;
+                    Global.ItemScrollPosition = index;
+                    item = bookmarkedItems[index];
+                    FinishItemChange(WasLeftSwipe);
+                }
+                else
+                    ToastDirection(WasLeftSwipe);
             }
         }
 
-		void ToastDirection(bool WasLeftSwipe)
-		{
-			var direction = !WasLeftSwipe ? "Start" : "End";
-			Toast.MakeText(this, $"{direction} of list.", ToastLength.Long).Show();
-		}
+        private void ToastDirection(bool WasLeftSwipe)
+        {
+            var direction = !WasLeftSwipe ? "Start" : "End";
+            Toast.MakeText(this, $"{direction} of list.", ToastLength.Long).Show();
+        }
 
         private void FinishItemChange(bool WasLeftSwipe)
         {
@@ -256,13 +256,13 @@ namespace ProgrammingIdeas.Activities
             IsBookmarked = CheckIfBookmarked(item);
             if (bookmarkedItems != null)
             {
-				itemsList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == item.Category).Items;
+                itemsList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == item.Category).Items;
                 if (IsBookmarked == true) // if bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
                     if (item != null)
                         bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Title == item.Title));
-					/*var beforeItem = itemsList.FirstOrDefault(x => x.Id == item.Id + 1);
+                    /*var beforeItem = itemsList.FirstOrDefault(x => x.Id == item.Id + 1);
 					itemsList.Insert(itemsList.IndexOf(beforeItem), item);*/
                     Snackbar.Make(addNoteFab, "Idea removed from bookmarks.", Snackbar.LengthLong).Show();
                     IsBookmarked = false;
@@ -271,7 +271,7 @@ namespace ProgrammingIdeas.Activities
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
                     bookmarkedItems.Add(item);
-					//itemsList.Remove(itemsList.FirstOrDefault(x => x.Id == item.Id));
+                    //itemsList.Remove(itemsList.FirstOrDefault(x => x.Id == item.Id));
                     Snackbar.Make(addNoteFab, "Idea added to bookmarks.", Snackbar.LengthLong).Show();
                     ChangeItem(Global.ItemScrollPosition + 1, true);
                     IsBookmarked = true;

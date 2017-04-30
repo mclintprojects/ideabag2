@@ -4,7 +4,6 @@ using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
-using Newtonsoft.Json;
 using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Helpers;
 using System;

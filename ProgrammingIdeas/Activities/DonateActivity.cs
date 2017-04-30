@@ -65,7 +65,7 @@ namespace ProgrammingIdeas.Activities
                     .Create()
                     .Show();
 
-				PreferenceHelper.PutBoolean("dialogShown", true);
+                PreferenceHelper.PutBoolean("dialogShown", true);
             }
         }
 

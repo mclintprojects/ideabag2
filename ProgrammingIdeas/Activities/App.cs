@@ -1,10 +1,7 @@
 ﻿using Android.App;
-using Android.Content.Res;
 using Android.Runtime;
 using Calligraphy;
-using ProgrammingIdeas.Helpers;
 using System;
-using System.Collections.Generic;
 using System.IO;
 
 namespace ProgrammingIdeas

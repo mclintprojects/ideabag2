@@ -2,7 +2,6 @@
 using Android.Views;
 using Android.Widget;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace ProgrammingIdeas.Adapters
 {
@@ -26,7 +25,7 @@ namespace ProgrammingIdeas.Adapters
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
-			var newIdea = newIdeas[position];
+            var newIdea = newIdeas[position];
             var idHolder = holder as NewIdeasViewHolder;
             idHolder.NewIdeaTitle.Text = newIdea.Title;
             idHolder.NewIdeaCategory.Text = newIdea.Category;

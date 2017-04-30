@@ -6,6 +6,7 @@ using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
+using Helpers;
 using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Fragment;
 using ProgrammingIdeas.Helpers;
@@ -13,8 +14,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using Android.Support.V4.App;
-using Helpers;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -52,39 +51,30 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-			DownloadIdeas();
-<<<<<<< HEAD
-			if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
-				ShowNewIdeasDialog();
+            DownloadIdeas();
+            if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
+                ShowNewIdeasDialog();
         }
 
-		void ShowNewIdeasDialog()
-		{
-			var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
-			if (File.Exists(newideastxtPath))
-			{
-				var dialogFrag = new NewIdeaFragment(GetNewIdeas());
-				dialogFrag.Show(FragmentManager, "DIALOGFRAG");
-			}
-			else
-				Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
-		}
-
-		private void DownloadIdeas()
-=======
+        private void ShowNewIdeasDialog()
+        {
+            var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
+            if (File.Exists(newideastxtPath))
+            {
+                var dialogFrag = new NewIdeaFragment(GetNewIdeas());
+                dialogFrag.Show(FragmentManager, "DIALOGFRAG");
+            }
+            else
+                Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
         }
 
         private void DownloadIdeas()
->>>>>>> master
         {
-			PreferenceHelper.Init(this);
+            PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
-<<<<<<< HEAD
-			CloudDB.Init(this);
-=======
->>>>>>> master
+            CloudDB.Init(this);
             CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
@@ -94,17 +84,14 @@ namespace ProgrammingIdeas.Activities
                         loadingCircle.Visibility = ViewStates.Gone;
                         snack.Dismiss();
                         categoryList = Global.Categories;
-<<<<<<< HEAD
-                        setupUI();
-=======
+                        SetupUI();
                         if (Global.IsNewIdeasAvailable)
                         {
                             snack.SetText("New ideas are available.").SetDuration(Snackbar.LengthLong);
                             snack.Show();
                             Global.IsNewIdeasAvailable = false;
                         }
-						SetupUI();
->>>>>>> master
+                        SetupUI();
                     }
                     else
                         loadingCircle.Visibility = ViewStates.Gone;
@@ -112,11 +99,7 @@ namespace ProgrammingIdeas.Activities
             });
         }
 
-<<<<<<< HEAD
-		private void setupUI() //first launch, gets json from packaged assets
-=======
         private void SetupUI() //first launch, gets json from packaged assets
->>>>>>> master
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);
@@ -168,8 +151,8 @@ namespace ProgrammingIdeas.Activities
                     return true;
 
                 case Resource.Id.newIdeas:
-					ShowNewIdeasDialog();
-					return true;
+                    ShowNewIdeasDialog();
+                    return true;
 
                 case Resource.Id.notes:
                     StartActivity(new Intent(this, typeof(NotesActivity)));
@@ -195,7 +178,7 @@ namespace ProgrammingIdeas.Activities
             for (int i = 0; i < newIdeasContent.Length; i++)
             {
                 var sContents = newIdeasContent[i].Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
-				newItems.Add(categoryList[Convert.ToInt32(sContents[0]) - 1].Items.FirstOrDefault(x => x.Id - 1 == Convert.ToInt32(sContents[1]) - 1));
+                newItems.Add(categoryList[Convert.ToInt32(sContents[0]) - 1].Items.FirstOrDefault(x => x.Id - 1 == Convert.ToInt32(sContents[1]) - 1));
             }
             return newItems;
         }

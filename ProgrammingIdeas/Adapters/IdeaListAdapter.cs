@@ -39,7 +39,7 @@ namespace ProgrammingIdeas.Adapters
 
             itemHolder.Difficulty.Text = item.Difficulty;
             itemHolder.Title.Text = item.Title;
-			itemHolder.Id.Text = item.Id.ToString();
+            itemHolder.Id.Text = item.Id.ToString();
             itemHolder.State.SetBackgroundResource(Resource.Color.undecidedColor);
             itemHolder.Root.SetBackgroundColor(Color.Transparent);
             switch (item.State)
