@@ -1,140 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    android:scrollbars="vertical"
+    android:orientation="vertical"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
     android:background="@color/white">
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-
-        <include android:id="@+id/toolbar" layout="@layout/toolbar" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/fuckyouLinker"
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="wrap_content">
+        <LinearLayout
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="16dp"
-            cardview:cardBackgroundColor="@color/accent"
-            cardview:cardCornerRadius="5dp"
-            cardview:cardElevation="2dp"
-            cardview:cardUseCompatPadding="true"
-            cardview:contentPadding="16dp">
-
-            <LinearLayout
+            android:layout_height="wrap_content">
+            <android.support.v7.widget.CardView
+                android:id="@+id/fuckyouLinker"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="16dp"
-                    android:contentDescription="@string/idea_bag_icon"
-                    android:src="@mipmap/icon" />
-
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                android:layout_marginTop="16dp"
+                cardview:cardBackgroundColor="@color/accent"
+                cardview:cardCornerRadius="5dp"
+                cardview:cardElevation="2dp"
+                cardview:cardUseCompatPadding="true"
+                cardview:contentPadding="16dp">
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:orientation="vertical"
-                    android:paddingRight="8dp">
-
-                    <TextView
+                    android:orientation="horizontal">
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/appVersion"
-                        android:textColor="@color/secondaryText"
-                        android:textSize="16sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_marginRight="16dp"
+                        android:contentDescription="@string/idea_bag_icon"
+                        android:src="@mipmap/icon" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/alansa_2016"
-                        android:textColor="@color/secondaryTextLight"
-                        android:textSize="14sp" />
+                        android:layout_gravity="center_vertical"
+                        android:orientation="vertical"
+                        android:paddingRight="8dp">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/appVersion"
+                            android:textColor="@color/secondaryText"
+                            android:textSize="16sp" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/alansa_2016"
+                            android:textColor="@color/secondaryTextLight"
+                            android:textSize="14sp" />
+                    </LinearLayout>
                 </LinearLayout>
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            cardview:cardBackgroundColor="@color/accent"
-            cardview:cardCornerRadius="5dp"
-            cardview:cardElevation="2dp"
-            cardview:cardUseCompatPadding="true"
-            cardview:contentPadding="16dp">
-
-            <LinearLayout
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                cardview:cardBackgroundColor="@color/accent"
+                cardview:cardCornerRadius="5dp"
+                cardview:cardElevation="2dp"
+                cardview:cardUseCompatPadding="true"
+                cardview:contentPadding="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/overview"
-                    android:textColor="@color/secondaryText"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/overviewText"
-                    android:textColor="@color/secondaryTextLight"
-                    android:textColorLink="@color/primaryText"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginBottom="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            cardview:cardBackgroundColor="@color/accent"
-            cardview:cardCornerRadius="5dp"
-            cardview:cardElevation="2dp"
-            cardview:cardUseCompatPadding="true"
-            cardview:contentPadding="16dp">
-
-            <LinearLayout
+                    android:orientation="vertical">
+                    <TextView
+                        android:id="@+id/textView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:text="@string/overview"
+                        android:textColor="@color/secondaryText"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/overviewText"
+                        android:textColor="@color/secondaryTextLight"
+                        android:textColorLink="@color/primaryText"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+            <android.support.v7.widget.CardView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginBottom="16dp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginRight="16dp"
+                cardview:cardBackgroundColor="@color/accent"
+                cardview:cardCornerRadius="5dp"
+                cardview:cardElevation="2dp"
+                cardview:cardUseCompatPadding="true"
+                cardview:contentPadding="16dp">
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/bug_reports"
-                    android:textColor="@color/secondaryText"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:id="@+id/bugsy"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:autoLink="web"
-                    android:linksClickable="true"
-                    android:textColor="@color/secondaryTextLight"
-                    android:textColorLink="@color/primaryText"
-                    android:textSize="16sp" />
-            </LinearLayout>
-        </android.support.v7.widget.CardView>
-    </LinearLayout>
-</ScrollView>
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:text="@string/bug_reports"
+                        android:textColor="@color/secondaryText"
+                        android:textSize="18sp" />
+                    <TextView
+                        android:id="@+id/bugsy"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:linksClickable="true"
+                        android:textColor="@color/secondaryTextLight"
+                        android:textColorLink="@color/primaryText"
+                        android:textSize="16sp" />
+                </LinearLayout>
+            </android.support.v7.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

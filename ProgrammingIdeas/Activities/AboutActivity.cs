@@ -49,14 +49,13 @@ namespace ProgrammingIdeas.Activities
 
         private void NavigateAway()
         {
-            NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
+            Finish();
             OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
         }
 
         public override void OnBackPressed()
         {
             NavigateAway();
-            base.OnBackPressed();
         }
     }
 }

@@ -47,14 +47,19 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);
-            recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            base.OnCreate(savedInstanceState);   
+        }
+
+		protected override void OnResume()
+		{
+			recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
             DownloadIdeas();
             if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
-                ShowNewIdeasDialog();
-        }
+				ShowNewIdeasDialog();
+			base.OnResume();
+		}
 
         private void ShowNewIdeasDialog()
         {
@@ -74,7 +79,7 @@ namespace ProgrammingIdeas.Activities
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
-            CloudDB.Init(this);
+
             CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
             {
                 RunOnUiThread(() =>
@@ -84,13 +89,6 @@ namespace ProgrammingIdeas.Activities
                         loadingCircle.Visibility = ViewStates.Gone;
                         snack.Dismiss();
                         categoryList = Global.Categories;
-                        SetupUI();
-                        if (Global.IsNewIdeasAvailable)
-                        {
-                            snack.SetText("New ideas are available.").SetDuration(Snackbar.LengthLong);
-                            snack.Show();
-                            Global.IsNewIdeasAvailable = false;
-                        }
                         SetupUI();
                     }
                     else

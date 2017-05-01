@@ -72,7 +72,7 @@ namespace ProgrammingIdeas.Activities
         public override void OnBackPressed()
         {
             PreferenceHelper.PutBoolean("dialogShown", false);
-            StartActivity(new Intent(this, typeof(CategoryActivity)));
+            Finish();
             OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
             base.OnBackPressed();
         }

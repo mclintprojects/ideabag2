@@ -12,9 +12,7 @@ namespace ProgrammingIdeas.Helpers
             try
             {
                 using (StreamReader r = new StreamReader(path))
-                {
                     return r.ReadToEnd();
-                }
             }
             catch { return ""; }
         }

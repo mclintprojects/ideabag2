@@ -34,7 +34,7 @@ namespace ProgrammingIdeas.Activities
         private FloatingActionButton addNoteFab;
         private Button editNoteBtn;
         private CardView noteHolder;
-        private bool IsBookmarked, IsInBookmarkMode;
+		private bool IsBookmarked;
 
         public override int LayoutResource
         {
@@ -56,7 +56,6 @@ namespace ProgrammingIdeas.Activities
         {
             path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
             base.OnCreate(savedInstanceState);
-            sendingActivity = Intent.GetStringExtra("sender");
         }
 
         protected override void OnResume()
@@ -85,30 +84,12 @@ namespace ProgrammingIdeas.Activities
 
             bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
             bookmarkedItems = bookmarkedItems ?? new List<CategoryItem>();
-
-            if (sendingActivity == "bmk")
-                HandleBookmarkedItems();
-            else
-                HandleNonbookmarkedItems();
-            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
-            notes = notes ?? new List<Note>();
-            base.OnResume();
-        }
-
-        private void HandleNonbookmarkedItems() //Using the same activity to show Bookmarked items and non-bookmarked items. this handle non-bookmarked
-        {
             item = Global.Categories[Global.CategoryScrollPosition].Items[Global.ItemScrollPosition];
             itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
             SetupUI();
-        }
-
-        private void HandleBookmarkedItems() //handles ideas that were bookmarked
-        {
-            IsInBookmarkMode = true;
-            Global.ItemScrollPosition = Global.BookmarkScrollPosition; // To enable swipes work correctly
-            itemsList = Global.Categories[Global.CategoryScrollPosition].Items;
-            item = bookmarkedItems[Global.BookmarkScrollPosition];
-            SetupUI();
+            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
+            notes = notes ?? new List<Note>();
+            base.OnResume();
         }
 
         private void SetupUI()
@@ -130,17 +111,12 @@ namespace ProgrammingIdeas.Activities
 
         private void HandleNoteSave(Note note)
         {
+			item.Note = note;
             var existingItem = notes.FirstOrDefault(x => x.Title == note.Title);
             if (existingItem == null) //No existing note was found
-            {
                 notes.Add(note);
-                itemsList[Global.ItemScrollPosition].Note = note;
-            }
             else //Existing note was found
-            {
                 notes[notes.IndexOf(existingItem)] = note;
-                itemsList[Global.ItemScrollPosition].Note = note;
-            }
 
             ShowNote(note);
             Snackbar.Make(addNoteFab, "Note added.", Snackbar.LengthLong).Show();
@@ -148,53 +124,43 @@ namespace ProgrammingIdeas.Activities
 
         private void AddNoteFab_Click(object sender, EventArgs e)
         {
-            var dialog = new AddNoteDialog(itemsList[Global.ItemScrollPosition].Category, itemsList[Global.ItemScrollPosition].Title);
-            dialog.OnError += () => { Snackbar.Make(addNoteFab, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show(); };
-            dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
-            dialog.Show(FragmentManager, "ADDNOTEFRAG");
+			if (item.Note == null)
+			{
+				var dialog = new AddNoteDialog(itemsList[Global.ItemScrollPosition].Category, itemsList[Global.ItemScrollPosition].Title);
+				dialog.OnError += () => { Snackbar.Make(addNoteFab, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show(); };
+				dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
+				dialog.Show(FragmentManager, "ADDNOTEFRAG");
+			}
+			else
+				Snackbar.Make(addNoteFab, "This idea already has a note. Consider editing that instead.", Snackbar.LengthLong).Show();
         }
 
         private void SwipeListener_OnSwipeRight()
         {
-            ChangeItem(Global.ItemScrollPosition - 1, false);
+            ChangeItem(--Global.ItemScrollPosition, false);
         }
 
         private void SwipeListener_OnSwipeLeft()
         {
-            ChangeItem(Global.ItemScrollPosition + 1, true);
+            ChangeItem(++Global.ItemScrollPosition, true);
         }
 
         private void ChangeItem(int index, bool WasLeftSwipe)
         {
-            if (!IsInBookmarkMode)
+            if (index >= 0 && index <= itemsList.Count - 1)
             {
-                if (index >= 0 && index <= itemsList.Count - 1)
-                {
-                    Global.ItemScrollPosition = index;
-                    item = itemsList[index];
-                    FinishItemChange(WasLeftSwipe);
-                }
-                else
-                    ToastDirection(WasLeftSwipe);
+                item = itemsList[index];
+                FinishItemChange(WasLeftSwipe);
             }
             else
-            {
-                if (index >= 0 && index <= bookmarkedItems.Count - 1)
-                {
-                    Global.BookmarkScrollPosition = index;
-                    Global.ItemScrollPosition = index;
-                    item = bookmarkedItems[index];
-                    FinishItemChange(WasLeftSwipe);
-                }
-                else
-                    ToastDirection(WasLeftSwipe);
-            }
+				ToastDirection(WasLeftSwipe);
         }
 
         private void ToastDirection(bool WasLeftSwipe)
         {
             var direction = !WasLeftSwipe ? "Start" : "End";
             Toast.MakeText(this, $"{direction} of list.", ToastLength.Long).Show();
+			Global.ItemScrollPosition = !WasLeftSwipe ? 0 : itemsList.Count - 1;
         }
 
         private void FinishItemChange(bool WasLeftSwipe)
@@ -256,24 +222,22 @@ namespace ProgrammingIdeas.Activities
             IsBookmarked = CheckIfBookmarked(item);
             if (bookmarkedItems != null)
             {
-                itemsList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == item.Category).Items;
                 if (IsBookmarked == true) // if bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
                     if (item != null)
                         bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Title == item.Title));
-                    /*var beforeItem = itemsList.FirstOrDefault(x => x.Id == item.Id + 1);
-					itemsList.Insert(itemsList.IndexOf(beforeItem), item);*/
+                    
                     Snackbar.Make(addNoteFab, "Idea removed from bookmarks.", Snackbar.LengthLong).Show();
                     IsBookmarked = false;
+					ChangeItem(++Global.ItemScrollPosition, false);
                 }
                 else // not bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
                     bookmarkedItems.Add(item);
-                    //itemsList.Remove(itemsList.FirstOrDefault(x => x.Id == item.Id));
                     Snackbar.Make(addNoteFab, "Idea added to bookmarks.", Snackbar.LengthLong).Show();
-                    ChangeItem(Global.ItemScrollPosition + 1, true);
+                    ChangeItem(++Global.ItemScrollPosition, true);
                     IsBookmarked = true;
                 }
             }
@@ -301,7 +265,6 @@ namespace ProgrammingIdeas.Activities
         public override void OnBackPressed()
         {
             GoAway();
-            base.OnBackPressed();
         }
 
         protected override void OnPause()
@@ -313,7 +276,7 @@ namespace ProgrammingIdeas.Activities
         private void GoAway()
         {
             writeEntirety();
-            NavigateUpTo(new Intent(this, sendingActivity == "idealistactivity" ? typeof(IdeaListActivity) : typeof(BookmarksActivity)));
+			NavigateUpTo(new Intent(this, typeof(IdeaListActivity)));
             OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
         }
     }

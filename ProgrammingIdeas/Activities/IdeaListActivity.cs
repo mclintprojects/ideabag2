@@ -21,7 +21,6 @@ namespace ProgrammingIdeas.Activities
         private IdeaListAdapter adapter;
         private List<Category> allItems = new List<Category>();
         private List<CategoryItem> itemsList;
-        private List<CategoryItem> bookmarkedList;
         private ProgressBar progressBar;
         private string itemTitle, path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private string progressingListPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "progressdb");
@@ -114,7 +113,9 @@ namespace ProgrammingIdeas.Activities
         {
             Global.ItemScrollPosition = position;
             var intent = new Intent(this, typeof(IdeaDetailsActivity));
-            intent.PutExtra("sender", "idealistactivity"); //one recycler view for bookmark activity and idea list activity so i need to know the sender
+
+			// using the same idea detail activity for bookmark activity and idea list activity so i need to know the sender
+            intent.PutExtra("sender", "idealistactivity");
             StartActivity(intent);
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }
@@ -122,13 +123,13 @@ namespace ProgrammingIdeas.Activities
         public override void OnBackPressed()
         {
             NavigateAway();
-            base.OnBackPressed();
         }
 
         private void NavigateAway()
         {
+			// resets position back to zero or it shows previous scroll position even in a different category
             Global.ItemScrollPosition = 0;
-            NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
+            Finish();
             OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
         }
     }

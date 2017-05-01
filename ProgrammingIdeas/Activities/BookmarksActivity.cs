@@ -131,8 +131,7 @@ namespace ProgrammingIdeas.Activities
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-                    NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
-                    OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
+					NavigateAway();
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -147,7 +146,7 @@ namespace ProgrammingIdeas.Activities
         private void OnItemClick(int position)
         {
             Global.BookmarkScrollPosition = position;
-            Intent intent = new Intent(this, typeof(IdeaDetailsActivity));
+            Intent intent = new Intent(this, typeof(BookmarkDetailsActivity));
             intent.PutExtra("sender", "bmk");
             StartActivity(intent);
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
@@ -155,10 +154,13 @@ namespace ProgrammingIdeas.Activities
 
         public override void OnBackPressed()
         {
-            Intent intent = new Intent(this, typeof(CategoryActivity));
-            NavigateUpTo(intent);
-            OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-            base.OnBackPressed();
+			NavigateAway();
         }
+
+		private void NavigateAway()
+		{
+            NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
+			OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
+		}
     }
 }

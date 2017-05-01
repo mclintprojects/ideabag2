@@ -129,8 +129,7 @@ namespace ProgrammingIdeas.Activities
             }
             else
             {
-                var intent = new Intent(this, typeof(CategoryActivity));
-                NavigateUpTo(intent);
+                Finish();
                 OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
             }
         }

@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. You get notified now when new ideas are available.\r\n2.Several bug fixes and usability improvements.
+		1. You get notified now when new ideas are available. To save data, it only checks for new ideas when you open the app. Push notifications might come later.\r\n2. Fixed bugs with bookmarks and notes.\r\n3. Several other minor bug fixes and usability improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">

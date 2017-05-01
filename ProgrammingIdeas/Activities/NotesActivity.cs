@@ -48,34 +48,38 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnResume()
         {
-            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
+			var jsonString = DBAssist.DeserializeDB(notesdb);
+            notes = JsonConvert.DeserializeObject<List<Note>>(jsonString);
             notes = notes ?? new List<Note>();
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
             emptyState = FindViewById(Resource.Id.empty);
             if (notes.Count == 0)
                 ShowEmptyState();
-            manager = new LinearLayoutManager(this);
-            adapter = new NotesAdapter(notes);
-            adapter.EditClicked += Adapter_EditClicked;
-            adapter.ViewNoteClicked += (position) =>
-            {
-                new AlertDialog.Builder(this)
-                                .SetTitle(notes[position].Name)
-                                .SetMessage(notes[position].Content)
-                                .SetPositiveButton("Great", (sender, e) => { return; })
-                                .Create().Show();
-            };
-            adapter.DeleteClicked += (position) =>
-            {
-                Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title).Note = null;
-                notes.RemoveAt(position);
-                adapter.NotifyItemRemoved(position);
-                if (notes.Count == 0)
-                    ShowEmptyState();
-            };
-            recycler.SetAdapter(adapter);
-            recycler.SetLayoutManager(manager);
-            recycler.SetItemAnimator(new DefaultItemAnimator());
+			else
+			{
+				 manager = new LinearLayoutManager(this);
+				adapter = new NotesAdapter(notes);
+				adapter.EditClicked += Adapter_EditClicked;
+	            adapter.ViewNoteClicked += (position) =>
+	            {
+	                new AlertDialog.Builder(this)
+	                                .SetTitle(notes [position].Name)
+	                                .SetMessage(notes [position].Content)
+	                                .SetPositiveButton("Great", (sender, e) => { return; })
+	                                .Create().Show();
+				};
+				adapter.DeleteClicked += (position) =>
+	            {
+	                Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title).Note = null;
+	                notes.RemoveAt(position);
+	                adapter.NotifyItemRemoved(position);
+	                if (notes.Count == 0)
+						ShowEmptyState();
+	            };
+	            recycler.SetAdapter(adapter);
+	            recycler.SetLayoutManager(manager);
+	            recycler.SetItemAnimator(new DefaultItemAnimator());
+			}
             base.OnResume();
         }
 
@@ -122,13 +126,11 @@ namespace ProgrammingIdeas.Activities
         public override void OnBackPressed()
         {
             NavigateAway();
-            base.OnBackPressed();
         }
 
         private void NavigateAway()
         {
-            var intent = new Intent(this, typeof(CategoryActivity));
-            NavigateUpTo(intent);
+            Finish();
             OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
         }
 
