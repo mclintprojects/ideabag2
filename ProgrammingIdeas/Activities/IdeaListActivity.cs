@@ -112,11 +112,7 @@ namespace ProgrammingIdeas.Activities
         private void OnItemClick(int position)
         {
             Global.ItemScrollPosition = position;
-            var intent = new Intent(this, typeof(IdeaDetailsActivity));
-
-			// using the same idea detail activity for bookmark activity and idea list activity so i need to know the sender
-            intent.PutExtra("sender", "idealistactivity");
-            StartActivity(intent);
+            StartActivity(new Intent(this, typeof(IdeaDetailsActivity)));
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }
 

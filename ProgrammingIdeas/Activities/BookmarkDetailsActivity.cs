@@ -25,7 +25,7 @@ namespace ProgrammingIdeas.Activities
 		private List<CategoryItem> itemsList;
 		private List<CategoryItem> bookmarkedItems = new List<CategoryItem>();
 		private CategoryItem item;
-		private string path, sendingActivity, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
+		private string path, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
 		private string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
 		private IMenuItem bookmarkIcon;
 		private TextView title, itemDescription, noteContent;
@@ -34,7 +34,7 @@ namespace ProgrammingIdeas.Activities
 		private FloatingActionButton addNoteFab;
 		private Button editNoteBtn;
 		private CardView noteHolder;
-		private bool IsBookmarked, IsInBookmarkMode;
+		private bool IsBookmarked;
 
 		public override int LayoutResource
 		{
@@ -77,7 +77,7 @@ namespace ProgrammingIdeas.Activities
 
 			editNoteBtn.Click += delegate
 			{
-				var dialog = new AddNoteDialog(itemsList[Global.ItemScrollPosition].Note);
+				var dialog = new AddNoteDialog(bookmarkedItems[Global.ItemScrollPosition].Note);
 				dialog.Show(FragmentManager, "ADDNOTEFRAG");
 				dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
 			};
@@ -288,7 +288,6 @@ namespace ProgrammingIdeas.Activities
 
 		private void GoAway()
 		{
-			Global.BookmarkScrollPosition = 0;
 			writeEntirety();
 			NavigateUpTo(new Intent(this, typeof(BookmarksActivity)));
 			OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);

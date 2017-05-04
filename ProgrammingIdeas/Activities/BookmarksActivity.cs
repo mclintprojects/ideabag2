@@ -24,7 +24,6 @@ namespace ProgrammingIdeas.Activities
         private IdeaListAdapter adapter;
         private List<CategoryItem> bookmarksList = new List<CategoryItem>();
         private string path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
-        private int scrollPosition = 0;
         private View emptyState;
         private ProgressBar progressBar;
 
@@ -69,7 +68,7 @@ namespace ProgrammingIdeas.Activities
                     recyclerView.SetAdapter(adapter);
                     recyclerView.SetLayoutManager(manager);
                     recyclerView.SetItemAnimator(new DefaultItemAnimator());
-                    manager.ScrollToPosition(scrollPosition);
+                    manager.ScrollToPosition(Global.BookmarkScrollPosition);
                     adapter.StateClicked += StateClicked;
                     ShowProgress();
                 }
@@ -146,9 +145,7 @@ namespace ProgrammingIdeas.Activities
         private void OnItemClick(int position)
         {
             Global.BookmarkScrollPosition = position;
-            Intent intent = new Intent(this, typeof(BookmarkDetailsActivity));
-            intent.PutExtra("sender", "bmk");
-            StartActivity(intent);
+			StartActivity(new Intent(this, typeof(BookmarkDetailsActivity)));
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }
 
@@ -159,6 +156,7 @@ namespace ProgrammingIdeas.Activities
 
 		private void NavigateAway()
 		{
+			Global.BookmarkScrollPosition = 0;
             NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
 			OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
 		}

@@ -25,7 +25,7 @@ namespace ProgrammingIdeas.Activities
         private List<CategoryItem> itemsList;
         private List<CategoryItem> bookmarkedItems = new List<CategoryItem>();
         private CategoryItem item;
-        private string path, sendingActivity, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
+        private string path, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
         private string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
         private IMenuItem bookmarkIcon;
         private TextView title, itemDescription, noteContent;
@@ -113,10 +113,13 @@ namespace ProgrammingIdeas.Activities
         {
 			item.Note = note;
             var existingItem = notes.FirstOrDefault(x => x.Title == note.Title);
-            if (existingItem == null) //No existing note was found
-                notes.Add(note);
-            else //Existing note was found
-                notes[notes.IndexOf(existingItem)] = note;
+			if (existingItem == null) //No existing note was found
+				notes.Add(note);
+			else //Existing note was found
+			{
+				notes[notes.IndexOf(existingItem)] = note;
+				bookmarkedItems.FirstOrDefault(x => x.Category == note.Category).Note = note;
+			}
 
             ShowNote(note);
             Snackbar.Make(addNoteFab, "Note added.", Snackbar.LengthLong).Show();
@@ -275,7 +278,6 @@ namespace ProgrammingIdeas.Activities
 
         private void GoAway()
         {
-            writeEntirety();
 			NavigateUpTo(new Intent(this, typeof(IdeaListActivity)));
             OverridePendingTransition(Resource.Animation.push_right_in, Resource.Animation.push_right_out);
         }
