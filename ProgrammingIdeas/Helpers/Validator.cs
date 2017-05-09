@@ -1,4 +1,5 @@
 ﻿using Android.Content;
+using Android.Graphics;
 using Android.Views.Animations;
 using Android.Widget;
 using ProgrammingIdeas.Animation;
@@ -27,8 +28,8 @@ namespace ProgrammingIdeas.Helpers
                 string errorString = $"{inputDescription} is required.";
                 valid = false;
                 editText.SetError(errorString, null);
-                editText.SetBackgroundResource(Android.Resource.Color.HoloRedLight);
-                AnimHelper.Animate(editText, "rotationY", 700, new AnticipateOvershootInterpolator(), 20, 0, -20, 0);
+                editText.Background.SetColorFilter(Color.Tomato, PorterDuff.Mode.SrcIn);
+                AnimHelper.Animate(editText, "rotationY", 500, new AnticipateOvershootInterpolator(), 20, 0, -20, 0);
             }
         }
     }

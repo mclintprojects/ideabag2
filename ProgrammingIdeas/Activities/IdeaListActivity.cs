@@ -22,8 +22,7 @@ namespace ProgrammingIdeas.Activities
         private List<Category> allItems = new List<Category>();
         private List<CategoryItem> itemsList;
         private ProgressBar progressBar;
-        private string itemTitle, path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
-        private string progressingListPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "progressdb");
+        private string itemTitle, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
 
         public override int LayoutResource
         {
@@ -45,7 +44,6 @@ namespace ProgrammingIdeas.Activities
         {
             base.OnCreate(savedInstanceState);
             Global.IsWrittenDB = true;
-            path = Path.Combine(Global.APP_PATH, "bookmarks.json");
             manager = new LinearLayoutManager(this);
             recyclerView = FindViewById<RecyclerView>(Resource.Id.itemRecyclerView);
             progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);

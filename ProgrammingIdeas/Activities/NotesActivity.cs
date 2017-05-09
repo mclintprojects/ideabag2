@@ -19,27 +19,17 @@ namespace ProgrammingIdeas.Activities
     public class NotesActivity : BaseActivity
     {
         private List<Note> notes;
-        private RecyclerView recycler;
+		private List<CategoryItem> bookmarkedItems;
+		private RecyclerView recycler;
         private RecyclerView.LayoutManager manager;
         private NotesAdapter adapter;
         private readonly string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
+		private readonly string bookmarksdb = Path.Combine(Global.APP_PATH, "bookmarks.json");
         private View emptyState;
 
-        public override int LayoutResource
-        {
-            get
-            {
-                return Resource.Layout.notesactivity;
-            }
-        }
+		public override int LayoutResource => Resource.Layout.notesactivity;
 
-        public override bool HomeAsUpEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
+		public override bool HomeAsUpEnabled => true;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -48,9 +38,12 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnResume()
         {
-			var jsonString = DBAssist.DeserializeDB(notesdb);
-            notes = JsonConvert.DeserializeObject<List<Note>>(jsonString);
+            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
             notes = notes ?? new List<Note>();
+
+			bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(bookmarksdb));
+			bookmarkedItems = bookmarkedItems ?? new List<CategoryItem>();
+
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
             emptyState = FindViewById(Resource.Id.empty);
             if (notes.Count == 0)
@@ -70,7 +63,14 @@ namespace ProgrammingIdeas.Activities
 				};
 				adapter.DeleteClicked += (position) =>
 	            {
-	                Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title).Note = null;
+					var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title);
+					if (foundIdea != null)
+						foundIdea.Note = null;
+
+					var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
+					if (foundBookmark != null)
+						foundBookmark.Note = null;
+					
 	                notes.RemoveAt(position);
 	                adapter.NotifyItemRemoved(position);
 	                if (notes.Count == 0)
@@ -101,7 +101,13 @@ namespace ProgrammingIdeas.Activities
             dialog.OnNoteSave += (Note note) =>
             {
                 notes[position] = note;
-                Global.Categories.FirstOrDefault(x => x.CategoryLbl == note.Category).Items.FirstOrDefault(y => y.Title == note.Title).Note = note;
+				var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == note.Category).Items.FirstOrDefault(y => y.Title == note.Title);
+				if (foundIdea != null)
+					foundIdea.Note = note;
+
+				var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
+				if (foundBookmark != null)
+					foundBookmark.Note = note;
                 adapter.NotifyItemChanged(position);
             };
 
@@ -136,7 +142,10 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnStop()
         {
-            DBAssist.SerializeDB(notesdb, notes);
+			if(notes != null)
+				DBAssist.SerializeDB(notesdb, notes);
+			if (bookmarkedItems != null)
+				DBAssist.SerializeDB(bookmarksdb, bookmarkedItems);
             base.OnStop();
         }
     }

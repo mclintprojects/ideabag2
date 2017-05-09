@@ -12,6 +12,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Adapters;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -21,7 +22,7 @@ namespace ProgrammingIdeas.Activities
         private List<Category> allItems;
         private RecyclerView recyclerView;
         private LinearLayoutManager manager;
-        private IdeaListAdapter adapter;
+        private BookmarkListAdapter adapter;
         private List<CategoryItem> bookmarksList = new List<CategoryItem>();
         private string path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private View emptyState;
@@ -63,7 +64,7 @@ namespace ProgrammingIdeas.Activities
                 allItems = Global.Categories;
                 if (bookmarksList.Count > 0)
                 {
-                    adapter = new IdeaListAdapter(bookmarksList, this);
+                    adapter = new BookmarkListAdapter(bookmarksList, this);
                     adapter.ItemClick += OnItemClick;
                     recyclerView.SetAdapter(adapter);
                     recyclerView.SetLayoutManager(manager);
@@ -138,7 +139,8 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-            DBAssist.SerializeDB(ideasdb, allItems);
+			if(ideasdb != null)
+				DBAssist.SerializeDB(ideasdb, allItems);
             base.OnPause();
         }
 

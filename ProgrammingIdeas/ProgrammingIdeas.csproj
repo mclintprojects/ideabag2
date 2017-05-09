@@ -166,13 +166,16 @@
     <Compile Include="Fragments\AddNoteDialog.cs" />
     <Compile Include="Helpers\PreferenceHelper.cs" />
     <Compile Include="Activities\BookmarkDetailsActivity.cs" />
+    <Compile Include="Adapters\BookmarkListAdapter.cs" />
+    <Compile Include="Activities\Splashscreen.cs" />
   </ItemGroup>
   <ItemGroup>
+    <AndroidAsset Include="Assets\fonts\RobotoBlack.ttf" />
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\values\strings.xml" />
     <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
@@ -241,7 +244,6 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\file.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\games.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_edit_white_24dp.png" />
-    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_mode_edit_white_24dp.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_share_white_24dp.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\multimedia.png" />
     <AndroidResource Include="Resources\mipmap-xxhdpi\network.png" />
@@ -274,9 +276,6 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\ic_note_white_24dp.png" />
     <AndroidResource Include="Resources\layout\notesactivity.xml" />
     <AndroidResource Include="Resources\layout\notesrow.xml" />
-    <AndroidResource Include="Resources\mipmap-hdpi\ic_mode_edit_white_24dp.png" />
-    <AndroidResource Include="Resources\mipmap-mdpi\ic_mode_edit_white_24dp.png" />
-    <AndroidResource Include="Resources\mipmap-xhdpi\ic_mode_edit_white_24dp.png" />
     <AndroidResource Include="Resources\drawable\submitRoundBtn.xml" />
     <AndroidResource Include="Resources\layout\toolbar.xml" />
     <AndroidResource Include="Resources\drawable\progress_drawable.xml" />
@@ -293,6 +292,8 @@
     <AndroidResource Include="Resources\mipmap-xxhdpi\notif_icon.png" />
     <AndroidResource Include="Resources\mipmap-xhdpi\notif_icon.png" />
     <AndroidResource Include="Resources\mipmap-mdpi\notif_icon.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_bookmark_black_24dp.png" />
+    <AndroidResource Include="Resources\drawable\splashscreen.xml" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="AppResources.resx">
@@ -309,10 +310,6 @@
       <Version>24.2.1.0</Version>
       <Visible>False</Visible>
     </XamarinComponentReference>
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidAsset Include="Assets\fonts\RalewayBold.ttf" />
-    <AndroidAsset Include="Assets\fonts\RalewayRegular.ttf" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />

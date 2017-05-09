@@ -21,7 +21,7 @@ namespace ProgrammingIdeas
         {
             base.OnCreate();
             CalligraphyConfig.InitDefault(new CalligraphyConfig.Builder()
-            .SetDefaultFontPath("fonts/RalewayRegular.ttf")
+            //.SetDefaultFontPath("fonts/RobotoBlack.ttf")
             .SetFontAttrId(Resource.Attribute.fontPath)
             .Build());
 			RegisterActivityLifecycleCallbacks(this);

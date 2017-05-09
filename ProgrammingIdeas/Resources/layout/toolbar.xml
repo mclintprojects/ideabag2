@@ -9,4 +9,4 @@
     android:theme="@style/AppTheme.Toolbar"
     app:layout_scrollFlags="scroll|enterAlways"
     app:popupTheme="@style/ThemeOverlay.AppCompat.Light"
-    app:titleTextAppearance="@style/AppTheme.Toolbar.Title"/>
+    app:titleTextAppearance="@style/AppTheme.Toolbar.Title" />

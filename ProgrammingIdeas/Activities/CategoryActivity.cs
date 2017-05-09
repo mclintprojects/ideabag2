@@ -17,7 +17,7 @@ using System.Linq;
 
 namespace ProgrammingIdeas.Activities
 {
-    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme", Icon = "@mipmap/icon", MainLauncher = true)]
+    [Activity(Label = "Idea Bag 2", Theme = "@style/AppTheme")]
     public class CategoryActivity : BaseActivity
     {
         private RecyclerView recyclerView;

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/windowBackground"
     android:orientation="vertical">
 
     <include
@@ -29,12 +29,12 @@
 
                 <TextView
                     android:id="@+id/itemTitle"
+                    fontPath="fonts/RobotoBlack.ttf"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/title"
                     android:textColor="@color/primaryText"
-                    android:textSize="24sp"
-                    fontPath="fonts/RalewayBold.ttf"/>
+                    android:textSize="24sp" />
 
                 <TextView
                     android:id="@+id/itemDescription"
@@ -54,7 +54,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="36dp"
                     cardview:cardBackgroundColor="@color/accent"
-                    cardview:cardCornerRadius="5dp"
+                    cardview:cardCornerRadius="2dp"
                     cardview:cardElevation="2dp"
                     cardview:cardUseCompatPadding="true"
                     cardview:contentPadding="16dp">
@@ -67,16 +67,16 @@
                         <TextView
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:text="Your note"
+                            android:text="@string/your_note"
                             android:textColor="@color/secondaryText"
-                            android:textSize="16sp" />
+                            android:textSize="14sp" />
 
                         <TextView
                             android:id="@+id/noteContent"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
-                            android:text="Note's content"
+                            android:text="@string/note_s_content"
                             android:textColor="@color/secondaryTextLight"
                             android:textColorLink="@color/primaryText"
                             android:textSize="18sp" />
@@ -104,6 +104,7 @@
             android:layout_margin="16dp"
             android:clickable="true"
             android:src="@mipmap/ic_plus_white_24dp"
+            cardview:backgroundTint="@color/primary"
             cardview:rippleColor="@color/accentDark"
             cardview:srcCompat="@mipmap/ic_plus_white_24dp" />
 

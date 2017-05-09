@@ -9,9 +9,7 @@ namespace ProgrammingIdeas.Adapters
     public class NotesAdapter : RecyclerView.Adapter
     {
         private List<Note> notes = new List<Note>();
-        public Action<int> EditClicked;
-        public Action<int> ViewNoteClicked;
-        public Action<int> DeleteClicked;
+        public Action<int> EditClicked, ViewNoteClicked, DeleteClicked;
 
         public NotesAdapter(List<Note> notes)
         {
@@ -30,7 +28,7 @@ namespace ProgrammingIdeas.Adapters
         {
             var note = notes[position];
             var view = holder as NoteViewHolder;
-            view.Title.Text = $"{note.Category} >> {note.Title}";
+            view.Title.Text = $"{note.Category} • {note.Title}";
             view.Content.Text = note.Content;
             view.EditNote.Click += delegate
             {

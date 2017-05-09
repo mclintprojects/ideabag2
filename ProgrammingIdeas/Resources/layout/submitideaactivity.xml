@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/windowBackground"
     android:orientation="vertical">
 
     <include
@@ -39,7 +39,7 @@
                 android:hint="@string/enter_your_name"
                 android:maxLines="1"
                 android:padding="16dp"
-                android:textColor="@color/primaryTextLight" />
+                android:textColor="@color/secondaryTextLight" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -58,7 +58,7 @@
                 android:background="@drawable/submitroundbtn"
                 android:hint="@string/enter_the_idea_s_title"
                 android:padding="16dp"
-                android:textColor="@color/primaryTextLight" />
+                android:textColor="@color/secondaryTextLight" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -74,7 +74,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginBottom="8dp"
-                android:textColor="@color/secondaryText" />
+                android:textColor="@color/primaryText" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -93,7 +93,7 @@
                 android:background="@drawable/submitroundbtn"
                 android:hint="@string/enter_an_indepth_description_of_the_idea"
                 android:padding="16dp"
-                android:textColor="@color/primaryTextLight" />
+                android:textColor="@color/secondaryTextLight" />
 
             <Button
                 android:id="@+id/submitBtn"
@@ -104,7 +104,7 @@
                 android:layout_marginTop="16dp"
                 android:background="@drawable/submitbtn"
                 android:text="@string/submit_idea"
-                android:textColor="@color/secondaryText" />
+                android:textColor="@color/primaryText" />
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

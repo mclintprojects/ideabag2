@@ -81,4 +81,6 @@
 	<string name="next">Next</string>
 	<string name="view">View</string>
 	<string name="delete">Delete</string>
+    <string name="note_s_content">Note\'s content</string>
+	<string name="your_note">Your note</string>
 </resources>

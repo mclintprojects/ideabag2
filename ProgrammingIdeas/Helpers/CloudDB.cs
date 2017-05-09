@@ -152,13 +152,14 @@ namespace ProgrammingIdeas.Helpers
                                 }
                             }
 
-                            if (PreferenceHelper.GetBoolean("bookmarksDeleted", false) == false)
+							// Do not delete bookmarks for this update. Seems very important to people.
+                            /*if (PreferenceHelper.GetBoolean("bookmarksDeleted", false) == false)
                             {
                                 var path = Path.Combine(Global.APP_PATH, "bookmarks.json");
                                 if (File.Exists(path))
                                     File.Delete(path);
                                 PreferenceHelper.PutBoolean("bookmarksDeleted", true);
-                            }
+                            }*/
 
                             DBAssist.SerializeDB(oldDBPath, newDB);
                             DBAssist.SerializeDB(newideastxtPath, newideastxt);

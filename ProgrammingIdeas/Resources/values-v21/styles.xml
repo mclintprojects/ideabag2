@@ -3,9 +3,4 @@
     <style name="AppTheme" parent="BaseTheme">
         <item name="android:windowContentTransitions">true</item>
     </style>
-
-    <style name="AppFullscreen" parent="BaseTheme">
-        <item name="android:windowContentOverlay">@null</item>
-        <item name="android:windowFullscreen">true</item>
-    </style>
 </resources>

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layoutRoot"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/white">
+    android:layout_height="wrap_content">
 
     <View
         android:id="@+id/progressState"
@@ -26,9 +26,9 @@
             android:layout_centerVertical="true"
             android:background="@drawable/circle"
             android:gravity="center"
-            android:text="@string/itemId"
             android:textColor="@color/primaryText"
-            android:textSize="20sp" />
+            android:textSize="20sp"
+            tools:text="@string/itemId" />
 
         <TextView
             android:id="@+id/title"
@@ -37,9 +37,9 @@
             android:layout_marginLeft="16dp"
             android:layout_marginTop="10dp"
             android:layout_toRightOf="@+id/itemId"
-            android:text="@string/title"
             android:textColor="@color/primaryText"
-            android:textSize="16sp" />
+            android:textSize="16sp"
+            tools:text="@string/title" />
 
         <TextView
             android:id="@+id/difficulty"
@@ -48,16 +48,27 @@
             android:layout_below="@+id/title"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="4dp"
-            android:layout_toRightOf="@+id/itemId"
+            android:layout_toRightOf="@+id/bookmarkIndicator"
             android:background="@drawable/roundbtn"
             android:gravity="left"
             android:paddingBottom="2dp"
             android:paddingLeft="8dp"
             android:paddingRight="8dp"
             android:paddingTop="2dp"
-            android:text="@string/difficulty"
             android:textColor="@color/secondaryText"
-            android:textSize="12sp" />
+            android:textSize="12sp"
+            tools:text="@string/difficulty" />
+
+        <ImageView
+            android:id="@+id/bookmarkIndicator"
+            android:layout_width="12dp"
+            android:layout_height="28dp"
+            android:layout_below="@+id/title"
+            android:layout_marginLeft="16dp"
+            android:layout_toRightOf="@id/itemId"
+            android:scaleType="centerCrop"
+            android:visibility="gone"
+            app:srcCompat="@mipmap/ic_bookmark_black_24dp" />
 
     </RelativeLayout>
 
