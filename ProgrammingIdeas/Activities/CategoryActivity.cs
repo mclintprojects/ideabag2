@@ -14,6 +14,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Android.Util;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -47,17 +48,28 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
-            base.OnCreate(savedInstanceState);   
+            base.OnCreate(savedInstanceState);
+            recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
+            bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
+            loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
+            DownloadIdeas();
+            if (Intent.GetBooleanExtra("NewIdeasNotif", false))
+            {
+				try
+				{
+					categoryList = Global.Categories;
+					ShowNewIdeasDialog();
+					Log.Debug("ALANSADEBUG", $"From new ideas notif? True");
+				}
+
+				catch (Exception e)
+				{ Log.Debug("ALANSADEBUG", $"Exception occured. {e.Message}");}
+            }
         }
 
 		protected override void OnResume()
 		{
-			recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
-            bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
-            loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-            DownloadIdeas();
-            if (Intent.GetBooleanExtra("NewIdeasNotif", false) == true)
-				ShowNewIdeasDialog();
+			
 			base.OnResume();
 		}
 

@@ -6,7 +6,7 @@ using ProgrammingIdeas.Activities;
 
 namespace Activities
 {
-	[Activity(Label = "Idea Bag 2", Icon = "@mipmap/icon", MainLauncher = true, Theme = "@style/AppFullscreen")]
+	[Activity(Label = "Idea Bag 2", Icon = "@mipmap/icon", MainLauncher = true, Theme = "@style/AppFullscreen", NoHistory = true)]
 	public class Splashscreen : AppCompatActivity
 	{
 		protected override void OnCreate(Bundle savedInstanceState)

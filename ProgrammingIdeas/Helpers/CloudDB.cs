@@ -85,6 +85,7 @@ namespace ProgrammingIdeas.Helpers
 												  .SetContentText(notifContent)
 												  .SetContentIntent(pendingIntent)
 												  .SetSmallIcon(Resource.Mipmap.notif_icon)
+                                                  .SetAutoCancel(true)
 												  .Build();
 				var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
 				notifManager.Notify(1957, notif);
