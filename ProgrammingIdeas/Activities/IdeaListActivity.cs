@@ -44,7 +44,7 @@ namespace ProgrammingIdeas.Activities
 
         public override bool OnCreateOptionsMenu(IMenu menu)
         {
-            MenuInflater.Inflate(Resource.Menu.idea_sort_menu, menu);
+            MenuInflater.Inflate(Resource.Menu.idea_list_menu, menu);
             return base.OnCreateOptionsMenu(menu);
         }
 

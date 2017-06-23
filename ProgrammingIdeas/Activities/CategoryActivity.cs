@@ -67,23 +67,28 @@ namespace ProgrammingIdeas.Activities
                 Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
         }
 
-        private async void DownloadIdeas()
+        private void DownloadIdeas()
         {
             PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
 
-            Global.Categories = await CloudDB.Initialize(DownloadIdeas, snack);
-            if (Global.Categories != null)
+            CloudDB.Initialize(DownloadIdeas, snack).ContinueWith((a) =>
             {
-                loadingCircle.Visibility = ViewStates.Gone;
-                snack.Dismiss();
-                categoryList = Global.Categories;
-                SetupUI();
-            }
-            else
-                loadingCircle.Visibility = ViewStates.Gone;
+                RunOnUiThread(() =>
+                {
+                    if (Global.Categories != null)
+                    {
+                        loadingCircle.Visibility = ViewStates.Gone;
+                        snack.Dismiss();
+                        categoryList = Global.Categories;
+                        SetupUI();
+                    }
+                    else
+                        loadingCircle.Visibility = ViewStates.Gone;
+                });
+            });
         }
 
         private void SetupUI()
