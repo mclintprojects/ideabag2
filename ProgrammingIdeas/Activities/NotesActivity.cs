@@ -19,68 +19,66 @@ namespace ProgrammingIdeas.Activities
     public class NotesActivity : BaseActivity
     {
         private List<Note> notes;
-		private List<CategoryItem> bookmarkedItems;
-		private RecyclerView recycler;
+        private List<Idea> bookmarkedItems;
+        private RecyclerView recycler;
         private RecyclerView.LayoutManager manager;
         private NotesAdapter adapter;
         private readonly string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
-		private readonly string bookmarksdb = Path.Combine(Global.APP_PATH, "bookmarks.json");
+        private readonly string bookmarksdb = Path.Combine(Global.APP_PATH, "bookmarks.json");
         private View emptyState;
 
-		public override int LayoutResource => Resource.Layout.notesactivity;
+        public override int LayoutResource => Resource.Layout.notesactivity;
 
-		public override bool HomeAsUpEnabled => true;
+        public override bool HomeAsUpEnabled => true;
 
-        protected override void OnCreate(Bundle savedInstanceState)
+        protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-        }
-
-        protected override void OnResume()
-        {
-            notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesdb));
+            notes = await DBAssist.DeserializeDBAsync<List<Note>>(notesdb);
             notes = notes ?? new List<Note>();
 
-			bookmarkedItems = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(bookmarksdb));
-			bookmarkedItems = bookmarkedItems ?? new List<CategoryItem>();
+            bookmarkedItems = await DBAssist.DeserializeDBAsync<List<Idea>>(bookmarksdb);
+            bookmarkedItems = bookmarkedItems ?? new List<Idea>();
 
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
             emptyState = FindViewById(Resource.Id.empty);
             if (notes.Count == 0)
                 ShowEmptyState();
-			else
-			{
-				 manager = new LinearLayoutManager(this);
-				adapter = new NotesAdapter(notes);
-				adapter.EditClicked += Adapter_EditClicked;
-	            adapter.ViewNoteClicked += (position) =>
-	            {
-	                new AlertDialog.Builder(this)
-	                                .SetTitle(notes [position].Name)
-	                                .SetMessage(notes [position].Content)
-	                                .SetPositiveButton("Great", (sender, e) => { return; })
-	                                .Create().Show();
-				};
-				adapter.DeleteClicked += (position) =>
-	            {
-					var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title);
-					if (foundIdea != null)
-						foundIdea.Note = null;
+            else
+            {
+                manager = new LinearLayoutManager(this);
+                adapter = new NotesAdapter(notes);
+                adapter.EditClicked += Adapter_EditClicked;
 
-					var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
-					if (foundBookmark != null)
-						foundBookmark.Note = null;
-					
-	                notes.RemoveAt(position);
-	                adapter.NotifyItemRemoved(position);
-	                if (notes.Count == 0)
-						ShowEmptyState();
-	            };
-	            recycler.SetAdapter(adapter);
-	            recycler.SetLayoutManager(manager);
-	            recycler.SetItemAnimator(new DefaultItemAnimator());
-			}
-            base.OnResume();
+                adapter.ViewNoteClicked += (position) =>
+                {
+                    new AlertDialog.Builder(this)
+                                    .SetTitle(notes[position].Name)
+                                    .SetMessage(notes[position].Content)
+                                    .SetPositiveButton("Great", (sender, e) => { return; })
+                                    .Create().Show();
+                };
+
+                adapter.DeleteClicked += (position) =>
+                {
+                    var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title);
+                    if (foundIdea != null)
+                        foundIdea.Note = null;
+
+                    var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
+                    if (foundBookmark != null)
+                        foundBookmark.Note = null;
+
+                    notes.RemoveAt(position);
+                    adapter.NotifyItemRemoved(position);
+                    if (notes.Count == 0)
+                        ShowEmptyState();
+                };
+
+                recycler.SetAdapter(adapter);
+                recycler.SetLayoutManager(manager);
+                recycler.SetItemAnimator(new DefaultItemAnimator());
+            }
         }
 
         private void ShowEmptyState()
@@ -101,51 +99,29 @@ namespace ProgrammingIdeas.Activities
             dialog.OnNoteSave += (Note note) =>
             {
                 notes[position] = note;
-				var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == note.Category).Items.FirstOrDefault(y => y.Title == note.Title);
-				if (foundIdea != null)
-					foundIdea.Note = note;
+                var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == note.Category).Items.FirstOrDefault(y => y.Title == note.Title);
+                if (foundIdea != null)
+                    foundIdea.Note = note;
 
-				var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
-				if (foundBookmark != null)
-					foundBookmark.Note = note;
+                var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
+                if (foundBookmark != null)
+                    foundBookmark.Note = note;
                 adapter.NotifyItemChanged(position);
             };
 
-            dialog.OnError += () =>
-            {
-                Snackbar.Make(recycler, "Invalid note. Please retry editing.", Snackbar.LengthLong).Show();
-            };
+            dialog.OnError += () => Snackbar.Make(recycler, "Invalid note. Please retry editing.", Snackbar.LengthLong).Show();
+
             dialog.Show(FragmentManager, "NOTESFRAG");
-        }
-
-        public override bool OnOptionsItemSelected(IMenuItem item)
-        {
-            switch (item.ItemId)
-            {
-                case Android.Resource.Id.Home:
-                    NavigateAway();
-                    return true;
-            }
-            return base.OnOptionsItemSelected(item);
-        }
-
-        public override void OnBackPressed()
-        {
-            NavigateAway();
-        }
-
-        private void NavigateAway()
-        {
-            Finish();
-            OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
         }
 
         protected override void OnStop()
         {
-			if(notes != null)
-				DBAssist.SerializeDB(notesdb, notes);
-			if (bookmarkedItems != null)
-				DBAssist.SerializeDB(bookmarksdb, bookmarkedItems);
+            if (notes != null)
+                DBAssist.SerializeDBAsync(notesdb, notes);
+            if (bookmarkedItems != null)
+                DBAssist.SerializeDBAsync(bookmarksdb, bookmarkedItems);
+
+            adapter.EditClicked -= Adapter_EditClicked;
             base.OnStop();
         }
     }

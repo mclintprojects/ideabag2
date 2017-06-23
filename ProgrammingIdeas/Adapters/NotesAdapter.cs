@@ -11,34 +11,28 @@ namespace ProgrammingIdeas.Adapters
         private List<Note> notes = new List<Note>();
         public Action<int> EditClicked, ViewNoteClicked, DeleteClicked;
 
-        public NotesAdapter(List<Note> notes)
-        {
-            this.notes = notes;
-        }
+        public NotesAdapter(List<Note> notes) => this.notes = notes;
 
-        public override int ItemCount
-        {
-            get
-            {
-                return notes.Count;
-            }
-        }
+        public override int ItemCount => notes.Count;
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var note = notes[position];
-            var view = holder as NoteViewHolder;
-            view.Title.Text = $"{note.Category} • {note.Title}";
-            view.Content.Text = note.Content;
-            view.EditNote.Click += delegate
+            var noteViewHolder = holder as NoteViewHolder;
+            noteViewHolder.Title.Text = $"{note.Category} • {note.Title}";
+            noteViewHolder.Content.Text = note.Content;
+
+            noteViewHolder.EditNote.Click += delegate
             {
                 EditClicked?.Invoke(position);
             };
-            view.ViewNote.Click += delegate
+
+            noteViewHolder.ViewNote.Click += delegate
             {
                 ViewNoteClicked?.Invoke(position);
             };
-            view.DeleteNote.Click += delegate
+
+            noteViewHolder.DeleteNote.Click += delegate
             {
                 DeleteClicked?.Invoke(position);
             };

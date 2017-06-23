@@ -23,26 +23,14 @@ namespace ProgrammingIdeas.Activities
         private RecyclerView recyclerView;
         private LinearLayoutManager manager;
         private BookmarkListAdapter adapter;
-        private List<CategoryItem> bookmarksList = new List<CategoryItem>();
+        private List<Idea> bookmarksList = new List<Idea>();
         private string path, ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private View emptyState;
         private ProgressBar progressBar;
 
-        public override int LayoutResource
-        {
-            get
-            {
-                return Resource.Layout.bookmarksactivity;
-            }
-        }
+        public override int LayoutResource => Resource.Layout.bookmarksactivity;
 
-        public override bool HomeAsUpEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HomeAsUpEnabled => true;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -52,15 +40,15 @@ namespace ProgrammingIdeas.Activities
             emptyState = FindViewById(Resource.Id.empty);
             progressBar = FindViewById<ProgressBar>(Resource.Id.completedIdeasBar);
             manager = new LinearLayoutManager(this);
-            setupUI();
+            SetupUI();
         }
 
-        private void setupUI()
+        private async void SetupUI()
         {
             if (File.Exists(path))
             {
-                bookmarksList = JsonConvert.DeserializeObject<List<CategoryItem>>(DBAssist.DeserializeDB(path));
-                bookmarksList = bookmarksList ?? new List<CategoryItem>();
+                bookmarksList = await DBAssist.DeserializeDBAsync<List<Idea>>(path);
+                bookmarksList = bookmarksList ?? new List<Idea>();
                 allItems = Global.Categories;
                 if (bookmarksList.Count > 0)
                 {
@@ -80,9 +68,16 @@ namespace ProgrammingIdeas.Activities
                 ShowEmptyState();
         }
 
+        protected override void OnDestroy()
+        {
+            adapter.StateClicked -= StateClicked;
+            adapter.ItemClick -= OnItemClick;
+            base.OnDestroy();
+        }
+
         private void ShowProgress()
         {
-            var completedCount = bookmarksList.FindAll(x => x.State == "done").Count;
+            var completedCount = bookmarksList.FindAll(x => x.State == Status.Done).Count;
             progressBar.Max = bookmarksList.Count;
             progressBar.Progress = 0;
             progressBar.IncrementProgressBy(completedCount);
@@ -95,21 +90,6 @@ namespace ProgrammingIdeas.Activities
             emptyState.FindViewById<TextView>(Resource.Id.infoText).Text += " bookmarks.";
         }
 
-        /*void Adapter_OnSwipeLeft(int position) //TODO: Fix swipe left later.
-		{
-            var timer = new Timer(5000);
-            timer.Start();
-            Snackbar.Make(recyclerView, "Undo bookmark deletion?", Snackbar.LengthIndefinite)
-                .SetAction("Undo", (v) => timer.Stop()).Show();
-            timer.Elapsed += delegate
-            {
-                bookmarksList.RemoveAt(position);
-                adapter.NotifyItemRemoved(position);
-                if (bookmarksList.Count == 0)
-                    ShowEmptyState();
-            };
-		}*/
-
         private void StateClicked(string e)
         {
             var contents = e.Split(new char[] { '-' }, StringSplitOptions.RemoveEmptyEntries);
@@ -120,8 +100,9 @@ namespace ProgrammingIdeas.Activities
                 bookmarksList[position].State = state;
                 adapter.NotifyDataSetChanged();
                 allItems.FirstOrDefault(x => x.CategoryLbl == bookmarksList[position].Category).Items[position].State = state;
-                DBAssist.SerializeDB(path, bookmarksList);
+                DBAssist.SerializeDBAsync(path, bookmarksList);
             }
+
             Snackbar.Make(recyclerView, $"Idea progress marked as {state}.", Snackbar.LengthLong).Show();
             ShowProgress();
         }
@@ -131,7 +112,7 @@ namespace ProgrammingIdeas.Activities
             switch (item.ItemId)
             {
                 case Android.Resource.Id.Home:
-					NavigateAway();
+                    NavigateAway();
                     return true;
             }
             return base.OnOptionsItemSelected(item);
@@ -139,28 +120,16 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-			if(ideasdb != null)
-				DBAssist.SerializeDB(ideasdb, allItems);
+            if (ideasdb != null)
+                DBAssist.SerializeDBAsync(ideasdb, allItems);
             base.OnPause();
         }
 
         private void OnItemClick(int position)
         {
             Global.BookmarkScrollPosition = position;
-			StartActivity(new Intent(this, typeof(BookmarkDetailsActivity)));
+            StartActivity(new Intent(this, typeof(BookmarkDetailsActivity)));
             OverridePendingTransition(Resource.Animation.push_left_in, Resource.Animation.push_left_out);
         }
-
-        public override void OnBackPressed()
-        {
-			NavigateAway();
-        }
-
-		private void NavigateAway()
-		{
-			Global.BookmarkScrollPosition = 0;
-            NavigateUpTo(new Intent(this, typeof(CategoryActivity)));
-			OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-		}
     }
 }

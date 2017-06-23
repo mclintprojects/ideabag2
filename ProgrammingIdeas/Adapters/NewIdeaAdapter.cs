@@ -7,35 +7,26 @@ namespace ProgrammingIdeas.Adapters
 {
     public class NewIdeaAdapter : RecyclerView.Adapter
     {
-        private List<CategoryItem> newIdeas;
+        private List<Idea> newIdeas;
         private int count;
 
-        public NewIdeaAdapter(List<CategoryItem> newIdeas)
-        {
-            this.newIdeas = newIdeas;
-        }
+        public NewIdeaAdapter(List<Idea> newIdeas) => this.newIdeas = newIdeas;
 
-        public override int ItemCount
-        {
-            get
-            {
-                return newIdeas.Count;
-            }
-        }
+        public override int ItemCount => newIdeas.Count;
 
         public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
         {
             var newIdea = newIdeas[position];
-            var idHolder = holder as NewIdeasViewHolder;
-            idHolder.NewIdeaTitle.Text = newIdea.Title;
-            idHolder.NewIdeaCategory.Text = newIdea.Category;
-            idHolder.NewIdeaContent.Text = newIdea.Description;
+            var newIdeasHolder = holder as NewIdeasViewHolder;
+            newIdeasHolder.NewIdeaTitle.Text = newIdea.Title;
+            newIdeasHolder.NewIdeaCategory.Text = newIdea.Category;
+            newIdeasHolder.NewIdeaContent.Text = newIdea.Description;
             count++;
         }
 
         public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
         {
-            var row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.newideasrow, null);
+            var row = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.newideasrow, parent, false);
             return new NewIdeasViewHolder(row);
         }
     }

@@ -15,7 +15,7 @@ namespace ProgrammingIdeas.Activities
         private TextView amountLbl;
         private Button nextAmountBtn, donateAmountBtn;
         private int currentIndex;
-        private string baseUrl = AppResources.PaypalLink;
+        private string paypalLink = AppResources.PaypalLink;
         private string[] amounts = new string[] { "$1", "$2", "$5", "$10", "Your choice" };
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -44,7 +44,7 @@ namespace ProgrammingIdeas.Activities
             donateAmountBtn.Click += delegate
             {
                 var intent = new Intent(Intent.ActionView);
-                var url = amountLbl.Text != "Your choice" ? $"{baseUrl}{amountLbl.Text.Substring(1, amountLbl.Text.Length - 1)}" : baseUrl;
+                var url = amountLbl.Text != "Your choice" ? $"{paypalLink}{amountLbl.Text.Substring(1, amountLbl.Text.Length - 1)}" : paypalLink;
                 intent.SetData(Android.Net.Uri.Parse(url));
                 StartActivity(Intent.CreateChooser(intent, "Thank you for your donation! Please select any browser here."));
             };

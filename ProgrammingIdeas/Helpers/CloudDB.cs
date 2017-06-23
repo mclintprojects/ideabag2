@@ -27,15 +27,15 @@ namespace ProgrammingIdeas.Helpers
         private static Activity activity;
         private const string TAG = "ALANSADEBUG";
 
-        public static async Task Startup(Action retryMethod, Snackbar snack)
+        public static async Task Initialize(Action retryMethod, Snackbar snack)
         {
             try
             {
-				activity = App.CurrentActivity;
+                activity = App.CurrentActivity;
                 if (!File.Exists(oldDBPath)) // First launch, as in just installed app and launched it
                 {
-					var source = new CancellationTokenSource();
-					source.CancelAfter(12000);
+                    var source = new CancellationTokenSource();
+                    source.CancelAfter(12000);
                     var response = await client.GetAsync(AppResources.DbLink, source.Token);
                     if (response.IsSuccessStatusCode)
                     {
@@ -46,8 +46,8 @@ namespace ProgrammingIdeas.Helpers
                         {
                             newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
                             Global.Categories = newDB;
-                            DBAssist.SerializeDB(oldDBPath, Global.Categories);
-                            DBAssist.SerializeDB(newideastxtPath, newideastxt);
+                            DBAssist.SerializeDBAsync(oldDBPath, Global.Categories);
+                            DBAssist.SerializeDBAsync(newideastxtPath, newideastxt);
                         }
                     }
                 }
@@ -73,23 +73,23 @@ namespace ProgrammingIdeas.Helpers
 
         private static void Notify(int newIdeasCount)
         {
-			activity.RunOnUiThread(() =>
-			{
-				string notifContent = newIdeasCount == 1 ? $"1 new idea is available." : $"{newIdeasCount.ToString()} new ideas are available.";
-				var intent = new Intent(activity, typeof(CategoryActivity));
-				intent.PutExtra("NewIdeasNotif", true);
-				var pendingIntent = PendingIntent.GetActivity(activity, 1960, intent, PendingIntentFlags.UpdateCurrent);
+            activity.RunOnUiThread(() =>
+            {
+                string notifContent = newIdeasCount == 1 ? $"1 new idea is available." : $"{newIdeasCount.ToString()} new ideas are available.";
+                var intent = new Intent(activity, typeof(CategoryActivity));
+                intent.PutExtra("NewIdeasNotif", true);
+                var pendingIntent = PendingIntent.GetActivity(activity, 1960, intent, PendingIntentFlags.UpdateCurrent);
 
-				var notif = new NotificationCompat.Builder(activity)
-												  .SetContentTitle("New ideas available.")
-												  .SetContentText(notifContent)
-												  .SetContentIntent(pendingIntent)
-												  .SetSmallIcon(Resource.Mipmap.notif_icon)
+                var notif = new NotificationCompat.Builder(activity)
+                                                  .SetContentTitle("New ideas available.")
+                                                  .SetContentText(notifContent)
+                                                  .SetContentIntent(pendingIntent)
+                                                  .SetSmallIcon(Resource.Mipmap.notif_icon)
                                                   .SetAutoCancel(true)
-												  .Build();
-				var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
-				notifManager.Notify(1957, notif);
-			});
+                                                  .Build();
+                var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
+                notifManager.Notify(1957, notif);
+            });
         }
 
         private static bool NewIdeasAvailable(List<Category> oldIdeas, List<Category> newIdeas)
@@ -109,7 +109,7 @@ namespace ProgrammingIdeas.Helpers
                 if (!Global.LockRequests)
                 {
                     Log.Debug(TAG, "Starting lowkey invalidation");
-                    Global.Categories = DBAssist.GetDB(oldDBPath);
+                    Global.Categories = await DBAssist.GetDBAsync(oldDBPath);
                     var response = await client.GetAsync(AppResources.DbLink);
                     if (response.IsSuccessStatusCode)
                     {
@@ -130,40 +130,31 @@ namespace ProgrammingIdeas.Helpers
                             Log.Debug(TAG, "Starting full invalidation");
 
                             var notesPath = Path.Combine(Global.APP_PATH, "notesdb");
-							if(!File.Exists(notesPath))
-								File.Create(notesPath);
-                            var notes = JsonConvert.DeserializeObject<List<Note>>(DBAssist.DeserializeDB(notesPath));
+                            if (!File.Exists(notesPath))
+                                File.Create(notesPath);
+                            var notes = await DBAssist.DeserializeDBAsync<List<Note>>(notesPath);
                             notes = notes ?? new List<Note>();
-							for (int i = 0; i < newDB.Count; i++)
+                            for (int i = 0; i < newDB.Count; i++)
                             {
                                 for (int j = 0; j < newDB[i].Items.Count; j++)
                                 {
                                     var newItem = newDB[i].Items[j];
                                     var oldItem = Global.Categories[i].Items.FirstOrDefault(x => x.Id == newItem.Id);
                                     Note note = null;
-									if (oldItem != null)
-									{
-										note = notes.FirstOrDefault(x => x.Title == oldItem.Title);
-										if(note != null)
-											Log.Debug(TAG, $"Note *{note.Title}*, found for old idea *{oldItem.Title}* placed at new idea *{newItem.Title}*");
-									}
+                                    if (oldItem != null)
+                                    {
+                                        note = notes.FirstOrDefault(x => x.Title == oldItem.Title);
+                                        if (note != null)
+                                            Log.Debug(TAG, $"Note *{note.Title}*, found for old idea *{oldItem.Title}* placed at new idea *{newItem.Title}*");
+                                    }
 
                                     newItem.Note = note;
                                     newItem.State = oldItem?.State;
                                 }
                             }
 
-							// Do not delete bookmarks for this update. Seems very important to people.
-                            /*if (PreferenceHelper.GetBoolean("bookmarksDeleted", false) == false)
-                            {
-                                var path = Path.Combine(Global.APP_PATH, "bookmarks.json");
-                                if (File.Exists(path))
-                                    File.Delete(path);
-                                PreferenceHelper.PutBoolean("bookmarksDeleted", true);
-                            }*/
-
-                            DBAssist.SerializeDB(oldDBPath, newDB);
-                            DBAssist.SerializeDB(newideastxtPath, newideastxt);
+                            DBAssist.SerializeDBAsync(oldDBPath, newDB);
+                            DBAssist.SerializeDBAsync(newideastxtPath, newideastxt);
                             Global.Categories = newDB;
 
                             Log.Debug(TAG, "Invalidation completed.");

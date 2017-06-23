@@ -16,21 +16,9 @@ namespace ProgrammingIdeas.Activities
         private EditText author, ideaTitle, description;
         private Validator validator;
 
-        public override int LayoutResource
-        {
-            get
-            {
-                return Resource.Layout.submitideaactivity;
-            }
-        }
+        public override int LayoutResource => Resource.Layout.submitideaactivity;
 
-        public override bool HomeAsUpEnabled
-        {
-            get
-            {
-                return true;
-            }
-        }
+        public override bool HomeAsUpEnabled => true;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -71,70 +59,34 @@ namespace ProgrammingIdeas.Activities
             selectedCategory = spinner.GetItemAtPosition(e.Position).ToString();
         }
 
-        public override bool OnOptionsItemSelected(IMenuItem item)
+        public override void OnBackArrowPressed()
         {
-            switch (item.ItemId)
-            {
-                case Android.Resource.Id.Home:
-                    NavigateAway();
-                    return true;
-            }
-            return base.OnOptionsItemSelected(item);
+            NavigateAway();
         }
 
         public override void OnBackPressed()
         {
-            if (submissionInProgress())
-            {
-                var builder = new AlertDialog.Builder(this);
-                builder.SetTitle("Cancel submission");
-                builder.SetMessage("Are you sure you want to cancel submission?");
-                builder.SetPositiveButton("Yes", (sender, e) =>
-                {
-                    var intent = new Intent(this, typeof(CategoryActivity));
-                    NavigateUpTo(intent);
-                    OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-                });
-                builder.SetNegativeButton("No", (sender, e) => { return; });
-                var dialog = builder.Create();
-                dialog.SetCancelable(false);
-                dialog.Show();
-            }
-            else
-            {
-                var intent = new Intent(this, typeof(CategoryActivity));
-                NavigateUpTo(intent);
-                OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-                base.OnBackPressed();
-            }
+            NavigateAway();
         }
 
-        public void NavigateAway()
+        public new void NavigateAway()
         {
-            if (submissionInProgress())
+            if (SubmissionInProgress())
             {
                 var builder = new AlertDialog.Builder(this);
                 builder.SetTitle("Cancel submission");
                 builder.SetMessage("Are you sure you want to cancel submission?");
-                builder.SetPositiveButton("Yes", (sender, e) =>
-                {
-                    var intent = new Intent(this, typeof(CategoryActivity));
-                    NavigateUpTo(intent);
-                    OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-                });
+                builder.SetPositiveButton("Yes", (sender, e) => base.NavigateAway());
                 builder.SetNegativeButton("No", (sender, e) => { return; });
                 var dialog = builder.Create();
                 dialog.SetCancelable(false);
                 dialog.Show();
             }
             else
-            {
-                Finish();
-                OverridePendingTransition(Resource.Animation.push_up_in, Resource.Animation.push_up_out);
-            }
+                base.NavigateAway();
         }
 
-        public bool submissionInProgress()
+        public bool SubmissionInProgress()
         {
             if (author.Text.Length != 0 || ideaTitle.Text.Length != 0 || description.Text.Length != 0)
                 return true;

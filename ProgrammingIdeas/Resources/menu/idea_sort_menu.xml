@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/sortByName"
+        android:title="Name" />
+
+    <item
+        android:id="@+id/sortByDifficulty"
+        android:title="Difficulty" />
+
+    <item
+        android:id="@+id/sortByStatus"
+        android:title="Completion status" />
+</menu>

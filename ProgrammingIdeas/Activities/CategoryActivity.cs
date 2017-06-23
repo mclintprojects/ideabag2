@@ -30,21 +30,9 @@ namespace ProgrammingIdeas.Activities
         private string ideasdb = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "ideasdb");
         private ProgressBar loadingCircle;
 
-        public override int LayoutResource
-        {
-            get
-            {
-                return Resource.Layout.categoryactivity;
-            }
-        }
+        public override int LayoutResource => Resource.Layout.categoryactivity;
 
-        public override bool HomeAsUpEnabled
-        {
-            get
-            {
-                return false;
-            }
-        }
+        public override bool HomeAsUpEnabled => false;
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -53,25 +41,19 @@ namespace ProgrammingIdeas.Activities
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
             DownloadIdeas();
+
             if (Intent.GetBooleanExtra("NewIdeasNotif", false))
             {
-				try
-				{
-					categoryList = Global.Categories;
-					ShowNewIdeasDialog();
-					Log.Debug("ALANSADEBUG", $"From new ideas notif? True");
-				}
-
-				catch (Exception e)
-				{ Log.Debug("ALANSADEBUG", $"Exception occured. {e.Message}");}
+                try
+                {
+                    categoryList = Global.Categories;
+                    ShowNewIdeasDialog();
+                    Log.Debug("ALANSADEBUG", $"From new ideas notif? True");
+                }
+                catch (Exception e)
+                { Log.Debug("ALANSADEBUG", $"Exception occured. {e.Message}"); }
             }
         }
-
-		protected override void OnResume()
-		{
-			
-			base.OnResume();
-		}
 
         private void ShowNewIdeasDialog()
         {
@@ -85,39 +67,41 @@ namespace ProgrammingIdeas.Activities
                 Toast.MakeText(this, "Downloading new ideas has not completed. Please wait.", ToastLength.Long).Show();
         }
 
-        private void DownloadIdeas()
+        private async void DownloadIdeas()
         {
             PreferenceHelper.Init(this);
             loadingCircle.Visibility = ViewStates.Visible;
             var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
             snack.Show();
 
-            CloudDB.Startup(DownloadIdeas, snack).ContinueWith((a) =>
+            await CloudDB.Initialize(DownloadIdeas, snack);
+            if (Global.Categories != null)
             {
-                RunOnUiThread(() =>
-                {
-                    if (Global.Categories != null)
-                    {
-                        loadingCircle.Visibility = ViewStates.Gone;
-                        snack.Dismiss();
-                        categoryList = Global.Categories;
-                        SetupUI();
-                    }
-                    else
-                        loadingCircle.Visibility = ViewStates.Gone;
-                });
-            });
+                loadingCircle.Visibility = ViewStates.Gone;
+                snack.Dismiss();
+                categoryList = Global.Categories;
+                SetupUI();
+            }
+            else
+                loadingCircle.Visibility = ViewStates.Gone;
         }
 
-        private void SetupUI() //first launch, gets json from packaged assets
+        private void SetupUI()
         {
             manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);
-            adapter = new CategoryAdapter(categoryList, this);
+            adapter = new CategoryAdapter(categoryList);
             adapter.ItemClick += OnItemClick;
             recyclerView.SetAdapter(adapter);
             manager.ScrollToPosition(Global.CategoryScrollPosition);
             bookmarksFab.Click += BookmarksFab_Click;
+        }
+
+        protected override void OnDestroy()
+        {
+            adapter.ItemClick -= OnItemClick;
+            bookmarksFab.Click -= BookmarksFab_Click;
+            base.OnDestroy();
         }
 
         private void BookmarksFab_Click(object sender, EventArgs e)
@@ -178,10 +162,10 @@ namespace ProgrammingIdeas.Activities
         /// This method reads in the text file and generates the respective idea.
         /// </summary>
         /// <returns>The new ideas.</returns>
-        private List<CategoryItem> GetNewIdeas()
+        private List<Idea> GetNewIdeas()
         {
             var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
-            var newItems = new List<CategoryItem>();
+            var newItems = new List<Idea>();
             var newIdeas = new StreamReader(newideastxtPath).ReadToEnd();
             newIdeas = newIdeas.Replace("\"", "");
             var newIdeasContent = newIdeas.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);

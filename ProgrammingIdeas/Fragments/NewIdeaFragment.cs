@@ -12,9 +12,9 @@ namespace ProgrammingIdeas.Fragment
         private RecyclerView recycler;
         private NewIdeaAdapter adapter;
         private RecyclerView.LayoutManager manager;
-        private List<CategoryItem> newIdeas;
+        private List<Idea> newIdeas;
 
-        public NewIdeaFragment(List<CategoryItem> newIdeas)
+        public NewIdeaFragment(List<Idea> newIdeas)
         {
             this.newIdeas = newIdeas;
         }

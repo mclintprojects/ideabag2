@@ -1,56 +1,54 @@
 ﻿using Android.Content.Res;
+using Android.Util;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace ProgrammingIdeas.Helpers
 {
     public static class DBAssist
     {
-        public static string DeserializeDB(string path)
+        public async static Task<T> DeserializeDBAsync<T>(string path) where T : new()
         {
             try
             {
                 using (StreamReader r = new StreamReader(path))
-                    return r.ReadToEnd();
-            }
-            catch { return ""; }
-        }
-
-        public static List<Category> GetDB(AssetManager manager)
-        {
-            try
-            {
-                using (StreamReader r = new StreamReader(manager.Open("output.json")))
                 {
-                    var data = r.ReadToEnd();
-                    var list = JsonConvert.DeserializeObject<List<Category>>(data);
-                    return list;
+                    var jsonString = await r.ReadToEndAsync();
+                    return JsonConvert.DeserializeAnonymousType(jsonString, new T());
                 }
             }
-            catch { return null; }
+            catch { return default(T); }
         }
 
-        public static List<Category> GetDB(string path)
+        public async static Task<List<Category>> GetDBAsync(string path)
         {
             using (var r = new StreamReader(new FileStream(path, FileMode.OpenOrCreate, FileAccess.ReadWrite, FileShare.None)))
             {
-                var data = r.ReadToEnd();
+                var data = await r.ReadToEndAsync();
                 return JsonConvert.DeserializeObject<List<Category>>(data);
             }
         }
 
-        public static void SerializeDB(string location, object database)
+        public static void SerializeDBAsync(string location, object database)
         {
-            try
+            Task.Run(() =>
             {
-                if (database != null)
+                try
                 {
-                    using (StreamWriter s = new StreamWriter(location, false))
-                        s.Write(JsonConvert.SerializeObject(database));
+                    if (database != null)
+                    {
+                        using (StreamWriter s = new StreamWriter(location, false))
+                            s.Write(JsonConvert.SerializeObject(database));
+                    }
                 }
-            }
-            catch { return; }
+                catch (Exception e)
+                {
+                    Log.Error("IDEABAG-DB", e.Message);
+                }
+            });
         }
     }
 }
