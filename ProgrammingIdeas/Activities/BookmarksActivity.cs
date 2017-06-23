@@ -52,7 +52,7 @@ namespace ProgrammingIdeas.Activities
                 allItems = Global.Categories;
                 if (bookmarksList.Count > 0)
                 {
-                    adapter = new BookmarkListAdapter(bookmarksList, this);
+                    adapter = new BookmarkListAdapter(bookmarksList);
                     adapter.ItemClick += OnItemClick;
                     recyclerView.SetAdapter(adapter);
                     recyclerView.SetLayoutManager(manager);

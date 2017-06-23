@@ -27,7 +27,7 @@ namespace ProgrammingIdeas.Helpers
         private static Activity activity;
         private const string TAG = "ALANSADEBUG";
 
-        public static async Task Initialize(Action retryMethod, Snackbar snack)
+        public static async Task<List<Category>> Initialize(Action retryMethod, Snackbar snack)
         {
             try
             {
@@ -48,6 +48,7 @@ namespace ProgrammingIdeas.Helpers
                             Global.Categories = newDB;
                             DBAssist.SerializeDBAsync(oldDBPath, Global.Categories);
                             DBAssist.SerializeDBAsync(newideastxtPath, newideastxt);
+                            return newDB;
                         }
                     }
                 }
@@ -69,6 +70,8 @@ namespace ProgrammingIdeas.Helpers
             {
                 snack.SetText($"Oops! {e.Message}.").SetAction("Retry", (v) => retryMethod?.Invoke()).Show();
             }
+
+            return null;
         }
 
         private static void Notify(int newIdeasCount)
@@ -81,12 +84,12 @@ namespace ProgrammingIdeas.Helpers
                 var pendingIntent = PendingIntent.GetActivity(activity, 1960, intent, PendingIntentFlags.UpdateCurrent);
 
                 var notif = new NotificationCompat.Builder(activity)
-                                                  .SetContentTitle("New ideas available.")
-                                                  .SetContentText(notifContent)
-                                                  .SetContentIntent(pendingIntent)
-                                                  .SetSmallIcon(Resource.Mipmap.notif_icon)
-                                                  .SetAutoCancel(true)
-                                                  .Build();
+                                .SetContentTitle("New ideas available.")
+                                .SetContentText(notifContent)
+                                .SetContentIntent(pendingIntent)
+                                .SetSmallIcon(Resource.Mipmap.notif_icon)
+                                .SetAutoCancel(true)
+                                .Build();
                 var notifManager = (NotificationManager)activity.GetSystemService(Context.NotificationService);
                 notifManager.Notify(1957, notif);
             });
