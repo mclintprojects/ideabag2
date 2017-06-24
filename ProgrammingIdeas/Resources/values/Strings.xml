@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v2.1</string>
-	<string name="appNumber">2.1</string>
+	<string name="appVersion">IdeaBag 2 v2.2</string>
+	<string name="appNumber">2.2</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. You get notified now when new ideas are available. To save data, it only checks for new ideas when you open the app. Push notifications might come later.\r\n2. Fixed bugs with bookmarks and notes.\r\n3. Several other minor bug fixes and usability improvements.
+		1. You can now sort ideas by name, difficulty or completion status.\r\n2. Fixed bugs with highlighting current position in idea list.\r\n2. Several other minor bug fixes and usability improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">
@@ -35,16 +35,16 @@
 		<item>Games</item>
 	</string-array>
 	<string name="helpText">Post your issues in our Programming Ideas Google+ community and other users
-	would be glad to provide you with assistance. You can join the community via this link>
+	would be glad to provide you with assistance. You can join the community via this link&gt;
 	https://plus.google.com/communities/105361187156121163553 </string>
 	<string name="notes_sample_content">You have no notes for this idea. Tap the button below to add one.</string>
-    <string name="edit_text">Edit</string>
+	<string name="edit_text">Edit</string>
 	<string name="notesHint">Enter your note..</string>
 	<string name="editNote">Edit this note</string>
-    <string name="undecidedText">Undecided</string>
-    <string name="completedText">Completed</string>
-    <string name="in_progressText">In progress</string>
-    <string name="markProgressText">What is your status on this idea?</string>
+	<string name="undecidedText">Undecided</string>
+	<string name="completedText">Completed</string>
+	<string name="in_progressText">In progress</string>
+	<string name="markProgressText">What is your status on this idea?</string>
 	<string name="note">Note</string>
 	<string name="need_help_with_the_solution_to_this_idea">Need help with the solution to this idea?</string>
 	<string name="completed">Completed</string>
@@ -66,21 +66,21 @@
 	<string name="idea_title">Idea\'s title</string>
 	<string name="submit_idea">Submit idea</string>
 	<string name="select_the_idea_s_category">Select the idea\'s category</string>
-    <string name="bookmarks">Bookmarks</string>
+	<string name="bookmarks">Bookmarks</string>
 	<string name="help_amp_about"><![CDATA[Help & About]]></string>
-    <string name="view_new_ideas">View new ideas</string>
+	<string name="view_new_ideas">View new ideas</string>
 	<string name="changelog_text">Changelog</string>
 	<string name="notes">Notes</string>
-    <string name="bookmark_idea">Bookmark idea</string>
+	<string name="bookmark_idea">Bookmark idea</string>
 	<string name="share_idea">Share idea</string>
 	<string name="ideas_count">Ideas count</string>
-    <string name="empty_state_text">You don\'t have any</string>
+	<string name="empty_state_text">You don\'t have any</string>
 	<string name="_1">$1</string>
 	<string name="donate">Donate</string>
 	<string name="donateText">Please note that it is not required to donate and that development of Idea Bag 2 will continue regardless.\r\n\r\nHowever, if you like Idea Bag 2 a lot and/or want to support development despite the information above, thank you for your generosity.</string>
 	<string name="next">Next</string>
 	<string name="view">View</string>
 	<string name="delete">Delete</string>
-    <string name="note_s_content">Note\'s content</string>
+	<string name="note_s_content">Note\'s content</string>
 	<string name="your_note">Your note</string>
 </resources>
