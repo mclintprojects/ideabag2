@@ -56,9 +56,10 @@ namespace ProgrammingIdeas.Activities
 			}
 		}
 
-		protected override void OnResume()
+		protected override void OnPause()
 		{
-			base.OnResume();
+			DBAssist.SerializeDBAsync(ideasdbPath, Global.Categories);
+			base.OnPause();
 		}
 
 		private void ShowNewIdeasDialog()
@@ -131,7 +132,6 @@ namespace ProgrammingIdeas.Activities
 		{
 			adapter.ItemClick -= OnItemClick;
 			bookmarksFab.Click -= BookmarksFab_Click;
-			DBAssist.SerializeDBAsync(ideasdbPath, Global.Categories);
 			base.OnDestroy();
 		}
 
