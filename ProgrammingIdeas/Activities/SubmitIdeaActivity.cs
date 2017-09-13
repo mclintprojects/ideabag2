@@ -1,7 +1,6 @@
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Views;
 using Android.Widget;
 using ProgrammingIdeas.Helpers;
 using System;
@@ -11,10 +10,9 @@ namespace ProgrammingIdeas.Activities
     [Activity(Label = "Submit an idea", Theme = "@style/AppTheme")]
     public class SubmitIdeaActivity : BaseActivity
     {
-        private string selectedCategory = "";
         private Button submitBtn;
         private EditText author, ideaTitle, description;
-        private Validator validator;
+        private string selectedCategory = string.Empty;
 
         public override int LayoutResource => Resource.Layout.submitideaactivity;
 
@@ -23,7 +21,6 @@ namespace ProgrammingIdeas.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            validator = new Validator(this);
             var spinner = FindViewById<Spinner>(Resource.Id.spinner);
             author = FindViewById<EditText>(Resource.Id.authorTb);
             ideaTitle = FindViewById<EditText>(Resource.Id.submitTitle);
@@ -36,19 +33,22 @@ namespace ProgrammingIdeas.Activities
             submitBtn = FindViewById<Button>(Resource.Id.submitBtn);
             submitBtn.Click += (sender, e) =>
             {
-                validator.CheckIfEmpty(author, "Author name");
-                validator.CheckIfEmpty(ideaTitle, "Idea title");
-                validator.CheckIfEmpty(description, "Idea description");
-                if (validator.Result)
+                using (var validator = new Validator())
                 {
-                    var submitIntent = new Intent(Intent.ActionSend);
-                    submitIntent.SetData(Android.Net.Uri.Parse("mailto:"));
-                    submitIntent.PutExtra(Intent.ExtraEmail, new string[] { "alansagh@gmail.com" });
-                    submitIntent.PutExtra(Intent.ExtraSubject, $"IdeaBag 2 Submission {DateTime.Now.ToUniversalTime()}");
-                    string body = $"Author: {author.Text}\r\nCategory: {selectedCategory}\r\nTitle: {ideaTitle.Text}\r\n\r\nDescription\r\n{description.Text}";
-                    submitIntent.PutExtra(Intent.ExtraText, body);
-                    submitIntent.SetType("message/rfc822");
-                    StartActivity(Intent.CreateChooser(submitIntent, "Submit idea to developer via e-mail"));
+                    validator.ValidateIsNotEmpty(author, true);
+                    validator.ValidateIsNotEmpty(ideaTitle, true);
+                    validator.ValidateIsNotEmpty(description, true);
+                    if (validator.PassedValidation)
+                    {
+                        var submitIntent = new Intent(Intent.ActionSend);
+                        submitIntent.SetData(Android.Net.Uri.Parse("mailto:"));
+                        submitIntent.PutExtra(Intent.ExtraEmail, new string[] { "alansagh@gmail.com" });
+                        submitIntent.PutExtra(Intent.ExtraSubject, $"IdeaBag 2 Submission {DateTime.Now.ToUniversalTime()}");
+                        string body = $"Author: {author.Text}\r\nCategory: {selectedCategory}\r\nTitle: {ideaTitle.Text}\r\n\r\nDescription\r\n{description.Text}";
+                        submitIntent.PutExtra(Intent.ExtraText, body);
+                        submitIntent.SetType("message/rfc822");
+                        StartActivity(Intent.CreateChooser(submitIntent, "Submit idea to developer via e-mail"));
+                    }
                 }
             };
         }
@@ -59,17 +59,7 @@ namespace ProgrammingIdeas.Activities
             selectedCategory = spinner.GetItemAtPosition(e.Position).ToString();
         }
 
-        public override void OnBackArrowPressed()
-        {
-            NavigateAway();
-        }
-
-        public override void OnBackPressed()
-        {
-            NavigateAway();
-        }
-
-        public new void NavigateAway()
+        public override void NavigateAway()
         {
             if (SubmissionInProgress())
             {

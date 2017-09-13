@@ -15,10 +15,9 @@ namespace ProgrammingIdeas.Fragments
         private EditText nameTitle, noteContentTb;
         private Button clearNote;
         private View view;
-        private Validator validator;
-        private bool IsEditing;
+        private bool isEditingNote;
 
-        public AddNoteDialog() : base()
+        public AddNoteDialog()
         {
         }
 
@@ -28,32 +27,36 @@ namespace ProgrammingIdeas.Fragments
             this.title = title;
         }
 
-        public AddNoteDialog(Note item)
+        public AddNoteDialog(Note note)
         {
-            IsEditing = true;
-            this.note = item;
-            this.title = item.Title;
-            this.category = item.Category;
+            isEditingNote = true;
+            this.note = note;
+            title = note.Title;
+            category = note.Category;
         }
 
         public override Dialog OnCreateDialog(Android.OS.Bundle savedInstanceState)
         {
-            validator = new Validator(Activity);
             var inflater = (LayoutInflater)Activity.GetSystemService(Activity.LayoutInflaterService);
             view = inflater.Inflate(Resource.Layout.add_note_layout, null);
             nameTitle = view.FindViewById<EditText>(Resource.Id.noteTitle);
             noteContentTb = view.FindViewById<EditText>(Resource.Id.noteTb);
             clearNote = view.FindViewById<Button>(Resource.Id.clearNoteBtn);
 
-            clearNote.Click += delegate { nameTitle.Text = ""; noteContentTb.Text = ""; };
-            if (IsEditing)
+            clearNote.Click += delegate
+            {
+                nameTitle.Text = string.Empty;
+                noteContentTb.Text = string.Empty;
+            };
+
+            if (isEditingNote)
             {
                 nameTitle.Text = note.Name;
                 noteContentTb.Text = note.Content;
             }
 
             var dialog = new AlertDialog.Builder(Activity)
-                .SetTitle(!IsEditing ? "Add a note" : "Editing this note")
+                .SetTitle(!isEditingNote ? "Add a note" : "Edit this note")
                 .SetView(view)
                 .SetPositiveButton("Save", (s, e) => SaveNote())
                 .SetNegativeButton("Cancel", (s, e) => { return; })
@@ -61,40 +64,27 @@ namespace ProgrammingIdeas.Fragments
             return dialog;
         }
 
-        /*public override View OnCreateView(LayoutInflater inflater, ViewGroup container, Android.OS.Bundle savedInstanceState)
-		{
-            validator = new Validator(Activity);
-            view = inflater.Inflate(Resource.Layout.add_note_layout, container, false);
-			nameTitle = view.FindViewById<EditText>(Resource.Id.noteTitle);
-			noteContentTb = view.FindViewById<EditText>(Resource.Id.noteTb);
-            clearNote = view.FindViewById<Button>(Resource.Id.clearNoteBtn);
-            saveNote = view.FindViewById<Button>(Resource.Id.addNoteBtn);
-
-            clearNote.Click += delegate { nameTitle.Text = ""; noteContentTb.Text = ""; };
-            saveNote.Click += delegate { SaveNote(); };
-
-            if (IsEditing)
-            {
-                Dialog.SetTitle("Editing this note");
-                nameTitle.Text = note.Title;
-                noteContentTb.Text = note.Content;
-            }
-            else
-                Dialog.SetTitle("Add a note");
-            return view;
-		}*/
-
         private void SaveNote()
         {
-            validator.CheckIfEmpty(nameTitle, "Note title");
-            validator.CheckIfEmpty(noteContentTb, "Note description");
-            if (validator.Result)
+            using (var validator = new Validator())
             {
-                note = new Note() { Name = nameTitle.Text, Category = category, Content = noteContentTb.Text, Title = title };
-                OnNoteSave?.Invoke(note);
+                validator.ValidateIsNotEmpty(nameTitle, true);
+                validator.ValidateIsNotEmpty(noteContentTb, true);
+                if (validator.PassedValidation)
+                {
+                    note = new Note()
+                    {
+                        Name = nameTitle.Text,
+                        Category = category,
+                        Content = noteContentTb.Text,
+                        Title = title
+                    };
+
+                    OnNoteSave?.Invoke(note);
+                }
+                else
+                    OnError?.Invoke();
             }
-            else
-                OnError?.Invoke();
         }
     }
 }

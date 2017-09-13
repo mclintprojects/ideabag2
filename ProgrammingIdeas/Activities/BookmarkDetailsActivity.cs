@@ -6,13 +6,11 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using Newtonsoft.Json;
 using ProgrammingIdeas.Animation;
 using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace ProgrammingIdeas.Activities
@@ -20,13 +18,9 @@ namespace ProgrammingIdeas.Activities
     [Activity(Label = "Bookmark details", Theme = "@style/AppTheme")]
     public class BookmarkDetailsActivity : BaseActivity
     {
-        private List<Category> db;
         private List<Note> notes;
-        private List<Idea> ideasList;
-        private List<Idea> bookmarkedItems = new List<Idea>();
-        private Idea item;
-        private string path, ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
-        private string notesdb = Path.Combine(Global.APP_PATH, "notesdb");
+        private List<Idea> ideasList, bookmarkedItems = new List<Idea>();
+        private Idea bookmarkedIdea;
         private IMenuItem bookmarkIcon;
         private TextView ideaTitleLbl, ideaDescriptionLbl, noteContentLbl;
         private OnSwipeListener SwipeListener;
@@ -34,7 +28,7 @@ namespace ProgrammingIdeas.Activities
         private FloatingActionButton addNoteFab;
         private Button editNoteBtn;
         private CardView noteCard;
-        private bool IsBookmarked;
+        private bool isBookmarked;
 
         public override int LayoutResource => Resource.Layout.ideadetailsactivity;
 
@@ -42,7 +36,6 @@ namespace ProgrammingIdeas.Activities
 
         protected async override void OnCreate(Bundle savedInstanceState)
         {
-            path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), "bookmarks.json");
             base.OnCreate(savedInstanceState);
             ideaTitleLbl = FindViewById<TextView>(Resource.Id.itemTitle);
             ideaDescriptionLbl = FindViewById<TextView>(Resource.Id.itemDescription);
@@ -61,29 +54,30 @@ namespace ProgrammingIdeas.Activities
 
             editNoteBtn.Click += delegate
             {
-                var dialog = new AddNoteDialog(bookmarkedItems[Global.ItemScrollPosition].Note);
+                var dialog = new AddNoteDialog(bookmarkedItems[Global.IdeaScrollPosition].Note);
+                dialog.OnError += () => Snackbar.Make(addNoteFab, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show();
                 dialog.Show(FragmentManager, "ADDNOTEFRAG");
-                dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
+                dialog.OnNoteSave += (Note note) => SaveNote(note);
             };
 
-            bookmarkedItems = await DBAssist.DeserializeDBAsync<List<Idea>>(path);
+            bookmarkedItems = await DBAssist.DeserializeDBAsync<List<Idea>>(Global.BOOKMARKS_PATH);
             bookmarkedItems = bookmarkedItems ?? new List<Idea>();
 
-            item = bookmarkedItems[Global.BookmarkScrollPosition];
-            ideasList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == item.Category).Items;
-            SetupUI();
+            bookmarkedIdea = bookmarkedItems[Global.BookmarkScrollPosition];
+            ideasList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == bookmarkedIdea.Category).Items;
 
-            notes = await DBAssist.DeserializeDBAsync<List<Note>>(notesdb);
+            notes = await DBAssist.DeserializeDBAsync<List<Note>>(Global.NOTES_PATH);
             notes = notes ?? new List<Note>();
+
+            SetupUI();
         }
 
         private void SetupUI()
         {
-            ideaTitleLbl.Text = item.Title;
-            ideaDescriptionLbl.Text = item.Description;
-            db = Global.Categories;
-            if (item.Note != null)
-                ShowNote(item.Note);
+            ideaTitleLbl.Text = bookmarkedIdea.Title;
+            ideaDescriptionLbl.Text = bookmarkedIdea.Description;
+            if (bookmarkedIdea.Note != null)
+                ShowNote(bookmarkedIdea.Note);
             else
                 noteCard.Visibility = ViewStates.Gone;
         }
@@ -91,22 +85,22 @@ namespace ProgrammingIdeas.Activities
         private void ShowNote(Note note)
         {
             noteCard.Visibility = ViewStates.Visible;
-            noteContentLbl.Text = item.Note.Content;
+            noteContentLbl.Text = bookmarkedIdea.Note.Content;
         }
 
-        private void HandleNoteSave(Note note)
+        private void SaveNote(Note note)
         {
-            item.Note = note;
+            bookmarkedIdea.Note = note;
             var existingItem = notes.FirstOrDefault(x => x.Title == note.Title);
             if (existingItem == null) //No existing note was found
             {
                 notes.Add(note);
-                ideasList.FirstOrDefault(x => x.Title == item.Title).Note = note;
+                ideasList.FirstOrDefault(x => x.Title == bookmarkedIdea.Title).Note = note;
             }
             else //Existing note was found
             {
                 notes[notes.IndexOf(existingItem)] = note;
-                ideasList.FirstOrDefault(x => x.Title == item.Title).Note = note;
+                ideasList.FirstOrDefault(x => x.Title == bookmarkedIdea.Title).Note = note;
             }
 
             ShowNote(note);
@@ -115,11 +109,11 @@ namespace ProgrammingIdeas.Activities
 
         private void AddNoteFab_Click(object sender, EventArgs e)
         {
-            if (item.Note == null)
+            if (bookmarkedIdea.Note == null)
             {
-                var dialog = new AddNoteDialog(ideasList[Global.ItemScrollPosition].Category, ideasList[Global.ItemScrollPosition].Title);
+                var dialog = new AddNoteDialog(ideasList[Global.IdeaScrollPosition].Category, ideasList[Global.IdeaScrollPosition].Title);
                 dialog.OnError += () => { Snackbar.Make(addNoteFab, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show(); };
-                dialog.OnNoteSave += (Note note) => HandleNoteSave(note);
+                dialog.OnNoteSave += (Note note) => SaveNote(note);
                 dialog.Show(FragmentManager, "ADDNOTEFRAG");
             }
             else
@@ -141,7 +135,7 @@ namespace ProgrammingIdeas.Activities
             if (index >= 0 && index <= bookmarkedItems.Count - 1)
             {
                 Global.BookmarkScrollPosition = index;
-                item = bookmarkedItems[index];
+                bookmarkedIdea = bookmarkedItems[index];
                 FinishItemChange(WasLeftSwipe);
             }
             else
@@ -159,12 +153,12 @@ namespace ProgrammingIdeas.Activities
         {
             float direction = WasLeftSwipe ? 700 : -700;
             AnimHelper.Animate(detailsView, "translationX", 700, new AnticipateOvershootInterpolator(), direction, 0);
-            ideaTitleLbl.Text = item.Title;
-            ideaDescriptionLbl.Text = item.Description;
-            if (item.Note == null)
+            ideaTitleLbl.Text = bookmarkedIdea.Title;
+            ideaDescriptionLbl.Text = bookmarkedIdea.Description;
+            if (bookmarkedIdea.Note == null)
                 noteCard.Visibility = ViewStates.Gone;
             else
-                ShowNote(item.Note);
+                ShowNote(bookmarkedIdea.Note);
             CheckAndSetBookmark();
         }
 
@@ -181,7 +175,7 @@ namespace ProgrammingIdeas.Activities
             switch (item.ItemId)
             {
                 case Resource.Id.bookmarkItem:
-                    Bookmark();
+                    BookmarkIdea();
                     return true;
 
                 case Resource.Id.shareItem:
@@ -189,7 +183,7 @@ namespace ProgrammingIdeas.Activities
                     share.SetAction(Intent.ActionSend);
                     share.SetType("text/plain");
                     string textToShare = $"Can you code this challenge?\r\n\r\n" +
-                        $"Title: {this.item.Title}\r\nDifficulty: {this.item.Difficulty}\r\n\r\n{this.item.Description}\r\n\r\n" +
+                        $"Title: {bookmarkedIdea.Title}\r\nDifficulty: {bookmarkedIdea.Difficulty}\r\n\r\n{this.bookmarkedIdea.Description}\r\n\r\n" +
                         $"Want more coding ideas? Get the app here: https://play.google.com/store/apps/details?id=com.alansa.ideabag2";
                     share.PutExtra(Intent.ExtraText, textToShare);
                     StartActivity(Intent.CreateChooser(share, "Share idea via"));
@@ -198,30 +192,30 @@ namespace ProgrammingIdeas.Activities
             return base.OnOptionsItemSelected(item);
         }
 
-        private void WriteEntirety()
+        private void SaveChanges()
         {
-            DBAssist.SerializeDBAsync(path, bookmarkedItems);
-            DBAssist.SerializeDBAsync(ideasdb, db);
-            DBAssist.SerializeDBAsync(notesdb, notes);
+            DBAssist.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
+            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
+            DBAssist.SerializeDBAsync(Global.NOTES_PATH, notes);
         }
 
-        private void Bookmark()
+        private void BookmarkIdea()
         {
-            IsBookmarked = CheckIfBookmarked(item);
-            if (bookmarkedItems != null && item != null)
+            isBookmarked = CheckIfBookmarked(bookmarkedIdea);
+            if (bookmarkedItems != null)
             {
-                ideasList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == item.Category).Items;
-                if (IsBookmarked == true) // if bookmarked
+                ideasList = Global.Categories.FirstOrDefault(x => x.CategoryLbl == bookmarkedIdea.Category).Items;
+                if (isBookmarked == true) // if currently open idea is bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
-                    bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Title == item.Title));
+                    bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Title == bookmarkedIdea.Title));
 
                     if (bookmarkedItems.Count == 0)
                         base.NavigateAway();
                     else
                     {
                         Snackbar.Make(addNoteFab, "Idea removed from bookmarks.", Snackbar.LengthLong).Show();
-                        IsBookmarked = false;
+                        isBookmarked = false;
                         Global.BookmarkScrollPosition -= 1;
                         ChangeItem(++Global.BookmarkScrollPosition, false);
                     }
@@ -229,20 +223,20 @@ namespace ProgrammingIdeas.Activities
                 else // not bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
-                    bookmarkedItems.Add(item);
+                    bookmarkedItems.Add(bookmarkedIdea);
                     Snackbar.Make(addNoteFab, "Idea added to bookmarks.", Snackbar.LengthLong).Show();
                     ChangeItem(Global.BookmarkScrollPosition + 1, true);
-                    IsBookmarked = true;
+                    isBookmarked = true;
                 }
             }
         }
 
         private void CheckAndSetBookmark()
         {
-            if (CheckIfBookmarked(item) == true)
+            if (CheckIfBookmarked(bookmarkedIdea) == true)
             {
                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
-                IsBookmarked = true;
+                isBookmarked = true;
             }
             else
                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
@@ -250,7 +244,7 @@ namespace ProgrammingIdeas.Activities
 
         private bool CheckIfBookmarked(Idea item)
         {
-            if (bookmarkedItems.FirstOrDefault(x => x.Description == item.Description) != null)
+            if (bookmarkedItems.FirstOrDefault(x => x.Title == item.Title) != null)
                 return true;
             else
                 return false;
@@ -258,7 +252,7 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-            WriteEntirety();
+            SaveChanges();
             base.OnPause();
         }
     }

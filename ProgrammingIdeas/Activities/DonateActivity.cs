@@ -15,7 +15,6 @@ namespace ProgrammingIdeas.Activities
         private TextView amountLbl;
         private Button nextAmountBtn, donateAmountBtn;
         private int currentIndex;
-        private string paypalLink = AppResources.PaypalLink;
         private string[] amounts = new string[] { "$1", "$2", "$5", "$10", "Your choice" };
 
         protected override void OnCreate(Bundle savedInstanceState)
@@ -26,6 +25,7 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnResume()
         {
+            base.OnResume();
             ShowDisclaimerDialog();
             amountLbl = FindViewById<TextView>(Resource.Id.amountLbl);
             nextAmountBtn = FindViewById<Button>(Resource.Id.nextAmountBtn);
@@ -44,12 +44,10 @@ namespace ProgrammingIdeas.Activities
             donateAmountBtn.Click += delegate
             {
                 var intent = new Intent(Intent.ActionView);
-                var url = amountLbl.Text != "Your choice" ? $"{paypalLink}{amountLbl.Text.Substring(1, amountLbl.Text.Length - 1)}" : paypalLink;
+                var url = amountLbl.Text != "Your choice" ? $"{AppResources.PaypalLink}{amountLbl.Text.Substring(1, amountLbl.Text.Length - 1)}" : AppResources.PaypalLink;
                 intent.SetData(Android.Net.Uri.Parse(url));
                 StartActivity(Intent.CreateChooser(intent, "Thank you for your donation! Please select any browser here."));
             };
-
-            base.OnResume();
         }
 
         private void ShowDisclaimerDialog()
@@ -74,7 +72,6 @@ namespace ProgrammingIdeas.Activities
             PreferenceHelper.PutBoolean("dialogShown", false);
             Finish();
             OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
-            base.OnBackPressed();
         }
     }
 }

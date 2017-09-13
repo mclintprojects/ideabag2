@@ -1,17 +1,16 @@
 ﻿using Android.App;
+using Android.OS;
 using Android.Runtime;
 using Calligraphy;
 using System;
-using System.IO;
-using Android.OS;
 
 namespace ProgrammingIdeas
 {
     [Application]
     public class App : Application, Application.IActivityLifecycleCallbacks
-	{
-		private static Activity currentActivity;
-		public static Activity CurrentActivity { get { return currentActivity; } }
+    {
+        private static Activity _currentActivity;
+        public static Activity CurrentActivity { get { return _currentActivity; } }
 
         public App(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
@@ -21,44 +20,41 @@ namespace ProgrammingIdeas
         {
             base.OnCreate();
             CalligraphyConfig.InitDefault(new CalligraphyConfig.Builder()
-            //.SetDefaultFontPath("fonts/RobotoBlack.ttf")
             .SetFontAttrId(Resource.Attribute.fontPath)
             .Build());
-			RegisterActivityLifecycleCallbacks(this);
+            RegisterActivityLifecycleCallbacks(this);
         }
 
-		public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
-		{
-			currentActivity = activity;
-		}
+        public void OnActivityCreated(Activity activity, Bundle savedInstanceState)
+        {
+            _currentActivity = activity;
+        }
 
-		public void OnActivityDestroyed(Activity activity)
-		{
-			
-		}
+        public void OnActivityDestroyed(Activity activity)
+        {
+        }
 
-		public void OnActivityPaused(Activity activity)
-		{
-			
-		}
+        public void OnActivityPaused(Activity activity)
+        {
+        }
 
-		public void OnActivityResumed(Activity activity)
-		{
-			currentActivity = activity;
-		}
+        public void OnActivityResumed(Activity activity)
+        {
+            _currentActivity = activity;
+        }
 
-		public void OnActivitySaveInstanceState(Activity activity, Bundle outState)
-		{
-		}
+        public void OnActivitySaveInstanceState(Activity activity, Bundle outState)
+        {
+        }
 
-		public void OnActivityStarted(Activity activity)
-		{
-			
-		}
+        public void OnActivityStarted(Activity activity)
+        {
+        }
 
-		public void OnActivityStopped(Activity activity)
-		{
-			
-		}
-	}
+        public void OnActivityStopped(Activity activity)
+        {
+        }
+
+        public static void Post(Action action) => _currentActivity.RunOnUiThread(() => action.Invoke());
+    }
 }

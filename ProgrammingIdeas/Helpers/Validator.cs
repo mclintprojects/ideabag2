@@ -1,36 +1,93 @@
 ﻿using Android.Content;
-using Android.Graphics;
-using Android.Views.Animations;
+using Android.Graphics.Drawables;
+using Android.Support.V4.Content;
 using Android.Widget;
-using ProgrammingIdeas.Animation;
 using System;
+using System.Text.RegularExpressions;
 
 namespace ProgrammingIdeas.Helpers
 {
-    public class Validator
+    public class Validator : IDisposable
     {
-        private static bool valid;
-        public bool Result { get { return valid; } }
+        private bool passed = true, alreadyFailed;
+        public bool PassedValidation => passed;
         private Context ctx;
+        private Drawable errorIcon;
 
-        public Validator(Context ctx)
+        public Validator()
         {
-            this.ctx = ctx;
+            ctx = App.CurrentActivity;
+            errorIcon = ContextCompat.GetDrawable(ctx, Resource.Drawable.circle);
         }
 
-        public void CheckIfEmpty(EditText editText, string inputDescription)
+        public void ValidatePhoneNumber(EditText editText)
         {
-            editText.SetBackgroundResource(Resource.Color.primaryLight);
-            if (!String.IsNullOrEmpty(editText.Text) || !String.IsNullOrWhiteSpace(editText.Text))
-                valid = true;
-            else
+            if (!alreadyFailed)
             {
-                string errorString = $"{inputDescription} is required.";
-                valid = false;
-                editText.SetError(errorString, null);
-                editText.Background.SetColorFilter(Color.Tomato, PorterDuff.Mode.SrcIn);
-                AnimHelper.Animate(editText, "rotationY", 500, new AnticipateOvershootInterpolator(), 20, 0, -20, 0);
+                if (editText.Text.Length < 6 || editText.Text.Length > 15)
+                {
+                    passed = Regex.Match(editText.Text, @"^(\+[0-9]{9})$").Success;
+                    alreadyFailed = true;
+                    string response = editText.Text.Length == 0 ? "Phone number is empty." : "Invalid phone number.";
+                    editText.SetError(response, errorIcon);
+                    editText.RequestFocus();
+                }
+                else
+                    passed = true;
             }
         }
+
+        public void ValidateIsNotEmpty(EditText editText, bool isRequired = false)
+        {
+            if (!alreadyFailed)
+            {
+                if (string.IsNullOrEmpty(editText.Text) || string.IsNullOrWhiteSpace(editText.Text))
+                {
+                    passed = false;
+                    alreadyFailed = true;
+                    string response = isRequired == false ? "is empty." : "is required.";
+                    editText.SetError($"This {response}", errorIcon);
+                    editText.RequestFocus();
+                }
+                else
+                    passed = true;
+            }
+        }
+
+        public decimal ValidateAmount(EditText editText)
+        {
+            decimal output = 0;
+            if (!alreadyFailed)
+            {
+                if (editText.Text != string.Empty && decimal.TryParse(editText.Text, out output))
+                    passed = true;
+                else
+                {
+                    passed = false;
+                    alreadyFailed = true;
+                    editText.SetError("This is not a valid amount.", errorIcon);
+                    editText.RequestFocus();
+                }
+            }
+
+            return output;
+        }
+
+        internal void ValidateIsSame(EditText passwordTb, EditText retypePasswordTb)
+        {
+            if (!alreadyFailed)
+            {
+                if (passwordTb.Text == retypePasswordTb.Text)
+                    passed = true;
+                else
+                {
+                    passed = false;
+                    alreadyFailed = true;
+                    Toast.MakeText(ctx, "Passwords are not the same.", ToastLength.Long).Show();
+                }
+            }
+        }
+
+        public void Dispose() => alreadyFailed = false;
     }
 }
