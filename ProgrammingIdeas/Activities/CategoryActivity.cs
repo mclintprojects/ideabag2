@@ -174,12 +174,12 @@ namespace ProgrammingIdeas.Activities
                     return true;
 
                 case Resource.Id.changelog:
-                    var builder = new AlertDialog.Builder(this);
-                    builder.SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}");
-                    builder.SetMessage(Resources.GetString(Resource.String.changelog));
-                    builder.SetPositiveButton("DISMISS", (sender, e) => { return; });
-                    Dialog dialog = builder.Create();
-                    dialog.Show();
+                    new AlertDialog.Builder(this)
+                        .SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}")
+                        .SetMessage(Resources.GetString(Resource.String.changelog))
+                        .SetPositiveButton("Dismiss", (sender, e) => { return; })
+                        .Create()
+                        .Show();
                     return true;
 
                 case Resource.Id.submitIdea:
@@ -216,7 +216,7 @@ namespace ProgrammingIdeas.Activities
             var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
             var newItems = new List<Idea>();
             var newIdeas = new StreamReader(newideastxtPath).ReadToEnd();
-            newIdeas = newIdeas.Replace("\"", string.Empty); // It's downloaded as a string so we need to remove escape chars
+            newIdeas = newIdeas.Replace("\"", string.Empty); // It's downloaded as a quoted string so we need to remove the quotes
             var newIdeasContent = newIdeas.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < newIdeasContent.Length; i++)
             {

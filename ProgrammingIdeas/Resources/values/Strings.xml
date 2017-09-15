@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v2.3</string>
-	<string name="appNumber">2.3</string>
+	<string name="appVersion">IdeaBag 2 v2.4</string>
+	<string name="appNumber">2.4</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -19,7 +19,7 @@
 		start a new project and begin work on any of the projects featured in this app.
 	</string>
 	<string name="changelog">
-		1. Fixed bug where you had to re-download the ideas each time on app launch.\r\n2. Several other minor bug fixes and usability improvements.
+		1. Fixed bug with adding notes to an idea.\r\n2. Fixed crash on rotation when downloading ideas for the first time.\r\n3. Several other minor bug fixes and usability improvements.
 	</string>
 	<string name="authorHint">Enter your name</string>
 	<string-array name="categories">

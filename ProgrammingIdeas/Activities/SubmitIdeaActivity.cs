@@ -4,10 +4,11 @@ using Android.OS;
 using Android.Widget;
 using ProgrammingIdeas.Helpers;
 using System;
+using Android.Content.PM;
 
 namespace ProgrammingIdeas.Activities
 {
-    [Activity(Label = "Submit an idea", Theme = "@style/AppTheme")]
+    [Activity(Label = "Submit an idea", Theme = "@style/AppTheme", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class SubmitIdeaActivity : BaseActivity
     {
         private Button submitBtn;
