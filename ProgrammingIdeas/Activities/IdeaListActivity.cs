@@ -22,7 +22,6 @@ namespace ProgrammingIdeas.Activities
         private List<Category> allCategories = new List<Category>();
         private List<Idea> ideasList;
         private ProgressBar progressBar;
-        private string ideasdb = Path.Combine(Global.APP_PATH, "ideasdb");
 
         public override int LayoutResource => Resource.Layout.idealistactivity;
 
@@ -114,7 +113,7 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-            DBAssist.SerializeDBAsync(ideasdb, allCategories);
+            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, allCategories);
             base.OnPause();
         }
 

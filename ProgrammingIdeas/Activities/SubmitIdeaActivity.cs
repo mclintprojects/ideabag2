@@ -1,10 +1,10 @@
 using Android.App;
 using Android.Content;
+using Android.Content.PM;
 using Android.OS;
 using Android.Widget;
 using ProgrammingIdeas.Helpers;
 using System;
-using Android.Content.PM;
 
 namespace ProgrammingIdeas.Activities
 {

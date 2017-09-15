@@ -8,7 +8,6 @@ using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 
 namespace ProgrammingIdeas.Activities

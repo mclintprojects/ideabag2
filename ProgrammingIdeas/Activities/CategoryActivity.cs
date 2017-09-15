@@ -8,7 +8,6 @@ using Android.Support.V7.Widget;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
-using Helpers;
 using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Fragment;
 using ProgrammingIdeas.Helpers;

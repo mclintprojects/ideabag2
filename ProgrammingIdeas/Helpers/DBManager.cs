@@ -1,6 +1,5 @@
 using Android.App;
 using Android.Content;
-using Android.Support.Design.Widget;
 using Android.Support.V4.App;
 using Android.Util;
 using Newtonsoft.Json;

@@ -32,7 +32,7 @@ namespace ProgrammingIdeas.Adapters
 
         private void GetBookmarks()
         {
-            bookmarkedItems = DBAssist.DeserializeDB<List<Idea>>(System.IO.Path.Combine(Global.APP_PATH, "bookmarks.json"));
+            bookmarkedItems = DBAssist.DeserializeDB<List<Idea>>(Global.BOOKMARKS_PATH);
             bookmarkedItems = bookmarkedItems ?? new List<Idea>();
         }
 
