@@ -63,13 +63,13 @@ namespace ProgrammingIdeas.Activities
                     .Create()
                     .Show();
 
-                PreferenceHelper.PutBoolean("dialogShown", true);
+                PreferenceManager.Instance.AddEntry("dialogShown", true);
             }
         }
 
         public override void OnBackPressed()
         {
-            PreferenceHelper.PutBoolean("dialogShown", false);
+            PreferenceManager.Instance.AddEntry("dialogShown", false);
             Finish();
             OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
         }

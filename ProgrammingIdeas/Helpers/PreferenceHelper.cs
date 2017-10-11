@@ -1,30 +1,47 @@
 ﻿using Android.App;
 using Android.Content;
+using ProgrammingIdeas;
 
 namespace Helpers
 {
-    public class PreferenceHelper
+    public class PreferenceManager
     {
-        private static Activity context;
-        private static ISharedPreferencesEditor editor;
-        private static ISharedPreferences pref;
+        private Activity context;
+        private ISharedPreferencesEditor editor;
+        private ISharedPreferences pref;
 
-        public static void Init(Activity ctx)
+        private static PreferenceManager singleton;
+
+        public static PreferenceManager Instance
         {
-            context = ctx;
-            pref = context.GetPreferences(FileCreationMode.Private);
+            get
+            {
+                if (singleton == null)
+                    return new PreferenceManager();
+                return singleton;
+            }
+        }
+
+        public PreferenceManager()
+        {
+            pref = App.CurrentActivity.GetPreferences(FileCreationMode.Private);
             editor = pref.Edit();
         }
 
-        public static void PutBoolean(string tag, bool value)
+        public void AddEntry(string tag, bool value)
         {
             editor.PutBoolean(tag, value);
             editor.Commit();
         }
 
-        public static bool GetBoolean(string tag, bool defaultValue)
+        public void AddEntry(string tag, int value)
         {
-            return pref.GetBoolean(tag, defaultValue);
+            editor.PutInt(tag, value);
+            editor.Commit();
         }
+
+        public bool GetEntry(string tag, bool defaultValue) => pref.GetBoolean(tag, defaultValue);
+
+        public int GetEntry(string tag, int defaultValue) => pref.GetInt(tag, defaultValue);
     }
 }

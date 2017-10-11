@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammingIdeas.Helpers
 {
-    internal class DBManager
+    internal static class DBManager
     {
         private static List<Category> newDB;
         private static string newideastxt;

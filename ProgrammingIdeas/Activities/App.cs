@@ -10,7 +10,7 @@ namespace ProgrammingIdeas
     public class App : Application, Application.IActivityLifecycleCallbacks
     {
         private static Activity _currentActivity;
-        public static Activity CurrentActivity { get { return _currentActivity; } }
+        public static Activity CurrentActivity => _currentActivity;
 
         public App(IntPtr javaReference, JniHandleOwnership transfer) : base(javaReference, transfer)
         {
@@ -55,6 +55,6 @@ namespace ProgrammingIdeas
         {
         }
 
-        public static void Post(Action action) => _currentActivity.RunOnUiThread(() => action.Invoke());
+        public static void Post(Action action) => _currentActivity.RunOnUiThread(action.Invoke);
     }
 }

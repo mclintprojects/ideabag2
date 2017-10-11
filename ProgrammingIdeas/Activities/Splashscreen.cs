@@ -2,7 +2,6 @@
 using Android.Content;
 using Android.OS;
 using Android.Support.V7.App;
-using Helpers;
 using ProgrammingIdeas.Activities;
 
 namespace Activities
@@ -13,7 +12,6 @@ namespace Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            PreferenceHelper.Init(this);
             StartActivity(new Intent(this, typeof(CategoryActivity)));
         }
     }
