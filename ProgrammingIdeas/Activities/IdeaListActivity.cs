@@ -7,7 +7,6 @@ using Android.Widget;
 using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Helpers;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using PopupMenu = Android.Support.V7.Widget.PopupMenu;
 

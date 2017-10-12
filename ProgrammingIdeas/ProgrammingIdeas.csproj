@@ -41,28 +41,31 @@
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <AndroidManagedSymbols>true</AndroidManagedSymbols>
-    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>Full</AndroidLinkMode>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <AndroidSupportedAbis>
-    </AndroidSupportedAbis>
     <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>C:\Users\Ghalani 1\AppData\Local\Xamarin\Mono for Android\Keystore\ideabaguploadkey\ideabaguploadkey.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>C:\Users\mbah3\AppData\Local\Xamarin\Mono for Android\Keystore\ideabaguploadkey\ideabaguploadkey.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>.Boyclint1UPLOAD</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>ideabaguploadkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>.Boyclint1UPLOAD</AndroidSigningKeyPass>
-    <EnableProguard>true</EnableProguard>
+    <EnableProguard>True</EnableProguard>
     <LangVersion>6</LangVersion>
-    <AotAssemblies>false</AotAssemblies>
-    <EnableLLVM>false</EnableLLVM>
-    <BundleAssemblies>false</BundleAssemblies>
+    <AotAssemblies>True</AotAssemblies>
+    <AndroidAotAdditionalArguments>no-write-symbols,nodebug</AndroidAotAdditionalArguments>
+    <EnableLLVM>False</EnableLLVM>
+    <BundleAssemblies>False</BundleAssemblies>
+    <EmbedAssembliesIntoApk>True</EmbedAssembliesIntoApk>
+    <AndroidCreatePackagePerAbi>False</AndroidCreatePackagePerAbi>
+    <Debugger>.Net (Xamarin)</Debugger>
+    <AndroidEnableMultiDex>False</AndroidEnableMultiDex>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>

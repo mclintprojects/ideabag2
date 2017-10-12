@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v2.4</string>
-	<string name="appNumber">2.4</string>
+	<string name="appVersion">IdeaBag 2 v2.5</string>
+	<string name="appNumber">2.5</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>

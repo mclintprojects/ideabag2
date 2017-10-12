@@ -37,6 +37,7 @@ namespace ProgrammingIdeas.Activities
         protected override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
+            AppRateUtil.OnAppStarted();
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);

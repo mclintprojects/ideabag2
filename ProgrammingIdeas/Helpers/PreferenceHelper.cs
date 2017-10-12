@@ -6,9 +6,8 @@ namespace Helpers
 {
     public class PreferenceManager
     {
-        private Activity context;
-        private ISharedPreferencesEditor editor;
-        private ISharedPreferences pref;
+        private readonly ISharedPreferencesEditor editor;
+        private readonly ISharedPreferences pref;
 
         private static PreferenceManager singleton;
 
@@ -17,7 +16,10 @@ namespace Helpers
             get
             {
                 if (singleton == null)
-                    return new PreferenceManager();
+                {
+                    singleton = new PreferenceManager();
+                    return singleton;
+                }
                 return singleton;
             }
         }
