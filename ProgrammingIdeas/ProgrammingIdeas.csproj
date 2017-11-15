@@ -156,10 +156,10 @@
       <DependentUpon>AppResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Helpers\AppRateUtil.cs" />
-    <Compile Include="Helpers\DBManager.cs" />
+    <Compile Include="Helpers\IdeasDownloader.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\OnSwipeListener.cs" />
-    <Compile Include="Helpers\POCOs.cs" />
+    <Compile Include="Helpers\Models.cs" />
     <Compile Include="Adapters\CategoryAdapter.cs" />
     <Compile Include="Activities\IdeaListActivity.cs" />
     <Compile Include="Adapters\IdeaListAdapter.cs" />
@@ -172,8 +172,7 @@
     <Compile Include="Fragments\NewIdeaFragment.cs" />
     <Compile Include="Activities\NotesActivity.cs" />
     <Compile Include="Adapters\NotesAdapter.cs" />
-    <Compile Include="Helpers\DBAssist.cs" />
-    <Compile Include="Helpers\BusyBoy.cs" />
+    <Compile Include="Helpers\DBSerializer.cs" />
     <Compile Include="Helpers\Global.cs" />
     <Compile Include="Activities\App.cs" />
     <Compile Include="Helpers\Validator.cs" />

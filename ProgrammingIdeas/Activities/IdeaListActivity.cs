@@ -112,7 +112,7 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, allCategories);
+            DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, allCategories);
             base.OnPause();
         }
 

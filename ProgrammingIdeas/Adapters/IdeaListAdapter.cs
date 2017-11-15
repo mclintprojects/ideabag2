@@ -12,7 +12,7 @@ namespace ProgrammingIdeas.Adapters
 {
     public class IdeaListAdapter : RecyclerView.Adapter
     {
-        private List<Idea> itemsList;
+        private readonly List<Idea> itemsList;
         private List<Idea> bookmarkedItems;
         public Action<int> ItemClick;
         public Action<string, string, int> StateClicked;
@@ -23,6 +23,9 @@ namespace ProgrammingIdeas.Adapters
             GetBookmarks();
         }
 
+        /// <summary>
+        /// Checks and sets a bookmarked icon for ideas in the list which items have been bookmarked
+        /// </summary>
         public void RefreshBookmarks()
         {
             Global.RefreshBookmarks = false;
@@ -32,7 +35,7 @@ namespace ProgrammingIdeas.Adapters
 
         private void GetBookmarks()
         {
-            bookmarkedItems = DBAssist.DeserializeDB<List<Idea>>(Global.BOOKMARKS_PATH);
+            bookmarkedItems = DBSerializer.DeserializeDB<List<Idea>>(Global.BOOKMARKS_PATH);
             bookmarkedItems = bookmarkedItems ?? new List<Idea>();
         }
 
@@ -66,7 +69,7 @@ namespace ProgrammingIdeas.Adapters
             if (position == Global.IdeaScrollPosition)
                 itemHolder.Root.SetBackgroundResource(Resource.Color.highlight);
 
-            // if idea is bookmarked, show bokmark indicator
+            // if idea is bookmarked, show bookmarked icon
             if (bookmarkedItems?.FirstOrDefault(x => x.Title == item.Title) != null)
             {
                 itemHolder.BookmarkIndicator.Visibility = ViewStates.Visible;
@@ -91,8 +94,9 @@ namespace ProgrammingIdeas.Adapters
         public View State { get; set; }
         public LinearLayout Root { get; set; }
         public ImageView BookmarkIndicator { get; set; }
-        private Action<string, string, int> StateClicked;
-        private List<Idea> ideasList;
+
+        private readonly Action<string, string, int> StateClicked;
+        private readonly List<Idea> ideasList;
 
         public IdeaViewHolder(View itemView, List<Idea> ideasList, Action<int> listener, Action<string, string, int> StateClicked) : base(itemView)
         {
@@ -110,24 +114,30 @@ namespace ProgrammingIdeas.Adapters
 
         public bool OnLongClick(View v)
         {
-            var addView = LayoutInflater.From(Application.Context).Inflate(Resource.Layout.ideaprogressfragment, null);
-            var inprogress = addView.FindViewById<TextView>(Resource.Id.inprogressText);
-            var undecided = addView.FindViewById<TextView>(Resource.Id.undecidedText);
-            var done = addView.FindViewById<TextView>(Resource.Id.doneText);
+            var view = LayoutInflater.From(App.CurrentActivity).Inflate(Resource.Layout.ideaprogressfragment, null);
+            var inprogress = view.FindViewById<TextView>(Resource.Id.inprogressText);
+            var undecided = view.FindViewById<TextView>(Resource.Id.undecidedText);
+            var done = view.FindViewById<TextView>(Resource.Id.doneText);
 
             var builder = new AlertDialog.Builder(App.CurrentActivity);
-            builder.SetView(addView);
-            builder.SetNegativeButton("Cancel", (sender, e) => { return; });
+            builder.SetView(view);
+            builder.SetNegativeButton("Cancel", (sender, e) => { });
             var dialog = builder.Create();
             dialog.RequestWindowFeature((int)WindowFeatures.NoTitle);
+
+            // User changed idea progress state to InProgress
             inprogress.Click += (sender, e) =>
             {
                 StateClicked?.Invoke($"{ideasList[AdapterPosition].Title}", Status.InProgress, AdapterPosition); dialog.Dismiss();
             };
+
+            // User changed idea progress state to Undecided
             undecided.Click += (sender, e) =>
             {
                 StateClicked?.Invoke($"{ideasList[AdapterPosition].Title}", Status.Undecided, AdapterPosition); dialog.Dismiss();
             };
+
+            // User changed idea progress state to Done
             done.Click += (sender, e) =>
             {
                 StateClicked?.Invoke($"{ideasList[AdapterPosition].Title}", Status.Done, AdapterPosition); dialog.Dismiss();

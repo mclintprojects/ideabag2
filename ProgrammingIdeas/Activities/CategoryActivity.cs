@@ -43,7 +43,8 @@ namespace ProgrammingIdeas.Activities
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
             SetupUI();
 
-            if (Intent.GetBooleanExtra("NewIdeasNotif", false)) // New ideas notification started the app
+            // The app was started by clicking on the new ideas notification so we'll show the new ideas
+            if (Intent.GetBooleanExtra("NewIdeasNotif", false))
             {
                 try
                 {
@@ -62,15 +63,16 @@ namespace ProgrammingIdeas.Activities
         {
             loadingCircle.Visibility = ViewStates.Visible;
 
+            // We've opened the app before and cached the ideas offline
             if (File.Exists(Global.IDEAS_PATH))
             {
-                var cachedDb = await DBAssist.DeserializeDBAsync<List<Category>>(Global.IDEAS_PATH);
+                var cachedDb = await DBSerializer.DeserializeDBAsync<List<Category>>(Global.IDEAS_PATH);
                 if (cachedDb != null)
                 {
                     Global.Categories = cachedDb;
                     categoryList.AddRange(cachedDb);
                     SetupList();
-                    DBManager.StartLowkeyInvalidation();
+                    IdeasDownloader.StartLowkeyInvalidation();
                 }
                 else
                 {
@@ -78,14 +80,14 @@ namespace ProgrammingIdeas.Activities
                     SetupUI();
                 }
             }
-            else
+            else // We've never opened the app before so we need to download it
             {
                 var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
                 snack.Show();
-                var response = await DBManager.DownloadIdeasFromGoogleDrive();
+                var response = await IdeasDownloader.DownloadIdeasFromGoogleDrive();
                 if (response.Item1 != null)
                 {
-                    // Item1 is the db from the cloud storage
+                    // Item1 is the ideas from the Google Drive repo
                     Global.Categories = response.Item1;
                     snack.Dismiss();
                     categoryList = response.Item1;
@@ -102,12 +104,15 @@ namespace ProgrammingIdeas.Activities
             }
         }
 
+        /// <summary>
+        /// Pops up a dialog showing the new ideas added
+        /// </summary>
         private void ShowNewIdeasDialog()
         {
             var newideastxtPath = Path.Combine(Global.APP_PATH, "newideastxt");
             if (File.Exists(newideastxtPath))
             {
-                var dialogFrag = new NewIdeaFragment(GetNewIdeas());
+                var dialogFrag = new NewIdeasFragment(GetNewIdeas());
                 dialogFrag.Show(FragmentManager, "DIALOGFRAG");
             }
             else
@@ -135,7 +140,7 @@ namespace ProgrammingIdeas.Activities
 
         protected override void OnPause()
         {
-            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
+            DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
             base.OnPause();
         }
 

@@ -2,6 +2,9 @@
 
 namespace ProgrammingIdeas
 {
+    /// <summary>
+    /// Represents and idea category
+    /// </summary>
     public class Category
     {
         public string CategoryLbl { get; set; }
@@ -10,16 +13,23 @@ namespace ProgrammingIdeas
         public List<Idea> Items { get; set; }
     }
 
+    /// <summary>
+    /// Represents an idea
+    /// </summary>
     public class Idea
     {
+        public int Id { get; set; }
         public string Category { get; set; }
         public string Title { get; set; }
         public string Difficulty { get; set; }
-        public int Id { get; set; }
         public string Description { get; set; }
         public string State { get; set; }
         public Note Note { get; set; }
 
+        /// <summary>
+        /// For use with sorting the ideas by Status [done, inprogress, completed]
+        /// </summary>
+        /// <returns></returns>
         public int GetStatusId()
         {
             switch (State)
@@ -38,6 +48,10 @@ namespace ProgrammingIdeas
             }
         }
 
+        /// <summary>
+        /// For use with sorting the ideas by Status [beginner, intermediate, expert]
+        /// </summary>
+        /// <returns></returns>
         public int GetDifficultyId()
         {
             switch (Difficulty)
@@ -71,6 +85,9 @@ namespace ProgrammingIdeas
         public const string Expert = "Expert";
     }
 
+    /// <summary>
+    /// Represents an idea's notes
+    /// </summary>
     public class Note
     {
         public string Name { get; set; }

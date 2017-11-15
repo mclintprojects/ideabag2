@@ -13,9 +13,8 @@ namespace ProgrammingIdeas.Activities
     public class DonateActivity : AppCompatActivity
     {
         private TextView amountLbl;
-        private Button nextAmountBtn, donateAmountBtn;
         private int currentIndex;
-        private string[] amounts = new string[] { "$1", "$2", "$5", "$10", "Your choice" };
+        private readonly string[] amounts = new string[] { "$1", "$2", "$5", "$10", "Your choice" };
 
         protected override void OnCreate(Bundle savedInstanceState)
         {
@@ -28,8 +27,8 @@ namespace ProgrammingIdeas.Activities
             base.OnResume();
             ShowDisclaimerDialog();
             amountLbl = FindViewById<TextView>(Resource.Id.amountLbl);
-            nextAmountBtn = FindViewById<Button>(Resource.Id.nextAmountBtn);
-            donateAmountBtn = FindViewById<Button>(Resource.Id.donateAmountBtn);
+            var nextAmountBtn = FindViewById<Button>(Resource.Id.nextAmountBtn);
+            var donateAmountBtn = FindViewById<Button>(Resource.Id.donateAmountBtn);
 
             nextAmountBtn.Click += delegate
             {
@@ -69,6 +68,7 @@ namespace ProgrammingIdeas.Activities
 
         public override void OnBackPressed()
         {
+            // Makes sure whenever user enters this activity it always shows the disclaimer dialog
             PreferenceManager.Instance.AddEntry("dialogShown", false);
             Finish();
             OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);

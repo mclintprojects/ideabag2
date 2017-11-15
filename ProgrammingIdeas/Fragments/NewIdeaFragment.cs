@@ -7,14 +7,14 @@ using System.Collections.Generic;
 
 namespace ProgrammingIdeas.Fragment
 {
-    public class NewIdeaFragment : DialogFragment
+    /// <summary>
+    /// Shows the list of newly added ideas
+    /// </summary>
+    public class NewIdeasFragment : DialogFragment
     {
-        private RecyclerView recycler;
-        private NewIdeaAdapter adapter;
-        private RecyclerView.LayoutManager manager;
-        private List<Idea> newIdeas;
+        private readonly List<Idea> newIdeas;
 
-        public NewIdeaFragment(List<Idea> newIdeas)
+        public NewIdeasFragment(List<Idea> newIdeas)
         {
             this.newIdeas = newIdeas;
         }
@@ -28,10 +28,9 @@ namespace ProgrammingIdeas.Fragment
         {
             Dialog.RequestWindowFeature((int)WindowFeatures.NoTitle);
             var view = inflater.Inflate(Resource.Layout.newideasfragment, container, false);
-            recycler = view.FindViewById<RecyclerView>(Resource.Id.newIdeaRecyclerView);
-            adapter = new NewIdeaAdapter(newIdeas);
-            manager = new LinearLayoutManager(Activity.BaseContext, LinearLayoutManager.Horizontal, false);
-            recycler.SetLayoutManager(manager);
+            var recycler = view.FindViewById<RecyclerView>(Resource.Id.newIdeaRecyclerView);
+            var adapter = new NewIdeaAdapter(newIdeas);
+            recycler.SetLayoutManager(new LinearLayoutManager(Activity, LinearLayoutManager.Horizontal, false));
             recycler.SetAdapter(adapter);
             recycler.SetItemAnimator(new DefaultItemAnimator());
             return view;

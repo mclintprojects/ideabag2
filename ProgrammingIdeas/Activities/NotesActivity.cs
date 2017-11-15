@@ -29,10 +29,10 @@ namespace ProgrammingIdeas.Activities
         protected async override void OnCreate(Bundle savedInstanceState)
         {
             base.OnCreate(savedInstanceState);
-            notes = await DBAssist.DeserializeDBAsync<List<Note>>(Global.NOTES_PATH);
+            notes = await DBSerializer.DeserializeDBAsync<List<Note>>(Global.NOTES_PATH);
             notes = notes ?? new List<Note>();
 
-            bookmarkedItems = await DBAssist.DeserializeDBAsync<List<Idea>>(Global.BOOKMARKS_PATH);
+            bookmarkedItems = await DBSerializer.DeserializeDBAsync<List<Idea>>(Global.BOOKMARKS_PATH);
             bookmarkedItems = bookmarkedItems ?? new List<Idea>();
 
             recycler = FindViewById<RecyclerView>(Resource.Id.notesRecyclerView);
@@ -50,7 +50,7 @@ namespace ProgrammingIdeas.Activities
                     new AlertDialog.Builder(this)
                                     .SetTitle(notes[position].Name)
                                     .SetMessage(notes[position].Content)
-                                    .SetPositiveButton("Great", (sender, e) => { return; })
+                                    .SetPositiveButton("Great", (sender, e) => { })
                                     .Create().Show();
                 };
 
@@ -85,11 +85,6 @@ namespace ProgrammingIdeas.Activities
 
         private void Adapter_EditClicked(int position)
         {
-            var view = recycler.GetChildAt(position);
-            var vieNote = view.FindViewById<TextView>(Resource.Id.viewNote);
-            var editNote = view.FindViewById<TextView>(Resource.Id.noteEdit);
-            var content = view.FindViewById<TextView>(Resource.Id.notesContent);
-
             var dialog = new AddNoteDialog(notes[position]);
             dialog.OnNoteSave += (Note note) =>
             {
@@ -101,6 +96,7 @@ namespace ProgrammingIdeas.Activities
                 var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
                 if (foundBookmark != null)
                     foundBookmark.Note = note;
+
                 adapter.NotifyItemChanged(position);
             };
 
@@ -112,8 +108,8 @@ namespace ProgrammingIdeas.Activities
         protected override void OnPause()
         {
             base.OnPause();
-            DBAssist.SerializeDBAsync(Global.NOTES_PATH, notes);
-            DBAssist.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
+            DBSerializer.SerializeDBAsync(Global.NOTES_PATH, notes);
+            DBSerializer.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
         }
     }
 }

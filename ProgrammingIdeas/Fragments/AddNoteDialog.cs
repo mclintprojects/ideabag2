@@ -6,16 +6,17 @@ using System;
 
 namespace ProgrammingIdeas.Fragments
 {
+    /// <summary>
+    /// Dialog that allows you to add or edit an idea's note
+    /// </summary>
     public class AddNoteDialog : DialogFragment
     {
         public Action<Note> OnNoteSave;
         public Action OnError;
         private Note note;
-        private string category, title;
+        private readonly string category, title;
         private EditText nameTitle, noteContentTb;
-        private Button clearNote;
-        private View view;
-        private bool isEditingNote;
+        private readonly bool isEditingNote;
 
         public AddNoteDialog()
         {
@@ -37,11 +38,10 @@ namespace ProgrammingIdeas.Fragments
 
         public override Dialog OnCreateDialog(Android.OS.Bundle savedInstanceState)
         {
-            var inflater = (LayoutInflater)Activity.GetSystemService(Activity.LayoutInflaterService);
-            view = inflater.Inflate(Resource.Layout.add_note_layout, null);
+            var view = LayoutInflater.From(App.CurrentActivity).Inflate(Resource.Layout.add_note_layout, null);
             nameTitle = view.FindViewById<EditText>(Resource.Id.noteTitle);
             noteContentTb = view.FindViewById<EditText>(Resource.Id.noteTb);
-            clearNote = view.FindViewById<Button>(Resource.Id.clearNoteBtn);
+            var clearNote = view.FindViewById<Button>(Resource.Id.clearNoteBtn);
 
             clearNote.Click += delegate
             {
@@ -59,8 +59,9 @@ namespace ProgrammingIdeas.Fragments
                 .SetTitle(!isEditingNote ? "Add a note" : "Edit this note")
                 .SetView(view)
                 .SetPositiveButton("Save", (s, e) => SaveNote())
-                .SetNegativeButton("Cancel", (s, e) => { return; })
+                .SetNegativeButton("Cancel", (s, e) => { })
                 .Create();
+
             return dialog;
         }
 

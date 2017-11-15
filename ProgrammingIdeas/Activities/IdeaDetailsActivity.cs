@@ -25,12 +25,12 @@ namespace ProgrammingIdeas.Activities
         private Idea idea;
         private IMenuItem bookmarkIcon;
         private TextView ideaTitleLbl, ideaDescriptionLbl, noteContentLbl;
-        private OnSwipeListener SwipeListener;
+        private OnSwipeListener swipeListener;
         private LinearLayout detailsView;
         private FloatingActionButton addNoteFab;
         private Button editNoteBtn;
         private CardView noteHolder;
-        private bool isBookmarked;
+        private bool isIdeaBookmarked;
 
         public override int LayoutResource => Resource.Layout.ideadetailsactivity;
 
@@ -48,11 +48,11 @@ namespace ProgrammingIdeas.Activities
             noteContentLbl = FindViewById<TextView>(Resource.Id.noteContent);
 
             addNoteFab.Click += AddNoteFab_Click;
-            SwipeListener = new OnSwipeListener(this);
-            SwipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
-            SwipeListener.OnSwipeLeft += SwipeListener_OnSwipeLeft;
-            ideaDescriptionLbl.SetOnTouchListener(SwipeListener);
-            detailsView.SetOnTouchListener(SwipeListener);
+            swipeListener = new OnSwipeListener(this);
+            swipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
+            swipeListener.OnSwipeLeft += SwipeListener_OnSwipeLeft;
+            ideaDescriptionLbl.SetOnTouchListener(swipeListener);
+            detailsView.SetOnTouchListener(swipeListener);
 
             editNoteBtn.Click += delegate
             {
@@ -62,11 +62,11 @@ namespace ProgrammingIdeas.Activities
                 dialog.OnNoteSave += (Note note) => SaveNote(note);
             };
 
-            bookmarkedItems = await DBAssist.DeserializeDBAsync<List<Idea>>(Global.BOOKMARKS_PATH);
+            bookmarkedItems = await DBSerializer.DeserializeDBAsync<List<Idea>>(Global.BOOKMARKS_PATH);
             bookmarkedItems = bookmarkedItems ?? new List<Idea>();
             idea = Global.Categories[Global.CategoryScrollPosition].Items[Global.IdeaScrollPosition];
             ideasList = Global.Categories[Global.CategoryScrollPosition].Items;
-            notes = await DBAssist.DeserializeDBAsync<List<Note>>(Global.NOTES_PATH);
+            notes = await DBSerializer.DeserializeDBAsync<List<Note>>(Global.NOTES_PATH);
             notes = notes ?? new List<Note>();
 
             SetupUI();
@@ -77,12 +77,12 @@ namespace ProgrammingIdeas.Activities
             ideaTitleLbl.Text = idea.Title;
             ideaDescriptionLbl.Text = idea.Description;
             if (idea.Note != null)
-                ShowNote(idea.Note);
+                ShowNote();
             else
                 noteHolder.Visibility = ViewStates.Gone;
         }
 
-        private void ShowNote(Note note)
+        private void ShowNote()
         {
             noteHolder.Visibility = ViewStates.Visible;
             noteContentLbl.Text = idea.Note.Content;
@@ -103,7 +103,7 @@ namespace ProgrammingIdeas.Activities
                     existingBookmark.Note = note;
             }
 
-            ShowNote(note);
+            ShowNote();
             Snackbar.Make(addNoteFab, "Note added.", Snackbar.LengthLong).Show();
         }
 
@@ -138,29 +138,37 @@ namespace ProgrammingIdeas.Activities
             if (index >= 0 && index <= ideasList.Count - 1)
             {
                 idea = ideasList[index];
-                FinishItemChange(WasLeftSwipe);
+                FinishIdeaSwipe(WasLeftSwipe);
             }
             else
                 ToastDirection(WasLeftSwipe);
         }
 
-        private void ToastDirection(bool WasLeftSwipe)
+        /// <summary>
+        /// Show a toast if we've reached the start or end of a category's ideas
+        /// </summary>
+        /// <param name="wasLeftSwipe">True if the user just swiped left</param>
+        private void ToastDirection(bool wasLeftSwipe)
         {
-            var direction = !WasLeftSwipe ? "Start" : "End";
+            var direction = !wasLeftSwipe ? "Start" : "End";
             Toast.MakeText(this, $"{direction} of list.", ToastLength.Long).Show();
-            Global.IdeaScrollPosition = !WasLeftSwipe ? 0 : ideasList.Count - 1;
+            Global.IdeaScrollPosition = !wasLeftSwipe ? 0 : ideasList.Count - 1;
         }
 
-        private void FinishItemChange(bool WasLeftSwipe)
+        /// <summary>
+        /// Animates idea swipe and if there's a note shows it.
+        /// </summary>
+        /// <param name="wasLeftSwipe"></param>
+        private void FinishIdeaSwipe(bool wasLeftSwipe)
         {
-            float direction = WasLeftSwipe ? 700 : -700;
+            float direction = wasLeftSwipe ? 700 : -700;
             AnimHelper.Animate(detailsView, "translationX", 700, new AnticipateOvershootInterpolator(), direction, 0);
             ideaTitleLbl.Text = idea.Title;
             ideaDescriptionLbl.Text = idea.Description;
             if (idea.Note == null)
                 noteHolder.Visibility = ViewStates.Gone;
             else
-                ShowNote(idea.Note);
+                ShowNote();
             CheckAndSetBookmark();
         }
 
@@ -196,50 +204,59 @@ namespace ProgrammingIdeas.Activities
 
         private void SaveChanges()
         {
-            DBAssist.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
-            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
-            DBAssist.SerializeDBAsync(Global.NOTES_PATH, notes);
+            DBSerializer.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
+            DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
+            DBSerializer.SerializeDBAsync(Global.NOTES_PATH, notes);
         }
 
         private void BookmarkIdea()
         {
             Global.RefreshBookmarks = true;
-            isBookmarked = CheckIfBookmarked(idea);
+            isIdeaBookmarked = IsIdeaBookmarked(idea);
             if (bookmarkedItems != null)
             {
-                if (isBookmarked) // if bookmarked
+                if (isIdeaBookmarked) // // if currently open idea is bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
                     if (idea != null)
                         bookmarkedItems.Remove(bookmarkedItems.FirstOrDefault(x => x.Title == idea.Title));
 
                     Snackbar.Make(addNoteFab, "Idea removed from bookmarks.", Snackbar.LengthLong).Show();
-                    isBookmarked = false;
+                    isIdeaBookmarked = false;
                     ChangeItem(++Global.IdeaScrollPosition, false);
                 }
-                else // not bookmarked
+                else // Currently open idea is not bookmarked
                 {
                     bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
                     bookmarkedItems.Add(idea);
                     Snackbar.Make(addNoteFab, "Idea added to bookmarks.", Snackbar.LengthLong).Show();
                     ChangeItem(++Global.IdeaScrollPosition, true);
-                    isBookmarked = true;
+                    isIdeaBookmarked = true;
                 }
             }
         }
 
+        /// <summary>
+        /// Checks if the currently open idea has been bookmarked and sets the bookmark icon
+        /// accordingly
+        /// </summary>
         private void CheckAndSetBookmark()
         {
-            if (CheckIfBookmarked(idea) == true)
+            if (IsIdeaBookmarked(idea))
             {
                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_white_24dp);
-                isBookmarked = true;
+                isIdeaBookmarked = true;
             }
             else
                 bookmarkIcon.SetIcon(Resource.Mipmap.ic_bookmark_border_white_24dp);
         }
 
-        private bool CheckIfBookmarked(Idea item)
+        /// <summary>
+        /// An idea is bookmarked if it is found in the bookmarked ideas list
+        /// </summary>
+        /// <param name="idea">The idea to check if it is bookmarked</param>
+        /// <returns></returns>
+        private bool IsIdeaBookmarked(Idea item)
         {
             if (bookmarkedItems.FirstOrDefault(x => x.Title == item.Title) != null)
                 return true;

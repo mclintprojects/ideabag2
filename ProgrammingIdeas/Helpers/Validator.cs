@@ -1,5 +1,4 @@
-﻿using Android.Content;
-using Android.Graphics.Drawables;
+﻿using Android.Graphics.Drawables;
 using Android.Support.V4.Content;
 using Android.Widget;
 using System;
@@ -7,19 +6,24 @@ using System.Text.RegularExpressions;
 
 namespace ProgrammingIdeas.Helpers
 {
+    /// <summary>
+    /// Class that exposes methods that allows you to validate an input field.
+    /// </summary>
     public class Validator : IDisposable
     {
         private bool passed = true, alreadyFailed;
         public bool PassedValidation => passed;
-        private Context ctx;
         private Drawable errorIcon;
 
         public Validator()
         {
-            ctx = App.CurrentActivity;
-            errorIcon = ContextCompat.GetDrawable(ctx, Resource.Drawable.circle);
+            errorIcon = ContextCompat.GetDrawable(App.CurrentActivity, Resource.Drawable.circle);
         }
 
+        /// <summary>
+        /// Validates if the text in a field is a valid phone number
+        /// </summary>
+        /// <param name="editText"></param>
         public void ValidatePhoneNumber(EditText editText)
         {
             if (!alreadyFailed)
@@ -37,6 +41,11 @@ namespace ProgrammingIdeas.Helpers
             }
         }
 
+        /// <summary>
+        /// Validates if the text in a field is not null or empty
+        /// </summary>
+        /// <param name="editText"></param>
+        /// <param name="isRequired"></param>
         public void ValidateIsNotEmpty(EditText editText, bool isRequired = false)
         {
             if (!alreadyFailed)
@@ -51,40 +60,6 @@ namespace ProgrammingIdeas.Helpers
                 }
                 else
                     passed = true;
-            }
-        }
-
-        public decimal ValidateAmount(EditText editText)
-        {
-            decimal output = 0;
-            if (!alreadyFailed)
-            {
-                if (editText.Text != string.Empty && decimal.TryParse(editText.Text, out output))
-                    passed = true;
-                else
-                {
-                    passed = false;
-                    alreadyFailed = true;
-                    editText.SetError("This is not a valid amount.", errorIcon);
-                    editText.RequestFocus();
-                }
-            }
-
-            return output;
-        }
-
-        internal void ValidateIsSame(EditText passwordTb, EditText retypePasswordTb)
-        {
-            if (!alreadyFailed)
-            {
-                if (passwordTb.Text == retypePasswordTb.Text)
-                    passed = true;
-                else
-                {
-                    passed = false;
-                    alreadyFailed = true;
-                    Toast.MakeText(ctx, "Passwords are not the same.", ToastLength.Long).Show();
-                }
             }
         }
 

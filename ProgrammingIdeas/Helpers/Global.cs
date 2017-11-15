@@ -6,12 +6,39 @@ namespace ProgrammingIdeas
 {
     public class Global
     {
+        /// <summary>
+        /// True if we checked the online data and new ideas have been added to it
+        /// </summary>
         public static bool IsNewIdeasAvailable;
+
+        /// <summary>
+        /// True if we have checked online whether new data was available
+        /// </summary>
         public static bool LockRequests;
+
         public static bool RefreshBookmarks;
+
+        /// <summary>
+        /// Usually holds the index of the last viewed idea category.
+        /// Allows us to set a background highlight for it in the list of idea category
+        /// </summary>
         public static int CategoryScrollPosition;
+
+        /// <summary>
+        /// Usually holds the index of the last viewed idea.
+        /// Allows us to set a background highlight for it in the list of ideas
+        /// </summary>
         public static int IdeaScrollPosition;
+
+        /// <summary>
+        /// Usually holds the index of the last viewed bookmarked idea.
+        /// Allows us to set a background highlight for it in the list of bookmarked ideas
+        /// </summary>
         public static int BookmarkScrollPosition;
+
+        /// <summary>
+        /// Holds all the idea categories and their ideas
+        /// </summary>
         public static List<Category> Categories { get; set; }
 
         public static readonly string APP_PATH = Environment.GetFolderPath(Environment.SpecialFolder.Personal);

@@ -13,9 +13,9 @@ using System.Threading.Tasks;
 
 namespace ProgrammingIdeas.Helpers
 {
-    internal static class DBManager
+    internal static class IdeasDownloader
     {
-        private static List<Category> newDB;
+        private static List<Category> onlineIdeas;
         private static string newideastxt;
         private static HttpClient client = new HttpClient() { Timeout = TimeSpan.FromMilliseconds(12000) };
         private const string TAG = "ALANSADEBUG";
@@ -28,28 +28,20 @@ namespace ProgrammingIdeas.Helpers
                 if (response.IsSuccessStatusCode)
                 {
                     var payload = await response.Content.ReadAsStringAsync();
-                    newDB = JsonConvert.DeserializeObject<List<Category>>(payload);
+                    onlineIdeas = JsonConvert.DeserializeObject<List<Category>>(payload);
 
                     var newideasdbResponse = await client.GetAsync(AppResources.NewIdeasDbLink);
                     if (newideasdbResponse.IsSuccessStatusCode)
                     {
                         newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
-                        DBAssist.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
-                        DBAssist.SerializeDBAsync(Global.NEWIDEASTXT_PATH, newideastxt);
-                        return Tuple.Create<List<Category>, Exception>(newDB, null);
+                        DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
+                        DBSerializer.SerializeDBAsync(Global.NEWIDEASTXT_PATH, newideastxt);
+                        return Tuple.Create<List<Category>, Exception>(onlineIdeas, null);
                     }
                 }
 
-                // To prevent too many requests to server, only invalidate cache if app is opening fresh from launcher
+                // To prevent too many requests to server, only invalidate cache once when app is opening fresh from launcher
                 Global.LockRequests = true;
-            }
-            catch (TaskCanceledException e)
-            {
-                return Tuple.Create<List<Category>, Exception>(null, e);
-            }
-            catch (HttpRequestException e)
-            {
-                return Tuple.Create<List<Category>, Exception>(null, e);
             }
             catch (Exception e)
             {
@@ -59,6 +51,10 @@ namespace ProgrammingIdeas.Helpers
             return null;
         }
 
+        /// <summary>
+        /// If new ideas are available. Popup a notification showing how many new ideas were added.
+        /// </summary>
+        /// <param name="newIdeasCount"></param>
         private static void ShowNewIdeasAvailableNotification(int newIdeasCount)
         {
             var activity = App.CurrentActivity;
@@ -82,6 +78,12 @@ namespace ProgrammingIdeas.Helpers
             });
         }
 
+        /// <summary>
+        /// Checks the cache and the online data idea count to see if new ideas have been added online
+        /// </summary>
+        /// <param name="oldIdeas">The offline cache of the ideas</param>
+        /// <param name="newIdeas">The online repo of the ideas</param>
+        /// <returns></returns>
         private static bool AreNewIdeasAvailable(List<Category> oldIdeas, List<Category> newIdeas)
         {
             for (int i = 0; i < oldIdeas.Count; i++)
@@ -92,6 +94,9 @@ namespace ProgrammingIdeas.Helpers
             return false;
         }
 
+        /// <summary>
+        /// Invalidates the offline ideas cache whether or not new ideas have been added
+        /// </summary>
         public static async void StartLowkeyInvalidation()
         {
             try
@@ -104,13 +109,13 @@ namespace ProgrammingIdeas.Helpers
                     if (response.IsSuccessStatusCode)
                     {
                         var payload = await response.Content.ReadAsStringAsync();
-                        newDB = JsonConvert.DeserializeObject<List<Category>>(payload);
+                        onlineIdeas = JsonConvert.DeserializeObject<List<Category>>(payload);
                         var newideasdbResponse = await client.GetAsync(AppResources.NewIdeasDbLink);
                         if (newideasdbResponse.IsSuccessStatusCode)
                         {
                             newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
 
-                            if (AreNewIdeasAvailable(Global.Categories, newDB))
+                            if (AreNewIdeasAvailable(Global.Categories, onlineIdeas))
                             {
                                 Log.Debug(TAG, "New ideas available");
                                 var newIdeasContent = newideastxt.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -128,29 +133,27 @@ namespace ProgrammingIdeas.Helpers
             }
         }
 
-        private static void TestNotify()
-        {
-            var newIdeasContent = new[] { "2-30", "1, 20" };
-            ShowNewIdeasAvailableNotification(newIdeasContent.Length);
-        }
-
-        private static async void InvalidateOldData()
+        // During app launch, we check the online data with the cached data. If anything new has been added online we invalidate the cache.
+        private static async Task InvalidateOldData()
         {
             Log.Debug(TAG, "Starting full invalidation");
 
-            var notesPath = Path.Combine(Global.APP_PATH, "notesdb");
+            var notesPath = Global.NOTES_PATH;
             if (!File.Exists(notesPath))
                 File.Create(notesPath);
 
-            var notes = await DBAssist.DeserializeDBAsync<List<Note>>(notesPath);
+            var notes = await DBSerializer.DeserializeDBAsync<List<Note>>(notesPath);
             notes = notes ?? new List<Note>();
 
-            for (int i = 0; i < newDB.Count; i++)
+            // This is the code that does the actual invalidation
+            for (int i = 0; i < onlineIdeas.Count; i++) // Looping through categories
             {
-                for (int j = 0; j < newDB[i].Items.Count; j++)
+                for (int j = 0; j < onlineIdeas[i].Items.Count; j++) // Looping through ideas in each category
                 {
-                    var newItem = newDB[i].Items[j];
+                    var newItem = onlineIdeas[i].Items[j];
                     var oldItem = Global.Categories[i].Items.FirstOrDefault(x => x.Id == newItem.Id);
+
+                    // We don't want to clear the user's notes for a particular idea during invalidation
                     Note note = null;
                     if (oldItem != null)
                     {
@@ -164,9 +167,9 @@ namespace ProgrammingIdeas.Helpers
                 }
             }
 
-            DBAssist.SerializeDBAsync(Global.IDEAS_PATH, newDB);
-            DBAssist.SerializeDBAsync(Global.NEWIDEASTXT_PATH, newideastxt);
-            Global.Categories = newDB;
+            DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, onlineIdeas);
+            DBSerializer.SerializeDBAsync(Global.NEWIDEASTXT_PATH, newideastxt);
+            Global.Categories = onlineIdeas;
             Global.LockRequests = true;
 
             Log.Debug(TAG, "Invalidation completed.");

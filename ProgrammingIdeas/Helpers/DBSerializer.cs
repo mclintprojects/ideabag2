@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ProgrammingIdeas.Helpers
 {
-    public static class DBAssist
+    public static class DBSerializer
     {
         public async static Task<T> DeserializeDBAsync<T>(string path) where T : new()
         {
