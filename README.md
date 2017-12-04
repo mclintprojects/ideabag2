@@ -14,9 +14,8 @@ This app was developed to provide programmers of all proficiency levels, ideas f
 4. Bookmark ideas for later.
 5. Mark an idea's progress [undecided, in progress or completed].
 6. Add a note to an idea.
-7. Option for you to submit programming ideas for inclusion in future updates with credit to you.
-8. Help section linked to Google+ community for when you need help implementing an idea provided in the app.
-9. Free, fully material design and ad-free.
+7. Ability to submit programming ideas for inclusion.
+8. Free, fully material design and ad-free.
 
 ## Building and running the app
 
