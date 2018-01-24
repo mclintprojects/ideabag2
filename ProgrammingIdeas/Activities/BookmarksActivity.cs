@@ -16,7 +16,6 @@ namespace ProgrammingIdeas.Activities
     public class BookmarksActivity : BaseActivity
     {
         private RecyclerView recyclerView;
-        private LinearLayoutManager manager;
         private BookmarkListAdapter adapter;
         private List<Idea> bookmarksList = new List<Idea>(); private View emptyState;
         private ProgressBar progressBar;
@@ -44,7 +43,7 @@ namespace ProgrammingIdeas.Activities
                 {
                     adapter = new BookmarkListAdapter(bookmarksList);
                     adapter.ItemClick += OnItemClick;
-                    manager = new LinearLayoutManager(this);
+                    var manager = new LinearLayoutManager(this);
                     recyclerView.SetLayoutManager(manager);
                     recyclerView.SetAdapter(adapter);
                     recyclerView.SetItemAnimator(new DefaultItemAnimator());

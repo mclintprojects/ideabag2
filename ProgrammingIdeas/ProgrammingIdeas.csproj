@@ -52,7 +52,7 @@
     <AndroidLinkMode>Full</AndroidLinkMode>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
     <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>C:\Users\mbah3\AppData\Local\Xamarin\Mono for Android\Keystore\ideabaguploadkey\ideabaguploadkey.keystore</AndroidSigningKeyStore>
+    <AndroidSigningKeyStore>C:\Users\Ghalani 1\AppData\Local\Xamarin\Mono for Android\Keystore\ideabaguploadkey\ideabaguploadkey.keystore</AndroidSigningKeyStore>
     <AndroidSigningStorePass>.Boyclint1UPLOAD</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>ideabaguploadkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>.Boyclint1UPLOAD</AndroidSigningKeyPass>

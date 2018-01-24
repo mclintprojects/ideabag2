@@ -18,7 +18,6 @@ namespace ProgrammingIdeas.Activities
         private List<Note> notes;
         private List<Idea> bookmarkedItems;
         private RecyclerView recycler;
-        private RecyclerView.LayoutManager manager;
         private NotesAdapter adapter;
         private View emptyState;
 
@@ -42,38 +41,43 @@ namespace ProgrammingIdeas.Activities
                 ShowEmptyState();
             else
             {
-                manager = new LinearLayoutManager(this);
                 adapter = new NotesAdapter(notes);
+
                 adapter.EditClicked += Adapter_EditClicked;
-                adapter.ViewNoteClicked += (position) =>
-                {
-                    new AlertDialog.Builder(this)
-                                    .SetTitle(notes[position].Name)
-                                    .SetMessage(notes[position].Content)
-                                    .SetPositiveButton("Great", (sender, e) => { })
-                                    .Create().Show();
-                };
+                adapter.ViewNoteClicked += ViewNoteClicked;
+                adapter.DeleteClicked += DeleteClicked;
 
-                adapter.DeleteClicked += (position) =>
-                {
-                    var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title);
-                    if (foundIdea != null)
-                        foundIdea.Note = null;
-
-                    var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
-                    if (foundBookmark != null)
-                        foundBookmark.Note = null;
-
-                    notes.RemoveAt(position);
-                    adapter.NotifyItemRemoved(position);
-                    if (notes.Count == 0)
-                        ShowEmptyState();
-                };
-
-                recycler.SetLayoutManager(manager);
+                recycler.SetLayoutManager(new LinearLayoutManager(this));
                 recycler.SetAdapter(adapter);
                 recycler.SetItemAnimator(new DefaultItemAnimator());
             }
+        }
+
+        private void ViewNoteClicked(int position)
+        {
+            new AlertDialog.Builder(this)
+                .SetTitle(notes[position].Name)
+                .SetMessage(notes[position].Content)
+                .SetPositiveButton("Great", (sender, e) => { })
+                .Create().Show();
+        }
+
+        private void DeleteClicked(int position)
+        {
+            var foundIdea = Global.Categories.FirstOrDefault(x => x.CategoryLbl == notes[position].Category).Items.FirstOrDefault(y => y.Title == notes[position].Title);
+            if (foundIdea != null)
+                foundIdea.Note = null;
+
+            var foundBookmark = bookmarkedItems.FirstOrDefault(x => x.Title == notes[position].Title);
+            if (foundBookmark != null)
+                foundBookmark.Note = null;
+
+            notes.RemoveAt(position);
+            adapter.NotifyItemRemoved(position);
+            if (notes.Count == 0)
+                ShowEmptyState();
+
+            SaveChanges();
         }
 
         private void ShowEmptyState()
@@ -98,6 +102,8 @@ namespace ProgrammingIdeas.Activities
                     foundBookmark.Note = note;
 
                 adapter.NotifyItemChanged(position);
+
+                SaveChanges();
             };
 
             dialog.OnError += () => Snackbar.Make(recycler, "Invalid note. Entry fields cannot be empty.", Snackbar.LengthLong).Show();
@@ -108,6 +114,11 @@ namespace ProgrammingIdeas.Activities
         protected override void OnPause()
         {
             base.OnPause();
+            SaveChanges();
+        }
+
+        private void SaveChanges()
+        {
             DBSerializer.SerializeDBAsync(Global.NOTES_PATH, notes);
             DBSerializer.SerializeDBAsync(Global.BOOKMARKS_PATH, bookmarkedItems);
         }
