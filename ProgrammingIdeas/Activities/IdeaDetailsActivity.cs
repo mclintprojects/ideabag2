@@ -25,10 +25,8 @@ namespace ProgrammingIdeas.Activities
         private Idea idea;
         private IMenuItem bookmarkIcon;
         private TextView ideaTitleLbl, ideaDescriptionLbl, noteContentLbl;
-        private OnSwipeListener swipeListener;
         private LinearLayout detailsView;
         private FloatingActionButton addNoteFab;
-        private Button editNoteBtn;
         private CardView noteHolder;
         private bool isIdeaBookmarked;
 
@@ -43,12 +41,12 @@ namespace ProgrammingIdeas.Activities
             ideaDescriptionLbl = FindViewById<TextView>(Resource.Id.itemDescription);
             detailsView = FindViewById<LinearLayout>(Resource.Id.detailsView);
             addNoteFab = FindViewById<FloatingActionButton>(Resource.Id.addNotefab);
-            editNoteBtn = FindViewById<Button>(Resource.Id.editNoteBtn);
+            var editNoteBtn = FindViewById<Button>(Resource.Id.editNoteBtn);
             noteHolder = FindViewById<CardView>(Resource.Id.noteHolder);
             noteContentLbl = FindViewById<TextView>(Resource.Id.noteContent);
 
             addNoteFab.Click += AddNoteFab_Click;
-            swipeListener = new OnSwipeListener(this);
+            var swipeListener = new OnSwipeListener(this);
             swipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
             swipeListener.OnSwipeLeft += SwipeListener_OnSwipeLeft;
             ideaDescriptionLbl.SetOnTouchListener(swipeListener);

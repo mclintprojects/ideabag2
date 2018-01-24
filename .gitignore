@@ -182,3 +182,4 @@ FakesAssemblies/
 *.userprefs
 
 .DS_Store
+.vs/ProgrammingIdeas/v15/sqlite3/storage.ide

@@ -25,7 +25,6 @@ namespace ProgrammingIdeas.Activities
     {
         private RecyclerView recyclerView;
         private CategoryAdapter adapter;
-        private LinearLayoutManager manager;
         private FloatingActionButton bookmarksFab;
         private List<Category> categoryList = new List<Category>();
         private ProgressBar loadingCircle;
@@ -77,30 +76,36 @@ namespace ProgrammingIdeas.Activities
                 else
                 {
                     File.Delete(Global.IDEAS_PATH);
-                    SetupUI();
+                    await DownloadIdeasAfresh();
                 }
             }
-            else // We've never opened the app before so we need to download it
+            else // We've never opened the app before so we need to download the ideas from the server
+                await DownloadIdeasAfresh();
+        }
+
+        private async Task DownloadIdeasAfresh()
+        {
+            var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
+            snack.Show();
+
+            var response = await IdeasDownloader.DownloadIdeasFromGoogleDrive();
+            if (response.Item1 != null)
             {
-                var snack = Snackbar.Make(bookmarksFab, "Getting ideas from server. Please wait.", Snackbar.LengthIndefinite);
-                snack.Show();
-                var response = await IdeasDownloader.DownloadIdeasFromGoogleDrive();
-                if (response.Item1 != null)
-                {
-                    // Item1 is the ideas from the Google Drive repo
-                    Global.Categories = response.Item1;
-                    snack.Dismiss();
-                    categoryList = response.Item1;
-                    SetupList();
-                }
-                else
-                {
-                    loadingCircle.Visibility = ViewStates.Gone;
-                    if (response.Item2 is TaskCanceledException)
-                        snack.SetText("Couldn't download ideas. Your connection might be too slow.").SetAction("Retry", (v) => SetupUI()).Show();
-                    else if (response.Item2 is HttpRequestException)
-                        snack.SetText("Couldn't download ideas. Please check your connection and retry.").SetAction("Retry", (v) => SetupUI()).Show();
-                }
+                // Item1 is the ideas from the Google Drive repo
+                Global.Categories = response.Item1;
+                categoryList = response.Item1;
+
+                snack.Dismiss();
+
+                SetupList();
+            }
+            else
+            {
+                loadingCircle.Visibility = ViewStates.Gone;
+                if (response.Item2 is TaskCanceledException)
+                    snack.SetText("Couldn't download ideas. Your connection might be too slow.").SetAction("Retry", (v) => SetupUI()).Show();
+                else if (response.Item2 is HttpRequestException)
+                    snack.SetText("Couldn't download ideas. Please check your connection and retry.").SetAction("Retry", (v) => SetupUI()).Show();
             }
         }
 
@@ -122,7 +127,7 @@ namespace ProgrammingIdeas.Activities
         private void SetupList()
         {
             loadingCircle.Visibility = ViewStates.Gone;
-            manager = new LinearLayoutManager(this);
+            var manager = new LinearLayoutManager(this);
             recyclerView.SetLayoutManager(manager);
             adapter = new CategoryAdapter(categoryList);
             adapter.ItemClick += OnItemClick;

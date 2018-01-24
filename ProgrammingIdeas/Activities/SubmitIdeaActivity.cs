@@ -11,7 +11,6 @@ namespace ProgrammingIdeas.Activities
     [Activity(Label = "Submit an idea", Theme = "@style/AppTheme", ConfigurationChanges = ConfigChanges.Orientation | ConfigChanges.ScreenSize)]
     public class SubmitIdeaActivity : BaseActivity
     {
-        private Button submitBtn;
         private EditText author, ideaTitle, description;
         private string selectedCategory = string.Empty;
 
@@ -31,7 +30,8 @@ namespace ProgrammingIdeas.Activities
             adapter.SetDropDownViewResource(Android.Resource.Layout.SimpleSpinnerDropDownItem);
             spinner.Adapter = adapter;
             spinner.ItemSelected += Spinner_ItemSelected;
-            submitBtn = FindViewById<Button>(Resource.Id.submitBtn);
+
+            var submitBtn = FindViewById<Button>(Resource.Id.submitBtn);
             submitBtn.Click += (sender, e) =>
             {
                 using (var validator = new Validator())
