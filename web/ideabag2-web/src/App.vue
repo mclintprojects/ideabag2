@@ -3,7 +3,6 @@
     <div id="toolbar" class="navbar navbar-fixed-top">
       <h4>IdeaBag 2</h4>
     </div>
-    <img id="loadingCircle" v-if="isLoading" src="http://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
     <div id="componentHolder" class="row">
       <div class="col-xs-3 col-lg-3">
         <category-list :categories="categories" @categoryClicked="selectCategory($event)"></category-list>        
@@ -22,6 +21,7 @@
 import CategoryList from './components/CategoryList';
 import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
+import { ideasMixin } from './mixins/ideasMixin';
 
 let ideasURL =
 	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
@@ -30,7 +30,6 @@ export default {
 	name: 'app',
 	data() {
 		return {
-			categories: [],
 			selectedCategoryIdeas: null,
 			selectedIdea: null,
 			categorySelectionIndex: 0,
@@ -38,6 +37,7 @@ export default {
 			isLoading: true
 		};
 	},
+	mixins: [ideasMixin],
 	methods: {
 		selectCategory(index) {
 			this.selectedCategoryIdeas = this.categories[index].items;
@@ -51,20 +51,6 @@ export default {
 		categoryList: CategoryList,
 		ideaList: IdeaList,
 		ideaDetail: IdeaDetail
-	},
-	created() {
-		this.$http.get(ideasURL).then(
-			response => {
-				this.isLoading = false;
-				this.categories = response.body;
-				console.log(response.body);
-			},
-			error => {
-				this.isLoading = false;
-				alert('Something went wrong!');
-				console.log(error);
-			}
-		);
 	}
 };
 </script>
@@ -83,13 +69,6 @@ body {
 	background-color: var(--background);
 	font-family: 'Roboto', sans-serif;
 	overflow-x: hidden;
-}
-
-#loadingCircle {
-	width: 36px;
-	position: absolute;
-	left: 50%;
-	top: 50%;
 }
 
 .primaryLbl {
