@@ -3,17 +3,7 @@
     <div id="toolbar" class="navbar navbar-fixed-top">
       <h4>IdeaBag 2</h4>
     </div>
-    <div id="componentHolder" class="row">
-      <div class="col-xs-3 col-lg-3">
-        <category-list :categories="categories" @categoryClicked="selectCategory($event)"></category-list>        
-      </div>
-      <div class="col-xs-3 col-lg-3">
-        <idea-list :ideas="selectedCategoryIdeas" @ideaClicked="selectIdea($event)"></idea-list>
-      </div>
-      <div class="col-xs-6 col-lg-6">
-        <idea-detail :idea="selectedIdea"></idea-detail>
-      </div>
-    </div>
+		<router-view></router-view>
   </div>
 </template>
 
@@ -46,11 +36,6 @@ export default {
 		selectIdea(index) {
 			this.selectedIdea = this.selectedCategoryIdeas[index];
 		}
-	},
-	components: {
-		categoryList: CategoryList,
-		ideaList: IdeaList,
-		ideaDetail: IdeaDetail
 	}
 };
 </script>
