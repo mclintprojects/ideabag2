@@ -16,7 +16,6 @@ export default {
 <style scoped>
 #detailContainer {
 	padding: 0px 16px 16px 16px;
-	position: fixed;
 }
 
 #card {
@@ -35,6 +34,7 @@ export default {
 #ideaDescription {
 	color: rgba(0, 0, 0, 0.54);
 	font-size: 16px;
+	white-space: pre;
 }
 </style>
 
