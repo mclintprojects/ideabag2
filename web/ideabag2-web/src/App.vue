@@ -15,27 +15,7 @@ import Navbar from './components/Navbar';
 
 export default {
 	name: 'app',
-	data() {
-		return {
-			categories: [],
-			selectedCategoryIdeas: null,
-			selectedIdea: null,
-			categorySelectionIndex: 0,
-			ideaSelectionIndex: 0,
-			isLoading: true,
-			isRootComponent: false
-		};
-	},
-	components: { 'navbar': Navbar },
-	methods: {
-		selectCategory(index) {
-			this.selectedCategoryIdeas = this.categories[index].items;
-			this.selectedIdea = null;
-		},
-		selectIdea(index) {
-			this.selectedIdea = this.selectedCategoryIdeas[index];
-		}
-	}
+	components: { 'navbar': Navbar }
 };
 </script>
 
@@ -88,22 +68,6 @@ body {
 .row {
 	margin: 0px;
 	padding: 0px;
-}
-
-.navbar {
-	background-color: var(--primary);
-	border-radius: 0px;
-}
-
-#toolbar {
-	display: flex;
-	align-items: center;
-	box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
-}
-
-#toolbar h4 {
-	margin-left: 16px;
-	color: rgba(255, 255, 255, 0.8);
 }
 
 #componentHolder {

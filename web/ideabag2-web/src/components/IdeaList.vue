@@ -13,8 +13,7 @@
 
 <script>
 import { eventBus } from '../eventBus'
-
-let me = this;
+let me = null;
 
 export default {
 	data() {
@@ -25,14 +24,18 @@ export default {
 	methods: {
 		notifyIdeaClicked(index) {
 			var idea = this.ideas[index];
-			this.$router.push('/ideas/detail');
 			eventBus.$emit('ideaClicked', idea);
+			this.$router.push('/ideas/detail');
 		}
 	},
 	created() {
-		eventBus.$on('categoryClicked', (ideas) => this.ideas = ideas);
+		me = this;
 	}
 };
+
+eventBus.$on('categoryClicked', (ideas) => {
+	me.ideas = ideas;
+});
 
 </script>
 

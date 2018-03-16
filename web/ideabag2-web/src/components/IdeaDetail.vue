@@ -9,6 +9,7 @@
 
 <script>
 import { eventBus } from '../eventBus'
+let me = null;
 
 export default {
 	data() {
@@ -17,9 +18,13 @@ export default {
 		}
 	},
 	created() {
-		eventBus.$on('ideaClicked', (idea) => this.idea = idea);
+		me = this;
 	}
 };
+
+eventBus.$on('ideaClicked', (idea) => {
+	me.idea = idea;
+});
 </script>
 
 <style scoped>
