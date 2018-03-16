@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.props" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.props')" />
+  <PropertyGroup>
+    <AndroidSdkBuildToolsVersion>23.0.3</AndroidSdkBuildToolsVersion>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{398F7EC1-7CE3-425B-857A-81EF288C8C28}</ProjectGuid>
+    <ProjectTypeGuids>{EFBA0AD7-5A72-4C68-AF49-83D382785DCF};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <RootNamespace>ProgrammingIdeas</RootNamespace>
+    <AssemblyName>ProgrammingIdeas</AssemblyName>
+    <TargetFrameworkVersion>v7.0</TargetFrameworkVersion>
+    <AndroidApplication>True</AndroidApplication>
+    <AndroidResgenFile>Resources\Resource.designer.cs</AndroidResgenFile>
+    <AndroidResgenClass>Resource</AndroidResgenClass>
+    <AndroidManifest>Properties\AndroidManifest.xml</AndroidManifest>
+    <MonoAndroidResourcePrefix>Resources</MonoAndroidResourcePrefix>
+    <MonoAndroidAssetsPrefix>Assets</MonoAndroidAssetsPrefix>
+    <AndroidUseLatestPlatformSdk>true</AndroidUseLatestPlatformSdk>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidLinkMode>None</AndroidLinkMode>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AndroidManagedSymbols>true</AndroidManagedSymbols>
+    <AndroidUseSharedRuntime>false</AndroidUseSharedRuntime>
+    <AndroidLinkMode>Full</AndroidLinkMode>
+    <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
+    <AndroidSupportedAbis>armeabi-v7a</AndroidSupportedAbis>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <Optimize>true</Optimize>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <ErrorReport>prompt</ErrorReport>
+    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Core" />
+    <Reference Include="Mono.Android" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Compat">
+      <HintPath>..\packages\Xamarin.Android.Support.Compat.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.Compat.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.Core.UI">
+      <HintPath>..\packages\Xamarin.Android.Support.Core.UI.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.Core.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.CardView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.CardView.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Android.Support.v7.RecyclerView">
+      <HintPath>..\packages\Xamarin.Android.Support.v7.RecyclerView.25.1.1\lib\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="MainActivity.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Scripts\OnSwipeListener.cs" />
+    <Compile Include="Scripts\POCOs.cs" />
+    <Compile Include="Scripts\CategoryAdapter.cs" />
+    <Compile Include="ItemActivity.cs" />
+    <Compile Include="Scripts\ItemAdapter.cs" />
+    <Compile Include="About.cs" />
+    <Compile Include="Bookmarks.cs" />
+    <Compile Include="ItemDetails.cs" />
+    <Compile Include="SubmitIdeaActivity.cs" />
+    <Compile Include="Resources\Resource.designer.cs" />
+    <Compile Include="Scripts\NewIdeaAdapter.cs" />
+    <Compile Include="NewIdeaFragment.cs" />
+    <Compile Include="NotesActivity.cs" />
+    <Compile Include="Scripts\NotesAdapter.cs" />
+    <Compile Include="Scripts\DBAssist.cs" />
+    <Compile Include="Scripts\BusyBoy.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Properties\AndroidManifest.xml" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\values\Strings.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-xxxhdpi\Icon.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\cpu.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\database.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\enterprise.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\file.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\games.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_bookmark_border_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_bookmark_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_share_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\multimedia.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\network.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\numbers.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\text.png" />
+    <AndroidResource Include="Resources\mipmap-hdpi\web.png" />
+    <AndroidResource Include="Resources\anim\push_down_in.xml" />
+    <AndroidResource Include="Resources\anim\push_down_out.xml" />
+    <AndroidResource Include="Resources\anim\push_left_in.xml" />
+    <AndroidResource Include="Resources\anim\push_left_out.xml" />
+    <AndroidResource Include="Resources\anim\push_right_in.xml" />
+    <AndroidResource Include="Resources\anim\push_right_out.xml" />
+    <AndroidResource Include="Resources\anim\push_up_in.xml" />
+    <AndroidResource Include="Resources\anim\push_up_out.xml" />
+    <AndroidResource Include="Resources\values\colors.xml" />
+    <AndroidResource Include="Resources\values\style.xml" />
+    <AndroidResource Include="Resources\drawable\circle.xml" />
+    <AndroidResource Include="Resources\drawable\submitBtn.xml" />
+    <AndroidResource Include="Resources\values-v21\styles.xml" />
+    <AndroidResource Include="Resources\menu\itemdetails_menu.xml" />
+    <AndroidResource Include="Resources\menu\menu_main.xml" />
+    <AndroidResource Include="Resources\mipmap-mdpi\cpu.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\database.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\enterprise.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\file.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\games.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_bookmark_border_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_bookmark_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_share_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\multimedia.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\network.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\numbers.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\text.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\web.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\cpu.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\database.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\enterprise.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\file.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\games.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_bookmark_border_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_bookmark_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_share_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\multimedia.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\network.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\numbers.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\text.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\web.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\cpu.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\database.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\enterprise.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\file.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\games.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_mode_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_share_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\multimedia.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\network.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\numbers.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\text.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\web.png" />
+    <AndroidResource Include="Resources\drawable\roundBtn.xml" />
+    <AndroidResource Include="Resources\values\dimen.xml" />
+    <AndroidResource Include="Resources\drawable\done.xml" />
+    <AndroidResource Include="Resources\drawable\inprogress.xml" />
+    <AndroidResource Include="Resources\drawable\undecided.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_new_releases_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_new_releases_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_new_releases_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_new_releases_white_24dp.png" />
+    <AndroidResource Include="Resources\layout\aboutactivity.xml" />
+    <AndroidResource Include="Resources\layout\bookmarksactivity.xml" />
+    <AndroidResource Include="Resources\layout\categoryactivity.xml" />
+    <AndroidResource Include="Resources\layout\categoryrow.xml" />
+    <AndroidResource Include="Resources\layout\ideaprogressfragment.xml" />
+    <AndroidResource Include="Resources\layout\idealistactivity.xml" />
+    <AndroidResource Include="Resources\layout\ideadetailsactivity.xml" />
+    <AndroidResource Include="Resources\layout\idealistrow.xml" />
+    <AndroidResource Include="Resources\layout\newideasfragment.xml" />
+    <AndroidResource Include="Resources\layout\newideasrow.xml" />
+    <AndroidResource Include="Resources\layout\submitideaactivity.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_note_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_note_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_note_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xxhdpi\ic_note_white_24dp.png" />
+    <AndroidResource Include="Resources\layout\notesactivity.xml" />
+    <AndroidResource Include="Resources\layout\notesrow.xml" />
+    <AndroidResource Include="Resources\mipmap-hdpi\ic_mode_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-mdpi\ic_mode_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\mipmap-xhdpi\ic_mode_edit_white_24dp.png" />
+    <AndroidResource Include="Resources\drawable\submitRoundBtn.xml" />
+  </ItemGroup>
+  <ItemGroup />
+  <ItemGroup>
+    <XamarinComponentReference Include="xamandroidsupportv7cardview">
+      <Version>24.2.1.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="xamandroidsupportv7recyclerview">
+      <Version>24.2.1.0</Version>
+      <Visible>False</Visible>
+    </XamarinComponentReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidAsset Include="Assets\output.json" />
+    <AndroidAsset Include="Assets\newideasdb.txt" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
+  <Import Project="..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.targets" Condition="Exists('..\packages\Xamarin.Build.Download.0.4.2\build\Xamarin.Build.Download.targets')" />
+  <Import Project="..\packages\Xamarin.Android.Support.Compat.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Compat.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Compat.targets')" />
+  <Import Project="..\packages\Xamarin.Android.Support.Core.UI.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Core.UI.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.Core.UI.targets')" />
+  <Import Project="..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.CardView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.CardView.targets')" />
+  <Import Project="..\packages\Xamarin.Android.Support.v7.RecyclerView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.targets" Condition="Exists('..\packages\Xamarin.Android.Support.v7.RecyclerView.25.1.1\build\MonoAndroid70\Xamarin.Android.Support.v7.RecyclerView.targets')" />
+</Project>

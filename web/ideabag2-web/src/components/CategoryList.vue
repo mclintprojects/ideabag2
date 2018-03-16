@@ -1,22 +1,28 @@
 <template>
-    <div id="categoryContainer">
-        <ul id="categoryList">
-            <li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)">
-                <div class="categoryItem">
-                    <div class="categoryIconBg">
-                        <img class="categoryIcon" :src="icons[index]" />
-                    </div>
-                    <div class="categoryContent">
-                        <p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
-                        <p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
-                    </div>
-                </div> 
-            </li>
-        </ul>
-    </div>
+	<div class="appContainer">
+		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<ul id="categoryList">
+			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)">
+				<div class="categoryItem">
+					<div class="categoryIconBg">
+						<img class="categoryIcon" :src="icons[index]" />
+					</div>
+					<div class="categoryContent">
+						<p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
+						<p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
+					</div>
+				</div>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
+import { eventBus } from '../eventBus'
+
+let ideasURL =
+	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
+
 export default {
 	data() {
 		return {
@@ -31,27 +37,37 @@ export default {
 				'../src/assets/database.png',
 				'../src/assets/multimedia.png',
 				'../src/assets/games.png'
-			]
+			],
+			categories: [],
+			isLoading: true
 		};
 	},
-	props: ['categories'],
 	methods: {
 		notifyCategoryClicked(index) {
-			this.$emit('categoryClicked', index);
+			var ideas = this.categories[index].items;
+			this.$router.push('/ideas');
+			eventBus.$emit('categoryClicked', ideas);
 		}
+	},
+	created() {
+		this.$http.get(ideasURL)
+			.then(response => {
+				this.isLoading = false;
+				this.categories = response.body;
+			});
 	}
 };
 </script>
 
 <style scoped>
-#categoryContainer {
-	height: 20%;
-	margin-left: 16px;
-	padding: 0px;
+#loadingCircle {
+	width: 36px;
+	position: relative;
+	left: 50%;
 }
 
 .categoryIcon {
-	width: 36px;
+	width: var(--categoryIconSize);
 }
 
 .categoryIconBg {
@@ -59,8 +75,8 @@ export default {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	width: 72px;
-	height: 72px;
+	width: var(--categoryIconBgSize);
+	height: var(--categoryIconBgSize);
 	border-radius: 180px;
 }
 
@@ -83,7 +99,7 @@ export default {
 }
 
 #categoryTitle {
-	font-size: 18px;
+	font-size: var(--primaryTextSize);
 	margin: 0px;
 }
 

@@ -1,33 +1,32 @@
 <template>
-  <div>
-    <div id="toolbar" class="navbar navbar-fixed-top">
-      <h4>IdeaBag 2</h4>
-    </div>
-		<router-view></router-view>
-  </div>
+	<div class="main-container">
+		<navbar></navbar>
+		<keep-alive>
+			<router-view></router-view>
+		</keep-alive>
+	</div>
 </template>
 
 <script>
 import CategoryList from './components/CategoryList';
 import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
-import { ideasMixin } from './mixins/ideasMixin';
-
-let ideasURL =
-	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
+import Navbar from './components/Navbar';
 
 export default {
 	name: 'app',
 	data() {
 		return {
+			categories: [],
 			selectedCategoryIdeas: null,
 			selectedIdea: null,
 			categorySelectionIndex: 0,
 			ideaSelectionIndex: 0,
-			isLoading: true
+			isLoading: true,
+			isRootComponent: false
 		};
 	},
-	mixins: [ideasMixin],
+	components: { 'navbar': Navbar },
 	methods: {
 		selectCategory(index) {
 			this.selectedCategoryIdeas = this.categories[index].items;
@@ -48,12 +47,32 @@ export default {
 	--highlight: #2c393f;
 	--primaryText: rgba(255, 255, 255, 0.8);
 	--primaryTextLight: rgba(255, 255, 255, 0.54);
+	--primaryTextSize: 18px;
+	--ideaTextSize: 22px;
+	--categoryIconSize: 36px;
+	--categoryIconBgSize: 72px;
+	--badgePadding: 8px;
+	--ideaDescriptionTextSize: 16px;
+	--badgeTextSize: 12px;
 }
 
 body {
 	background-color: var(--background);
 	font-family: 'Roboto', sans-serif;
 	overflow-x: hidden;
+}
+
+#backBtn {
+	margin-left: 16px;
+}
+
+#backBtn:hover {
+	cursor: pointer;
+}
+
+.main-container {
+	display: flex;
+	justify-content: center;
 }
 
 .primaryLbl {
@@ -89,5 +108,28 @@ body {
 
 #componentHolder {
 	margin-top: 70px;
+}
+
+.appContainer {
+	width: 55%;
+	margin-top: 50px;
+	padding: 0px;
+}
+
+@media (max-width: 576px),
+(max-width: 768px) {
+	.appContainer {
+		width: 100%;
+	}
+
+	:root {
+		--primaryTextSize: 16px;
+		--ideaTextSize: 18px;
+		--ideaDescriptionTextSize: 13px;
+		--categoryIconSize: 28px;
+		--categoryIconBgSize: 56px;
+		--badgePadding: 4px;
+		--badgeTextSize: 10px;
+	}
 }
 </style>
