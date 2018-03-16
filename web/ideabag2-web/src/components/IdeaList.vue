@@ -1,33 +1,42 @@
 <template>
-  <div id="ideasContainer">
-        <ul id="ideaList">
-            <li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(index)">
-                <div class="ideaItem">
-                    <p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
-                    <p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
-                </div> 
-            </li>
-        </ul>
-    </div>
+	<div class="appContainer">
+		<ul id="ideaList">
+			<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(index)">
+				<div class="ideaItem">
+					<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
+					<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
+				</div>
+			</li>
+		</ul>
+	</div>
 </template>
 
 <script>
+import { eventBus } from '../eventBus'
+
+let me = this;
+
 export default {
-	props: ['ideas'],
+	data() {
+		return {
+			ideas: []
+		};
+	},
 	methods: {
 		notifyIdeaClicked(index) {
-			this.$emit('ideaClicked', index);
+			var idea = this.ideas[index];
+			this.$router.push('/ideas/detail');
+			eventBus.$emit('ideaClicked', idea);
 		}
+	},
+	created() {
+		eventBus.$on('categoryClicked', (ideas) => this.ideas = ideas);
 	}
 };
+
 </script>
 
 <style scoped>
-#ideasContainer {
-	margin: 0px;
-	padding: 0px;
-}
-
 #ideaList {
 	list-style-type: none;
 	margin: 0px;
@@ -36,7 +45,6 @@ export default {
 
 #ideaList li {
 	padding: 8px 16px 8px 16px;
-	height: 88px;
 }
 
 #ideaList li:hover {
@@ -45,7 +53,7 @@ export default {
 }
 
 #ideaTitle {
-	font-size: 18px;
+	font-size: var(--primaryTextSize);
 	margin: 0px 0px 4px 0px;
 	text-overflow: ellipsis;
 	overflow: hidden;
@@ -55,8 +63,9 @@ export default {
 
 .badge {
 	background-color: var(--primary);
-	padding: 8px;
+	padding: var(--badgePadding);
 	color: rgba(0, 0, 0, 0.54);
+	font-size: var(--badgeTextSize);
 }
 </style>
 
