@@ -45,8 +45,8 @@ export default {
 	methods: {
 		notifyCategoryClicked(index) {
 			var ideas = this.categories[index].items;
+			eventBus.$emit('categoryClicked', ideas)
 			this.$router.push('/ideas');
-			eventBus.$emit('categoryClicked', ideas);
 		}
 	},
 	created() {

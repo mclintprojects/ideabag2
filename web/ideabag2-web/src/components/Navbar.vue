@@ -1,7 +1,7 @@
 <template>
     <div id="toolbar" class="navbar navbar-fixed-top">
-        <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="../assets/ic_arrow_back_white_24px.svg" />
-        <h4>IdeaBag 2</h4>
+        <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="/src/assets/ic_arrow_back_white_24px.svg" />
+        <h4>IdeaBag 2 (Beta)</h4>
     </div>
 </template>
 
