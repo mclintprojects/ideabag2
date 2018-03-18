@@ -28,14 +28,14 @@ export default {
 			this.$router.push('/ideas/detail');
 		}
 	},
-	created() {
-		me = this;
+	beforeCreate() {
+		eventBus.$on('categoryClicked', (ideas) => {
+			this.ideas = ideas;
+		});
 	}
 };
 
-eventBus.$on('categoryClicked', (ideas) => {
-	me.ideas = ideas;
-});
+
 
 </script>
 
