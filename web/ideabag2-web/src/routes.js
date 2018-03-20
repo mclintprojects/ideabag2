@@ -4,6 +4,11 @@ import IdeaDetail from './components/IdeaDetail';
 
 export const routes = [
 	{ path: '', component: CategoryList },
-	{ path: '/ideas', component: IdeaList },
-	{ path: '/ideas/detail', component: IdeaDetail }
+	{ path: '/categories/:categoryId', component: IdeaList, name: 'categories' },
+	{
+		path: '/categories/:categoryId/ideas/:ideaId',
+		component: IdeaDetail,
+		name: 'ideas'
+	},
+	{ path: '*', redirect: '/' }
 ];

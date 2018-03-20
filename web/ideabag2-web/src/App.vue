@@ -13,9 +13,45 @@ import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
 import Navbar from './components/Navbar';
 
+let ideasURL =
+	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
+
 export default {
 	name: 'app',
-	components: { 'navbar': Navbar }
+	components: { 'navbar': Navbar },
+	methods: {
+		getData() {
+			var ideasdb = localStorage.getItem('ideasdb');
+
+			if (ideasdb) {
+				this.$store.state.isLoading = false;
+				this.$toasted.show('Loaded offline cache.', {
+					duration: 3000,
+					position: 'bottom-center'
+				});
+				return JSON.parse(ideasdb);
+			}
+
+			return [];
+		},
+		saveData(ideasdb) {
+			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
+		}
+	},
+	created() {
+		this.$store.state.categories = this.getData();
+
+		this.$http.get(ideasURL).then(response => {
+			this.$store.state.isLoading = false;
+			this.$store.state.categories = response.body;
+			this.saveData(response.body);
+		}, error => {
+			this.$toasted.show('Couldn\'t load data. Please check your connection and reload.', {
+				duration: 5000,
+				position: 'bottom-center'
+			});
+		});
+	}
 };
 </script>
 
@@ -40,6 +76,13 @@ body {
 	background-color: var(--background);
 	font-family: 'Roboto', sans-serif;
 	overflow-x: hidden;
+}
+
+#loadingCircle {
+	width: 36px;
+	position: absolute;
+	left: 50%;
+	top: 50%;
 }
 
 #backBtn {
