@@ -1,5 +1,6 @@
 <template>
 	<div class="appContainer">
+		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<ul id="ideaList">
 			<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(index)">
 				<div class="ideaItem">
@@ -12,31 +13,38 @@
 </template>
 
 <script>
-import { eventBus } from '../eventBus'
-let me = null;
-
 export default {
 	data() {
 		return {
 			ideas: []
 		};
 	},
-	methods: {
-		notifyIdeaClicked(index) {
-			var idea = this.ideas[index];
-			eventBus.$emit('ideaClicked', idea);
-			this.$router.push('/ideas/detail');
+	computed: {
+		isLoading() {
+			return this.$store.state.categories.length == 0;
 		}
 	},
-	beforeCreate() {
-		eventBus.$on('categoryClicked', (ideas) => {
-			this.ideas = ideas;
-		});
+	methods: {
+		notifyIdeaClicked(index) {
+			console.log('Id: ' + this.$route.params.categoryId + ' IdeaId: ' + index);
+			this.$router.push({ name: 'ideas', params: { categoryId: this.$route.params.categoryId, ideaId: index } });
+		},
+		showIdeas() {
+			var index = this.$route.params.categoryId;
+			this.ideas = this.$store.state.categories[index].items;
+		}
+	},
+	watch: {
+		'$store.state.categories'() {
+			if (this.$store.state.categories.length > 0)
+				this.showIdeas();
+		}
+	},
+	activated() {
+		if (this.$store.state.categories)
+			this.showIdeas();
 	}
 };
-
-
-
 </script>
 
 <style scoped>

@@ -27,7 +27,6 @@ export default {
     watch: {
         '$route': function(to, from) {
             this.isRootComponent = this.isRootRoute();
-            console.log('IsRoot', this.isRootRoute());
         }
     },
     created() {

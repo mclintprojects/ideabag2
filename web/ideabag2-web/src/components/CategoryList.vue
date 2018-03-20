@@ -1,8 +1,8 @@
 <template>
 	<div class="appContainer">
-		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<img v-if="$store.state.isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<ul id="categoryList">
-			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)">
+			<li v-for="(category, index) in $store.state.categories" :key="index" @click="notifyCategoryClicked(index)">
 				<div class="categoryItem">
 					<div class="categoryIconBg">
 						<img class="categoryIcon" :src="icons[index]" />
@@ -18,11 +18,6 @@
 </template>
 
 <script>
-import { eventBus } from '../eventBus'
-
-let ideasURL =
-	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
-
 export default {
 	data() {
 		return {
@@ -37,35 +32,18 @@ export default {
 				'../src/assets/database.png',
 				'../src/assets/multimedia.png',
 				'../src/assets/games.png'
-			],
-			categories: [],
-			isLoading: true
+			]
 		};
 	},
 	methods: {
 		notifyCategoryClicked(index) {
-			var ideas = this.categories[index].items;
-			eventBus.$emit('categoryClicked', ideas)
-			this.$router.push('/ideas');
+			this.$router.push({ name: 'categories', params: { categoryId: index } });
 		}
-	},
-	created() {
-		this.$http.get(ideasURL)
-			.then(response => {
-				this.isLoading = false;
-				this.categories = response.body;
-			});
 	}
 };
 </script>
 
 <style scoped>
-#loadingCircle {
-	width: 36px;
-	position: relative;
-	left: 50%;
-}
-
 .categoryIcon {
 	width: var(--categoryIconSize);
 }

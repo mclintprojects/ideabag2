@@ -1,5 +1,6 @@
 <template>
 	<div class="appContainer">
+		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<div id="card" v-if="idea != null">
 			<p id="ideaTitle">{{idea.title}}</p>
 			<p id="ideaDescription">{{idea.description}}</p>
@@ -8,23 +9,36 @@
 </template>
 
 <script>
-import { eventBus } from '../eventBus'
-let me = null;
-
 export default {
 	data() {
 		return {
 			idea: null
 		}
 	},
-	created() {
-		me = this;
+	computed: {
+		isLoading() {
+			return this.$store.state.categories.length == 0;
+		}
+	},
+	watch: {
+		'$store.state.categories'() {
+			if (this.$store.state.categories.length > 0)
+				this.showIdeas();
+		}
+	},
+	methods: {
+		showIdeas() {
+			var categoryIndex = this.$route.params.categoryId;
+			var ideaIndex = this.$route.params.ideaId;
+
+			this.idea = this.$store.state.categories[categoryIndex].items[ideaIndex];
+		}
+	},
+	activated() {
+		if (this.$store.state.categories)
+			this.showIdeas();
 	}
 };
-
-eventBus.$on('ideaClicked', (idea) => {
-	me.idea = idea;
-});
 </script>
 
 <style scoped>
