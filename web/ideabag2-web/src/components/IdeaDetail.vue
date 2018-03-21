@@ -13,30 +13,20 @@ export default {
 	data() {
 		return {
 			idea: null
-		}
+		};
 	},
 	computed: {
 		isLoading() {
-			return this.$store.state.categories.length == 0;
-		}
-	},
-	watch: {
-		'$store.state.categories'() {
-			if (this.$store.state.categories.length > 0)
-				this.showIdeas();
-		}
-	},
-	methods: {
-		showIdeas() {
-			var categoryIndex = this.$route.params.categoryId;
-			var ideaIndex = this.$route.params.ideaId;
-
-			this.idea = this.$store.state.categories[categoryIndex].items[ideaIndex];
-		}
+			return this.$store.getters.categories.length == 0;
+		},
 	},
 	activated() {
-		if (this.$store.state.categories)
-			this.showIdeas();
+		this.$store.dispatch('setTitle', 'Idea details');
+
+		var categoryIndex = this.$route.params.categoryId;
+		var ideaIndex = this.$route.params.ideaId;
+
+		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
 	}
 };
 </script>

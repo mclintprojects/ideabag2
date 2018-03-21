@@ -2,7 +2,7 @@
 	<div class="appContainer">
 		<img v-if="$store.state.isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<ul id="categoryList">
-			<li v-for="(category, index) in $store.state.categories" :key="index" @click="notifyCategoryClicked(index)">
+			<li v-for="(category, index) in $store.state.categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
 				<div class="categoryItem">
 					<div class="categoryIconBg">
 						<img class="categoryIcon" :src="icons[index]" />
@@ -32,13 +32,19 @@ export default {
 				'../src/assets/database.png',
 				'../src/assets/multimedia.png',
 				'../src/assets/games.png'
-			]
+			],
+			selectedIndex: 0
 		};
 	},
 	methods: {
 		notifyCategoryClicked(index) {
+			this.selectedIndex = index;
 			this.$router.push({ name: 'categories', params: { categoryId: index } });
 		}
+	},
+	activated() {
+		this.$store.dispatch('setSelectedIdeaIndex', 0);
+		this.$store.dispatch('setTitle', 'IdeaBag 2');
 	}
 };
 </script>

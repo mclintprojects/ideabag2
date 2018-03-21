@@ -1,7 +1,7 @@
 <template>
     <div id="toolbar" class="navbar navbar-fixed-top">
         <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="/src/assets/ic_arrow_back_white_24px.svg" />
-        <h4>IdeaBag 2 (Beta)</h4>
+        <h4>{{title}}</h4>
     </div>
 </template>
 
@@ -10,6 +10,11 @@ export default {
     data() {
         return {
             isRootComponent: false
+        }
+    },
+    computed: {
+        title() {
+            return this.$store.getters.navbarTitle;
         }
     },
     methods: {
