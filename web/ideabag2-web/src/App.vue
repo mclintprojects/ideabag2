@@ -123,7 +123,7 @@ body {
 	padding: 0px;
 }
 
-@media (max-width: 576px),
+@media screen and (max-width: 576px),
 (max-width: 768px) {
 	.appContainer {
 		width: 100%;
