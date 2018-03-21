@@ -2,7 +2,7 @@
 	<div class="appContainer">
 		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<ul id="ideaList">
-			<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(index)">
+			<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(index)" :class="{highlight: index == selectedIndex}">
 				<div class="ideaItem">
 					<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
 					<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
@@ -21,28 +21,27 @@ export default {
 	},
 	computed: {
 		isLoading() {
-			return this.$store.state.categories.length == 0;
+			return this.$store.getters.categories.length == 0;
+		},
+		selectedIndex() {
+			return this.$store.getters.selectedIdeaIndex;
 		}
 	},
 	methods: {
 		notifyIdeaClicked(index) {
-			console.log('Id: ' + this.$route.params.categoryId + ' IdeaId: ' + index);
 			this.$router.push({ name: 'ideas', params: { categoryId: this.$route.params.categoryId, ideaId: index } });
-		},
-		showIdeas() {
-			var index = this.$route.params.categoryId;
-			this.ideas = this.$store.state.categories[index].items;
-		}
-	},
-	watch: {
-		'$store.state.categories'() {
-			if (this.$store.state.categories.length > 0)
-				this.showIdeas();
+
+			this.$store.dispatch('setSelectedIdeaIndex', index);
 		}
 	},
 	activated() {
-		if (this.$store.state.categories)
-			this.showIdeas();
+		if (this.$store.getters.categories) {
+			var title = this.$store.getters.categories[this.$route.params.categoryId].categoryLbl;
+			this.$store.dispatch('setTitle', title);
+
+			var index = this.$route.params.categoryId;
+			this.ideas = this.$store.getters.categories[index].items;
+		}
 	}
 };
 </script>

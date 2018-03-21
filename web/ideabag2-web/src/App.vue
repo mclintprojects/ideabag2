@@ -1,9 +1,11 @@
 <template>
 	<div class="main-container">
 		<navbar></navbar>
-		<keep-alive>
-			<router-view></router-view>
-		</keep-alive>
+		<transition name="slide" mode="out-in">
+			<keep-alive>
+				<router-view></router-view>
+			</keep-alive>
+		</transition>
 	</div>
 </template>
 
@@ -24,11 +26,8 @@ export default {
 			var ideasdb = localStorage.getItem('ideasdb');
 
 			if (ideasdb) {
-				this.$store.state.isLoading = false;
-				this.$toasted.show('Loaded offline cache.', {
-					duration: 3000,
-					position: 'bottom-center'
-				});
+				this.$store.dispatch('setLoading', false);
+				this.showToast('Loaded offline cache.');
 				return JSON.parse(ideasdb);
 			}
 
@@ -36,20 +35,25 @@ export default {
 		},
 		saveData(ideasdb) {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
+		},
+		showToast(message, toastLength = 'short') {
+			var duration = toastLength == 'short' ? 3000 : 5000;
+
+			this.$toasted.show(message, {
+				duration,
+				position: 'bottom-center'
+			});
 		}
 	},
 	created() {
-		this.$store.state.categories = this.getData();
+		this.$store.dispatch('setCategories', this.getData());
 
 		this.$http.get(ideasURL).then(response => {
-			this.$store.state.isLoading = false;
-			this.$store.state.categories = response.body;
+			this.$store.dispatch('setCategories', response.body);
+			this.$store.dispatch('setLoading', false);
 			this.saveData(response.body);
 		}, error => {
-			this.$toasted.show('Couldn\'t load data. Please check your connection and reload.', {
-				duration: 5000,
-				position: 'bottom-center'
-			});
+			this.showToast('Couldn\'t load data. Please check your connection and reload.', 'long');
 		});
 	}
 };
@@ -121,6 +125,40 @@ body {
 	width: 55%;
 	margin-top: 50px;
 	padding: 0px;
+}
+
+.highlight {
+	background-color: var(--highlight);
+}
+
+.slide-enter-active {
+	animation: slide-in 200ms ease-out forwards;
+}
+
+.slide-leave-active {
+	animation: slide-out 200ms ease-out forwards;
+}
+
+@keyframes slide-in {
+	from {
+		transform: translateX(-100px);
+		opacity: 0;
+	}
+	to {
+		transform: translateX(0);
+		opacity: 1;
+	}
+}
+
+@keyframes slide-out {
+	from {
+		transform: translateX(0);
+		opacity: 1;
+	}
+	to {
+		transform: translateX(-100px);
+		opacity: 0;
+	}
 }
 
 @media screen and (max-width: 576px),
