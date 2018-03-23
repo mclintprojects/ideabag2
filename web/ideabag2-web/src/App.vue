@@ -39,7 +39,7 @@ export default {
 			var loginData = localStorage.getItem('loginData');
 
 			if (loginData) {
-				this.$store.dispatch('loginUserLocal', loginData);
+				this.$store.dispatch('loginUserLocal', JSON.parse(loginData));
 			}
 		},
 		saveData(ideasdb) {
