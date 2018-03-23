@@ -98,7 +98,7 @@ body {
 	border: solid 0px transparent;
 	border-radius: 2px;
 	width: 100px;
-	height: 30px;
+	height: 40px;
 	transition: all 1s;
 }
 
