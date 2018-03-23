@@ -24,11 +24,12 @@ const getters = {
 
 const mutations = {
 	LOGIN_USER(state, loginData) {
-		state.userId = loginData.idToken;
+		state.token = loginData.idToken;
+		state.userId = loginData.localId;
 		state.userEmail = loginData.email;
 		state.userLoggedIn = true;
 
-		localStorage.setItem('loginData', loginData);
+		localStorage.setItem('loginData', JSON.stringify(loginData));
 	},
 	IS_LOGGING_IN(state, isPerformingAction) {
 		state.isPerformingAction = isPerformingAction;
@@ -96,11 +97,14 @@ const actions = {
 				console.log(res);
 				context.commit('LOGIN_USER', res.data);
 
-				eventbus.$emit('login-success', 'Login successful');
+				eventbus.$emit('registration-success', 'Account created successfully');
 				context.dispatch('isPerformingAction', false);
 			})
 			.catch(error => {
-				eventbus.$emit('login-failure', error.response.data.error.message);
+				eventbus.$emit(
+					'registration-failure',
+					error.response.data.error.message
+				);
 				context.dispatch('isPerformingAction', false);
 			});
 	}

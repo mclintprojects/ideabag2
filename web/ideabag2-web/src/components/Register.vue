@@ -42,12 +42,12 @@ export default {
         }
     },
     activated() {
-        eventbus.$on('login-success', message => {
+        eventbus.$on('registration-success', message => {
             eventbus.showToast(message, 'success');
             this.$router.go(-1);
         });
 
-        eventbus.$on('login-failure', message => {
+        eventbus.$on('registration-failure', message => {
             eventbus.showToast(this.errorCodes[message], 'error');
         });
     }
