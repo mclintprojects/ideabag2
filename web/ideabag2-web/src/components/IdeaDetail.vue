@@ -1,14 +1,14 @@
 <template>
 	<div class="appContainer">
-		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
-		<div id="card">
+		<img v-if="isPerformingAction || isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<div id="card" v-if="idea != null">
 			<p id="ideaTitle">{{idea.title}}</p>
 			<p id="ideaDescription">{{idea.description}}</p>
 		</div>
 
 		<div id="commentBar">
 			<textarea id="commentTb" v-model="comment" placeholder="Post a comment"></textarea>
-			<button class="appBtn" @click="postComment">Post</button>
+			<button class="appBtn" @click="postComment" :disabled="!userLoggedIn">Post</button>
 		</div>
 
 		<div id="comments">
@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import eventbus from '../eventbus';
+
 export default {
 	data() {
 		return {
@@ -48,6 +50,15 @@ export default {
 		isLoading() {
 			return this.$store.getters.categories.length == 0;
 		},
+		isPerformingAction() {
+			return this.$store.getters.isPerformingAction;
+		},
+		token() {
+			return this.$store.getters.token;
+		},
+		userLoggedIn() {
+			return this.$store.getters.userLoggedIn;
+		}
 	},
 	activated() {
 		this.$store.dispatch('setTitle', 'Idea details');
@@ -59,8 +70,14 @@ export default {
 	},
 	methods: {
 		postComment() {
-			this.comments.push(this.comment);
-			this.comment = '';
+			if (userLoggedIn) {
+				axios.post();
+				this.comments.push(this.comment);
+				this.comment = '';
+			}
+			else {
+				eventbus.showToast('Log in to post a comment', 'error', 'long');
+			}
 		},
 		getAvatar() {
 			var face = this.getRandomFace();
@@ -77,7 +94,7 @@ export default {
 			return { eye, nose, mouth };
 		}
 	}
-};
+}
 </script>
 
 <style scoped>
