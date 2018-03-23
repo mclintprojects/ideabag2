@@ -19,6 +19,12 @@ const getters = {
 	},
 	userLoggedIn: state => {
 		return state.userLoggedIn;
+	},
+	token: state => {
+		return state.token;
+	},
+	userId: state => {
+		return state.userId;
 	}
 };
 
@@ -30,6 +36,10 @@ const mutations = {
 		state.userLoggedIn = true;
 
 		localStorage.setItem('loginData', JSON.stringify(loginData));
+		localStorage.setItem(
+			'expiresIn',
+			new Date().getTime() + parseInt(loginData.expiresIn) * 1000
+		);
 	},
 	IS_LOGGING_IN(state, isPerformingAction) {
 		state.isPerformingAction = isPerformingAction;
@@ -58,7 +68,17 @@ const actions = {
 			});
 	},
 	loginUserLocal(context, loginData) {
-		context.commit('LOGIN_USER', loginData);
+		var expiresIn = localStorage.getItem('expiresIn');
+		if (expiresIn <= new Date().getTime()) {
+			context.commit('LOGOUT');
+			eventbus.showToast(
+				'Authorization token has expired. Please log in again.',
+				'error',
+				'5000'
+			);
+		} else {
+			context.commit('LOGIN_USER', loginData);
+		}
 	},
 	loginUser(context, loginData) {
 		context.dispatch('isPerformingAction', true);

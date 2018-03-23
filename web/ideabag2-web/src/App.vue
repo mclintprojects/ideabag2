@@ -46,8 +46,16 @@ export default {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
 		}
 	},
+	watch: {
+		'token'() {
+			if (this.token.length > 0) {
+				axios.defaults.headers.commons['Authorization'] = loginData.token;
+			}
+		}
+	},
 	created() {
 		this.$store.dispatch('setCategories', this.getData());
+		axios.defaults.timeout = 12000;
 
 		axios.get(ideasURL).then(response => {
 			this.$store.dispatch('setCategories', response.data);
@@ -106,6 +114,16 @@ body {
 
 .appBtn:hover {
 	background-color: var(--primaryDark);
+	cursor: pointer;
+}
+
+.appBtn:disabled {
+	background-color: gray;
+	color: black;
+}
+
+.appBtn:disabled:hover {
+	cursor: not-allowed;
 }
 
 #backBtn {
