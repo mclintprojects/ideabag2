@@ -14,6 +14,7 @@ import CategoryList from './components/CategoryList';
 import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
 import Navbar from './components/Navbar';
+import axios from 'axios';
 
 let ideasURL =
 	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
@@ -48,11 +49,11 @@ export default {
 	created() {
 		this.$store.dispatch('setCategories', this.getData());
 
-		this.$http.get(ideasURL).then(response => {
-			this.$store.dispatch('setCategories', response.body);
+		axios.get(ideasURL).then(response => {
+			this.$store.dispatch('setCategories', response.data);
 			this.$store.dispatch('setLoading', false);
-			this.saveData(response.body);
-		}, error => {
+			this.saveData(response.data);
+		}).catch(error => {
 			this.showToast('Couldn\'t load data. Please check your connection and reload.', 'long');
 		});
 	}
@@ -74,6 +75,9 @@ export default {
 	--badgePadding: 8px;
 	--ideaDescriptionTextSize: 16px;
 	--badgeTextSize: 12px;
+	--avatarSize: 48px;
+	--commentPadding: 16px;
+	--cardMargin: 16px 0px 0px 0px;
 }
 
 body {
@@ -87,6 +91,19 @@ body {
 	position: absolute;
 	left: 50%;
 	top: 50%;
+}
+
+.appBtn {
+	background-color: var(--primary);
+	border: solid 0px transparent;
+	border-radius: 2px;
+	width: 100px;
+	height: 30px;
+	transition: all 1s;
+}
+
+.appBtn:hover {
+	background-color: var(--primaryDark);
 }
 
 #backBtn {
@@ -175,6 +192,23 @@ body {
 		--categoryIconBgSize: 56px;
 		--badgePadding: 4px;
 		--badgeTextSize: 10px;
+		--avatarSize: 36px;
+		--commentPadding: 8px;
+		--cardMargin: 16px 16px 0px 16px;
+	}
+
+	.col-xs-2,
+	.col-xs-8 {
+		padding: 0;
+		margin: 0;
+	}
+
+	#deleteBtn {
+		width: 104px;
+	}
+
+	#commentBar {
+		margin: 0px 16px 0px 16px;
 	}
 }
 </style>
