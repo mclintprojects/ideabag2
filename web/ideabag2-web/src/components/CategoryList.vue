@@ -1,6 +1,6 @@
 <template>
 	<div class="appContainer">
-		<img v-if="$store.state.isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<img v-if="$store.getters.isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<ul id="categoryList">
 			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
 				<div class="categoryItem">
@@ -37,7 +37,7 @@ export default {
 		};
 	},
 	computed: {
-		categories(){
+		categories() {
 			return this.$store.getters.categories;
 		}
 	},
