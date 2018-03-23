@@ -1,7 +1,38 @@
 <template>
-    <div id="toolbar" class="navbar navbar-fixed-top">
-        <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="/src/assets/ic_arrow_back_white_24px.svg" />
-        <h4>{{title}}</h4>
+    <div>
+        <nav class="navbar navbar-default navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button class="navbar-toggle" @click="collapse = !collapse">
+                        <span class="sr-only">Toggle navigation</span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <div id="toolbar" class="navbar-brand">
+                        <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="/src/assets/ic_arrow_back_white_24px.svg" />
+                        <h4>{{title}}</h4>
+                    </div>
+                </div>
+
+                <div class="navbar-collapse" :class="{ 'collapse': collapse}">
+                    <ul id="links" class="nav navbar-nav navbar-right">
+                        <li>
+                            <router-link>Welcome, user!</router-link>
+                        </li>
+                        <li>
+                            <router-link to="/login">Login</router-link>
+                        </li>
+                        <li>
+                            <a href="#">Signup</a>
+                        </li>
+                        <li>
+                            <a href="#">Log out</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
     </div>
 </template>
 
@@ -9,7 +40,8 @@
 export default {
     data() {
         return {
-            isRootComponent: false
+            isRootComponent: false,
+            collapse: true
         }
     },
     computed: {
@@ -49,12 +81,19 @@ export default {
 #toolbar {
     display: flex;
     align-items: center;
-    box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 #toolbar h4 {
     margin-left: 16px;
     color: rgba(255, 255, 255, 0.8);
+}
+
+#links>li>a {
+    color: var(--primaryText);
+}
+
+#links>li>a:hover {
+    color: rgba(0, 0, 0, 0.54)
 }
 </style>
 
