@@ -23,7 +23,7 @@
 						</div>
 
 						<div class="col-xs-2">
-							<img id="deleteCommentBtn" src="../assets/ic_delete_black_24px.svg" />
+							<img id="deleteCommentBtn" src="/src/assets/ic_delete_black_24px.svg" />
 						</div>
 					</div>
 				</li>
