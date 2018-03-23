@@ -34,6 +34,13 @@ export default {
 
 			return [];
 		},
+		async tryLogin() {
+			var loginData = localStorage.getItem('loginData');
+
+			if (loginData) {
+				this.$store.dispatch('loginUserLocal', loginData);
+			}
+		},
 		saveData(ideasdb) {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
 		},
@@ -56,6 +63,8 @@ export default {
 		}).catch(error => {
 			this.showToast('Couldn\'t load data. Please check your connection and reload.', 'long');
 		});
+
+		this.tryLogin();
 	}
 };
 </script>
