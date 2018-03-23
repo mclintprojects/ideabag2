@@ -38,7 +38,10 @@ export default {
 		return {
 			idea: null,
 			comment: '',
-			comments: []
+			comments: [],
+			eyes: ["eyes1", "eyes10", "eyes2", "eyes3", "eyes4", "eyes5", "eyes6", "eyes7", "eyes9"],
+			noses: ["nose2", "nose3", "nose4", "nose5", "nose6", "nose7", "nose8", "nose9"],
+			mouths: ["mouth1", "mouth10", "mouth11", "mouth3", "mouth5", "mouth6", "mouth7", "mouth9"]
 		};
 	},
 	computed: {
@@ -60,7 +63,18 @@ export default {
 			this.comment = '';
 		},
 		getAvatar() {
-			return 'https://api.adorable.io/avatars/face/eyes10/nose2/mouth3/50B47E';
+			var face = this.getRandomFace();
+			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${face.mouth}/ffa000`;
+		},
+		getRandomNumber(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		},
+		getRandomFace() {
+			var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
+			var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
+			var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
+
+			return { eye, nose, mouth };
 		}
 	}
 };
