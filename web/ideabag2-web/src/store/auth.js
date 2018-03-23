@@ -1,17 +1,18 @@
 import instance from '../axios-auth';
 import eventbus from '../eventbus';
+import config from '../config';
 
 const state = {
 	userId: '',
 	userEmail: '',
 	token: '',
-	isLoggingIn: false,
+	isPerformingAction: false,
 	userLoggedIn: false
 };
 
 const getters = {
-	isLoggingIn: state => {
-		return state.isLoggingIn;
+	isPerformingAction: state => {
+		return state.isPerformingAction;
 	},
 	userEmail: state => {
 		return state.userEmail;
@@ -29,8 +30,8 @@ const mutations = {
 
 		localStorage.setItem('loginData', loginData);
 	},
-	IS_LOGGING_IN(state, isLoggingIn) {
-		state.isLoggingIn = isLoggingIn;
+	IS_LOGGING_IN(state, isPerformingAction) {
+		state.isPerformingAction = isPerformingAction;
 	},
 	LOGOUT(state) {
 		state.userLoggedIn = false;
@@ -47,7 +48,7 @@ const actions = {
 
 		console.log(data);
 		instance
-			.post('/signupNewUser?key=AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck', data)
+			.post(`/signupNewUser?key=${config.apiKey}`, data)
 			.then(res => {
 				console.log(res);
 			})
@@ -59,13 +60,36 @@ const actions = {
 		context.commit('LOGIN_USER', loginData);
 	},
 	loginUser(context, loginData) {
-		context.dispatch('isLoggingIn', true);
+		context.dispatch('isPerformingAction', true);
 		loginData.returnSecureToken = true;
 
-		console.log(loginData);
+		instance
+			.post(`/verifyPassword?key=${config.apiKey}`, loginData)
+			.then(res => {
+				console.log(res);
+				context.commit('LOGIN_USER', res.data);
+
+				eventbus.$emit('login-success', 'Login successful');
+				context.dispatch('isPerformingAction', false);
+			})
+			.catch(error => {
+				eventbus.$emit('login-failure', error.response.data.error.message);
+				context.dispatch('isPerformingAction', false);
+			});
+	},
+	isPerformingAction(context, isPerformingAction) {
+		context.commit('IS_LOGGING_IN', isPerformingAction);
+	},
+	logout(context) {
+		context.commit('LOGOUT');
+	},
+	registerUser(context, loginData) {
+		context.dispatch('isPerformingAction', true);
+		loginData.returnSecureToken = true;
+
 		instance
 			.post(
-				'/verifyPassword?key=AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck',
+				'/signupNewUser?key=AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck',
 				loginData
 			)
 			.then(res => {
@@ -73,18 +97,12 @@ const actions = {
 				context.commit('LOGIN_USER', res.data);
 
 				eventbus.$emit('login-success', 'Login successful');
-				context.dispatch('isLoggingIn', false);
+				context.dispatch('isPerformingAction', false);
 			})
 			.catch(error => {
 				eventbus.$emit('login-failure', error.response.data.error.message);
-				context.dispatch('isLoggingIn', false);
+				context.dispatch('isPerformingAction', false);
 			});
-	},
-	isLoggingIn(context, isLoggingIn) {
-		context.commit('IS_LOGGING_IN', isLoggingIn);
-	},
-	logout(context) {
-		context.commit('LOGOUT');
 	}
 };
 
