@@ -17,17 +17,17 @@
 
                 <div class="navbar-collapse" :class="{ 'collapse': collapse}">
                     <ul id="links" class="nav navbar-nav navbar-right">
-                        <li>
+                        <li v-if="this.$store.getters.userLoggedIn">
                             <a href="#">Welcome, {{this.$store.getters.userEmail}}!</a>
                         </li>
-                        <li>
+                        <li v-if="!this.$store.getters.userLoggedIn">
                             <router-link to="/login">Login</router-link>
                         </li>
-                        <li>
+                        <li v-if="!this.$store.getters.userLoggedIn">
                             <a href="#">Signup</a>
                         </li>
-                        <li>
-                            <a href="#">Log out</a>
+                        <li v-if="this.$store.getters.userLoggedIn">
+                            <a href="#" @click="logout">Log out</a>
                         </li>
                     </ul>
                 </div>
@@ -52,6 +52,9 @@ export default {
     methods: {
         navigateAway() {
             this.$router.go(-1);
+        },
+        logout() {
+            this.$store.dispatch('logout');
         },
         isRootRoute() {
             var route = this.$route.path;
