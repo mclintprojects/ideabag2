@@ -7,7 +7,7 @@ export const store = new Vuex.Store({
 	state: {
 		categories: [],
 		isLoading: true,
-		selectedIdeaIndex: 0,
+		selectedIdeaIndex: -1,
 		navbarTitle: 'IdeaBag 2 (BETA)'
 	},
 	getters: {

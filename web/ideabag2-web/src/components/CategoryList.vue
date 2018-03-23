@@ -43,7 +43,7 @@ export default {
 		}
 	},
 	activated() {
-		this.$store.dispatch('setSelectedIdeaIndex', 0);
+		this.$store.dispatch('setSelectedIdeaIndex', -1);
 		this.$store.dispatch('setTitle', 'IdeaBag 2');
 	}
 };
