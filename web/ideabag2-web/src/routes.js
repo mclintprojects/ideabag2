@@ -1,6 +1,7 @@
 import CategoryList from './components/CategoryList';
 import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
+import Login from './components/Login';
 
 export const routes = [
 	{ path: '', component: CategoryList },
@@ -10,5 +11,6 @@ export const routes = [
 		component: IdeaDetail,
 		name: 'ideas'
 	},
+	{ path: '/login', name: 'login', component: Login },
 	{ path: '*', redirect: '/' }
 ];

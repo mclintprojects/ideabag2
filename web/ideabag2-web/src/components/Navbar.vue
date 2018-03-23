@@ -18,7 +18,7 @@
                 <div class="navbar-collapse" :class="{ 'collapse': collapse}">
                     <ul id="links" class="nav navbar-nav navbar-right">
                         <li>
-                            <router-link>Welcome, user!</router-link>
+                            <a href="#">Welcome, user!</a>
                         </li>
                         <li>
                             <router-link to="/login">Login</router-link>
