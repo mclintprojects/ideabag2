@@ -15,6 +15,7 @@ import IdeaList from './components/IdeaList';
 import IdeaDetail from './components/IdeaDetail';
 import Navbar from './components/Navbar';
 import axios from 'axios';
+import eventbus from './eventbus';
 
 let ideasURL =
 	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
@@ -28,13 +29,13 @@ export default {
 
 			if (ideasdb) {
 				this.$store.dispatch('setLoading', false);
-				this.showToast('Loaded offline cache.');
+				eventbus.showToast('Loaded offline cache.', 'info');
 				return JSON.parse(ideasdb);
 			}
 
 			return [];
 		},
-		async tryLogin() {
+		tryLogin() {
 			var loginData = localStorage.getItem('loginData');
 
 			if (loginData) {
@@ -43,14 +44,6 @@ export default {
 		},
 		saveData(ideasdb) {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
-		},
-		showToast(message, toastLength = 'short') {
-			var duration = toastLength == 'short' ? 3000 : 5000;
-
-			this.$toasted.show(message, {
-				duration,
-				position: 'bottom-center'
-			});
 		}
 	},
 	created() {
@@ -61,7 +54,7 @@ export default {
 			this.$store.dispatch('setLoading', false);
 			this.saveData(response.data);
 		}).catch(error => {
-			this.showToast('Couldn\'t load data. Please check your connection and reload.', 'long');
+			eventbus.showToast('Couldn\'t load data. Please check your connection and reload.', 'error', 'long');
 		});
 
 		this.tryLogin();

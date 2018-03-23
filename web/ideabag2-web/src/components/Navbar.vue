@@ -24,7 +24,7 @@
                             <router-link to="/login">Login</router-link>
                         </li>
                         <li v-if="!this.$store.getters.userLoggedIn">
-                            <a href="#">Signup</a>
+                            <router-link to="/register">Signup</router-link>
                         </li>
                         <li v-if="this.$store.getters.userLoggedIn">
                             <a href="#" @click="logout">Log out</a>

@@ -8,7 +8,7 @@
             <label for="passwordTb ">Password</label>
             <input v-model="formData.password" type="password" class="form-control " id="passwordTb " placeholder="Password ">
         </div>
-        <button @click="loginUser" class="appBtn">Login</button>
+        <button @click="registerUser" class="appBtn">Sign up</button>
 
         <img v-if="this.$store.getters.isPerformingAction" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
     </div>
@@ -25,17 +25,16 @@ export default {
                 password: ''
             },
             errorCodes: {
-                'INVALID_PASSWORD': 'A user with that email and password was not found.',
-                'EMAIL_NOT_FOUND': 'A user with that email address was not found.',
-                'USER_DISABLED': 'The user account has been disabled by an administrator.',
-                'TOO_MANY_ATTEMPTS': 'Too many login attempts. Please try again in a few minutes.'
+                'INVALID_PASSWORD': 'Your password needs to be longer.',
+                'EMAIL_EXISTS': 'A user with that email address already exists.',
+                'TOO_MANY_ATTEMPTS_TRY_LATER:': 'Too many attempts. Please try again in a few minutes.'
             }
         };
     },
     methods: {
-        loginUser() {
+        registerUser() {
             if (this.formData.email.length > 0 && this.formData.password.length > 0) {
-                this.$store.dispatch('loginUser', this.formData);
+                this.$store.dispatch('registerUser', this.formData);
             }
             else {
                 eventbus.showToast('One or more required fields is empty.', 'error');
@@ -55,7 +54,7 @@ export default {
 }
 </script>
 
-<style scoped>
+<style>
 label {
     color: var(--primaryText);
     font-family: 'Roboto', sans-serif;
@@ -82,4 +81,3 @@ label {
     margin-left: 20px;
 }
 </style>
-

@@ -1,7 +1,8 @@
 import axios from 'axios';
+import config from './config';
 
 const instance = axios.create({
-	baseURL: 'https://www.googleapis.com/identitytoolkit/v3/relyingparty'
+	baseURL: sonfig.authBaseURL
 });
 
 export default instance;
