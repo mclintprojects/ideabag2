@@ -46,13 +46,6 @@ export default {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
 		}
 	},
-	watch: {
-		'token'() {
-			if (this.token.length > 0) {
-				axios.defaults.headers.commons['Authorization'] = loginData.token;
-			}
-		}
-	},
 	created() {
 		this.$store.dispatch('setCategories', this.getData());
 		axios.defaults.timeout = 12000;

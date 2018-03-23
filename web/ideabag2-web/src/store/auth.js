@@ -94,6 +94,7 @@ const actions = {
 				context.dispatch('isPerformingAction', false);
 			})
 			.catch(error => {
+				console.log(error.response.data.error.message);
 				eventbus.$emit('login-failure', error.response.data.error.message);
 				context.dispatch('isPerformingAction', false);
 			});
