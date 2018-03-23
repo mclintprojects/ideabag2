@@ -1,16 +1,16 @@
 <template>
     <div class="appContainer">
-        <form>
-            <div class="form-group">
-                <label for="emailTb">Email address</label>
-                <input v-model="formData.email" id="emailTb" type="email" class="form-control" placeholder="Enter email">
+        
+            <div class="form-group ">
+                <label for="emailTb ">Email address</label>
+                <input v-model="formData.email " id="emailTb " type="email " class="form-control " placeholder="Enter email ">
             </div>
-            <div class="form-group">
-                <label for="passwordTb">Password</label>
-                <input v-model="formData.password" type="password" class="form-control" id="passwordTb" placeholder="Password">
+            <div class="form-group ">
+                <label for="passwordTb ">Password</label>
+                <input v-model="formData.password " type="password " class="form-control " id="passwordTb " placeholder="Password ">
             </div>
-            <button class="appBtn">Submit</button>
-        </form>
+            <button @click="loginUser" class="appBtn">Submit</button>
+        
     </div>
 </template>
 
@@ -26,7 +26,7 @@ export default {
     },
     methods: {
         loginUser() {
-
+            this.$store.dispatch('loginUser', this.formData);
         }
     }
 }
@@ -44,11 +44,14 @@ label {
 
 .appContainer {
     padding: 16px;
+    padding-top: 50px;
 }
 
 .form-control {
     border: solid 0px transparent;
     border-radius: 2px;
+    height: 40px;
+    font-weight: normal;
 }
 
 .form-control:focus {
