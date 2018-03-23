@@ -8,18 +8,18 @@
 
 		<div id="commentBar">
 			<textarea id="commentTb" v-model="comment" placeholder="Post a comment"></textarea>
-			<button class="appBtn" @click="postComment" :disabled="!userLoggedIn">Post</button>
+			<button class="appBtn" @click="postComment" :disabled="!userLoggedIn || isPerformingAction">Post</button>
 		</div>
 
 		<div id="comments">
 			<ul>
-				<li class="comment" v-for="(comment, index) in comments" :key="index">
+				<li :id="comment.id" class="comment" v-for="(comment, index) in comments" :key="index">
 					<div class="row">
 						<div class="col-xs-2">
 							<img :src="getAvatar()" alt="avatar" />
 						</div>
 						<div class="col-xs-8">
-							<p class="commentLbl">{{comment}}</p>
+							<p class="commentLbl">{{comment.comment}}</p>
 						</div>
 
 						<div class="col-xs-2">
@@ -34,6 +34,7 @@
 
 <script>
 import eventbus from '../eventbus';
+import axios from 'axios';
 
 export default {
 	data() {
@@ -56,24 +57,50 @@ export default {
 		token() {
 			return this.$store.getters.token;
 		},
+		email() {
+			return this.$store.getters.userEmail;
+		},
 		userLoggedIn() {
 			return this.$store.getters.userLoggedIn;
 		}
 	},
 	activated() {
+		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
 		this.$store.dispatch('setTitle', 'Idea details');
 
 		var categoryIndex = this.$route.params.categoryId;
 		var ideaIndex = this.$route.params.ideaId;
 
 		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
+
+		this.getComments();
 	},
 	methods: {
 		postComment() {
-			if (userLoggedIn) {
-				axios.post();
-				this.comments.push(this.comment);
-				this.comment = '';
+			if (this.userLoggedIn) {
+				this.$store.dispatch('isPerformingAction', true);
+				var dataId = this.getDataId();
+
+				var comment = {
+					'userId': this.userId,
+					'author': this.email,
+					'comment': this.comment,
+					'created': new Date().getTime()
+				};
+
+				var url = `/${dataId}/comments.json?auth=${this.token}`;
+				console.log(url);
+
+				axios.post(url, comment).then(response => {
+					this.$store.dispatch('isPerformingAction', false);
+					comment.id = response.data.name;
+
+					this.comments.push(comment);
+					this.comment = '';
+				}).catch(error => {
+					this.$store.dispatch('isPerformingAction', false);
+					eventbus.showToast(error.response.data.error, 'error');
+				});
 			}
 			else {
 				eventbus.showToast('Log in to post a comment', 'error', 'long');
@@ -92,6 +119,23 @@ export default {
 			var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
 
 			return { eye, nose, mouth };
+		},
+		getComments() {
+			var dataId = this.getDataId();
+			console.log('Getting comments ' + dataId);
+
+			axios.get(`/${dataId}/comments.json`).then(response => {
+				console.log(response.data);
+				if (typeof (response.data) == 'object')
+					this.comments.push(response.data[Object.keys(response.data)[0]]);
+			}).catch(error => {
+				eventbus.showToast('Getting comments failed. Please retry.', 'error');
+			});
+		},
+		getDataId() {
+			var categoryId = this.$route.params.categoryId;
+			var ideaId = this.idea.id;
+			return `${categoryId}C-${ideaId}I`;
 		}
 	}
 }

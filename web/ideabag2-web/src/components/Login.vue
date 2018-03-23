@@ -8,7 +8,7 @@
             <label for="passwordTb ">Password</label>
             <input v-model="formData.password" type="password" class="form-control " id="passwordTb " placeholder="Password ">
         </div>
-        <button @click="loginUser" class="appBtn">Login</button>
+        <button @click="loginUser" class="appBtn" :disabled="this.$store.getters.isPerformingAction">Login</button>
 
         <img v-if="this.$store.getters.isPerformingAction" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
     </div>
@@ -49,7 +49,10 @@ export default {
         });
 
         eventbus.$on('login-failure', message => {
-            eventbus.showToast(this.errorCodes[message], 'error');
+            if (errorCodes.containsKey(message))
+                eventbus.showToast(this.errorCodes[message], 'error');
+            else
+                eventbus.showToast(message, 'error');
         });
     }
 }

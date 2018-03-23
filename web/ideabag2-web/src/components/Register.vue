@@ -8,7 +8,7 @@
             <label for="passwordTb ">Password</label>
             <input v-model="formData.password" type="password" class="form-control " id="passwordTb " placeholder="Password ">
         </div>
-        <button @click="registerUser" class="appBtn">Sign up</button>
+        <button @click="registerUser" class="appBtn" :disabled="this.$store.getters.isPerformingAction">Sign up</button>
 
         <img v-if="this.$store.getters.isPerformingAction" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
     </div>
