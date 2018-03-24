@@ -78,7 +78,7 @@ export default {
 	--badgePadding: 8px;
 	--ideaDescriptionTextSize: 16px;
 	--badgeTextSize: 12px;
-	--avatarSize: 48px;
+	--avatarSize: 36px;
 	--commentPadding: 16px;
 	--cardMargin: 16px 0px 0px 0px;
 }
