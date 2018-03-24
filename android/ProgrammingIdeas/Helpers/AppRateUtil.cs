@@ -44,6 +44,7 @@ namespace ProgrammingIdeas.Helpers
         private static void DismissedLater()
         {
             var threshold = PreferenceManager.Instance.GetEntry("rateAppThreshold", 5);
+
             // Setting back the time the user will face the rate app dialog by times two of their current time
             PreferenceManager.Instance.AddEntry("rateAppThreshold", threshold * 2);
         }
@@ -51,6 +52,7 @@ namespace ProgrammingIdeas.Helpers
         private static void DismissedNever()
         {
             var threshold = PreferenceManager.Instance.GetEntry("rateAppThreshold", 5);
+
             // Simulating setting back the time till the user will face the rate app dialog to a very long time
             PreferenceManager.Instance.AddEntry("rateAppThreshold", threshold * 8);
         }

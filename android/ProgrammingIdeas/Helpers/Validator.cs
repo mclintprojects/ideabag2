@@ -63,6 +63,26 @@ namespace ProgrammingIdeas.Helpers
             }
         }
 
+        /// <summary>
+        /// Validates if the text in both entry fields are the same
+        /// </summary>
+        /// <param name="passwordTb"></param>
+        /// <param name="retypePasswordTb"></param>
+        public void ValidateIsSame(EditText passwordTb, EditText retypePasswordTb)
+        {
+            if (!alreadyFailed)
+            {
+                if (passwordTb.Text == retypePasswordTb.Text)
+                    passed = true;
+                else
+                {
+                    passed = false;
+                    alreadyFailed = true;
+                    Toast.MakeText(App.CurrentActivity, "Passwords are not the same.", ToastLength.Long).Show();
+                }
+            }
+        }
+
         public void Dispose() => alreadyFailed = false;
     }
 }

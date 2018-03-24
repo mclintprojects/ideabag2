@@ -2,15 +2,17 @@ using Newtonsoft.Json;
 
 namespace ProgrammingIdeas.Models
 {
-    internal class LoginResponseData
+    public class LoginResponseData
     {
         [JsonProperty("idToken")]
-        public int Token { get; set; }
+        public string Token { get; set; }
 
         public string Email { get; set; }
 
         [JsonProperty("expiresIn")]
-        public long ExpiresInMillis { get; set; }
+        public string ExpiresIn { get; set; }
+
+        public double ExpiresInMillis => double.Parse(ExpiresIn);
 
         [JsonProperty("localId")]
         public string UserId { get; set; }

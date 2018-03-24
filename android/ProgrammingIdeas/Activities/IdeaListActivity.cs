@@ -119,6 +119,7 @@ namespace ProgrammingIdeas.Activities
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
             // Resets position back to zero so the highlight shows at the top of the list anything we enter
             Global.IdeaScrollPosition = 0;
         }

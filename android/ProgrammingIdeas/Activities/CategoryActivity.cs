@@ -1,22 +1,28 @@
 using Android.App;
 using Android.Content;
 using Android.Content.PM;
-using Android.Content.Res;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
+using Android.Text;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using Helpers;
+using Newtonsoft.Json;
 using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Fragment;
+using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
+using ProgrammingIdeas.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
+using Path = System.IO.Path;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -40,6 +46,9 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
+
+            SetSubtitle("Not logged in");
+
             SetupUI();
 
             // The app was started by clicking on the new ideas notification so we'll show the new ideas
@@ -81,6 +90,10 @@ namespace ProgrammingIdeas.Activities
             }
             else // We've never opened the app before so we need to download the ideas from the server
                 await DownloadIdeasAfresh();
+
+            Global.LoginData = JsonConvert.DeserializeObject<LoginResponseData>(PreferenceManager.Instance.GetEntry("loginData"));
+            if (Global.LoginData != null)
+                SetSubtitle(Global.LoginData.Email);
         }
 
         private async Task DownloadIdeasAfresh()
@@ -178,27 +191,20 @@ namespace ProgrammingIdeas.Activities
         {
             switch (item.ItemId)
             {
-                case Resource.Id.about:
-                    StartActivity(new Intent(this, typeof(AboutActivity)));
-                    OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
+                case Resource.Id.login:
+                    LoginUser();
                     return true;
 
-                case Resource.Id.changelog:
-                    new AlertDialog.Builder(this)
-                        .SetTitle($"Changelog {Resources.GetString(Resource.String.appNumber)}")
-                        .SetMessage(Resources.GetString(Resource.String.changelog))
-                        .SetPositiveButton("Dismiss", (sender, e) => { return; })
-                        .Create()
-                        .Show();
+                case Resource.Id.register:
+                    RegisterUser();
+                    return true;
+
+                case Resource.Id.logout:
+                    LogoutUser();
                     return true;
 
                 case Resource.Id.submitIdea:
                     StartActivity(new Intent(this, typeof(SubmitIdeaActivity)));
-                    OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
-                    return true;
-
-                case Resource.Id.donate:
-                    StartActivity(new Intent(this, typeof(DonateActivity)));
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
 
@@ -210,9 +216,46 @@ namespace ProgrammingIdeas.Activities
                     StartActivity(new Intent(this, typeof(NotesActivity)));
                     OverridePendingTransition(Resource.Animation.push_down_in, Resource.Animation.push_down_out);
                     return true;
-            }
 
-            return base.OnOptionsItemSelected(item);
+                default:
+                    return false;
+            }
+        }
+
+        private void SetSubtitle(string text)
+        {
+            Toolbar.SubtitleFormatted = Html.FromHtml($"<font color='#ffffff'>{text}</font>");
+        }
+
+        private void LogoutUser()
+        {
+            SetSubtitle(string.Empty);
+            PreferenceManager.Instance.AddEntry("loginData", string.Empty);
+            PreferenceManager.Instance.AddEntry("expiresIn", string.Empty);
+
+            Toast.MakeText(this, "Logged out successfully.", ToastLength.Long).Show();
+        }
+
+        private async Task RegisterUser()
+        {
+            var dialog = new RegisterDialog();
+            dialog.OnUserLoggedIn += (sender, email) =>
+            {
+                SetSubtitle(email);
+            };
+
+            dialog.Show(SupportFragmentManager, string.Empty);
+        }
+
+        private void LoginUser()
+        {
+            var dialog = new LoginDialog();
+            dialog.OnUserLoggedIn += (sender, email) =>
+            {
+                SetSubtitle(email);
+            };
+
+            dialog.Show(SupportFragmentManager, string.Empty);
         }
 
         /// <summary>

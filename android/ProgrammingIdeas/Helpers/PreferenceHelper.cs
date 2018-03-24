@@ -41,8 +41,16 @@ namespace Helpers
             editor.Commit();
         }
 
+        public void AddEntry(string tag, string value)
+        {
+            editor.PutString(tag, value);
+            editor.Commit();
+        }
+
         public bool GetEntry(string tag, bool defaultValue) => pref.GetBoolean(tag, defaultValue);
 
         public int GetEntry(string tag, int defaultValue) => pref.GetInt(tag, defaultValue);
+
+        public string GetEntry(string tag) => pref.GetString(tag, string.Empty);
     }
 }
