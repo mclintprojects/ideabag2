@@ -12,7 +12,6 @@ const eventbus = new Vue({
 				type,
 				theme: 'bubble'
 			});
-			console.log('showed toast');
 		}
 	}
 });

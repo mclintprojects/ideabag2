@@ -164,6 +164,7 @@ namespace ProgrammingIdeas.Activities
 
         private void SetupEmptyState()
         {
+            emptyState.FindViewById<TextView>(Resource.Id.infoText).Text = "No comments on this idea yet.";
             emptyState.FindViewById<ImageView>(Resource.Id.emptyIcon)
                 .SetImageDrawable(AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.no_comments));
             ShowEmptyState();
