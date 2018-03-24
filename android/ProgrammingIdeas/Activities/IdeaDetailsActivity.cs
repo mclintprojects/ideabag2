@@ -116,15 +116,20 @@ namespace ProgrammingIdeas.Activities
             commentBtn.Enabled = (Global.LoginData != null);
             commentBtn.Click += delegate
             {
-                var now = DateTime.Now;
-                var comment = new IdeaComment
+                if (commentTb.Text.Length > 0)
                 {
-                    Author = Global.LoginData.Email,
-                    Comment = commentTb.Text,
-                    Created = GetJavascriptMillis()
-                };
+                    var now = DateTime.Now;
+                    var comment = new IdeaComment
+                    {
+                        Author = Global.LoginData.Email,
+                        Comment = commentTb.Text,
+                        Created = GetJavascriptMillis()
+                    };
 
-                PostComment(comment);
+                    PostComment(comment);
+                }
+                else
+                    Toast.MakeText(this, "Comment cannot be empty", ToastLength.Long).Show();
             };
         }
 
@@ -144,6 +149,7 @@ namespace ProgrammingIdeas.Activities
 
             if (response.Payload != null)
             {
+                HideEmptyState();
                 comment.Id = response.Payload;
                 comments.Add(comment);
                 commentsAdapter.NotifyItemInserted(comments.Count - 1);
@@ -158,13 +164,8 @@ namespace ProgrammingIdeas.Activities
 
         private void SetupEmptyState()
         {
-            FindViewById<TextView>(Resource.Id.infoText).Text = "No comments on this idea yet";
-            var emptyIcon = emptyState.FindViewById<ImageView>(Resource.Id.emptyIcon);
-
-            var icon = AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.ic_comment_white_24dp);
-            icon.SetColorFilter(Color.ParseColor("#bababa"), PorterDuff.Mode.SrcAtop);
-
-            emptyIcon.SetImageDrawable(icon);
+            emptyState.FindViewById<ImageView>(Resource.Id.emptyIcon)
+                .SetImageDrawable(AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.no_comments));
             ShowEmptyState();
         }
 

@@ -187,8 +187,10 @@ namespace ProgrammingIdeas.Api
             return e.Message;
         }
 
-        private string GetFirebaseErrorMessage(string errorCode, string action = "login")
+        private string GetFirebaseErrorMessage(string errorJson, string action = "login")
         {
+            var errorCode = (string)JObject.Parse(errorJson)["error"]["message"];
+
             if (action == "login")
             {
                 if (loginErrors.ContainsKey(errorCode))

@@ -31,6 +31,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <include
+        android:id="@+id/empty"
+        layout="@layout/empty_state"
+        app:layout_constraintBottom_toTopOf="@+id/commentsBar"
+        android:visibility="gone"/>
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/commentsRecycler"
         android:layout_width="0dp"
@@ -40,12 +46,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2" />
-
-    <include
-        android:id="@+id/empty"
-        layout="@layout/empty_state"
-        app:layout_constraintBottom_toTopOf="@+id/commentsBar"
-        android:visibility="gone"/>
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/commentsBar"
