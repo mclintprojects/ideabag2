@@ -18,6 +18,7 @@
 						<div>
 							<img :src="getAvatar()" alt="avatar" />
 							<p id="authorLbl">{{comment.author}}</p>
+							<p id="dateLbl">{{getTimestamp(comment.created)}}</p>
 						</div>
 						<img @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email" id="deleteCommentBtn" src="/src/assets/ic_delete_black_24px.svg" />
 					</div>
@@ -72,6 +73,9 @@ export default {
 
 		this.getComments();
 	},
+	deactivated() {
+		this.comments.length = 0;
+	},
 	methods: {
 		postComment() {
 			if (this.userLoggedIn) {
@@ -123,13 +127,15 @@ export default {
 			console.log('Getting comments ' + dataId);
 
 			axios.get(`/${dataId}/comments.json`).then(response => {
-				var keys = Object.keys(response.data);
+				if (response.data != null) {
+					var keys = Object.keys(response.data);
 
-				for (var i = 0; i < keys.length; i++) {
-					var comment = response.data[keys[i]];
-					comment.id = keys[i];
+					for (var i = 0; i < keys.length; i++) {
+						var comment = response.data[keys[i]];
+						comment.id = keys[i];
 
-					this.comments.push(comment);
+						this.comments.push(comment);
+					}
 				}
 
 				this.$store.dispatch('isPerformingAction', false);
@@ -146,7 +152,7 @@ export default {
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
 			var dataId = this.getDataId();
-			var url = `${dataId}/comments/-${commentId}.json?auth=${this.token}`;
+			var url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
 			console.log('Deleting ' + url);
 
 			axios.delete(url)
@@ -159,15 +165,17 @@ export default {
 					eventbus.showToast('Failed to delete comment. Please retry.', 'error');
 					this.$store.dispatch('isPerformingAction', false);
 				});
+		},
+		getTimestamp(milliseconds) {
+			var date = new Date(milliseconds);
+
+			return date.toLocaleDateString();
 		}
 	}
 }
 </script>
 
 <style scoped>
-.navbar-default {
-	border-color: transparent;
-}
 
 #card {
 	border: 2px solid transparent;
@@ -258,13 +266,21 @@ export default {
 	align-items: center;
 }
 
-.top-row>div>p {
+#authorLbl {
 	margin: 0;
 	padding: 0;
 	margin-left: 16px;
 	color: rgba(0, 0, 0, 0.8);
 	font-size: 16px;
 	font-weight: bold;
+}
+
+#dateLbl {
+	margin: 0;
+	padding: 0;
+	margin-left: 32px;
+	color: rgba(0, 0, 0, 0.5);
+	font-size: 13px;
 }
 </style>
 
