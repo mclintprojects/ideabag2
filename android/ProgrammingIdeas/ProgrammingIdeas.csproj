@@ -156,7 +156,9 @@
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CategoryActivity.cs" />
     <Compile Include="Activities\DonateActivity.cs" />
+    <Compile Include="Adapters\CommentsAdapter.cs" />
     <Compile Include="Api\IdeaBagApi.cs" />
+    <Compile Include="Api\TokenDelegate.cs" />
     <Compile Include="AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -369,6 +371,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\comments_bottom_sheet.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_delete_black_24dp.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets')" />

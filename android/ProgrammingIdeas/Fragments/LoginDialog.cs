@@ -34,6 +34,8 @@ namespace ProgrammingIdeas.Fragments
                 using (var validator = new Validator())
                 {
                     loadingCircle.Visibility = ViewStates.Visible;
+                    loginBtn.Enabled = false;
+
                     validator.ValidateIsNotEmpty(emailTb, true);
                     validator.ValidateIsNotEmpty(passwordTb, true);
 
@@ -43,6 +45,7 @@ namespace ProgrammingIdeas.Fragments
                         await LoginUser(data);
                     }
 
+                    loginBtn.Enabled = true;
                     loadingCircle.Visibility = ViewStates.Gone;
                 }
             };

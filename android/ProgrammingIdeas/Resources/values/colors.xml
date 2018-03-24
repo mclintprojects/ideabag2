@@ -17,4 +17,5 @@
 	<color name="doneColor">#2ecc71</color>
 	<color name="highlight">#2C393F</color>
 	<color name="windowBackground">#37474f</color>
+	<color name="windowBgLight">#516b77</color>
 </resources>
