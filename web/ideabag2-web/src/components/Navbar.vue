@@ -84,6 +84,10 @@ export default {
     border-radius: 0px;
 }
 
+.navbar-default {
+    border-color: transparent;
+}
+
 #toolbar {
     display: flex;
     align-items: center;
