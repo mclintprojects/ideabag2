@@ -108,6 +108,8 @@
             cardview:rippleColor="@color/accentDark"
             cardview:srcCompat="@mipmap/ic_plus_white_24dp" />
 
+        <include layout="@layout/comments_bottom_sheet" />
+
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

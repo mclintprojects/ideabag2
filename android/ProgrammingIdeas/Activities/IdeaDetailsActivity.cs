@@ -2,6 +2,7 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
+using Android.Support.Constraints;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -29,6 +30,8 @@ namespace ProgrammingIdeas.Activities
         private FloatingActionButton addNoteFab;
         private CardView noteHolder;
         private bool isIdeaBookmarked;
+        private ConstraintLayout bottomSheet;
+        private BottomSheetBehavior sheetBehavior;
 
         public override int LayoutResource => Resource.Layout.ideadetailsactivity;
 
@@ -44,7 +47,9 @@ namespace ProgrammingIdeas.Activities
             var editNoteBtn = FindViewById<Button>(Resource.Id.editNoteBtn);
             noteHolder = FindViewById<CardView>(Resource.Id.noteHolder);
             noteContentLbl = FindViewById<TextView>(Resource.Id.noteContent);
+            bottomSheet = FindViewById<ConstraintLayout>(Resource.Id.commentsBottomSheet);
 
+            sheetBehavior = BottomSheetBehavior.From(bottomSheet);
             addNoteFab.Click += AddNoteFab_Click;
             var swipeListener = new OnSwipeListener(this);
             swipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
@@ -78,6 +83,8 @@ namespace ProgrammingIdeas.Activities
                 ShowNote();
             else
                 noteHolder.Visibility = ViewStates.Gone;
+
+            sheetBehavior.SetBottomSheetCallback(new BottomSheetCallback(addNoteFab));
         }
 
         private void ShowNote()
@@ -266,6 +273,37 @@ namespace ProgrammingIdeas.Activities
         {
             SaveChanges();
             base.OnPause();
+        }
+
+        private class BottomSheetCallback : BottomSheetBehavior.BottomSheetCallback
+        {
+            private readonly FloatingActionButton fab;
+
+            public BottomSheetCallback(FloatingActionButton fab)
+            {
+                this.fab = fab;
+            }
+
+            public override void OnSlide(View bottomSheet, float slideOffset)
+            {
+            }
+
+            public override void OnStateChanged(View bottomSheet, int newState)
+            {
+                switch (newState)
+                {
+                    case BottomSheetBehavior.StateExpanded:
+                    case BottomSheetBehavior.StateDragging:
+                    case BottomSheetBehavior.StateCollapsed:
+                    case BottomSheetBehavior.StateSettling:
+                        fab.Visibility = ViewStates.Gone;
+                        break;
+
+                    case BottomSheetBehavior.StateHidden:
+                        fab.Visibility = ViewStates.Visible;
+                        break;
+                }
+            }
         }
     }
 }
