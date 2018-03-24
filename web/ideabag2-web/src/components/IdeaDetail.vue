@@ -40,9 +40,37 @@ export default {
 			idea: null,
 			comment: '',
 			comments: [],
-			eyes: ["eyes1", "eyes10", "eyes2", "eyes3", "eyes4", "eyes5", "eyes6", "eyes7", "eyes9"],
-			noses: ["nose2", "nose3", "nose4", "nose5", "nose6", "nose7", "nose8", "nose9"],
-			mouths: ["mouth1", "mouth10", "mouth11", "mouth3", "mouth5", "mouth6", "mouth7", "mouth9"]
+			eyes: [
+				'eyes1',
+				'eyes10',
+				'eyes2',
+				'eyes3',
+				'eyes4',
+				'eyes5',
+				'eyes6',
+				'eyes7',
+				'eyes9'
+			],
+			noses: [
+				'nose2',
+				'nose3',
+				'nose4',
+				'nose5',
+				'nose6',
+				'nose7',
+				'nose8',
+				'nose9'
+			],
+			mouths: [
+				'mouth1',
+				'mouth10',
+				'mouth11',
+				'mouth3',
+				'mouth5',
+				'mouth6',
+				'mouth7',
+				'mouth9'
+			]
 		};
 	},
 	computed: {
@@ -83,33 +111,36 @@ export default {
 				var dataId = this.getDataId();
 
 				var comment = {
-					'userId': this.userId,
-					'author': this.email,
-					'comment': this.comment,
-					'created': new Date().getTime()
+					userId: this.userId,
+					author: this.email,
+					comment: this.comment,
+					created: new Date().getTime()
 				};
 
 				var url = `/${dataId}/comments.json?auth=${this.token}`;
-				console.log(url);
 
-				axios.post(url, comment).then(response => {
-					this.$store.dispatch('isPerformingAction', false);
-					comment.id = response.data.name;
+				axios
+					.post(url, comment)
+					.then(response => {
+						this.$store.dispatch('isPerformingAction', false);
+						comment.id = response.data.name;
 
-					this.comments.push(comment);
-					this.comment = '';
-				}).catch(error => {
-					this.$store.dispatch('isPerformingAction', false);
-					eventbus.showToast(error.response.data.error, 'error');
-				});
-			}
-			else {
+						this.comments.push(comment);
+						this.comment = '';
+					})
+					.catch(error => {
+						this.$store.dispatch('isPerformingAction', false);
+						eventbus.showToast(error.response.data.error, 'error');
+					});
+			} else {
 				eventbus.showToast('Log in to post a comment', 'error', 'long');
 			}
 		},
 		getAvatar() {
 			var face = this.getRandomFace();
-			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${face.mouth}/ffa000`;
+			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
+				face.mouth
+			}/ffa000`;
 		},
 		getRandomNumber(min, max) {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -124,25 +155,27 @@ export default {
 		getComments() {
 			this.$store.dispatch('isPerformingAction', true);
 			var dataId = this.getDataId();
-			console.log('Getting comments ' + dataId);
 
-			axios.get(`/${dataId}/comments.json`).then(response => {
-				if (response.data != null) {
-					var keys = Object.keys(response.data);
+			axios
+				.get(`/${dataId}/comments.json`)
+				.then(response => {
+					if (response.data != null) {
+						var keys = Object.keys(response.data);
 
-					for (var i = 0; i < keys.length; i++) {
-						var comment = response.data[keys[i]];
-						comment.id = keys[i];
+						for (var i = 0; i < keys.length; i++) {
+							var comment = response.data[keys[i]];
+							comment.id = keys[i];
 
-						this.comments.push(comment);
+							this.comments.push(comment);
+						}
 					}
-				}
 
-				this.$store.dispatch('isPerformingAction', false);
-			}).catch(error => {
-				eventbus.showToast('Getting comments failed. Please retry.', 'error');
-				this.$store.dispatch('isPerformingAction', false);
-			});
+					this.$store.dispatch('isPerformingAction', false);
+				})
+				.catch(error => {
+					eventbus.showToast('Getting comments failed. Please retry.', 'error');
+					this.$store.dispatch('isPerformingAction', false);
+				});
 		},
 		getDataId() {
 			var categoryId = this.$route.params.categoryId;
@@ -153,16 +186,19 @@ export default {
 			this.$store.dispatch('isPerformingAction', true);
 			var dataId = this.getDataId();
 			var url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
-			console.log('Deleting ' + url);
 
-			axios.delete(url)
+			axios
+				.delete(url)
 				.then(response => {
 					eventbus.showToast('Comment deleted successfully', 'success');
 					this.comments.splice(index, 1);
 					this.$store.dispatch('isPerformingAction', false);
-				}).catch(error => {
-					console.log(error.response.data);
-					eventbus.showToast('Failed to delete comment. Please retry.', 'error');
+				})
+				.catch(error => {
+					eventbus.showToast(
+						'Failed to delete comment. Please retry.',
+						'error'
+					);
 					this.$store.dispatch('isPerformingAction', false);
 				});
 		},
@@ -172,7 +208,7 @@ export default {
 			return date.toLocaleDateString();
 		}
 	}
-}
+};
 </script>
 
 <style scoped>
@@ -201,7 +237,7 @@ export default {
 	margin-top: 40px;
 }
 
-#comments>ul {
+#comments > ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0px;
@@ -259,7 +295,7 @@ export default {
 	align-items: center;
 }
 
-.top-row>div {
+.top-row > div {
 	display: flex;
 	flex-direction: row;
 	align-items: center;

@@ -2,8 +2,8 @@
 <resources>
 	<string name="category">Category</string>
 	<string name="app_name">Idea Bag 2</string>
-	<string name="appVersion">IdeaBag 2 v2.6</string>
-	<string name="appNumber">2.6</string>
+	<string name="appVersion">IdeaBag 2 v2.7</string>
+	<string name="appNumber">2.7</string>
 	<string name="title">Title</string>
 	<string name="itemId">Item ID</string>
 	<string name="difficulty">Difficulty</string>
@@ -50,7 +50,7 @@
 	<string name="completed">Completed</string>
 	<string name="in_progress">In Progress</string>
 	<string name="undecided">Undecided</string>
-	<string name="alansa_2016">© 2016 Alansa</string>
+	<string name="alansa_2016">© 2018 Alansa</string>
 	<string name="bug_reports">Bug reports</string>
 	<string name="overview">Overview</string>
 	<string name="idea_bag_icon">Idea Bag icon</string>

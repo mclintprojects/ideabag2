@@ -40,70 +40,68 @@
 import eventbus from '../eventbus';
 
 export default {
-    data() {
-        return {
-            isRootComponent: false,
-            collapse: true
-        }
-    },
-    computed: {
-        title() {
-            return this.$store.getters.navbarTitle;
-        }
-    },
-    methods: {
-        navigateAway() {
-            this.$router.go(-1);
-        },
-        logout() {
-            this.$store.dispatch('logout');
-            eventbus.showToast('You\'re logged out now.', 'success');
-        },
-        isRootRoute() {
-            var route = this.$route.path;
-            if (route == '/')
-                return true;
-            else
-                return false;
-        }
-    },
-    watch: {
-        '$route': function(to, from) {
-            this.isRootComponent = this.isRootRoute();
-        }
-    },
-    created() {
-        this.isRootComponent = true;
-    }
-}
+	data() {
+		return {
+			isRootComponent: false,
+			collapse: true
+		};
+	},
+	computed: {
+		title() {
+			return this.$store.getters.navbarTitle;
+		}
+	},
+	methods: {
+		navigateAway() {
+			this.$router.go(-1);
+		},
+		logout() {
+			this.$store.dispatch('logout');
+			eventbus.showToast("You're logged out now.", 'success');
+		},
+		isRootRoute() {
+			var route = this.$route.path;
+			if (route == '/') return true;
+			else return false;
+		}
+	},
+	watch: {
+		$route: function(to, from) {
+			this.isRootComponent = this.isRootRoute();
+		}
+	},
+	created() {
+		this.isRootComponent = this.isRootRoute();
+	}
+};
 </script>
 
 <style>
 .navbar {
-    background-color: var(--primary);
-    border-radius: 0px;
+	background-color: var(--primary);
+	border-radius: 0px;
 }
 
 .navbar-default {
-    border-color: transparent;
+	border-color: transparent;
 }
 
 #toolbar {
-    display: flex;
-    align-items: center;
+	display: flex;
+	align-items: center;
 }
 
 #toolbar h4 {
-    margin-left: 16px;
-    color: rgba(255, 255, 255, 0.8);
+	margin-left: 16px;
+	color: rgba(255, 255, 255, 0.8);
 }
 
-#links>li>a {
-    color: var(--primaryText);
+#links > li > a {
+	color: var(--primaryText);
 }
 
-#links>li>a:hover {
-    color: rgba(0, 0, 0, 0.54)
+#links > li > a:hover {
+	color: rgba(0, 0, 0, 0.54);
 }
 </style>
 
