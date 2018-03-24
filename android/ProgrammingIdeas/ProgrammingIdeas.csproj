@@ -51,11 +51,6 @@
     <AndroidUseSharedRuntime>False</AndroidUseSharedRuntime>
     <AndroidLinkMode>Full</AndroidLinkMode>
     <JavaMaximumHeapSize>1G</JavaMaximumHeapSize>
-    <AndroidKeyStore>True</AndroidKeyStore>
-    <AndroidSigningKeyStore>C:\Users\Ghalani 1\AppData\Local\Xamarin\Mono for Android\Keystore\ideabaguploadkey\ideabaguploadkey.keystore</AndroidSigningKeyStore>
-    <AndroidSigningStorePass>.Boyclint1UPLOAD</AndroidSigningStorePass>
-    <AndroidSigningKeyAlias>ideabaguploadkey</AndroidSigningKeyAlias>
-    <AndroidSigningKeyPass>.Boyclint1UPLOAD</AndroidSigningKeyPass>
     <EnableProguard>False</EnableProguard>
     <LangVersion>6</LangVersion>
     <AotAssemblies>True</AotAssemblies>
@@ -374,6 +369,9 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_delete_black_24dp.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\no_comments.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Annotations.25.3.1\build\MonoAndroid70\Xamarin.Android.Support.Annotations.targets')" />
