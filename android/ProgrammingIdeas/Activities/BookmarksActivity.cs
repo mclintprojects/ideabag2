@@ -116,6 +116,7 @@ namespace ProgrammingIdeas.Activities
         protected override void OnDestroy()
         {
             base.OnDestroy();
+
             // Resets position back to zero so the bookmark highlight shows at the top of the list if the user re-enters
             Global.BookmarkScrollPosition = 0;
         }

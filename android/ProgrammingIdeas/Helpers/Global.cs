@@ -1,4 +1,8 @@
-﻿using System;
+﻿using Android.Widget;
+using Helpers;
+using Newtonsoft.Json;
+using ProgrammingIdeas.Models;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -41,10 +45,20 @@ namespace ProgrammingIdeas
         /// </summary>
         public static List<Category> Categories { get; set; }
 
+        public static LoginResponseData LoginData { get; set; }
+
         public static readonly string APP_PATH = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
         public static readonly string NOTES_PATH = Path.Combine(APP_PATH, "notesdb");
         public static readonly string IDEAS_PATH = Path.Combine(APP_PATH, "ideasdb");
         public static readonly string BOOKMARKS_PATH = Path.Combine(APP_PATH, "bookmarks.json");
         public static readonly string NEWIDEASTXT_PATH = Path.Combine(APP_PATH, "newideastxt");
+
+        internal static void AuthUser(LoginResponseData payload)
+        {
+            LoginData = payload;
+            PreferenceManager.Instance.AddEntry("loginData", JsonConvert.SerializeObject(payload));
+
+            Toast.MakeText(App.CurrentActivity, "Logged in successfully.", ToastLength.Long).Show();
+        }
     }
 }

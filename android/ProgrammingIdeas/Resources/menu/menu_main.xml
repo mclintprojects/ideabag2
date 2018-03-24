@@ -16,24 +16,28 @@
 		android:id="@+id/newIdeas"
 		android:title="@string/view_new_ideas"
 		app:showAsAction="never" />
-	<item
-		android:id="@+id/about"
-		android:title="@string/help_amp_about"
-		app:showAsAction="never" />
+	
 	<item
 		android:id="@+id/login"
+		android:icon="@drawable/ic_user_login_button"
 		android:title="@string/login"
-		app:showAsAction="never" />
+		app:showAsAction="always" />
   <item
 		android:id="@+id/register"
+	  android:icon="@drawable/ic_person_add_white_24px"
 		android:title="@string/register"
-		app:showAsAction="never" />
+		app:showAsAction="always" />
   <item
 		android:id="@+id/logout"
 		android:title="@string/logout"
 		app:showAsAction="never" />
-	<item
+	<!--
+  <item
+		android:id="@+id/about"
+		android:title="@string/help_amp_about"
+		app:showAsAction="never" />
+  <item
 		android:id="@+id/changelog"
 		android:title="@string/changelog_text"
-		app:showAsAction="never" />
+		app:showAsAction="never" />-->
 </menu>

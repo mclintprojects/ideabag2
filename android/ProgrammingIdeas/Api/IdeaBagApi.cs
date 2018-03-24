@@ -12,6 +12,7 @@ namespace ProgrammingIdeas.Api
     {
         private HttpClient client;
         private readonly string apiKey = AppResources.ApiKey;
+        private string token = string.Empty;
 
         private readonly Dictionary<string, string> loginErrors = new Dictionary<string, string>
         {
@@ -45,8 +46,10 @@ namespace ProgrammingIdeas.Api
         private IdeaBagApi()
         {
             client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(12);
+            client.Timeout = TimeSpan.FromSeconds(20);
         }
+
+        public void SetAuthToken(string token) => this.token = token;
 
         public async Task<ApiResponse<LoginResponseData>> LoginAsync(LoginData data)
         {
@@ -57,7 +60,9 @@ namespace ProgrammingIdeas.Api
 
                 if (response.IsSuccessStatusCode)
                 {
-                    var loginResponse = JsonConvert.DeserializeObject<LoginResponseData>(await response.Content.ReadAsStringAsync());
+                    var json = await response.Content.ReadAsStringAsync();
+                    var loginResponse = JsonConvert.DeserializeObject<LoginResponseData>(json);
+
                     return new ApiResponse<LoginResponseData>(loginResponse, string.Empty);
                 }
 
@@ -95,7 +100,7 @@ namespace ProgrammingIdeas.Api
             if (e is TaskCanceledException)
                 return "Couldn't load data. Your connection might be too slow";
 
-            return "Couldn't load data. Check your connection and retry";
+            return e.Message;
         }
 
         private string GetFirebaseErrorMessage(string errorCode, string action = "login")

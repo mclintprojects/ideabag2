@@ -86,4 +86,6 @@
   <string name="login">Login</string>
   <string name="register">Register</string>
   <string name="logout">Log out</string>
+    <string name="email_address">Email address</string>
+	<string name="password">Password</string>
 </resources>

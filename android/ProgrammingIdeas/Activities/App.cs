@@ -2,6 +2,9 @@
 using Android.OS;
 using Android.Runtime;
 using Calligraphy;
+using Helpers;
+using Newtonsoft.Json;
+using ProgrammingIdeas.Models;
 using System;
 
 namespace ProgrammingIdeas

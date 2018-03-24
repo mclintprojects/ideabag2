@@ -34,7 +34,7 @@ namespace ProgrammingIdeas.Helpers
                     if (newideasdbResponse.IsSuccessStatusCode)
                     {
                         newideastxt = await newideasdbResponse.Content.ReadAsStringAsync();
-                        DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, Global.Categories);
+                        DBSerializer.SerializeDBAsync(Global.IDEAS_PATH, onlineIdeas);
                         DBSerializer.SerializeDBAsync(Global.NEWIDEASTXT_PATH, newideastxt);
                         return Tuple.Create<List<Category>, Exception>(onlineIdeas, null);
                     }
@@ -104,6 +104,7 @@ namespace ProgrammingIdeas.Helpers
                 if (!Global.LockRequests)
                 {
                     Log.Debug(TAG, "Starting lowkey invalidation");
+
                     //TestNotify(); // Use this method to test if notifications work
                     var response = await client.GetAsync(AppResources.DbLink);
                     if (response.IsSuccessStatusCode)
