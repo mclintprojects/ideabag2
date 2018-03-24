@@ -117,6 +117,15 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="ApiKey" xml:space="preserve">
+    <value>AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck</value>
+  </data>
+  <data name="AuthDomain" xml:space="preserve">
+    <value>https://ideabag2.firebaseapp.com</value>
+  </data>
+  <data name="DatabaseUrl" xml:space="preserve">
+    <value>https://ideabag2.firebaseio.com</value>
+  </data>
   <data name="DbLink" xml:space="preserve">
     <value>https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt</value>
   </data>

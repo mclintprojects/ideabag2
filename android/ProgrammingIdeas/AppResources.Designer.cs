@@ -10,7 +10,6 @@
 
 namespace ProgrammingIdeas {
     using System;
-    using System.Reflection;
     
     
     /// <summary>
@@ -58,6 +57,33 @@ namespace ProgrammingIdeas {
             }
             set {
                 resourceCulture = value;
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck.
+        /// </summary>
+        internal static string ApiKey {
+            get {
+                return ResourceManager.GetString("ApiKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://ideabag2.firebaseapp.com.
+        /// </summary>
+        internal static string AuthDomain {
+            get {
+                return ResourceManager.GetString("AuthDomain", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to https://ideabag2.firebaseio.com.
+        /// </summary>
+        internal static string DatabaseUrl {
+            get {
+                return ResourceManager.GetString("DatabaseUrl", resourceCulture);
             }
         }
         

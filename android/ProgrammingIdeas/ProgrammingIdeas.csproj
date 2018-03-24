@@ -150,6 +150,7 @@
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CategoryActivity.cs" />
     <Compile Include="Activities\DonateActivity.cs" />
+    <Compile Include="Api\IdeaBagApi.cs" />
     <Compile Include="AppResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -157,6 +158,10 @@
     </Compile>
     <Compile Include="Helpers\AppRateUtil.cs" />
     <Compile Include="Helpers\IdeasDownloader.cs" />
+    <Compile Include="Models\ApiResponse.cs" />
+    <Compile Include="Models\Comment.cs" />
+    <Compile Include="Models\LoginData.cs" />
+    <Compile Include="Models\LoginResponseData.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Helpers\OnSwipeListener.cs" />
     <Compile Include="Helpers\Models.cs" />
