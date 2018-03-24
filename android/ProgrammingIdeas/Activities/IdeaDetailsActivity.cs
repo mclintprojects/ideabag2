@@ -160,8 +160,11 @@ namespace ProgrammingIdeas.Activities
         {
             FindViewById<TextView>(Resource.Id.infoText).Text = "No comments on this idea yet";
             var emptyIcon = emptyState.FindViewById<ImageView>(Resource.Id.emptyIcon);
-            emptyIcon.SetImageDrawable(AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.ic_comment_white_24dp));
-            emptyIcon.Drawable.SetColorFilter(Color.ParseColor("#bababa"), PorterDuff.Mode.SrcAtop);
+
+            var icon = AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.ic_comment_white_24dp);
+            icon.SetColorFilter(Color.ParseColor("#bababa"), PorterDuff.Mode.SrcAtop);
+
+            emptyIcon.SetImageDrawable(icon);
             ShowEmptyState();
         }
 
@@ -229,6 +232,9 @@ namespace ProgrammingIdeas.Activities
                 commentsAdapter.NotifyItemRemoved(position);
 
                 Toast.MakeText(this, "Comment deleted", ToastLength.Long).Show();
+
+                if (comments.Count == 0)
+                    ShowEmptyState();
             }
             else
                 Snackbar.Make(addNoteFab, "Failed to delete comment.", Snackbar.LengthLong).Show();
