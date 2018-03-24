@@ -176,7 +176,6 @@ export default {
 </script>
 
 <style scoped>
-
 #card {
 	border: 2px solid transparent;
 	border-radius: 10px 10px 0px 0px;
@@ -271,16 +270,16 @@ export default {
 	padding: 0;
 	margin-left: 16px;
 	color: rgba(0, 0, 0, 0.8);
-	font-size: 16px;
+	font-size: var(--authorLblSize);
 	font-weight: bold;
 }
 
 #dateLbl {
 	margin: 0;
 	padding: 0;
-	margin-left: 32px;
+	margin-left: var(--dateLblMargin);
 	color: rgba(0, 0, 0, 0.5);
-	font-size: 13px;
+	font-size: var(--dateLblSize);
 }
 </style>
 

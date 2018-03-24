@@ -35,7 +35,7 @@ export default {
 
 			return [];
 		},
-		tryLogin() {
+		tryLocalLogin() {
 			var loginData = localStorage.getItem('loginData');
 
 			if (loginData) {
@@ -44,6 +44,16 @@ export default {
 		},
 		saveData(ideasdb) {
 			localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
+		},
+		setupInterceptors() {
+			axios.interceptors.response.use(res => {
+				if (res.status == 401) {
+					eventbus.showToast('Authorization token expired. Please login again.', 'error', '5000');
+					this.$store.dispatch('logout');
+				}
+
+				return res;
+			});
 		}
 	},
 	created() {
@@ -58,7 +68,8 @@ export default {
 			eventbus.showToast('Couldn\'t load data. Please check your connection and reload.', 'error', 'long');
 		});
 
-		this.tryLogin();
+		this.tryLocalLogin();
+		this.setupInterceptors();
 	}
 };
 </script>
@@ -78,9 +89,12 @@ export default {
 	--badgePadding: 8px;
 	--ideaDescriptionTextSize: 16px;
 	--badgeTextSize: 12px;
-	--avatarSize: 36px;
+	--avatarSize: 30px;
 	--commentPadding: 16px;
 	--cardMargin: 16px 0px 0px 0px;
+	--authorLblSize: 16px;
+	--dateLblSize: 13px;
+	--dateLblMargin: 32px;
 }
 
 body {
@@ -205,9 +219,12 @@ body {
 		--categoryIconBgSize: 56px;
 		--badgePadding: 4px;
 		--badgeTextSize: 10px;
-		--avatarSize: 36px;
+		--avatarSize: 24px;
 		--commentPadding: 8px;
 		--cardMargin: 16px 16px 0px 16px;
+		--authorLblSize: 13px;
+		--dateLblSize: 10px;
+		--dateLblMargin: 16px;
 	}
 
 	.col-xs-2,
