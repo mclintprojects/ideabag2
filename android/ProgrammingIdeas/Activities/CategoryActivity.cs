@@ -12,6 +12,7 @@ using Android.Widget;
 using Helpers;
 using Newtonsoft.Json;
 using ProgrammingIdeas.Adapters;
+using ProgrammingIdeas.Api;
 using ProgrammingIdeas.Fragment;
 using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
@@ -46,8 +47,6 @@ namespace ProgrammingIdeas.Activities
             recyclerView = FindViewById<RecyclerView>(Resource.Id.recyclerView);
             bookmarksFab = FindViewById<FloatingActionButton>(Resource.Id.bookmarkFab);
             loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-
-            SetSubtitle("Not logged in");
 
             SetupUI();
 
@@ -91,9 +90,13 @@ namespace ProgrammingIdeas.Activities
             else // We've never opened the app before so we need to download the ideas from the server
                 await DownloadIdeasAfresh();
 
+            SetSubtitle("Not logged in");
             Global.LoginData = JsonConvert.DeserializeObject<LoginResponseData>(PreferenceManager.Instance.GetEntry("loginData"));
             if (Global.LoginData != null)
+            {
                 SetSubtitle(Global.LoginData.Email);
+                IdeaBagApi.Instance.SetAuthToken(Global.LoginData.Token);
+            }
         }
 
         private async Task DownloadIdeasAfresh()
@@ -166,6 +169,9 @@ namespace ProgrammingIdeas.Activities
         {
             base.OnResume();
             adapter?.NotifyDataSetChanged(); // Highlights the last clicked idea
+
+            if (Global.LoginData == null)
+                SetSubtitle("Not logged in");
         }
 
         protected override void OnDestroy()
@@ -200,7 +206,8 @@ namespace ProgrammingIdeas.Activities
                     return true;
 
                 case Resource.Id.logout:
-                    LogoutUser();
+                    Global.Logout();
+                    SetSubtitle("Not logged in");
                     return true;
 
                 case Resource.Id.submitIdea:
@@ -225,15 +232,6 @@ namespace ProgrammingIdeas.Activities
         private void SetSubtitle(string text)
         {
             Toolbar.SubtitleFormatted = Html.FromHtml($"<font color='#ffffff'>{text}</font>");
-        }
-
-        private void LogoutUser()
-        {
-            SetSubtitle(string.Empty);
-            PreferenceManager.Instance.AddEntry("loginData", string.Empty);
-            PreferenceManager.Instance.AddEntry("expiresIn", string.Empty);
-
-            Toast.MakeText(this, "Logged out successfully.", ToastLength.Long).Show();
         }
 
         private async Task RegisterUser()

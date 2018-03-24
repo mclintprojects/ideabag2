@@ -5,18 +5,41 @@
     android:id="@+id/commentsBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:behavior_hideable="true"
-    app:behavior_peekHeight="80dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior">
+    app:behavior_hideable="false"
+    app:behavior_peekHeight="180dp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    android:background="@color/white">
+
+    <ProgressBar
+        android:id="@+id/sheetLoadingCircle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toTopOf="@+id/commentsBar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView2"
+        android:visibility="gone"/>
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Comments"
+        android:textColor="@color/secondaryTextLight"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/commentsRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/commentsBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/empty" />
+        app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
     <include
         android:id="@+id/empty"
@@ -24,25 +47,11 @@
         app:layout_constraintBottom_toTopOf="@+id/commentsBar"
         android:visibility="gone"/>
 
-    <ProgressBar
-        android:id="@+id/loadingCircle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:layout_marginEnd="8dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone"/>
-
     <android.support.constraint.ConstraintLayout
         android:id="@+id/commentsBar"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:background="@color/primary"
+        android:background="@color/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -56,7 +65,8 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:textColorHint="@color/secondaryTextLight"/>
+            android:textColorHint="@color/primaryText"
+            android:textColor="@color/primaryText"/>
 
         <ImageView
             android:id="@+id/commentBtn"

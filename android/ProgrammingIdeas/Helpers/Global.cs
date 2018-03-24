@@ -1,6 +1,7 @@
 ﻿using Android.Widget;
 using Helpers;
 using Newtonsoft.Json;
+using ProgrammingIdeas.Api;
 using ProgrammingIdeas.Models;
 using System;
 using System.Collections.Generic;
@@ -56,9 +57,19 @@ namespace ProgrammingIdeas
         internal static void AuthUser(LoginResponseData payload)
         {
             LoginData = payload;
+            IdeaBagApi.Instance.SetAuthToken(payload.Token);
             PreferenceManager.Instance.AddEntry("loginData", JsonConvert.SerializeObject(payload));
 
             Toast.MakeText(App.CurrentActivity, "Logged in successfully.", ToastLength.Long).Show();
+        }
+
+        internal static void Logout()
+        {
+            PreferenceManager.Instance.AddEntry("loginData", string.Empty);
+            PreferenceManager.Instance.AddEntry("expiresIn", string.Empty);
+            LoginData = null;
+
+            Toast.MakeText(App.CurrentActivity, "Logged out successfully.", ToastLength.Long).Show();
         }
     }
 }
