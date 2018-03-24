@@ -13,19 +13,16 @@
 
 		<div id="comments">
 			<ul>
-				<li :id="comment.id" class="comment" v-for="(comment, index) in comments" :key="index">
-					<div class="row">
-						<div class="col-xs-2">
+				<li class="comment" v-for="(comment, index) in comments" :key="index">
+					<div class="top-row">
+						<div>
 							<img :src="getAvatar()" alt="avatar" />
+							<p id="authorLbl">{{comment.author}}</p>
 						</div>
-						<div class="col-xs-8">
-							<p class="commentLbl">{{comment.comment}}</p>
-						</div>
-
-						<div class="col-xs-2">
-							<img id="deleteCommentBtn" src="/src/assets/ic_delete_black_24px.svg" />
-						</div>
+						<img @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email" id="deleteCommentBtn" src="/src/assets/ic_delete_black_24px.svg" />
 					</div>
+
+					<p class="commentLbl">{{comment.comment}}</p>
 				</li>
 			</ul>
 		</div>
@@ -121,27 +118,57 @@ export default {
 			return { eye, nose, mouth };
 		},
 		getComments() {
+			this.$store.dispatch('isPerformingAction', true);
 			var dataId = this.getDataId();
 			console.log('Getting comments ' + dataId);
 
 			axios.get(`/${dataId}/comments.json`).then(response => {
-				console.log(response.data);
-				if (typeof (response.data) == 'object')
-					this.comments.push(response.data[Object.keys(response.data)[0]]);
+				var keys = Object.keys(response.data);
+
+				for (var i = 0; i < keys.length; i++) {
+					var comment = response.data[keys[i]];
+					comment.id = keys[i];
+
+					this.comments.push(comment);
+				}
+
+				this.$store.dispatch('isPerformingAction', false);
 			}).catch(error => {
 				eventbus.showToast('Getting comments failed. Please retry.', 'error');
+				this.$store.dispatch('isPerformingAction', false);
 			});
 		},
 		getDataId() {
 			var categoryId = this.$route.params.categoryId;
 			var ideaId = this.idea.id;
 			return `${categoryId}C-${ideaId}I`;
+		},
+		deleteComment(commentId, index) {
+			this.$store.dispatch('isPerformingAction', true);
+			var dataId = this.getDataId();
+			var url = `${dataId}/comments/-${commentId}.json?auth=${this.token}`;
+			console.log('Deleting ' + url);
+
+			axios.delete(url)
+				.then(response => {
+					eventbus.showToast('Comment deleted successfully', 'success');
+					this.comments.splice(index, 1);
+					this.$store.dispatch('isPerformingAction', false);
+				}).catch(error => {
+					console.log(error.response.data);
+					eventbus.showToast('Failed to delete comment. Please retry.', 'error');
+					this.$store.dispatch('isPerformingAction', false);
+				});
 		}
 	}
 }
 </script>
 
 <style scoped>
+.navbar-default {
+	border-color: transparent;
+}
+
 #card {
 	border: 2px solid transparent;
 	border-radius: 10px 10px 0px 0px;
@@ -185,6 +212,7 @@ export default {
 	padding: var(--commentPadding);
 	border-bottom: solid 5px var(--primary);
 	background-color: white;
+	margin-bottom: 8px;
 }
 
 .comment img {
@@ -204,19 +232,39 @@ export default {
 
 .commentLbl {
 	background-color: transparent;
-	font-size: 14px;
-	font-family: 'Source Code Pro', monospace;
+	font-size: 16px;
+	font-family: 'Roboto', 'Arial';
 	color: rgba(0, 0, 0, 0.54);
 	white-space: pre-wrap;
 	word-wrap: break-word;
-	padding: 0;
-	margin: 0;
+	margin-top: 4px;
 }
 
 #deleteCommentBtn {
-	width: 30px;
 	cursor: pointer;
-	float: right;
+	margin-top: 4px;
+}
+
+.top-row {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.top-row>div {
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+}
+
+.top-row>div>p {
+	margin: 0;
+	padding: 0;
+	margin-left: 16px;
+	color: rgba(0, 0, 0, 0.8);
+	font-size: 16px;
+	font-weight: bold;
 }
 </style>
 
