@@ -21,8 +21,16 @@
 		android:title="@string/help_amp_about"
 		app:showAsAction="never" />
 	<item
-		android:id="@+id/donate"
-		android:title="@string/donate"
+		android:id="@+id/login"
+		android:title="@string/login"
+		app:showAsAction="never" />
+  <item
+		android:id="@+id/register"
+		android:title="@string/register"
+		app:showAsAction="never" />
+  <item
+		android:id="@+id/logout"
+		android:title="@string/logout"
 		app:showAsAction="never" />
 	<item
 		android:id="@+id/changelog"

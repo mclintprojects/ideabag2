@@ -83,4 +83,7 @@
 	<string name="delete">Delete</string>
 	<string name="note_s_content">Note\'s content</string>
 	<string name="your_note">Your note</string>
+  <string name="login">Login</string>
+  <string name="register">Register</string>
+  <string name="logout">Log out</string>
 </resources>
