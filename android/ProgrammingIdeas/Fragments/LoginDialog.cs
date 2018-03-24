@@ -29,7 +29,7 @@ namespace ProgrammingIdeas.Fragments
             var loginBtn = view.FindViewById<Button>(Resource.Id.loginBtn);
             loadingCircle = view.FindViewById<ProgressBar>(Resource.Id.loadingCircle);
 
-            loginBtn.Click += delegate
+            loginBtn.Click += async delegate
             {
                 using (var validator = new Validator())
                 {
@@ -40,8 +40,10 @@ namespace ProgrammingIdeas.Fragments
                     if (validator.PassedValidation)
                     {
                         var data = new LoginData { Email = emailTb.Text.Trim(), Password = passwordTb.Text.Trim() };
-                        LoginUser(data);
+                        await LoginUser(data);
                     }
+
+                    loadingCircle.Visibility = ViewStates.Gone;
                 }
             };
 
@@ -67,8 +69,6 @@ namespace ProgrammingIdeas.Fragments
             }
             else
                 Snackbar.Make(loadingCircle, response.ErrorMessage, Snackbar.LengthLong).Show();
-
-            loadingCircle.Visibility = ViewStates.Gone;
         }
     }
 }

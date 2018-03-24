@@ -84,7 +84,7 @@
 	<string name="note_s_content">Note\'s content</string>
 	<string name="your_note">Your note</string>
   <string name="login">Login</string>
-  <string name="register">Register</string>
+  <string name="register">Sign up</string>
   <string name="logout">Log out</string>
     <string name="email_address">Email address</string>
 	<string name="password">Password</string>
