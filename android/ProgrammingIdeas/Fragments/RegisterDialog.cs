@@ -27,10 +27,10 @@ namespace ProgrammingIdeas.Fragments
             var emailTb = view.FindViewById<EditText>(Resource.Id.emailTb);
             var passwordTb = view.FindViewById<EditText>(Resource.Id.passwordTb);
             var retypePasswordTb = view.FindViewById<EditText>(Resource.Id.retypePasswordTb);
-            var loginBtn = view.FindViewById<Button>(Resource.Id.loginBtn);
+            var registerBtn = view.FindViewById<Button>(Resource.Id.registerBtn);
             loadingCircle = view.FindViewById<ProgressBar>(Resource.Id.loadingCircle);
 
-            loginBtn.Click += delegate
+            registerBtn.Click += async delegate
             {
                 using (var validator = new Validator())
                 {
@@ -41,8 +41,10 @@ namespace ProgrammingIdeas.Fragments
                     if (validator.PassedValidation)
                     {
                         var data = new LoginData { Email = emailTb.Text.Trim(), Password = passwordTb.Text.Trim() };
-                        RegisterUser(data);
+                        await RegisterUser(data);
                     }
+
+                    loadingCircle.Visibility = ViewStates.Gone;
                 }
             };
 
@@ -68,8 +70,6 @@ namespace ProgrammingIdeas.Fragments
             }
             else
                 Snackbar.Make(loadingCircle, response.ErrorMessage, Snackbar.LengthLong).Show();
-
-            loadingCircle.Visibility = ViewStates.Gone;
         }
     }
 }

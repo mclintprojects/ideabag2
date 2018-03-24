@@ -46,7 +46,7 @@ namespace ProgrammingIdeas.Api
         private IdeaBagApi()
         {
             client = new HttpClient();
-            client.Timeout = TimeSpan.FromSeconds(20);
+            client.Timeout = TimeSpan.FromSeconds(9);
         }
 
         public void SetAuthToken(string token) => this.token = token;
@@ -87,7 +87,7 @@ namespace ProgrammingIdeas.Api
                     return new ApiResponse<LoginResponseData>(loginResponse, string.Empty);
                 }
 
-                return new ApiResponse<LoginResponseData>(null, GetFirebaseErrorMessage(await response.Content.ReadAsStringAsync()));
+                return new ApiResponse<LoginResponseData>(null, GetFirebaseErrorMessage(await response.Content.ReadAsStringAsync(), "signup"));
             }
             catch (Exception e)
             {
