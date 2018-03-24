@@ -56,7 +56,7 @@
     <AndroidSigningStorePass>.Boyclint1UPLOAD</AndroidSigningStorePass>
     <AndroidSigningKeyAlias>ideabaguploadkey</AndroidSigningKeyAlias>
     <AndroidSigningKeyPass>.Boyclint1UPLOAD</AndroidSigningKeyPass>
-    <EnableProguard>True</EnableProguard>
+    <EnableProguard>False</EnableProguard>
     <LangVersion>6</LangVersion>
     <AotAssemblies>True</AotAssemblies>
     <AndroidAotAdditionalArguments>no-write-symbols,nodebug</AndroidAotAdditionalArguments>
