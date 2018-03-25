@@ -101,6 +101,7 @@ namespace ProgrammingIdeas.Activities
 
         private void SetupUI()
         {
+            addNoteFab.RequestFocus();
             ideaTitleLbl.Text = idea.Title;
             ideaDescriptionLbl.Text = idea.Description;
             if (idea.Note != null)
