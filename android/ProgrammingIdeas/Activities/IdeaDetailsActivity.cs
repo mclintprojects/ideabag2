@@ -2,23 +2,17 @@
 using Android.Content;
 using Android.Content.PM;
 using Android.OS;
-using Android.Support.Constraints;
 using Android.Support.Design.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Views.Animations;
 using Android.Widget;
-using ProgrammingIdeas.Adapters;
 using ProgrammingIdeas.Animation;
-using ProgrammingIdeas.Api;
 using ProgrammingIdeas.Fragments;
 using ProgrammingIdeas.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using ProgrammingIdeas.Models;
-using System.Threading.Tasks;
-using Android.Graphics;
 
 namespace ProgrammingIdeas.Activities
 {
@@ -35,15 +29,6 @@ namespace ProgrammingIdeas.Activities
         private FloatingActionButton addNoteFab;
         private CardView noteHolder;
         private bool isIdeaBookmarked;
-        private ConstraintLayout bottomSheet;
-        private BottomSheetBehavior sheetBehavior;
-        private ProgressBar loadingCircle, sheetLoadingCircle;
-        private RecyclerView commentsRecycler;
-        private View emptyState;
-        private List<IdeaComment> comments;
-        private ImageView commentBtn;
-        private EditText commentTb;
-        private CommentsAdapter commentsAdapter;
 
         public override int LayoutResource => Resource.Layout.ideadetailsactivity;
 
@@ -59,15 +44,7 @@ namespace ProgrammingIdeas.Activities
             var editNoteBtn = FindViewById<Button>(Resource.Id.editNoteBtn);
             noteHolder = FindViewById<CardView>(Resource.Id.noteHolder);
             noteContentLbl = FindViewById<TextView>(Resource.Id.noteContent);
-            bottomSheet = FindViewById<ConstraintLayout>(Resource.Id.commentsBottomSheet);
-            loadingCircle = FindViewById<ProgressBar>(Resource.Id.loadingCircle);
-            commentsRecycler = FindViewById<RecyclerView>(Resource.Id.commentsRecycler);
-            emptyState = FindViewById(Resource.Id.empty);
-            commentTb = FindViewById<EditText>(Resource.Id.commentTb);
-            commentBtn = FindViewById<ImageView>(Resource.Id.commentBtn);
-            sheetLoadingCircle = FindViewById<ProgressBar>(Resource.Id.sheetLoadingCircle);
 
-            sheetBehavior = BottomSheetBehavior.From(bottomSheet);
             addNoteFab.Click += AddNoteFab_Click;
             var swipeListener = new OnSwipeListener(this);
             swipeListener.OnSwipeRight += SwipeListener_OnSwipeRight;
@@ -93,159 +70,15 @@ namespace ProgrammingIdeas.Activities
             SetupUI();
         }
 
-        protected override void OnResume()
-        {
-            base.OnResume();
-            commentBtn.Enabled = (Global.LoginData != null);
-        }
-
         private void SetupUI()
         {
-            addNoteFab.RequestFocus();
             ideaTitleLbl.Text = idea.Title;
             ideaDescriptionLbl.Text = idea.Description;
             if (idea.Note != null)
                 ShowNote();
             else
                 noteHolder.Visibility = ViewStates.Gone;
-
-            sheetBehavior.SetBottomSheetCallback(new BottomSheetCallback(addNoteFab));
-
-            SetupComments();
-            SetupEmptyState();
-
-            commentBtn.Enabled = (Global.LoginData != null);
-            commentBtn.Click += delegate
-            {
-                if (commentTb.Text.Length > 0)
-                {
-                    var now = DateTime.Now;
-                    var comment = new IdeaComment
-                    {
-                        Author = Global.LoginData.Email,
-                        Comment = commentTb.Text,
-                        Created = GetJavascriptMillis()
-                    };
-
-                    PostComment(comment);
-                }
-                else
-                    Toast.MakeText(this, "Comment cannot be empty", ToastLength.Long).Show();
-            };
         }
-
-        private long GetJavascriptMillis()
-        {
-            DateTime oldTime = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
-            TimeSpan span = (DateTime.Now.ToUniversalTime() - oldTime);
-            return (long)span.TotalMilliseconds;
-        }
-
-        private async Task PostComment(IdeaComment comment)
-        {
-            sheetLoadingCircle.Visibility = ViewStates.Visible;
-            commentBtn.Enabled = false;
-
-            var response = await IdeaBagApi.Instance.PostCommentAsync(GetDataId(), comment);
-
-            if (response.Payload != null)
-            {
-                HideEmptyState();
-                comment.Id = response.Payload;
-                comments.Add(comment);
-                commentsAdapter.NotifyItemInserted(comments.Count - 1);
-                commentTb.Text = string.Empty;
-            }
-            else
-                Snackbar.Make(addNoteFab, "Couldn't add comment. Please retry.", Snackbar.LengthLong).Show();
-
-            sheetLoadingCircle.Visibility = ViewStates.Gone;
-            commentBtn.Enabled = true;
-        }
-
-        private void SetupEmptyState()
-        {
-            emptyState.FindViewById<TextView>(Resource.Id.infoText).Text = "No comments on this idea yet.";
-            emptyState.FindViewById<ImageView>(Resource.Id.emptyIcon)
-                .SetImageDrawable(AppCompatDrawableManager.Get().GetDrawable(this, Resource.Drawable.no_comments));
-            ShowEmptyState();
-        }
-
-        private void ShowEmptyState()
-        {
-            commentsRecycler.Visibility = ViewStates.Gone;
-            emptyState.Visibility = ViewStates.Visible;
-        }
-
-        private void HideEmptyState()
-        {
-            commentsRecycler.Visibility = ViewStates.Visible;
-            emptyState.Visibility = ViewStates.Gone;
-        }
-
-        private async void SetupComments()
-        {
-            loadingCircle.Visibility = ViewStates.Visible;
-            var response = await IdeaBagApi.Instance.GetCommentsAsync(GetDataId());
-            if (response.Payload != null)
-            {
-                this.comments = response.Payload;
-                if (response.Payload.Count == 0)
-                    ShowEmptyState();
-                else
-                    HideEmptyState();
-
-                commentsAdapter = new CommentsAdapter(response.Payload);
-                commentsRecycler.SetLayoutManager(new LinearLayoutManager(this));
-                commentsRecycler.SetAdapter(commentsAdapter);
-                commentsRecycler.SetItemAnimator(new DefaultItemAnimator());
-
-                commentsAdapter.OnDeleteComment += (position) =>
-                {
-                    var comment = comments[position];
-                    RequestDeleteComment(comment.Id, position);
-                };
-            }
-            else
-                Snackbar.Make(addNoteFab, response.ErrorMessage, Snackbar.LengthIndefinite)
-                    .SetAction("Retry", (v) => SetupComments())
-                    .Show();
-
-            loadingCircle.Visibility = ViewStates.Gone;
-        }
-
-        private void RequestDeleteComment(string id, int position)
-        {
-            new AlertDialog.Builder(this)
-                .SetTitle("Delete comment")
-                .SetMessage("Are you sure you want to delete this comment?")
-                .SetPositiveButton("Yes", (s, e) => DeleteComment(id, position))
-                .SetNegativeButton("No", (s, e) => { return; })
-                .Show();
-        }
-
-        private async Task DeleteComment(string id, int position)
-        {
-            sheetLoadingCircle.Visibility = ViewStates.Visible;
-
-            var deleted = await IdeaBagApi.Instance.DeleteCommentAsync(GetDataId(), id);
-            if (deleted)
-            {
-                comments.RemoveAt(position);
-                commentsAdapter.NotifyItemRemoved(position);
-
-                Toast.MakeText(this, "Comment deleted", ToastLength.Long).Show();
-
-                if (comments.Count == 0)
-                    ShowEmptyState();
-            }
-            else
-                Snackbar.Make(addNoteFab, "Failed to delete comment.", Snackbar.LengthLong).Show();
-
-            sheetLoadingCircle.Visibility = ViewStates.Gone;
-        }
-
-        private string GetDataId() => $"{Global.CategoryScrollPosition}C-{idea.Id}I";
 
         private void ShowNote()
         {
@@ -307,8 +140,6 @@ namespace ProgrammingIdeas.Activities
             }
             else
                 ToastDirection(WasLeftSwipe);
-
-            SetupComments();
         }
 
         /// <summary>
@@ -365,6 +196,12 @@ namespace ProgrammingIdeas.Activities
                     share.PutExtra(Intent.ExtraText, textToShare);
                     StartActivity(Intent.CreateChooser(share, "Share idea via"));
                     return true;
+
+                case Resource.Id.viewComments:
+                    var intent = new Intent(this, typeof(ViewCommentsActivity));
+                    intent.PutExtra("ideaId", idea.Id);
+                    StartActivity(intent);
+                    break;
             }
             return base.OnOptionsItemSelected(item);
         }
@@ -440,9 +277,11 @@ namespace ProgrammingIdeas.Activities
         private class BottomSheetCallback : BottomSheetBehavior.BottomSheetCallback
         {
             private readonly FloatingActionButton fab;
+            private EditText commentTb;
 
-            public BottomSheetCallback(FloatingActionButton fab)
+            public BottomSheetCallback(FloatingActionButton fab, EditText commentTb)
             {
+                this.commentTb = commentTb;
                 this.fab = fab;
             }
 
@@ -454,14 +293,16 @@ namespace ProgrammingIdeas.Activities
             {
                 switch (newState)
                 {
-                    case BottomSheetBehavior.StateExpanded:
                     case BottomSheetBehavior.StateDragging:
+                    case BottomSheetBehavior.StateExpanded:
                     case BottomSheetBehavior.StateSettling:
                         fab.Visibility = ViewStates.Gone;
+                        commentTb.Enabled = false;
                         break;
 
                     case BottomSheetBehavior.StateCollapsed:
                     case BottomSheetBehavior.StateHidden:
+                        commentTb.Enabled = false;
                         fab.Visibility = ViewStates.Visible;
                         break;
                 }

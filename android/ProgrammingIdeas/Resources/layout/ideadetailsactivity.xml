@@ -108,15 +108,6 @@
             cardview:rippleColor="@color/accentDark"
             cardview:srcCompat="@mipmap/ic_plus_white_24dp" />
 
-        <ProgressBar
-            android:id="@+id/loadingCircle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:visibility="gone"/>
-
-        <include layout="@layout/comments_bottom_sheet" />
-
     </android.support.design.widget.CoordinatorLayout>
 
 </LinearLayout>

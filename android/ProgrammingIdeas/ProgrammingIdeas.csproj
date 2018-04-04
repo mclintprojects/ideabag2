@@ -151,6 +151,7 @@
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\CategoryActivity.cs" />
     <Compile Include="Activities\DonateActivity.cs" />
+    <Compile Include="Activities\ViewCommentsActivity.cs" />
     <Compile Include="Adapters\CommentsAdapter.cs" />
     <Compile Include="Api\IdeaBagApi.cs" />
     <Compile Include="Api\TokenDelegate.cs" />
