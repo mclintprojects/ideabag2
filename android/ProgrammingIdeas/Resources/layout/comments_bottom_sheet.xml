@@ -5,13 +5,14 @@
     android:id="@+id/commentsBottomSheet"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    app:behavior_hideable="false"
-    app:behavior_peekHeight="180dp"
-    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
     android:background="@color/white">
 
+  <include
+        android:id="@+id/toolbar"
+        layout="@layout/toolbar" />
+
     <ProgressBar
-        android:id="@+id/sheetLoadingCircle"
+        android:id="@+id/loadingCircle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toTopOf="@+id/commentsBar"
@@ -19,17 +20,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
         android:visibility="gone"/>
-
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:text="Comments"
-        android:textColor="@color/secondaryTextLight"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <include
         android:id="@+id/empty"
@@ -41,11 +31,10 @@
         android:id="@+id/commentsRecycler"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="8dp"
         app:layout_constraintBottom_toTopOf="@+id/commentsBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView2" />
+        app:layout_constraintTop_toBottomOf="@+id/toolbar" />
 
     <android.support.constraint.ConstraintLayout
         android:id="@+id/commentsBar"
