@@ -20,7 +20,8 @@
 							<p id="authorLbl">{{comment.author}}</p>
 							<p id="dateLbl">{{getTimestamp(comment.created)}}</p>
 						</div>
-						<img @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email" id="deleteCommentBtn" src="/src/assets/ic_delete_black_24px.svg" />
+						<img @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email"
+						 id="deleteCommentBtn" src="https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/ic_delete_black_24px.svg" />
 					</div>
 
 					<p class="commentLbl">{{comment.comment}}</p>
