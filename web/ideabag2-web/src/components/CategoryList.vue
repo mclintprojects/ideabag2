@@ -22,16 +22,16 @@ export default {
 	data() {
 		return {
 			icons: [
-				'../src/assets/numbers.png',
-				'../src/assets/text.png',
-				'../src/assets/network.png',
-				'../src/assets/enterprise.png',
-				'../src/assets/cpu.png',
-				'../src/assets/web.png',
-				'../src/assets/file.png',
-				'../src/assets/database.png',
-				'../src/assets/multimedia.png',
-				'../src/assets/games.png'
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/numbers.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/text.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/network.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/enterprise.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/cpu.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/web.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/file.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/database.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png',
+				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png'
 			],
 			selectedIndex: 0
 		};
