@@ -16,7 +16,7 @@ import com.alansa.ideabag2.models.Status
 import io.paperdb.Paper
 
 class BookmarksAdapter(val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit, private val longClick: (Int) -> Unit) : RecyclerView.Adapter<BookmarkViewHolder>() {
-    private val statuses = Paper.book().read<List<Status>>("status", listOf())
+    private var statuses = Paper.book().read<List<Status>>("status", listOf())
     private var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
 
     override fun getItemCount() = ideas.size
@@ -48,12 +48,21 @@ class BookmarksAdapter(val ideas: List<Category.Item>, private val itemClick: (I
         bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
         notifyDataSetChanged()
     }
+
+    fun notifyIdeaStatusChanged(position: Int) {
+        statuses = Paper.book().read<List<Status>>("status", listOf())
+        notifyItemChanged(position)
+    }
 }
 
 class BookmarkViewHolder(binding: RowIdeaListBinding) : IdeaListViewHolder(binding) {
     override fun bind(idea: Category.Item, itemClick: (Int) -> Unit, longClick: (Int) -> Unit, status: CompletionStatus, bookmarked: Boolean) {
         binding.idea = idea
         binding.layoutRoot.setOnClickListener { itemClick(adapterPosition) }
+        binding.layoutRoot.setOnLongClickListener {
+            longClick(adapterPosition)
+            return@setOnLongClickListener true
+        }
         binding.layoutRoot.setBackgroundColor(Color.TRANSPARENT)
         setProgressState(status)
 
