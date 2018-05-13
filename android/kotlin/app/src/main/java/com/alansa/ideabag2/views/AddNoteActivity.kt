@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.databinding.ActivityAddNoteBinding
@@ -32,7 +33,12 @@ class AddNoteActivity : BaseActivity() {
             viewmodel.showExistingNote(ideaId)
         } else supportActionBar?.title = "Create a note"
 
-        saveBtn.setOnClickListener { saveOrUpdateNote() }
+        saveBtn.setOnClickListener {
+            if (noteTitle.text.isNullOrEmpty() || noteDetail.text.isNullOrEmpty())
+                Toast.makeText(this, "One or required fields are empty", Toast.LENGTH_LONG).show()
+            else
+                saveOrUpdateNote()
+        }
     }
 
     private fun saveOrUpdateNote() {

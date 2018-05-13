@@ -6,6 +6,7 @@ import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
@@ -47,9 +48,13 @@ class BookmarksActivity : BaseActivity() {
     }
 
     private fun setupList() {
-        adapter = BookmarksAdapter(bookmarkedIdeas, { onItemClick(it) })
+        adapter = BookmarksAdapter(bookmarkedIdeas, { onItemClick(it) }, {itemLongClicked(it)})
         bookmarkRecyclerView.layoutManager = LinearLayoutManager(this)
         bookmarkRecyclerView.adapter = adapter
+    }
+
+    private fun itemLongClicked(position: Int) {
+        Toast.makeText(this, "Long clicked: position", Toast.LENGTH_LONG).show()
     }
 
     private fun onItemClick(position: Int) {

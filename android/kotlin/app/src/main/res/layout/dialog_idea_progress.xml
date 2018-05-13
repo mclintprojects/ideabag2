@@ -3,59 +3,30 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/white"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:padding="16dp">
 
-    <TextView
+    <RadioGroup
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:background="@color/accent"
-        android:gravity="center"
-        android:text="@string/markProgressText"
-        android:textColor="@color/secondaryText"
-        android:textSize="18sp" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal">
-
-        <TextView
-            android:id="@+id/undecidedText"
+        android:layout_height="wrap_content">
+        <RadioButton
+            android:id="@+id/undecidedRBtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/undecided"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:background="@color/undecidedColor"
-            android:gravity="center"
-            android:text="@string/undecidedText"
-            android:textColor="@color/primaryText" />
+            android:layout_height="wrap_content"
+            android:text="@string/undecided"/>
 
-        <TextView
-            android:id="@+id/inprogressText"
+        <RadioButton
+            android:id="@+id/inProgressRBtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/inProgress"
-            android:layout_gravity="center"
-            android:layout_toRightOf="@+id/undecidedText"
-            android:layout_weight="1"
-            android:background="@color/inProgressColor"
-            android:gravity="center"
+            android:layout_height="wrap_content"
             android:text="@string/in_progressText"
-            android:textColor="@color/primaryText" />
+            android:layout_marginTop="8dp"/>
 
-        <TextView
-            android:id="@+id/doneText"
+        <RadioButton
+            android:id="@+id/doneRBtn"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_below="@+id/done"
-            android:layout_gravity="center"
-            android:layout_toRightOf="@+id/inprogressText"
-            android:layout_weight="1"
-            android:background="@color/doneColor"
-            android:gravity="center"
-            android:text="@string/completedText"
-            android:textColor="@color/primaryText" />
-    </LinearLayout>
+            android:layout_height="wrap_content"
+            android:text="Done"
+            android:layout_marginTop="8dp"/>
+    </RadioGroup>
 </LinearLayout>

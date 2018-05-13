@@ -38,7 +38,7 @@ class BookmarkDetailViewModel : ViewModel() {
     }
 
     fun setBookmark(category: String, ideaId: Int) = model.setBookmark(category, ideaId)
-    
+
     fun getCategoryId(): Int = model.bookmark.categoryId
 
 }

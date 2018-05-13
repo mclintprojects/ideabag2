@@ -10,6 +10,8 @@ import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.IdeaListAdapter
 import com.alansa.ideabag2.databinding.ActivityIdeaListBinding
+import com.alansa.ideabag2.dialogs.SetProgressDialog
+import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.viewmodels.IdeaListViewModel
 import kotlinx.android.synthetic.main.activity_idea_list.*
 
@@ -31,9 +33,17 @@ class IdeaListActivity : BaseActivity() {
     }
 
     private fun setupList() {
-        adapter = IdeaListAdapter(viewmodel.categoryId, viewmodel.ideas, { itemClicked(it) })
+        adapter = IdeaListAdapter(viewmodel.categoryId, viewmodel.ideas, { itemClicked(it) }, { itemLongClicked(it) })
         itemRecyclerView.layoutManager = LinearLayoutManager(this)
         itemRecyclerView.adapter = adapter
+    }
+
+    private fun itemLongClicked(position: Int) {
+        var dialog = SetProgressDialog(){ status ->
+            viewmodel.setIdeaProgress(status, position + 1)
+            adapter.notifyIdeaStatusChanged(position)
+        }
+        dialog.show(supportFragmentManager, String.empty)
     }
 
     private fun itemClicked(position: Int) {

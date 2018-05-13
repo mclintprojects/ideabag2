@@ -9,7 +9,7 @@ import com.alansa.ideabag2.uimodels.BookmarksModel
 class BookmarksViewModel : ViewModel() {
     val bookmarkedIdeas = MutableLiveData<List<Category.Item>>()
     private val model = BookmarksModel()
-    val progress = ObservableField(0)
+    val progress = ObservableField(model.getCompletedCount())
     val maxProgress = ObservableField(0)
     val showEmptyState = ObservableField(true)
 
@@ -17,14 +17,9 @@ class BookmarksViewModel : ViewModel() {
         refresh()
     }
 
-    fun refresh(){
+    fun refresh() {
         val ideas = model.getIdeas()
         bookmarkedIdeas.value = ideas
-
-        val count = model.getCompletedCount()
-        if (count > 0)
-            progress.set(ideas.size / count)
-
         maxProgress.set(ideas.size)
         showEmptyState.set(ideas.size == 0)
     }
