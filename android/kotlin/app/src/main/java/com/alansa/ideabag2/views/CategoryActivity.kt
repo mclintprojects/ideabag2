@@ -50,13 +50,11 @@ class CategoryActivity : BaseActivity() {
 
         viewmodel.owner = this
         viewmodel.categories.observe(this, Observer {
-            if (this.categories.size == 0)
-            {
+            if (this.categories.size == 0) {
                 this.categories.addAll(it!!)
                 setupList()
                 viewmodel.invalidateCache()
-            }
-            else {
+            } else {
                 categories.clear()
                 categories.addAll(it!!)
                 adapter.notifyDataSetChanged()
@@ -64,8 +62,12 @@ class CategoryActivity : BaseActivity() {
 
             Global.categories.clear()
             Global.categories.addAll(it)
-
         })
+
+        bookmarkFab.setOnClickListener {
+            startActivity(Intent(this, BookmarksActivity::class.java))
+            overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -117,8 +119,8 @@ class CategoryActivity : BaseActivity() {
                     .show()
         } else {
             adapter = CategoryAdapter(categories, { onItemClick(it) })
-            binding.recyclerView.layoutManager = LinearLayoutManager(this)
-            binding.recyclerView.adapter = adapter
+            recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.adapter = adapter
         }
     }
 
