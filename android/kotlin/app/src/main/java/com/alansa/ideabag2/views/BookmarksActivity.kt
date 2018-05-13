@@ -40,6 +40,12 @@ class BookmarksActivity : BaseActivity() {
         })
     }
 
+    override fun onResume() {
+        super.onResume()
+        viewmodel.refresh()
+        adapter.refresh()
+    }
+
     private fun setupList() {
         adapter = BookmarksAdapter(bookmarkedIdeas, { onItemClick(it) })
         bookmarkRecyclerView.layoutManager = LinearLayoutManager(this)
@@ -47,7 +53,13 @@ class BookmarksActivity : BaseActivity() {
     }
 
     private fun onItemClick(position: Int) {
-        startActivity(Intent(this, BookmarkDetailActivity::class.java))
+        var idea = bookmarkedIdeas[position]
+
+        var intent = Intent(this, BookmarkDetailActivity::class.java)
+        intent.putExtra("ideaId", idea.id)
+        intent.putExtra("category", idea.category)
+
+        startActivity(intent)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
         Global.bookmarkClickIndex = position
     }

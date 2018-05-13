@@ -15,6 +15,7 @@ class AddNoteActivity : BaseActivity() {
     private lateinit var binding: ActivityAddNoteBinding
     private lateinit var viewmodel: AddNoteViewModel
     private var ideaId = 0
+    private var categoryId = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +26,7 @@ class AddNoteActivity : BaseActivity() {
         setupToolbar()
 
         ideaId = intent.getIntExtra("ideaId", 0)
+        categoryId = intent.getIntExtra("categoryId", 0)
         if (viewmodel.isInEditMode(ideaId)) {
             supportActionBar?.title = "Update note"
             viewmodel.showExistingNote(ideaId)
@@ -34,7 +36,7 @@ class AddNoteActivity : BaseActivity() {
     }
 
     private fun saveOrUpdateNote() {
-        viewmodel.saveOrUpdateNote(ideaId)
+        viewmodel.saveOrUpdateNote(ideaId, categoryId)
         navigateAway()
     }
 

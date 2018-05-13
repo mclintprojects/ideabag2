@@ -79,6 +79,9 @@ class CategoryActivity : BaseActivity() {
 
         if (menu != null)
             manageOptionalMenuItems();
+
+        Global.ideaClickIndex = -1
+        Global.bookmarkClickIndex = -1
     }
 
     private fun manageOptionalMenuItems() {
