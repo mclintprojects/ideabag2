@@ -7,25 +7,21 @@ import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
-import android.view.animation.AnticipateOvershootInterpolator
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.R
-import com.alansa.ideabag2.databinding.ActivityIdeaDetailBinding
-import com.alansa.ideabag2.extensions.animateView
-import com.alansa.ideabag2.utils.OnSwipeListener
-import com.alansa.ideabag2.utils.Swipe
-import com.alansa.ideabag2.viewmodels.IdeaDetailViewModel
+import com.alansa.ideabag2.databinding.ActivityBookmarkDetailBinding
+import com.alansa.ideabag2.viewmodels.BookmarkDetailViewModel
 import kotlinx.android.synthetic.main.activity_idea_detail.*
 
-class IdeaDetailActivity : BaseActivity() {
-    private lateinit var binding: ActivityIdeaDetailBinding
-    private lateinit var viewmodel: IdeaDetailViewModel
+class BookmarkDetailActivity : BaseActivity() {
+    private lateinit var binding: ActivityBookmarkDetailBinding
+    private lateinit var viewmodel: BookmarkDetailViewModel
     private lateinit var bookmarkItem: MenuItem
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_idea_detail)
-        viewmodel = ViewModelProviders.of(this).get(IdeaDetailViewModel::class.java)
+        viewmodel = ViewModelProviders.of(this).get(BookmarkDetailViewModel::class.java)
         binding.viewmodel = viewmodel
 
         setupToolbar()
@@ -34,10 +30,6 @@ class IdeaDetailActivity : BaseActivity() {
         addNotefab.setOnClickListener { addOrUpdateNote() }
         editNoteBtn.setOnClickListener { addOrUpdateNote() }
         deleteNote.setOnClickListener { viewmodel.deleteNote() }
-
-        var swipeListener = OnSwipeListener(this, { onSwipe(it) })
-        detailsView.setOnTouchListener(swipeListener)
-        itemDescription.setOnTouchListener(swipeListener)
     }
 
     private fun addOrUpdateNote() {
@@ -45,21 +37,6 @@ class IdeaDetailActivity : BaseActivity() {
         intent.putExtra("ideaId", viewmodel.idea.get()!!.id)
         startActivity(intent)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
-    }
-
-    private fun onSwipe(swipe: Swipe) {
-        when (swipe) {
-            Swipe.RIGHT -> {
-                viewmodel.swipedRight()
-                detailsView.animateView("translationX", 400, AnticipateOvershootInterpolator(), -400f, 0f)
-                setAppropriateBookmarkIcon()
-            }
-            Swipe.LEFT -> {
-                viewmodel.swipedLeft()
-                detailsView.animateView("translationX", 400, AnticipateOvershootInterpolator(), 400f, 0f)
-                setAppropriateBookmarkIcon()
-            }
-        }
     }
 
     override fun onResume() {

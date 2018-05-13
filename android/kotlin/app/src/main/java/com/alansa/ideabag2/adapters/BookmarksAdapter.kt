@@ -9,7 +9,10 @@ import android.view.ViewGroup
 import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.databinding.RowIdeaListBinding
-import com.alansa.ideabag2.models.*
+import com.alansa.ideabag2.models.Bookmark
+import com.alansa.ideabag2.models.Category
+import com.alansa.ideabag2.models.CompletionStatus
+import com.alansa.ideabag2.models.Status
 import io.paperdb.Paper
 
 class BookmarksAdapter(val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit) : RecyclerView.Adapter<BookmarkViewHolder>() {
@@ -23,7 +26,7 @@ class BookmarksAdapter(val ideas: List<Category.Item>, private val itemClick: (I
         holder.bind(idea, itemClick, getCompletionStatus(idea), isBookmarked(idea))
     }
 
-    private fun isBookmarked(idea: Category.Item): Boolean = bookmarks.find { it.ideaId == idea.id } != null
+    private fun isBookmarked(idea: Category.Item): Boolean = bookmarks.any { it.ideaId == idea.id }
 
     private fun getCompletionStatus(idea: Category.Item): CompletionStatus {
         val existingStatus = statuses.firstOrNull {

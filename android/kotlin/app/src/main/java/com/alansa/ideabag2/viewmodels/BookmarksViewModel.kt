@@ -18,7 +18,7 @@ class BookmarksViewModel : ViewModel() {
         bookmarkedIdeas.value = ideas
 
         val count = model.getCompletedCount()
-        if(count > 0)
+        if (count > 0)
             progress.set(ideas.size / count)
 
         maxProgress.set(ideas.size)

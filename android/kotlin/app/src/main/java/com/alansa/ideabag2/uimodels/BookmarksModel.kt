@@ -9,7 +9,7 @@ import io.paperdb.Paper
 class BookmarksModel {
     private var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
 
-     fun getIdeas(): MutableList<Category.Item> {
+    fun getIdeas(): MutableList<Category.Item> {
         var ideas = mutableListOf<Category.Item>()
         var allIdeas = Paper.book().read<MutableList<Category>>("ideas")
 
@@ -19,11 +19,12 @@ class BookmarksModel {
 
     private fun bookmarkContains(idea: Category.Item, categoryId: Int): Boolean = bookmarks.any { it.ideaId == idea.id && it.categoryId == categoryId }
 
-    fun getCompletedCount() : Int{
+    fun getCompletedCount(): Int {
         var count = 0
         val statuses = Paper.book().read<List<Status>>("status", listOf())
-        bookmarks.forEach {bookmark ->
-            if(statuses.any { it.categoryId == bookmark.categoryId && it.ideaId == bookmark.ideaId && it.status == CompletionStatus.DONE }) count++  }
+        bookmarks.forEach { bookmark ->
+            if (statuses.any { it.categoryId == bookmark.categoryId && it.ideaId == bookmark.ideaId && it.status == CompletionStatus.DONE }) count++
+        }
 
         return count
     }

@@ -1,7 +1,6 @@
 package com.alansa.ideabag2.uimodels
 
 import android.arch.lifecycle.MutableLiveData
-import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.extensions.fromJson
 import com.alansa.ideabag2.models.Category
 import com.github.kittinunf.fuel.httpGet
@@ -20,7 +19,7 @@ class CategoryModel {
     val ideas = MutableLiveData<List<Category>>()
 
     init {
-        launch(UI){downloadIdeas()}
+        launch(UI) { downloadIdeas() }
     }
 
     suspend fun downloadIdeas() {

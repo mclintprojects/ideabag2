@@ -14,9 +14,9 @@ import com.alansa.ideabag2.viewmodels.IdeaListViewModel
 import kotlinx.android.synthetic.main.activity_idea_list.*
 
 class IdeaListActivity : BaseActivity() {
-    private lateinit var binding : ActivityIdeaListBinding
-    private lateinit var viewmodel : IdeaListViewModel
-    private lateinit var adapter : IdeaListAdapter
+    private lateinit var binding: ActivityIdeaListBinding
+    private lateinit var viewmodel: IdeaListViewModel
+    private lateinit var adapter: IdeaListAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -31,12 +31,12 @@ class IdeaListActivity : BaseActivity() {
     }
 
     private fun setupList() {
-        adapter = IdeaListAdapter(viewmodel.categoryId, viewmodel.ideas, {itemClicked(it)})
+        adapter = IdeaListAdapter(viewmodel.categoryId, viewmodel.ideas, { itemClicked(it) })
         itemRecyclerView.layoutManager = LinearLayoutManager(this)
         itemRecyclerView.adapter = adapter
     }
 
-    private fun itemClicked(position : Int){
+    private fun itemClicked(position: Int) {
         startActivity(Intent(this, IdeaDetailActivity::class.java))
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
         Global.ideaClickIndex = position

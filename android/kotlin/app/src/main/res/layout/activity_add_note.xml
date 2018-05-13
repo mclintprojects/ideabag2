@@ -3,7 +3,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.alansa.ideabag2.viewmodels.AddNoteViewModel" />
@@ -33,7 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/title"
-                android:text="@={viewmodel.title}"/>
+                android:text="@={viewmodel.title}" />
         </android.support.design.widget.TextInputLayout>
 
         <EditText
@@ -46,8 +48,8 @@
             android:background="@android:color/transparent"
             android:gravity="top"
             android:hint="@string/detail"
-            android:text="@={viewmodel.details}"
             android:inputType=""
+            android:text="@={viewmodel.details}"
             app:layout_constraintBottom_toTopOf="@+id/saveBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

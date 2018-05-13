@@ -13,13 +13,13 @@ class AddNoteViewModel : ViewModel() {
 
     private val model = AddNoteModel()
 
-    private fun saveNote(ideaId : Int) = model.saveNote(Note(Global.categoryClickIndex, ideaId, title.get()!!, details.get()!!))
+    private fun saveNote(ideaId: Int) = model.saveNote(Note(Global.categoryClickIndex, ideaId, title.get()!!, details.get()!!))
 
-    private fun updateNote(ideaId : Int) = model.updateNote(Note(Global.categoryClickIndex, ideaId, title.get()!!, details.get()!!))
+    private fun updateNote(ideaId: Int) = model.updateNote(Note(Global.categoryClickIndex, ideaId, title.get()!!, details.get()!!))
 
-    fun saveOrUpdateNote(ideaId : Int) = if (isInEditMode.get()!!) updateNote(ideaId) else saveNote(ideaId)
+    fun saveOrUpdateNote(ideaId: Int) = if (isInEditMode.get()!!) updateNote(ideaId) else saveNote(ideaId)
 
-    fun isInEditMode(ideaId : Int) : Boolean{
+    fun isInEditMode(ideaId: Int): Boolean {
         val isEditing = model.isInEditMode(ideaId)
         isInEditMode.set(isEditing)
         return isEditing

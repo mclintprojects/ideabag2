@@ -7,11 +7,11 @@ import com.alansa.ideabag2.models.Status
 import io.paperdb.Paper
 
 class IdeaListModel {
-    val ideas : List<Category.Item>
-    get() =  Global.categories[Global.categoryClickIndex].items
+    val ideas: List<Category.Item>
+        get() = Global.categories[Global.categoryClickIndex].items
 
-    val categoryId : Int
-    get() = Global.categoryClickIndex
+    val categoryId: Int
+        get() = Global.categoryClickIndex
 
     fun getCompletedCount(): Int {
         return Paper.book().read<List<Status>>("status", listOf())
