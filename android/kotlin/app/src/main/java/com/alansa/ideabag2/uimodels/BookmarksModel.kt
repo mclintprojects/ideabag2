@@ -7,11 +7,12 @@ import com.alansa.ideabag2.models.Status
 import io.paperdb.Paper
 
 class BookmarksModel {
-    private var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
+    private val bookmarks: MutableList<Bookmark>
+        get() = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
 
     fun getIdeas(): MutableList<Category.Item> {
         var ideas = mutableListOf<Category.Item>()
-        var allIdeas = Paper.book().read<MutableList<Category>>("ideas")
+        var allIdeas = Paper.book().read<MutableList<Category>>("ideas", mutableListOf())
 
         allIdeas.forEachIndexed { index, category -> ideas.addAll(category.items.filter { bookmarkContains(it, index) }) }
         return ideas

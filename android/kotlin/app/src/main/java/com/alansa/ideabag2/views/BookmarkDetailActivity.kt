@@ -20,11 +20,14 @@ class BookmarkDetailActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_idea_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_bookmark_detail)
         viewmodel = ViewModelProviders.of(this).get(BookmarkDetailViewModel::class.java)
         binding.viewmodel = viewmodel
 
         setupToolbar()
+
+        viewmodel.setBookmark(intent.getStringExtra("category"), intent.getIntExtra("ideaId", 0))
+        viewmodel.showIdea()
         supportActionBar?.title = viewmodel.idea.get()!!.category
 
         addNotefab.setOnClickListener { addOrUpdateNote() }
@@ -34,7 +37,8 @@ class BookmarkDetailActivity : BaseActivity() {
 
     private fun addOrUpdateNote() {
         var intent = Intent(this, AddNoteActivity::class.java)
-        intent.putExtra("ideaId", viewmodel.idea.get()!!.id)
+        intent.putExtra("ideaId", this.intent.getIntExtra("ideaId", 0))
+        intent.putExtra("categoryId", viewmodel.getCategoryId())
         startActivity(intent)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }

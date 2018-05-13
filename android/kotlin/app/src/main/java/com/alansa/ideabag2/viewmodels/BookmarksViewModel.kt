@@ -14,6 +14,10 @@ class BookmarksViewModel : ViewModel() {
     val showEmptyState = ObservableField(true)
 
     init {
+        refresh()
+    }
+
+    fun refresh(){
         val ideas = model.getIdeas()
         bookmarkedIdeas.value = ideas
 

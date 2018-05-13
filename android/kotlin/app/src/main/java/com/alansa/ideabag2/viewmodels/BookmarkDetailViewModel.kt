@@ -8,10 +8,12 @@ import com.alansa.ideabag2.uimodels.BookmarkDetailModel
 
 class BookmarkDetailViewModel : ViewModel() {
     private val model = BookmarkDetailModel()
-    val idea = ObservableField<Category.Item>(model.idea)
+    val idea = ObservableField<Category.Item>()
     var note = ObservableField<Note?>()
     val isBookmarked: Boolean
         get() = model.isBookmarked()
+
+    fun showIdea() = idea.set(model.idea)
 
     fun saveNote(note: Note) {
         this.note.set(note)
@@ -34,5 +36,9 @@ class BookmarkDetailViewModel : ViewModel() {
     fun refreshNote() {
         note.set(model.getNote())
     }
+
+    fun setBookmark(category: String, ideaId: Int) = model.setBookmark(category, ideaId)
+    
+    fun getCategoryId(): Int = model.bookmark.categoryId
 
 }

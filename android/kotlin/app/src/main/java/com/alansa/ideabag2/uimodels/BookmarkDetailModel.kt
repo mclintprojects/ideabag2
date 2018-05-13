@@ -1,6 +1,5 @@
 package com.alansa.ideabag2.uimodels
 
-import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.models.Bookmark
 import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.models.Note
@@ -8,9 +7,17 @@ import io.paperdb.Paper
 
 class BookmarkDetailModel {
     val bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
-    val bookmark: Bookmark
-        get() = bookmarks[Global.bookmarkClickIndex]
-    val idea = Paper.book().read<List<Category>>("ideas")[bookmark.categoryId].items[bookmark.ideaId]
+    var bookmark = Bookmark(0, 0)
+    val idea: Category.Item
+        get() = Paper.book().read<List<Category>>("ideas", listOf())[bookmark.categoryId].items[bookmark.ideaId - 1]
+
+    fun setBookmark(category: String, ideaId: Int) {
+        var categories = Paper.book().read<List<Category>>("ideas", listOf())
+        var category = categories.find { it.categoryLbl == category }
+        var categoryId = categories.indexOf(category)
+
+        bookmark = bookmarks.find { it.categoryId == categoryId && it.ideaId == ideaId }!!
+    }
 
     fun getNote(): Note? {
         var notes = Paper.book().read<MutableList<Note>>("notes", mutableListOf())

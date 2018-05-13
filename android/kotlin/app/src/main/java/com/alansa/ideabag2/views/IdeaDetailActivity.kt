@@ -9,6 +9,7 @@ import android.view.Menu
 import android.view.MenuItem
 import android.view.animation.AnticipateOvershootInterpolator
 import com.alansa.ideabag2.BaseActivity
+import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.databinding.ActivityIdeaDetailBinding
 import com.alansa.ideabag2.extensions.animateView
@@ -43,6 +44,7 @@ class IdeaDetailActivity : BaseActivity() {
     private fun addOrUpdateNote() {
         var intent = Intent(this, AddNoteActivity::class.java)
         intent.putExtra("ideaId", viewmodel.idea.get()!!.id)
+        intent.putExtra("categoryId", Global.categoryClickIndex)
         startActivity(intent)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
