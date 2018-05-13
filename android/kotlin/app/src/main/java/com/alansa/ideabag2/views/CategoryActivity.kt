@@ -106,6 +106,7 @@ class CategoryActivity : BaseActivity() {
         when (item!!.itemId) {
             loginId -> Toast.makeText(this, "Login clicked", Toast.LENGTH_LONG).show()
             R.id.submitIdea -> startActivity(Intent(this, SubmitIdeaActivity::class.java))
+            R.id.viewNotes -> startActivity(Intent(this, NotesActivity::class.java))
             else -> return false
         }
 

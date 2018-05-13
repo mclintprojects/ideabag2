@@ -31,12 +31,12 @@ class BookmarksModel {
         return count
     }
 
-    fun setProgress(progress: CompletionStatus, category: String, ideaId : Int) {
+    fun setProgress(progress: CompletionStatus, category: String, ideaId: Int) {
         var categoryId = Global.categories.indexOf(Global.categories.find { it.categoryLbl == category })
         var statuses = Paper.book().read<MutableList<Status>>("status", mutableListOf())
 
         var existingStatus = statuses.find { it.categoryId == categoryId && it.ideaId == ideaId }
-        if(existingStatus != null) existingStatus.status = progress else statuses.add(Status(categoryId, ideaId, progress))
+        if (existingStatus != null) existingStatus.status = progress else statuses.add(Status(categoryId, ideaId, progress))
 
         Paper.book().write("status", statuses)
     }

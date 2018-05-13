@@ -17,7 +17,6 @@ import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.viewmodels.BookmarksViewModel
 import kotlinx.android.synthetic.main.activity_bookmarks.*
-import kotlinx.android.synthetic.main.activity_idea_list.*
 
 class BookmarksActivity : BaseActivity() {
     private lateinit var binding: ActivityBookmarksBinding
@@ -32,15 +31,11 @@ class BookmarksActivity : BaseActivity() {
         binding.viewmodel = viewmodel
 
         setupToolbar()
+        setupList()
 
         viewmodel.bookmarkedIdeas.observe(this, Observer {
-            if (bookmarkedIdeas.size == 0) {
-                bookmarkedIdeas.addAll(it!!)
-                setupList()
-            } else {
-                bookmarkedIdeas.clear()
-                bookmarkedIdeas.addAll(it!!)
-            }
+            bookmarkedIdeas.clear()
+            bookmarkedIdeas.addAll(it!!)
         })
     }
 
@@ -61,7 +56,7 @@ class BookmarksActivity : BaseActivity() {
             var idea = bookmarkedIdeas[position]
             viewmodel.setIdeaProgress(status, idea.category, idea.id)
             adapter.notifyIdeaStatusChanged(position)
-            Snackbar.make(itemRecyclerView, "Progress updated.", Snackbar.LENGTH_SHORT).show()
+            Snackbar.make(bookmarkRecyclerView, "Progress updated.", Snackbar.LENGTH_SHORT).show()
         }
         dialog.show(supportFragmentManager, String.empty)
     }

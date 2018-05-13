@@ -11,7 +11,7 @@ class IdeaListViewModel : ViewModel() {
     val categoryId = model.categoryId
     val progress = ObservableField(model.getCompletedCount())
 
-    fun setIdeaProgress(progress: CompletionStatus, ideaId : Int){
+    fun setIdeaProgress(progress: CompletionStatus, ideaId: Int) {
         model.setProgress(progress, ideaId)
         this.progress.set(model.getCompletedCount())
     }

@@ -1,81 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:cardview="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginLeft="16dp"
-    android:layout_marginRight="16dp"
-    android:layout_marginTop="8dp"
-    android:orientation="vertical">
-
-    <android.support.v7.widget.CardView
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="note"
+            type="com.alansa.ideabag2.models.Note" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_gravity="center_horizontal"
-        cardview:cardBackgroundColor="@color/accent"
-        cardview:cardCornerRadius="2dp"
-        cardview:cardElevation="2dp"
-        cardview:cardUseCompatPadding="true"
-        cardview:contentPadding="16dp">
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        tools:background="@color/windowBackground"
+        android:id="@+id/layoutRoot"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp">
 
-        <RelativeLayout
+        <android.support.v7.widget.CardView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            app:cardBackgroundColor="@color/accent"
+            app:cardCornerRadius="5dp"
+            app:contentPadding="16dp">
 
-            <TextView
-                android:id="@+id/notesTitle"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/title"
-                android:textColor="@color/secondaryText"
-                android:textSize="18sp" />
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/notesContent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/notesTitle"
-                android:layout_marginTop="4dip"
-                android:autoLink="web"
-                android:linksClickable="true"
-                android:maxLines="3"
-                android:text="@string/notes_sample_content"
-                android:textColor="@color/secondaryTextLight"
-                android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="@{note.noteTitle}"
+                    android:textColor="@color/secondaryText"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:text="@string/title" />
 
-            <TextView
-                android:id="@+id/noteEdit"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:text="@string/edit_text"
-                android:textColor="@color/secondaryText"
-                android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/noteContent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="4dp"
+                    android:lineSpacingExtra="4sp"
+                    android:maxLines="3"
+                    android:text="@{note.noteDetails}"
+                    android:textColor="@color/secondaryText"
+                    android:textColorLink="@color/primaryText"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView2"
+                    tools:text="@string/note_s_content" />
 
-            <TextView
-                android:id="@+id/viewNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignTop="@+id/deleteNote"
-                android:layout_marginRight="36dp"
-                android:layout_toLeftOf="@id/noteEdit"
-                android:text="@string/view"
-                android:textColor="@color/secondaryText"
-                android:textSize="16sp" />
+                <ImageView
+                    android:id="@+id/viewNoteBtn"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/note_icon_bg"
+                    app:layout_constraintEnd_toStartOf="@id/editNoteBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                    app:srcCompat="@drawable/ic_remove_red_eye_black_24dp" />
 
-            <TextView
-                android:id="@+id/deleteNote"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_marginRight="36dp"
-                android:layout_toLeftOf="@id/viewNote"
-                android:text="@string/delete"
-                android:textColor="@color/secondaryText"
-                android:textSize="16sp" />
-        </RelativeLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+                <ImageView
+                    android:id="@+id/editNoteBtn"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginEnd="16dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/note_icon_bg"
+                    app:layout_constraintEnd_toStartOf="@+id/deleteNoteBtn"
+                    app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                    app:srcCompat="@drawable/ic_edit_white_24dp" />
+
+                <ImageView
+                    android:id="@+id/deleteNoteBtn"
+                    android:layout_width="36dp"
+                    android:layout_height="36dp"
+                    android:layout_marginTop="16dp"
+                    android:background="@drawable/note_icon_bg"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                    app:srcCompat="@drawable/ic_delete_white_24dp" />
+            </android.support.constraint.ConstraintLayout>
+
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+</layout>

@@ -18,17 +18,17 @@ class AddNoteViewModel : ViewModel() {
 
     fun saveOrUpdateNote(ideaId: Int, categoryId: Int) = if (isInEditMode.get()!!) updateNote(ideaId, categoryId) else saveNote(ideaId, categoryId)
 
-    fun isInEditMode(ideaId: Int): Boolean {
-        val isEditing = model.isInEditMode(ideaId)
+    fun isInEditMode(ideaId: Int, categoryId: Int): Boolean {
+        val isEditing = model.isInEditMode(ideaId, categoryId)
         isInEditMode.set(isEditing)
         return isEditing
     }
 
-    fun showExistingNote(ideaId: Int) {
-        val note = model.getNote(ideaId)
+    fun showExistingNote(ideaId: Int, categoryId: Int) {
+        val note = model.getNote(ideaId, categoryId)
         title.set(note.noteTitle)
         details.set(note.noteDetails)
     }
 
-    fun deleteNote(ideaId: Int) = model.deleteNote(ideaId)
+    fun deleteNote(ideaId: Int, categoryId: Int) = model.deleteNote(ideaId, categoryId)
 }

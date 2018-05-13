@@ -82,4 +82,7 @@
     <string name="detail">Detail</string>
     <string name="no_bookmarks_to_show">No bookmarks to show</string>
     <string name="ideas_that_you_bookmark_will_show_up_here">Ideas that you bookmark will show up here</string>
+    <string name="no_notes_to_show">No notes to show</string>
+    <string name="any_note_you_create_for_the_ideas_provided_will_show_up_here">Any note you create for the ideas provided will show up here</string>
+    <string name="dismiss">Dismiss</string>
 </resources>

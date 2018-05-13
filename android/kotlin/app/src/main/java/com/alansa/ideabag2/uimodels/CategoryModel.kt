@@ -50,7 +50,7 @@ class CategoryModel {
     }
 
     private fun cacheResponse(response: Triple<Request, Response, Result<String, FuelError>>) {
-        if (response.third.component1() != null){
+        if (response.third.component1() != null) {
             var ideas = Gson().fromJson<List<Category>>(response.third.component1()!!)
             Paper.book().write("ideas", ideas)
             this.ideas.value = ideas
