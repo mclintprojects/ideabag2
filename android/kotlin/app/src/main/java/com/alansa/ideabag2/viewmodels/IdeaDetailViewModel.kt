@@ -42,6 +42,7 @@ class IdeaDetailViewModel : ViewModel() {
         val index = ++Global.ideaClickIndex
         if(index <= Global.categories[Global.categoryClickIndex].items.size - 1){
             idea.set(Global.categories[Global.categoryClickIndex].items[index])
+            model.idea = Global.categories[Global.categoryClickIndex].items[index]
         }else normalize(Global.categories[Global.categoryClickIndex].items.size - 1)
     }
 
@@ -53,6 +54,7 @@ class IdeaDetailViewModel : ViewModel() {
         val index = --Global.ideaClickIndex
         if(index >= 0){
             idea.set(Global.categories[Global.categoryClickIndex].items[index])
+            model.idea = Global.categories[Global.categoryClickIndex].items[index]
         }else normalize(0)
     }
 }

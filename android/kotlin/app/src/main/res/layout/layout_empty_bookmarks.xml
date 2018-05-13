@@ -18,7 +18,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
         android:text="@string/no_bookmarks_to_show"
-        android:textColor="@color/secondaryTextLight"
+        android:textColor="@color/primaryTextLight"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -28,7 +28,7 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
         android:text="@string/ideas_that_you_bookmark_will_show_up_here"
-        android:textColor="@color/secondaryTextLight"
+        android:textColor="@color/primaryTextLight"
         android:textSize="14sp" />
 
 </LinearLayout>

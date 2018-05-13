@@ -6,7 +6,7 @@ import com.alansa.ideabag2.models.Note
 import io.paperdb.Paper
 
 class IdeaDetailModel {
-    val idea = Global.categories[Global.categoryClickIndex].items[Global.ideaClickIndex]
+    var idea = Global.categories[Global.categoryClickIndex].items[Global.ideaClickIndex]
     var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf())
 
     fun getNote(): Note? {
@@ -34,7 +34,7 @@ class IdeaDetailModel {
     }
 
     fun isBookmarked(): Boolean {
-        var existingBookmark = bookmarks.find { it.categoryId == Global.categoryClickIndex && it.ideaId == Global.ideaClickIndex + 1 }
+        var existingBookmark = bookmarks.find { it.categoryId == Global.categoryClickIndex && it.ideaId == idea.id }
         return existingBookmark != null;
     }
 
