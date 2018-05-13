@@ -12,7 +12,7 @@ import com.alansa.ideabag2.viewmodels.AddNoteViewModel
 import kotlinx.android.synthetic.main.activity_add_note.*
 
 class AddNoteActivity : BaseActivity() {
-    private lateinit var binding : ActivityAddNoteBinding
+    private lateinit var binding: ActivityAddNoteBinding
     private lateinit var viewmodel: AddNoteViewModel
     private var ideaId = 0
 
@@ -25,7 +25,7 @@ class AddNoteActivity : BaseActivity() {
         setupToolbar()
 
         ideaId = intent.getIntExtra("ideaId", 0)
-        if(viewmodel.isInEditMode(ideaId)) {
+        if (viewmodel.isInEditMode(ideaId)) {
             supportActionBar?.title = "Update note"
             viewmodel.showExistingNote(ideaId)
         } else supportActionBar?.title = "Create a note"
@@ -33,7 +33,7 @@ class AddNoteActivity : BaseActivity() {
         saveBtn.setOnClickListener { saveOrUpdateNote() }
     }
 
-    private fun saveOrUpdateNote(){
+    private fun saveOrUpdateNote() {
         viewmodel.saveOrUpdateNote(ideaId)
         navigateAway()
     }
@@ -44,7 +44,7 @@ class AddNoteActivity : BaseActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        when(item?.itemId){
+        when (item?.itemId) {
             R.id.deleteNote -> {
                 viewmodel.deleteNote(ideaId)
                 navigateAway()

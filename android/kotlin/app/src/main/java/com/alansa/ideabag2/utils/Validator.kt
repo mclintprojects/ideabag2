@@ -1,8 +1,6 @@
 package com.alansa.ideabag2.utils
 
-import android.support.design.widget.TextInputEditText
 import android.support.design.widget.TextInputLayout
-import android.text.TextUtils
 import com.alansa.ideabag2.models.IDisposable
 
 class Validator() : IDisposable {
@@ -24,12 +22,12 @@ class Validator() : IDisposable {
         }
     }
 
-    fun hideError(inputLayout: TextInputLayout){
+    fun hideError(inputLayout: TextInputLayout) {
         inputLayout.error = null
         inputLayout.isErrorEnabled = false
     }
 
-    fun showError(inputLayout: TextInputLayout, error : String){
+    fun showError(inputLayout: TextInputLayout, error: String) {
         inputLayout.error = error
         inputLayout.isErrorEnabled = true
     }

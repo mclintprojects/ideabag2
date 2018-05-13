@@ -8,13 +8,13 @@ import android.net.Uri
 import java.text.SimpleDateFormat
 import java.util.*
 
-class SubmitIdeaViewModel : ViewModel(){
+class SubmitIdeaViewModel : ViewModel() {
     val authorName = ObservableField<String>()
     val ideaTitle = ObservableField<String>()
     val ideaCategory = ObservableField<String>()
     val ideaDetails = ObservableField<String>()
 
-    fun submitIdea(context : Context){
+    fun submitIdea(context: Context) {
         var submitIntent = Intent(Intent.ACTION_SEND)
         submitIntent.data = Uri.parse("mailto:")
         submitIntent.putExtra(Intent.EXTRA_EMAIL, arrayOf("alansagh@gmail.com"));

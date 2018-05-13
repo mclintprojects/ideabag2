@@ -8,7 +8,7 @@
 
         <variable
             name="viewmodel"
-            type="com.alansa.ideabag2.viewmodels.IdeaDetailViewModel" />
+            type="com.alansa.ideabag2.viewmodels.BookmarkDetailViewModel" />
     </data>
 
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

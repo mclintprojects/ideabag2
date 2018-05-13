@@ -2,9 +2,9 @@ package com.alansa.ideabag2
 
 import com.alansa.ideabag2.models.Category
 
-public class Global{
+public class Global {
     companion object {
-        val isLoggedIn : Boolean
+        val isLoggedIn: Boolean
             get() = authData != null
 
         var categories = mutableListOf<Category>()
@@ -15,6 +15,6 @@ public class Global{
 
         var bookmarkClickIndex = -1
 
-        var authData : String? = ""
+        var authData: String? = ""
     }
 }

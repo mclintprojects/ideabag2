@@ -1,6 +1,5 @@
 package com.alansa.ideabag2.views
 
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
@@ -23,8 +22,6 @@ import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.viewmodels.CategoryViewModel
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_category.*
-import kotlinx.coroutines.experimental.android.UI
-import kotlinx.coroutines.experimental.launch
 
 class CategoryActivity : BaseActivity() {
     private lateinit var binding: ActivityCategoryBinding

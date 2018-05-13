@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.alansa.ideabag2.viewmodels.BookmarksViewModel" />
     </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/parent"
         android:layout_width="match_parent"
@@ -22,9 +26,9 @@
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="6dp"
-            android:progressDrawable="@drawable/progress_drawable"
+            android:max="@{viewmodel.bookmarkedIdeas.size}"
             android:progress="@{viewmodel.progress}"
-            android:max="@{viewmodel.bookmarkedIdeas.size}" />
+            android:progressDrawable="@drawable/progress_drawable" />
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -35,14 +39,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
-                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}"/>
+                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}" />
 
             <include
                 android:id="@+id/empty"
                 layout="@layout/layout_empty_bookmarks"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}"/>
+                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}" />
         </FrameLayout>
     </LinearLayout>
 </layout>

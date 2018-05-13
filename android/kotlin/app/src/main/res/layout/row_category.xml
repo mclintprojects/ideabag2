@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
     <data>
+
         <import type="android.support.v4.content.ContextCompat" />
+
         <variable
             name="category"
             type="com.alansa.ideabag2.models.Category" />
     </data>
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/categoryRoot"
         android:layout_width="match_parent"
@@ -38,11 +42,11 @@
             android:layout_width="wrap_content"
             android:layout_height="28dp"
             android:layout_marginStart="16dp"
+            android:text="@{category.categoryLbl}"
             android:textColor="@color/primaryText"
             android:textSize="18sp"
             app:layout_constraintStart_toEndOf="@+id/imageBg"
             app:layout_constraintTop_toTopOf="@+id/imageBg"
-            android:text="@{category.categoryLbl}"
             tools:text="@string/category" />
 
         <TextView
