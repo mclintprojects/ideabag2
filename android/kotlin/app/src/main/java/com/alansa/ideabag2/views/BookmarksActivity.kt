@@ -5,16 +5,19 @@ import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.BookmarksAdapter
 import com.alansa.ideabag2.databinding.ActivityBookmarksBinding
+import com.alansa.ideabag2.dialogs.SetProgressDialog
+import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.viewmodels.BookmarksViewModel
 import kotlinx.android.synthetic.main.activity_bookmarks.*
+import kotlinx.android.synthetic.main.activity_idea_list.*
 
 class BookmarksActivity : BaseActivity() {
     private lateinit var binding: ActivityBookmarksBinding
@@ -48,13 +51,19 @@ class BookmarksActivity : BaseActivity() {
     }
 
     private fun setupList() {
-        adapter = BookmarksAdapter(bookmarkedIdeas, { onItemClick(it) }, {itemLongClicked(it)})
+        adapter = BookmarksAdapter(bookmarkedIdeas, { onItemClick(it) }, { itemLongClicked(it) })
         bookmarkRecyclerView.layoutManager = LinearLayoutManager(this)
         bookmarkRecyclerView.adapter = adapter
     }
 
     private fun itemLongClicked(position: Int) {
-        Toast.makeText(this, "Long clicked: position", Toast.LENGTH_LONG).show()
+        var dialog = SetProgressDialog() { status ->
+            var idea = bookmarkedIdeas[position]
+            viewmodel.setIdeaProgress(status, idea.category, idea.id)
+            adapter.notifyIdeaStatusChanged(position)
+            Snackbar.make(itemRecyclerView, "Progress updated.", Snackbar.LENGTH_SHORT).show()
+        }
+        dialog.show(supportFragmentManager, String.empty)
     }
 
     private fun onItemClick(position: Int) {

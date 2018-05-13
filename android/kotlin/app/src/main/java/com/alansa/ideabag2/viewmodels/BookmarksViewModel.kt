@@ -4,6 +4,7 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.alansa.ideabag2.models.Category
+import com.alansa.ideabag2.models.CompletionStatus
 import com.alansa.ideabag2.uimodels.BookmarksModel
 
 class BookmarksViewModel : ViewModel() {
@@ -22,5 +23,10 @@ class BookmarksViewModel : ViewModel() {
         bookmarkedIdeas.value = ideas
         maxProgress.set(ideas.size)
         showEmptyState.set(ideas.size == 0)
+    }
+
+    fun setIdeaProgress(progress: CompletionStatus, categoryId: String, ideaId : Int){
+        model.setProgress(progress, categoryId, ideaId)
+        this.progress.set(model.getCompletedCount())
     }
 }
