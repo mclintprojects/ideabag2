@@ -3,7 +3,11 @@ package com.alansa.ideabag2.uimodels
 import android.arch.lifecycle.MutableLiveData
 import com.alansa.ideabag2.extensions.fromJson
 import com.alansa.ideabag2.models.Category
+import com.github.kittinunf.fuel.core.FuelError
+import com.github.kittinunf.fuel.core.Request
+import com.github.kittinunf.fuel.core.Response
 import com.github.kittinunf.fuel.httpGet
+import com.github.kittinunf.result.Result
 import com.google.gson.Gson
 import io.paperdb.Paper
 import kotlinx.coroutines.experimental.CommonPool
@@ -40,7 +44,16 @@ class CategoryModel {
 
     fun invalidateCache() {
         launch(UI) {
-            downloadIdeas()
+            var response = async(CommonPool) { return@async ideasUrl.httpGet().responseString() }.await()
+            cacheResponse(response)
+        }
+    }
+
+    private fun cacheResponse(response: Triple<Request, Response, Result<String, FuelError>>) {
+        if (response.third.component1() != null){
+            var ideas = Gson().fromJson<List<Category>>(response.third.component1()!!)
+            Paper.book().write("ideas", ideas)
+            this.ideas.value = ideas
         }
     }
 }

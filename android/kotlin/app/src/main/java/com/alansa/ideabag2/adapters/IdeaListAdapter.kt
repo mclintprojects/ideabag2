@@ -15,15 +15,15 @@ import com.alansa.ideabag2.models.CompletionStatus
 import com.alansa.ideabag2.models.Status
 import io.paperdb.Paper
 
-class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit) : RecyclerView.Adapter<IdeaListViewHolder>() {
-    private val statuses = Paper.book().read<List<Status>>("status", listOf()).filter { it.categoryId == categoryId }
+class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit, private val longClick: (Int) -> Unit) : RecyclerView.Adapter<IdeaListViewHolder>() {
+    private var statuses = Paper.book().read<List<Status>>("status", listOf()).filter { it.categoryId == categoryId }
     private var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf()).filter { it.categoryId == categoryId }
 
     override fun getItemCount() = ideas.size
 
     override fun onBindViewHolder(holder: IdeaListViewHolder, position: Int) {
         val idea = ideas[position];
-        holder.bind(idea, itemClick, getCompletionStatus(idea), isBookmarked(idea))
+        holder.bind(idea, itemClick, longClick, getCompletionStatus(idea), isBookmarked(idea))
     }
 
     private fun isBookmarked(idea: Category.Item): Boolean = bookmarks.any { it.ideaId == idea.id }
@@ -48,12 +48,21 @@ class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item
         bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf()).filter { it.categoryId == categoryId }
         notifyDataSetChanged()
     }
+
+    fun notifyIdeaStatusChanged(position: Int){
+        statuses = Paper.book().read<List<Status>>("status", listOf()).filter { it.categoryId == categoryId }
+        notifyItemChanged(position)
+    }
 }
 
 open class IdeaListViewHolder(val binding: RowIdeaListBinding) : RecyclerView.ViewHolder(binding.layoutRoot) {
-    open fun bind(idea: Category.Item, itemClick: (Int) -> Unit, status: CompletionStatus, bookmarked: Boolean) {
+    open fun bind(idea: Category.Item, itemClick: (Int) -> Unit, longClick: (Int) -> Unit, status: CompletionStatus, bookmarked: Boolean) {
         binding.idea = idea
         binding.layoutRoot.setOnClickListener { itemClick(adapterPosition) }
+        binding.layoutRoot.setOnLongClickListener {
+            longClick(adapterPosition)
+            return@setOnLongClickListener true
+        }
         binding.layoutRoot.setBackgroundColor(Color.TRANSPARENT)
         setProgressState(status)
 
