@@ -9,9 +9,11 @@ public class Global{
 
         var categories = mutableListOf<Category>()
 
-        var categoryClickIndex = 0
+        var categoryClickIndex = -1
 
-        var ideaClickIndex = 0
+        var ideaClickIndex = -1
+
+        var bookmarkClickIndex = -1
 
         var authData : String? = ""
     }
