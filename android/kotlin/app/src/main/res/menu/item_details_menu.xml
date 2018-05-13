@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto">
+
+  <item
+		android:id="@+id/viewComments"
+		android:icon="@drawable/ic_comment_white_24dp"
+		android:title="View comments"
+		app:showAsAction="always" />
+  
+	<item
+		android:id="@+id/bookmarkItem"
+		android:icon="@drawable/ic_bookmark_border_white_24dp"
+		android:title="@string/bookmark_idea"
+		app:showAsAction="ifRoom" />
+
+	<item
+		android:id="@+id/shareItem"
+		android:icon="@drawable/ic_share_white_24dp"
+		android:title="@string/share_idea"
+		app:showAsAction="ifRoom" />
+</menu>

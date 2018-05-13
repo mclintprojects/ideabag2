@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.alansa.ideabag2">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/icon"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".views.CategoryActivity"
+            android:label="@string/app_name">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".views.IdeaListActivity" />
+        <activity
+            android:name=".views.SubmitIdeaActivity"
+            android:label="@string/submit_idea" />
+        <activity android:name=".views.IdeaDetailActivity" />
+        <activity android:name=".views.AddNoteActivity"></activity>
+        <activity
+            android:name=".views.BookmarksActivity"
+            android:label="@string/bookmarks"></activity>
+    </application>
+
+</manifest>
