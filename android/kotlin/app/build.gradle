@@ -36,6 +36,7 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    implementation 'com.google.firebase:firebase-messaging:11.8.0'
     testImplementation 'junit:junit:4.12'
     testImplementation "com.android.support.test:runner:1.0.2-alpha1"
     testImplementation "com.android.support.test:rules:1.0.2-alpha1"
@@ -55,3 +56,5 @@ dependencies {
     implementation "io.reactivex.rxjava2:rxandroid:2.0.1"
     implementation 'io.paperdb:paperdb:2.6'
 }
+
+apply plugin: 'com.google.gms.google-services'
