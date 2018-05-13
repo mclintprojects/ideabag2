@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewmodel"
+            type="com.alansa.ideabag2.viewmodels.BookmarksViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <ProgressBar
+            android:id="@+id/completedIdeasBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="6dp"
+            android:progressDrawable="@drawable/progress_drawable"
+            android:progress="@{viewmodel.progress}"
+            android:max="@{viewmodel.bookmarkedIdeas.size}" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/bookmarkRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}"/>
+
+            <include
+                android:id="@+id/empty"
+                layout="@layout/layout_empty_bookmarks"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}"/>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

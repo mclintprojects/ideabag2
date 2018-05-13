@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewmodel"
+            type="com.alansa.ideabag2.viewmodels.CategoryViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground"
+        android:orientation="vertical">
+
+        <include layout="@layout/toolbar" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ProgressBar
+                android:id="@+id/loadingCircle"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:progressTint="@color/accent"
+                android:visibility="@{viewmodel.isLoading ? View.VISIBLE : View.GONE}" />
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                tools:listitem="@layout/categoryrow" />
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/bookmarkFab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_margin="16dp"
+                android:clickable="true"
+                android:src="@drawable/ic_bookmark_white_24dp"
+                app:backgroundTint="@color/accent"
+                app:fabSize="normal"
+                app:rippleColor="@color/accentLight" />
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>

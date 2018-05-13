@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <import type="android.support.v4.content.ContextCompat" />
+        <variable
+            name="category"
+            type="com.alansa.ideabag2.models.Category" />
+    </data>
+    <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/categoryRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="?android:attr/selectableItemBackground"
+        android:orientation="horizontal"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:id="@+id/imageBg"
+            android:layout_width="56dp"
+            android:layout_height="56dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/image_background"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/categoryIcon"
+                android:layout_width="24dp"
+                android:layout_height="24dp" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/categoryLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_marginStart="16dp"
+            android:textColor="@color/primaryText"
+            android:textSize="18sp"
+            app:layout_constraintStart_toEndOf="@+id/imageBg"
+            app:layout_constraintTop_toTopOf="@+id/imageBg"
+            android:text="@{category.categoryLbl}"
+            tools:text="@string/category" />
+
+        <TextView
+            android:id="@+id/ideaCountLbl"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/categoryLbl"
+            android:layout_marginStart="16dp"
+            android:text="@{`Ideas count: ` + category.categoryCount}"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@+id/imageBg"
+            app:layout_constraintTop_toBottomOf="@+id/categoryLbl"
+            tools:text="@string/ideas_count" />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewmodel"
+            type="com.alansa.ideabag2.viewmodels.IdeaDetailViewModel" />
+    </data>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/toolbar" />
+
+        <android.support.design.widget.CoordinatorLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:id="@+id/detailsView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/itemTitle"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="@{viewmodel.idea.title}"
+                        android:textColor="@color/primaryText"
+                        android:textSize="24sp"
+                        android:textStyle="bold"
+                        tools:text="Title" />
+
+                    <TextView
+                        android:id="@+id/itemDescription"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:autoLink="web"
+                        android:linksClickable="true"
+                        android:text="@{viewmodel.idea.description}"
+                        android:textColor="@color/primaryTextLight"
+                        android:textColorLink="@color/primaryText"
+                        android:textSize="18sp"
+                        tools:text="@string/description" />
+
+                    <android.support.v7.widget.CardView
+                        android:id="@+id/noteHolder"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="36dp"
+                        android:visibility="@{viewmodel.note == null ? View.GONE : View.VISIBLE}"
+                        app:cardBackgroundColor="@color/accent"
+                        app:cardCornerRadius="5dp"
+                        app:cardElevation="2dp"
+                        app:cardUseCompatPadding="true"
+                        app:contentPadding="16dp">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <ImageView
+                                android:id="@+id/imageView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:tint="@color/accentLight"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"
+                                app:srcCompat="@drawable/ic_note_white_24dp" />
+
+                            <TextView
+                                android:id="@+id/textView2"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="16dp"
+                                android:textSize="16sp"
+                                android:textStyle="bold"
+                                android:textColor="@color/secondaryText"
+                                android:text="@{viewmodel.note == null ? `` : viewmodel.note.noteTitle}"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imageView"
+                                app:layout_constraintTop_toTopOf="parent"
+                                android:maxLines="1"
+                                tools:text="@string/title" />
+
+                            <TextView
+                                android:id="@+id/noteContent"
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="8dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginTop="8dp"
+                                android:lineSpacingExtra="4sp"
+                                android:text="@{viewmodel.note == null ? `` : viewmodel.note.noteDetails}"
+                                android:textColor="@color/secondaryTextLight"
+                                android:textColorLink="@color/primaryText"
+                                android:textSize="14sp"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintStart_toEndOf="@+id/imageView"
+                                app:layout_constraintTop_toBottomOf="@+id/textView2"
+                                tools:text="@string/note_s_content" />
+
+                            <ImageView
+                                android:id="@+id/editNoteBtn"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="16dp"
+                                android:layout_marginTop="16dp"
+                                android:background="@drawable/edit_note_icon_bg"
+                                app:layout_constraintEnd_toStartOf="@id/deleteNote"
+                                app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                                app:srcCompat="@drawable/ic_edit_white_24dp" />
+
+                            <ImageView
+                                android:id="@+id/deleteNote"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="16dp"
+                                android:background="@drawable/edit_note_icon_bg"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toBottomOf="@+id/noteContent"
+                                app:srcCompat="@drawable/ic_delete_white_24dp" />
+                        </android.support.constraint.ConstraintLayout>
+                    </android.support.v7.widget.CardView>
+
+                </LinearLayout>
+            </ScrollView>
+
+            <android.support.design.widget.FloatingActionButton
+                android:id="@+id/addNotefab"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginEnd="16dp"
+                android:layout_marginBottom="16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:visibility="@{viewmodel.note == null ? View.VISIBLE : View.GONE}"
+                app:backgroundTint="@color/primary"
+                app:fabSize="normal"
+                app:rippleColor="@color/accentDark"
+                app:srcCompat="@drawable/ic_note_add_white_24dp" />
+
+        </android.support.design.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>

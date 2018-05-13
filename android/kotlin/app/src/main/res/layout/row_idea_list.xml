@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="idea"
+            type="com.alansa.ideabag2.models.Category.Item" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/layoutRoot"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        tools:background="@color/windowBackground">
+
+        <View
+            android:id="@+id/progressState"
+            android:layout_width="6dp"
+            android:layout_height="72dp"
+            android:layout_marginEnd="16dp"
+            android:background="@color/undecidedColor" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/itemId"
+                android:layout_width="56dp"
+                android:layout_height="56dp"
+                android:layout_centerVertical="true"
+                android:background="@drawable/circle"
+                android:gravity="center"
+                android:text="@{`` + idea.id}"
+                android:textColor="@color/primaryText"
+                android:textSize="20sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="@string/itemId" />
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="4dp"
+                android:layout_marginEnd="16dp"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/itemId"
+                android:text="@{idea.title}"
+                android:textColor="@color/primaryText"
+                android:textSize="16sp"
+                app:layout_constraintBottom_toTopOf="@+id/difficulty"
+                app:layout_constraintEnd_toStartOf="@+id/bookmarkIndicator"
+                app:layout_constraintStart_toEndOf="@+id/itemId"
+                app:layout_constraintTop_toTopOf="@+id/itemId"
+                tools:text="@string/title" />
+
+            <TextView
+                android:id="@+id/difficulty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginStart="16dp"
+                android:layout_toEndOf="@+id/bookmarkIndicator"
+                android:background="@drawable/roundbtn"
+                android:gravity="left"
+                android:paddingBottom="2dp"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp"
+                android:paddingTop="2dp"
+                android:text="@{idea.difficulty}"
+                android:textColor="@color/secondaryText"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/itemId"
+                app:layout_constraintStart_toEndOf="@+id/itemId"
+                tools:text="@string/difficulty" />
+
+            <ImageView
+                android:id="@+id/bookmarkIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/title"
+                android:layout_marginEnd="16dp"
+                android:layout_toEndOf="@id/itemId"
+                android:scaleType="centerCrop"
+                android:tint="@color/accent"
+                android:visibility="gone"
+                tools:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_bookmark_white_24dp" />
+
+        </android.support.constraint.ConstraintLayout>
+
+    </LinearLayout>
+</layout>
