@@ -31,5 +31,4 @@
             android:name=".views.BookmarksActivity"
             android:label="@string/bookmarks" />
     </application>
-
 </manifest>

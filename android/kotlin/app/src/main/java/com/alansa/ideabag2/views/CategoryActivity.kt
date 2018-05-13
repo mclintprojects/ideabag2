@@ -20,6 +20,7 @@ import com.alansa.ideabag2.extensions.addIfNotExist
 import com.alansa.ideabag2.extensions.tryRemoveItem
 import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.viewmodels.CategoryViewModel
+import com.google.firebase.messaging.FirebaseMessaging
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_category.*
 
@@ -65,6 +66,9 @@ class CategoryActivity : BaseActivity() {
             startActivity(Intent(this, BookmarksActivity::class.java))
             overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
         }
+
+        FirebaseMessaging.getInstance().subscribeToTopic("new-ideas")
+        FirebaseMessaging.getInstance().subscribeToTopic("challenges")
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -82,6 +86,12 @@ class CategoryActivity : BaseActivity() {
 
         Global.ideaClickIndex = -1
         Global.bookmarkClickIndex = -1
+    }
+
+    override fun onDestroy() {
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("new-ideas")
+        FirebaseMessaging.getInstance().unsubscribeFromTopic("challenges")
+        super.onDestroy()
     }
 
     private fun manageOptionalMenuItems() {
