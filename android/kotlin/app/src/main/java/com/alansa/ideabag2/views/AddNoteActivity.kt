@@ -28,9 +28,9 @@ class AddNoteActivity : BaseActivity() {
 
         ideaId = intent.getIntExtra("ideaId", 0)
         categoryId = intent.getIntExtra("categoryId", 0)
-        if (viewmodel.isInEditMode(ideaId)) {
+        if (viewmodel.isInEditMode(ideaId, categoryId)) {
             supportActionBar?.title = "Update note"
-            viewmodel.showExistingNote(ideaId)
+            viewmodel.showExistingNote(ideaId, categoryId)
         } else supportActionBar?.title = "Create a note"
 
         saveBtn.setOnClickListener {
@@ -54,7 +54,7 @@ class AddNoteActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.deleteNote -> {
-                viewmodel.deleteNote(ideaId)
+                viewmodel.deleteNote(ideaId, categoryId)
                 navigateAway()
             }
         }

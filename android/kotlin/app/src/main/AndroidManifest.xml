@@ -24,11 +24,12 @@
             android:name=".views.SubmitIdeaActivity"
             android:label="@string/submit_idea" />
         <activity android:name=".views.IdeaDetailActivity" />
-        <activity android:name=".views.AddNoteActivity"></activity>
-        <activity android:name=".views.BookmarkDetailActivity"></activity>
+        <activity android:name=".views.AddNoteActivity" />
+        <activity android:name=".views.BookmarkDetailActivity" />
+        <activity android:name=".views.NotesActivity" android:label="@string/notes" />
         <activity
             android:name=".views.BookmarksActivity"
-            android:label="@string/bookmarks"></activity>
+            android:label="@string/bookmarks" />
     </application>
 
 </manifest>

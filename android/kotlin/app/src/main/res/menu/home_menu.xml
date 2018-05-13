@@ -3,7 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android">
 
 	<item
-		android:id="@+id/notes"
+		android:id="@+id/viewNotes"
 		android:orderInCategory="1"
 		android:icon="@drawable/ic_note_white_24dp"
 		android:title="@string/notes"

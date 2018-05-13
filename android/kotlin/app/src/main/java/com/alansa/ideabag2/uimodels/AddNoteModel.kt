@@ -20,15 +20,15 @@ class AddNoteModel {
         Paper.book().write("notes", notes)
     }
 
-    fun isInEditMode(ideaId: Int): Boolean = Paper.book().read<MutableList<Note>>("notes", mutableListOf()).any { it.categoryId == Global.categoryClickIndex && it.ideaId == ideaId }
+    fun isInEditMode(ideaId: Int, categoryId : Int): Boolean = Paper.book().read<MutableList<Note>>("notes", mutableListOf()).any { it.categoryId == categoryId && it.ideaId == ideaId }
 
-    fun getNote(ideaId: Int): Note {
-        return Paper.book().read<MutableList<Note>>("notes", mutableListOf()).find { it.categoryId == Global.categoryClickIndex && it.ideaId == ideaId }!!
+    fun getNote(ideaId: Int, categoryId: Int): Note {
+        return Paper.book().read<MutableList<Note>>("notes", mutableListOf()).find { it.categoryId == categoryId && it.ideaId == ideaId }!!
     }
 
-    fun deleteNote(ideaId: Int) {
+    fun deleteNote(ideaId: Int, categoryId: Int) {
         val notes = Paper.book().read<MutableList<Note>>("notes", mutableListOf())
-        val existingNote = notes.find { it.categoryId == Global.categoryClickIndex && it.ideaId == ideaId }
+        val existingNote = notes.find { it.categoryId == categoryId && it.ideaId == ideaId }
         notes.remove(existingNote)
         Paper.book().write("notes", notes)
     }

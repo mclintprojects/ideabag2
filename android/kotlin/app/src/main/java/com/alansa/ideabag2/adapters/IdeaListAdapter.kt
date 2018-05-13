@@ -49,7 +49,7 @@ class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item
         notifyDataSetChanged()
     }
 
-    fun notifyIdeaStatusChanged(position: Int){
+    fun notifyIdeaStatusChanged(position: Int) {
         statuses = Paper.book().read<List<Status>>("status", listOf()).filter { it.categoryId == categoryId }
         notifyItemChanged(position)
     }

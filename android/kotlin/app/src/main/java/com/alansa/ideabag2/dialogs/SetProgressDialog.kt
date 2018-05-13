@@ -13,9 +13,9 @@ class SetProgressDialog(private val onProgressChanged: (CompletionStatus) -> Uni
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = LayoutInflater.from(activity).inflate(R.layout.dialog_idea_progress, null)
 
-        view.doneRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.DONE)}
-        view.undecidedRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.UNDECIDED)}
-        view.inProgressRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.IN_PROGRESS)}
+        view.doneRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.DONE) }
+        view.undecidedRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.UNDECIDED) }
+        view.inProgressRBtn.setOnCheckedChangeListener { _, checked -> notifyProgressChange(CompletionStatus.IN_PROGRESS) }
 
         return AlertDialog.Builder(activity)
                 .setTitle("Set idea progress")

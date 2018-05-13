@@ -25,7 +25,7 @@ class BookmarksViewModel : ViewModel() {
         showEmptyState.set(ideas.size == 0)
     }
 
-    fun setIdeaProgress(progress: CompletionStatus, categoryId: String, ideaId : Int){
+    fun setIdeaProgress(progress: CompletionStatus, categoryId: String, ideaId: Int) {
         model.setProgress(progress, categoryId, ideaId)
         this.progress.set(model.getCompletedCount())
     }

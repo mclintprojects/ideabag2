@@ -10,16 +10,26 @@
         android:id="@+id/emptyIcon"
         android:layout_width="96dp"
         android:layout_height="96dp"
-        android:src="@drawable/sad"
-        app:srcCompat="@drawable/sad" />
+        app:srcCompat="@drawable/ic_note_empty_state_icon" />
 
     <TextView
-        android:id="@+id/infoText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="16dp"
-        android:text="@string/empty_state_text"
-        android:textColor="@color/secondaryTextLight"
+        android:text="@string/no_notes_to_show"
+        android:textColor="@color/primaryTextLight"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="8dp"
+        android:text="@string/any_note_you_create_for_the_ideas_provided_will_show_up_here"
+        android:textAlignment="center"
+        android:width="300dp"
+        android:textColor="@color/primaryTextLight"
         android:textSize="14sp" />
 </LinearLayout>

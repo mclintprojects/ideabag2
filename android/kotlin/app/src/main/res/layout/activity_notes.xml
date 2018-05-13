@@ -1,31 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/notesSwitcher"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/windowBackground"
-    android:orientation="vertical">
-
-    <include
-        android:id="@id/toolbar"
-        layout="@layout/toolbar" />
-
-    <FrameLayout
+<layout>
+    <data>
+        <import type="android.view.View" />
+        <variable
+            name="viewmodel"
+            type="com.alansa.ideabag2.viewmodels.NotesViewModel" />
+    </data>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/notesSwitcher"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/notesRecyclerView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scrollbars="vertical" />
+        android:layout_height="match_parent"
+        android:background="@color/windowBackground"
+        android:orientation="vertical">
 
         <include
-            android:id="@+id/empty"
-            layout="@layout/layout_empty_state"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:visibility="gone" />
-    </FrameLayout>
+            android:id="@id/toolbar"
+            layout="@layout/toolbar" />
 
-</LinearLayout>
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/notesRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="vertical"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}"/>
+
+            <include
+                android:id="@+id/empty"
+                layout="@layout/layout_empty_notes"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}" />
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>
