@@ -11,6 +11,7 @@ import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.IdeaListAdapter
 import com.alansa.ideabag2.databinding.ActivityIdeaListBinding
 import com.alansa.ideabag2.viewmodels.IdeaListViewModel
+import kotlinx.android.synthetic.main.activity_idea_list.*
 
 class IdeaListActivity : BaseActivity() {
     private lateinit var binding : ActivityIdeaListBinding
@@ -31,8 +32,8 @@ class IdeaListActivity : BaseActivity() {
 
     private fun setupList() {
         adapter = IdeaListAdapter(viewmodel.categoryId, viewmodel.ideas, {itemClicked(it)})
-        binding.itemRecyclerView.layoutManager = LinearLayoutManager(this)
-        binding.itemRecyclerView.adapter = adapter
+        itemRecyclerView.layoutManager = LinearLayoutManager(this)
+        itemRecyclerView.adapter = adapter
     }
 
     private fun itemClicked(position : Int){

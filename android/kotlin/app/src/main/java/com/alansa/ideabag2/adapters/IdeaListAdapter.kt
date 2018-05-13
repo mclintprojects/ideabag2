@@ -12,9 +12,9 @@ import com.alansa.ideabag2.databinding.RowIdeaListBinding
 import com.alansa.ideabag2.models.*
 import io.paperdb.Paper
 
-class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit) : RecyclerView.Adapter<IdeaListViewHolder>() {
-    private val statuses = Paper.book().read<List<Status>>("status", mutableListOf()).filter { it.categoryId == categoryId }
-    private var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf()).filter { it.categoryId == categoryId }
+open class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item>, private val itemClick: (Int) -> Unit) : RecyclerView.Adapter<IdeaListViewHolder>() {
+    protected var statuses = Paper.book().read<List<Status>>("status", listOf()).filter { it.categoryId == categoryId }
+    protected var bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf()).filter { it.categoryId == categoryId }
 
     override fun getItemCount() = ideas.size
 
@@ -41,10 +41,9 @@ class IdeaListAdapter(private val categoryId: Int, val ideas: List<Category.Item
         return IdeaListViewHolder(binding)
     }
 
-    fun refresh() {
+    open fun refresh() {
         bookmarks = Paper.book().read<MutableList<Bookmark>>("bookmarks", mutableListOf()).filter { it.categoryId == categoryId }
         notifyDataSetChanged()
-
     }
 }
 
@@ -58,7 +57,7 @@ class IdeaListViewHolder(val binding: RowIdeaListBinding) : RecyclerView.ViewHol
         if (Global.ideaClickIndex == adapterPosition)
             binding.layoutRoot.setBackgroundColor(ContextCompat.getColor(binding.layoutRoot.context, R.color.highlight))
 
-        binding.bookmarkIndicator.visibility = if(bookmarked) View.VISIBLE else View.GONE
+        binding.bookmarkIndicator.visibility = if (bookmarked) View.VISIBLE else View.GONE
     }
 
     private fun setProgressState(completionStatus: CompletionStatus) {
