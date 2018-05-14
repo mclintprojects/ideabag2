@@ -1,18 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <variable
             name="comment"
             type="com.alansa.ideabag2.models.Comment" />
     </data>
+
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/layoutRoot"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutRoot"
-        tools:background="@color/windowBackground"
-        android:paddingBottom="16dp">
+        android:paddingBottom="16dp"
+        tools:background="@color/windowBackground">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"

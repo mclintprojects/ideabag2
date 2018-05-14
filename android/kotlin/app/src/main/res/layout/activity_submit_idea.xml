@@ -25,6 +25,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:textColorHint="@color/primaryTextLight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -34,6 +35,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_your_name"
+                android:inputType="text"
                 android:maxLines="1"
                 android:text="@={viewmodel.authorName}"
                 android:textColor="@color/primaryText" />
@@ -46,6 +48,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:textColorHint="@color/primaryTextLight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textInputLayout2">
@@ -55,6 +58,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_the_idea_s_title"
+                android:inputType="text"
                 android:maxLines="1"
                 android:text="@={viewmodel.ideaTitle}"
                 android:textColor="@color/primaryText" />
@@ -74,6 +78,7 @@
 
         <Spinner
             android:id="@+id/spinner"
+            style="@style/Widget.AppCompat.Light.Spinner.DropDown.ActionBar"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             android:layout_marginEnd="16dp"
@@ -93,6 +98,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:textColorHint="@color/primaryTextLight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/spinner">
@@ -102,6 +108,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/enter_an_indepth_description_of_the_idea"
+                android:inputType="text"
                 android:text="@={viewmodel.ideaDetails}"
                 android:textColor="@color/primaryText" />
         </android.support.design.widget.TextInputLayout>

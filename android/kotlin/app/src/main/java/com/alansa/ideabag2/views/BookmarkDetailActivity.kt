@@ -8,7 +8,6 @@ import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import com.alansa.ideabag2.BaseActivity
-import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.databinding.ActivityBookmarkDetailBinding
 import com.alansa.ideabag2.viewmodels.BookmarkDetailViewModel

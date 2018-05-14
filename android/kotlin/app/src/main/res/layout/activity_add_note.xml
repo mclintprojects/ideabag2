@@ -27,6 +27,7 @@
             android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:layout_marginTop="16dp"
+            android:textColorHint="@color/primaryTextLight"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/toolbar">
@@ -52,6 +53,7 @@
             android:hint="@string/detail"
             android:inputType=""
             android:text="@={viewmodel.details}"
+            android:textColorHint="@color/primaryTextLight"
             app:layout_constraintBottom_toTopOf="@+id/saveBtn"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

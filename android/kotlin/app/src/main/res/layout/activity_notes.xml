@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
     <data>
+
         <import type="android.view.View" />
+
         <variable
             name="viewmodel"
             type="com.alansa.ideabag2.viewmodels.NotesViewModel" />
     </data>
+
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/notesSwitcher"
         android:layout_width="match_parent"
@@ -26,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:scrollbars="vertical"
-                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}"/>
+                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}" />
 
             <include
                 android:id="@+id/empty"

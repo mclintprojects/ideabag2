@@ -27,9 +27,9 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="8dp"
+        android:width="300dp"
         android:text="@string/any_note_you_create_for_the_ideas_provided_will_show_up_here"
         android:textAlignment="center"
-        android:width="300dp"
         android:textColor="@color/primaryTextLight"
         android:textSize="14sp" />
 </LinearLayout>

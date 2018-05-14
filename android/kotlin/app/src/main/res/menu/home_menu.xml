@@ -1,17 +1,17 @@
 ﻿<?xml version="1.0" encoding="UTF-8" ?>
-<menu xmlns:app="http://schemas.android.com/apk/res-auto"
-	xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-	<item
-		android:id="@+id/viewNotes"
-		android:orderInCategory="1"
-		android:icon="@drawable/ic_note_white_24dp"
-		android:title="@string/notes"
-		app:showAsAction="always" />
-	<item
-		android:id="@+id/submitIdea"
-		android:orderInCategory="2"
-		android:icon="@mipmap/ic_edit_white_24dp"
-		android:title="@string/submit_idea"
-		app:showAsAction="always" />
+    <item
+        android:id="@+id/viewNotes"
+        android:icon="@drawable/ic_note_white_24dp"
+        android:orderInCategory="1"
+        android:title="@string/notes"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/submitIdea"
+        android:icon="@mipmap/ic_edit_white_24dp"
+        android:orderInCategory="2"
+        android:title="@string/submit_idea"
+        app:showAsAction="always" />
 </menu>
