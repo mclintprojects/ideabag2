@@ -126,7 +126,8 @@ class CategoryActivity : BaseActivity() {
             logoutId -> logoutUser()
             R.id.submitIdea -> startActivity(Intent(this, SubmitIdeaActivity::class.java))
             R.id.viewNotes -> startActivity(Intent(this, NotesActivity::class.java))
-            else -> return false
+
+            else -> return super.onOptionsItemSelected(item)
         }
 
         return true

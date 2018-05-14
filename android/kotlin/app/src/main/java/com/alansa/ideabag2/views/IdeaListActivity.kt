@@ -46,7 +46,7 @@ class IdeaListActivity : BaseActivity() {
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item?.itemId) {
             R.id.sortIdeas -> showSortIdeasPopup()
-            else -> return false
+            else -> return super.onOptionsItemSelected(item)
         }
         return true
     }
