@@ -51,7 +51,7 @@ class RegisterDialog(private val onRegisterSuccess: () -> Unit) : DialogFragment
         }
 
         return AlertDialog.Builder(activity)
-                .setTitle(R.string.login)
+                .setTitle(R.string.register)
                 .setView(view)
                 .create()
     }
