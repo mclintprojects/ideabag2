@@ -11,13 +11,13 @@ import com.alansa.ideabag2.R
 import com.alansa.ideabag2.extensions.using
 import com.alansa.ideabag2.utils.Validator
 import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.dialog_login.view.*
+import kotlinx.android.synthetic.main.dialog_register.view.*
 
-class LoginDialog(private val onLoginSuccess : () -> Unit) : DialogFragment() {
+class RegisterDialog(private val onRegisterSuccess : () -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        var view = LayoutInflater.from(activity).inflate(R.layout.dialog_login, null)
+        var view = LayoutInflater.from(activity).inflate(R.layout.dialog_register, null)
 
-        view.loginBtn.setOnClickListener {
+        view.registerBtn.setOnClickListener {
 
             val validator = Validator()
             using(validator) {
@@ -26,21 +26,21 @@ class LoginDialog(private val onLoginSuccess : () -> Unit) : DialogFragment() {
                 validator.validateIsNotEmpty(view.emailTIL, email)
                 validator.validateIsNotEmpty(view.passwordTIL, pwd)
 
-                if (validator.passedValidation) {
+                if (validator.passedValidation && view.passwordTb.text.toString() == view.retypePasswordTb.text.toString()) {
                     view.loadingCircle.visibility = View.VISIBLE
-                    view.loginBtn.isEnabled = false
+                    view.registerBtn.isEnabled = false
 
                     FirebaseAuth
                             .getInstance()
-                            .signInWithEmailAndPassword(email, pwd)
+                            .createUserWithEmailAndPassword(email, pwd)
                             .addOnCompleteListener {
                                 view.loadingCircle.visibility = View.GONE
-                                view.loginBtn.isEnabled = true
+                                view.registerBtn.isEnabled = true
 
-                                Toast.makeText (activity, if(it.isSuccessful) "Login successful." else it.exception?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(activity, if (it.isSuccessful) "Sign up successful." else it.exception?.message, Toast.LENGTH_LONG).show()
 
                                 if(it.isSuccessful) {
-                                    onLoginSuccess()
+                                    onRegisterSuccess()
                                     dismiss()
                                 }
                             }
