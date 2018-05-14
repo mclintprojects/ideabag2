@@ -4,6 +4,7 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
 import com.alansa.ideabag2.BaseActivity
@@ -47,10 +48,18 @@ class ViewCommentsActivity : BaseActivity() {
 
     private fun setupList() {
         adapter = CommentsAdapter(comments, FirebaseAuth.getInstance().currentUser?.email, {onDeleteClicked(it)})
-        commentsRecyclerView.layoutManager = LinearLayoutManager(this)
-        commentsRecyclerView.adapter = adapter
-        commentsRecyclerView.itemAnimator = DefaultItemAnimator()
+        binding.commentsRecyclerView.layoutManager = LinearLayoutManager(this)
+        binding.commentsRecyclerView.adapter = adapter
+        binding.commentsRecyclerView.itemAnimator = DefaultItemAnimator()
     }
 
-    private fun onDeleteClicked(position: Int) = viewmodel.deleteComment(comments[position].id, position)
+    private fun onDeleteClicked(position: Int) {
+        AlertDialog.Builder(this)
+                .setTitle(R.string.delete_comment)
+                .setMessage(R.string.delete_comment_confirm_message)
+                .setPositiveButton(R.string.yes, {_,_ -> viewmodel.deleteComment(comments[position].id, position)})
+                .setNegativeButton(R.string.no, { _, _ -> })
+                .create().show()
+
+    }
 }

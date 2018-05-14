@@ -15,13 +15,16 @@ class CommentsViewModel : ViewModel() {
     val comments = model.comments
 
     fun getComments(ideaId: Int, categoryId: Int) {
-        model.getComments(ideaId, categoryId){
-            if(it == 0)
-                showEmptyState.set(true)
+        model.getComments(ideaId, categoryId) {
+            if (it == 0) showEmptyState.set(true) else showEmptyState.set(false)
 
             isLoading.set(false)
         }
     }
 
-    fun deleteComment(id: String, position: Int) = model.deleteComment(id, position)
+    fun deleteComment(id: String, position: Int) {
+        isLoading.set(true)
+        model.deleteComment(id, position)
+        isLoading.set(false)
+    }
 }

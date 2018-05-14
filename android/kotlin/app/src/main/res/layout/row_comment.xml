@@ -10,7 +10,9 @@
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/layoutRoot">
+        android:id="@+id/layoutRoot"
+        tools:background="@color/windowBackground"
+        android:paddingBottom="16dp">
 
         <android.support.constraint.ConstraintLayout
             android:id="@+id/constraintLayout"
@@ -24,8 +26,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                android:textColor="@color/secondaryText"
+                android:text="@{comment.author}"
+                android:textColor="@color/primaryText"
                 android:textSize="13sp"
+                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -42,7 +46,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_delete_black_24dp" />
+                app:srcCompat="@drawable/ic_delete_white_24dp" />
 
 
         </android.support.constraint.ConstraintLayout>
@@ -53,8 +57,9 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_marginStart="16dp"
-            android:textColor="@color/secondaryTextLight"
-            android:textSize="14sp"
+            android:text="@{comment.comment}"
+            android:textColor="@color/primaryTextLight"
+            android:textSize="16sp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
