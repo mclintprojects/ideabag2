@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
+import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
@@ -16,8 +17,8 @@ import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.CategoryAdapter
 import com.alansa.ideabag2.databinding.ActivityCategoryBinding
-import com.alansa.ideabag2.dialogs.AuthResult
 import com.alansa.ideabag2.dialogs.LoginDialog
+import com.alansa.ideabag2.dialogs.RegisterDialog
 import com.alansa.ideabag2.extensions.addIfNotExist
 import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.extensions.tryRemoveItem
@@ -103,16 +104,19 @@ class CategoryActivity : BaseActivity() {
             menu?.tryRemoveItem(loginId)
             menu?.tryRemoveItem(registerId)
             menu?.addIfNotExist(0, logoutId, logoutId, "Logout")
+
+            toolbar.subtitle = Html.fromHtml("<font color='#ffffff'>${FirebaseAuth.getInstance().currentUser?.email}</font>")
         } else {
             menu?.tryRemoveItem(logoutId)
-            var registerItem = menu?.addIfNotExist(0, registerId, registerId, "Register")
+            val registerItem = menu?.addIfNotExist(0, registerId, registerId, "Register")
             registerItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
             registerItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_person_add_white_24px)
 
-            var loginItem = menu?.addIfNotExist(0, loginId, loginId, "Login")
+            val loginItem = menu?.addIfNotExist(0, loginId, loginId, "Login")
             loginItem?.setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS)
             loginItem?.icon = ContextCompat.getDrawable(this, R.drawable.ic_user_login_button)
 
+            toolbar.subtitle = String.empty
         }
     }
 
@@ -135,7 +139,8 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun showRegisterDialog() {
-        manageOptionalMenuItems()
+        RegisterDialog(){manageOptionalMenuItems()}
+                .show(supportFragmentManager, String.empty)
     }
 
     private fun showLoginDialog() {
