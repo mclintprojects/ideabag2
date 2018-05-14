@@ -37,6 +37,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/title"
+                android:textColor="@color/primaryText"
                 android:text="@={viewmodel.title}" />
         </android.support.design.widget.TextInputLayout>
 
@@ -53,6 +54,7 @@
             android:hint="@string/detail"
             android:inputType=""
             android:text="@={viewmodel.details}"
+            android:textColor="@color/primaryText"
             android:textColorHint="@color/primaryTextLight"
             app:layout_constraintBottom_toTopOf="@+id/saveBtn"
             app:layout_constraintEnd_toEndOf="parent"
