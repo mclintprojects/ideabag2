@@ -3,7 +3,9 @@ package com.alansa.ideabag2.uimodels
 import android.arch.lifecycle.MutableLiveData
 import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.models.Comment
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.*
+import java.util.*
 
 class CommentsModel {
     private val ref = FirebaseDatabase.getInstance().getReference()
@@ -36,10 +38,21 @@ class CommentsModel {
 
     fun deleteComment(id: String, position: Int) {
         ref.child("${dataId}/comments/${id}").removeValue(DatabaseReference.CompletionListener { error, _ ->
-            if(error?.message == null) {
+            if (error?.message == null) {
                 _comments.removeAt(position)
                 comments.value = _comments
             }
         })
+    }
+
+    fun postComment(commentContent: String) {
+        var commentsRef = ref.child("${dataId}/comments")
+        val commentId = commentsRef.push().key
+
+        val comment = Comment(commentId, FirebaseAuth.getInstance().currentUser?.email!!, commentContent, System.currentTimeMillis())
+        commentsRef.child(commentId).setValue(comment)
+
+        _comments.add(comment)
+        comments.value = _comments
     }
 }
