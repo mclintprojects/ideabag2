@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools">
+<layout xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -21,31 +22,79 @@
             android:id="@+id/toolbar"
             layout="@layout/toolbar" />
 
-        <FrameLayout
+        <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/commentsRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:scrollbars="vertical"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}"
+                app:layout_constraintBottom_toTopOf="@+id/commentsBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <include
+                layout="@layout/layout_empty_comments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}" />
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/commentsBar"
+                android:layout_width="match_parent"
+                android:layout_height="56dp"
+                android:background="@color/windowBackground"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:visibility="@{viewmodel.isLoggedIn == true ? View.VISIBLE : View.GONE}">
+
+                <EditText
+                    android:id="@+id/commentTb"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="16dp"
+                    android:layout_marginTop="8dp"
+                    android:hint="Add a comment"
+                    android:text="@={viewmodel.comment}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:textColorHint="@color/primaryText"
+                    android:textColor="@color/primaryText"/>
+
+                <ImageButton
+                    android:id="@+id/commentBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="16dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:background="@android:color/transparent"
+                    app:srcCompat="@drawable/ic_comment_white_24dp"
+                    android:enabled="@{viewmodel.comment.length > 0 ? true : false}"/>
+
+            </android.support.constraint.ConstraintLayout>
 
             <ProgressBar
                 android:id="@+id/loadingCircle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:visibility="@{viewmodel.isLoading == true ? View.GONE : View.VISIBLE}"
-                tools:visibility="visible"/>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/bookmarkRecyclerView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scrollbars="vertical"
-                android:visibility="@{viewmodel.showEmptyState == true ? View.GONE : View.VISIBLE}" />
-
-            <include
-                android:id="@+id/empty"
-                layout="@layout/layout_empty_comments"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="@{viewmodel.showEmptyState == true ? View.VISIBLE : View.GONE}" />
-        </FrameLayout>
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:visibility="@{viewmodel.isLoading == true ? View.VISIBLE : View.GONE}"
+                app:layout_constraintBottom_toTopOf="@+id/commentsBar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/empty"
+                tools:visibility="visible" />
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </layout>

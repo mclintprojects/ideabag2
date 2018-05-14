@@ -1,28 +1,44 @@
 package com.alansa.ideabag2.uimodels
 
-import com.alansa.ideabag2.extensions.fromJson
+import android.arch.lifecycle.MutableLiveData
+import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.models.Comment
-import com.github.kittinunf.fuel.httpGet
-import com.google.firebase.auth.FirebaseAuth
-import com.google.gson.Gson
-import com.google.gson.JsonObject
-import kotlinx.coroutines.experimental.CommonPool
-import kotlinx.coroutines.experimental.async
+import com.google.firebase.database.*
 
 class CommentsModel {
-    private val token = FirebaseAuth.getInstance().currentUser?.getIdToken(true).toString()
-    private val baseUrl = "https://ideabag2.firebaseio.com/ideabag2"
+    private val ref = FirebaseDatabase.getInstance().getReference()
+    val comments = MutableLiveData<MutableList<Comment>>()
+    val _comments = mutableListOf<Comment>()
+    private var dataId = String.empty
 
-    suspend fun getComments(ideaId: Int, categoryId: Int) {
-        val dataId = getDataId(ideaId, categoryId)
+    fun getComments(ideaId: Int, categoryId: Int, onComplete: (Int) -> Unit) {
+        dataId = getDataId(ideaId, categoryId)
 
-        val json = (async(CommonPool){"${baseUrl}/${dataId}/comments.jsoon".httpGet().responseString()}.await()).third.component1()
-        if(json != null)
-        {
-            var dictionary = Gson().fromJson<JsonObject>(json)
-            println(dictionary)
-        }
+        ref.child("${dataId}/comments").addListenerForSingleValueEvent(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.value != null) {
+                    for (pair in snapshot.value as (HashMap<String, HashMap<String, Any>>)) {
+                        _comments.add(Comment(pair.key, pair.value["comment"] as String, pair.value["author"] as String, pair.value["created"] as Long))
+                    }
+                }
+
+                comments.value = _comments
+                onComplete(_comments.size)
+            }
+
+            override fun onCancelled(p0: DatabaseError?) {
+            }
+        })
     }
 
     private fun getDataId(ideaId: Int, categoryId: Int): String = "${categoryId}C-${ideaId}I"
+
+    fun deleteComment(id: String, position: Int) {
+        ref.child("${dataId}/comments/${id}").removeValue(DatabaseReference.CompletionListener { error, _ ->
+            if(error?.message == null) {
+                _comments.removeAt(position)
+                comments.value = _comments
+            }
+        })
+    }
 }
