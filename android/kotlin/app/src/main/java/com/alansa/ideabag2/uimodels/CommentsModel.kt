@@ -12,13 +12,14 @@ class CommentsModel {
     private var dataId = String.empty
 
     fun getComments(ideaId: Int, categoryId: Int, onComplete: (Int) -> Unit) {
+        _comments.clear()
         dataId = getDataId(ideaId, categoryId)
 
         ref.child("${dataId}/comments").addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (snapshot.value != null) {
                     for (pair in snapshot.value as (HashMap<String, HashMap<String, Any>>)) {
-                        _comments.add(Comment(pair.key, pair.value["comment"] as String, pair.value["author"] as String, pair.value["created"] as Long))
+                        _comments.add(0, Comment(pair.key, pair.value["author"] as String, pair.value["comment"] as String, pair.value["created"] as Long))
                     }
                 }
 
