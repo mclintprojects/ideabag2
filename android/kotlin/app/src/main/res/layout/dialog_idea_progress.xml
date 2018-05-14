@@ -9,24 +9,25 @@
     <RadioGroup
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <RadioButton
             android:id="@+id/undecidedRBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/undecided"/>
+            android:text="@string/undecided" />
 
         <RadioButton
             android:id="@+id/inProgressRBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/in_progressText"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:text="@string/in_progress" />
 
         <RadioButton
             android:id="@+id/doneRBtn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Done"
-            android:layout_marginTop="8dp"/>
+            android:layout_marginTop="8dp"
+            android:text="Done" />
     </RadioGroup>
 </LinearLayout>

@@ -18,12 +18,12 @@ import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_view_comments.*
 
 class ViewCommentsActivity : BaseActivity() {
-    private lateinit var binding : ActivityViewCommentsBinding
-    private lateinit var viewmodel : CommentsViewModel
+    private lateinit var binding: ActivityViewCommentsBinding
+    private lateinit var viewmodel: CommentsViewModel
     private val comments = mutableListOf<Comment>()
     private var categoryId = 0
     private var ideaId = 0
-    private lateinit var adapter : CommentsAdapter 
+    private lateinit var adapter: CommentsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -47,15 +47,15 @@ class ViewCommentsActivity : BaseActivity() {
         setupList()
 
         commentBtn.setOnClickListener {
-            if(commentTb.text.length > 0){
+            if (commentTb.text.length > 0) {
                 viewmodel.postComment()
-            }else
+            } else
                 Toast.makeText(this, R.string.required, Toast.LENGTH_SHORT).show()
         }
     }
 
     private fun setupList() {
-        adapter = CommentsAdapter(comments, FirebaseAuth.getInstance().currentUser?.email, {onDeleteClicked(it)})
+        adapter = CommentsAdapter(comments, FirebaseAuth.getInstance().currentUser?.email, { onDeleteClicked(it) })
         binding.commentsRecyclerView.layoutManager = LinearLayoutManager(this)
         binding.commentsRecyclerView.adapter = adapter
         binding.commentsRecyclerView.itemAnimator = DefaultItemAnimator()
@@ -65,7 +65,7 @@ class ViewCommentsActivity : BaseActivity() {
         AlertDialog.Builder(this)
                 .setTitle(R.string.delete_comment)
                 .setMessage(R.string.delete_comment_confirm_message)
-                .setPositiveButton(R.string.yes, {_,_ -> viewmodel.deleteComment(comments[position].id, position)})
+                .setPositiveButton(R.string.yes, { _, _ -> viewmodel.deleteComment(comments[position].id, position) })
                 .setNegativeButton(R.string.no, { _, _ -> })
                 .create().show()
 

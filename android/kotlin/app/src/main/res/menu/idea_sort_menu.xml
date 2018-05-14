@@ -2,13 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/sortByName"
-        android:title="Name" />
+        android:title="@string/name" />
 
     <item
         android:id="@+id/sortByDifficulty"
-        android:title="Difficulty" />
-
-    <item
-        android:id="@+id/sortByStatus"
-        android:title="Completion status" />
+        android:title="@string/difficulty" />
 </menu>
