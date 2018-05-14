@@ -57,7 +57,9 @@ class AddNoteActivity : BaseActivity() {
                 viewmodel.deleteNote(ideaId, categoryId)
                 navigateAway()
             }
+            else -> return super.onOptionsItemSelected(item)
         }
-        return super.onOptionsItemSelected(item)
+
+        return true
     }
 }
