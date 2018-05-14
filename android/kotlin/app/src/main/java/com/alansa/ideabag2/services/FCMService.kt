@@ -20,7 +20,7 @@ class FCMService : FirebaseMessagingService() {
             showNotification(notif)
     }
 
-    private fun showNotification(notif : RemoteMessage.Notification) {
+    private fun showNotification(notif: RemoteMessage.Notification) {
         val i = Intent(this, CategoryActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(this, challengeCode,
                 i, PendingIntent.FLAG_UPDATE_CURRENT)

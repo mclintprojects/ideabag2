@@ -11,7 +11,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.text.Html
 import android.view.Menu
 import android.view.MenuItem
-import android.widget.Toast
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
@@ -139,12 +138,12 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun showRegisterDialog() {
-        RegisterDialog(){manageOptionalMenuItems()}
+        RegisterDialog() { manageOptionalMenuItems() }
                 .show(supportFragmentManager, String.empty)
     }
 
     private fun showLoginDialog() {
-        LoginDialog(){manageOptionalMenuItems()}
+        LoginDialog() { manageOptionalMenuItems() }
                 .show(supportFragmentManager, String.empty)
     }
 

@@ -8,7 +8,7 @@ class NotesModel {
     var notes = MutableLiveData<List<Note>>()
     var _notes = Paper.book().read<MutableList<Note>>("notes", mutableListOf())
 
-    init{
+    init {
         notes.value = _notes
     }
 
