@@ -10,6 +10,10 @@ class BookmarkDetailViewModel : ViewModel() {
     private val model = BookmarkDetailModel()
     val idea = ObservableField<Category.Item>()
     var note = ObservableField<Note?>()
+    val categoryId: Int
+        get() = model.bookmark.categoryId
+    val ideaId: Int
+        get() = model.bookmark.ideaId
     val isBookmarked: Boolean
         get() = model.isBookmarked()
 
@@ -38,7 +42,5 @@ class BookmarkDetailViewModel : ViewModel() {
     }
 
     fun setBookmark(category: String, ideaId: Int) = model.setBookmark(category, ideaId)
-
-    fun getCategoryId(): Int = model.bookmark.categoryId
 
 }

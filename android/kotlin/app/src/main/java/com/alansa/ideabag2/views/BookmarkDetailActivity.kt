@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat
 import android.view.Menu
 import android.view.MenuItem
 import com.alansa.ideabag2.BaseActivity
+import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.databinding.ActivityBookmarkDetailBinding
 import com.alansa.ideabag2.viewmodels.BookmarkDetailViewModel
@@ -38,7 +39,7 @@ class BookmarkDetailActivity : BaseActivity() {
     private fun addOrUpdateNote() {
         var intent = Intent(this, AddNoteActivity::class.java)
         intent.putExtra("ideaId", this.intent.getIntExtra("ideaId", 0))
-        intent.putExtra("categoryId", viewmodel.getCategoryId())
+        intent.putExtra("categoryId", viewmodel.categoryId)
         startActivity(intent)
         overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
@@ -82,7 +83,11 @@ class BookmarkDetailActivity : BaseActivity() {
     }
 
     private fun viewComment() {
-
+        val intent = Intent(this, ViewCommentsActivity::class.java)
+        intent.putExtra("categoryId", viewmodel.categoryId)
+        intent.putExtra("ideaId", viewmodel.ideaId)
+        startActivity(intent)
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
 
     private fun shareIdea() {

@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.support.v7.app.AlertDialog
 import android.support.v7.widget.DefaultItemAnimator
 import android.support.v7.widget.LinearLayoutManager
+import android.widget.Toast
 import com.alansa.ideabag2.BaseActivity
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.CommentsAdapter
@@ -44,6 +45,13 @@ class ViewCommentsActivity : BaseActivity() {
         })
 
         setupList()
+
+        commentBtn.setOnClickListener {
+            if(commentTb.text.length > 0){
+                viewmodel.postComment()
+            }else
+                Toast.makeText(this, R.string.required, Toast.LENGTH_SHORT).show()
+        }
     }
 
     private fun setupList() {

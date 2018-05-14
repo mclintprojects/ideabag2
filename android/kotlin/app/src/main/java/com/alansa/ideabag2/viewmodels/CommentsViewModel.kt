@@ -4,6 +4,7 @@ import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
 import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.extensions.empty
+import com.alansa.ideabag2.models.Comment
 import com.alansa.ideabag2.uimodels.CommentsModel
 
 class CommentsViewModel : ViewModel() {
@@ -26,5 +27,10 @@ class CommentsViewModel : ViewModel() {
         isLoading.set(true)
         model.deleteComment(id, position)
         isLoading.set(false)
+    }
+
+    fun postComment() {
+        model.postComment(comment.get()!!)
+        comment.set(String.empty)
     }
 }
