@@ -16,10 +16,14 @@ import com.alansa.ideabag2.Global
 import com.alansa.ideabag2.R
 import com.alansa.ideabag2.adapters.CategoryAdapter
 import com.alansa.ideabag2.databinding.ActivityCategoryBinding
+import com.alansa.ideabag2.dialogs.AuthResult
+import com.alansa.ideabag2.dialogs.LoginDialog
 import com.alansa.ideabag2.extensions.addIfNotExist
+import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.extensions.tryRemoveItem
 import com.alansa.ideabag2.models.Category
 import com.alansa.ideabag2.viewmodels.CategoryViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
 import io.paperdb.Paper
 import kotlinx.android.synthetic.main.activity_category.*
@@ -114,13 +118,29 @@ class CategoryActivity : BaseActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         when (item!!.itemId) {
-            loginId -> Toast.makeText(this, "Login clicked", Toast.LENGTH_LONG).show()
+            loginId -> showLoginDialog()
+            registerId -> showRegisterDialog()
+            logoutId -> logoutUser()
             R.id.submitIdea -> startActivity(Intent(this, SubmitIdeaActivity::class.java))
             R.id.viewNotes -> startActivity(Intent(this, NotesActivity::class.java))
             else -> return false
         }
 
         return true
+    }
+
+    private fun logoutUser() {
+        FirebaseAuth.getInstance().signOut()
+        manageOptionalMenuItems()
+    }
+
+    private fun showRegisterDialog() {
+        manageOptionalMenuItems()
+    }
+
+    private fun showLoginDialog() {
+        LoginDialog(){manageOptionalMenuItems()}
+                .show(supportFragmentManager, String.empty)
     }
 
     private fun setupList() {

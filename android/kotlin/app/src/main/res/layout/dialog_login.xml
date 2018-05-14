@@ -13,7 +13,8 @@
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:id="@+id/emailTIL">
 
             <EditText
                 android:id="@+id/emailTb"
@@ -27,7 +28,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            app:passwordToggleEnabled="true">
+            app:passwordToggleEnabled="true"
+            android:id="@+id/passwordTIL">
 
             <EditText
                 android:id="@+id/passwordTb"

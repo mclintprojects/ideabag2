@@ -1,11 +1,12 @@
 package com.alansa.ideabag2
 
 import com.alansa.ideabag2.models.Category
+import com.google.firebase.auth.FirebaseAuth
 
 public class Global {
     companion object {
         val isLoggedIn: Boolean
-            get() = authData != null
+            get() = FirebaseAuth.getInstance().currentUser != null
 
         var categories = mutableListOf<Category>()
 
