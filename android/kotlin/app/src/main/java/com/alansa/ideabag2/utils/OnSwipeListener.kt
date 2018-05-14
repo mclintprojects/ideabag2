@@ -32,7 +32,7 @@ class OnSwipeListener(ctx: Context, val action: (Swipe) -> Unit) : View.OnTouchL
                 val diffY = e2!!.y - e1!!.y
 
                 // Get horizontal swipe distance.
-                val diffX = e2!!.x - e1!!.x
+                val diffX = e2.x - e1.x
 
                 // calculating swipe for x-axis.
                 if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > SWIPE_THRESHOLD && Math.abs(velocityX) > SWIPE_VELOCITY_THRESHOLD) {

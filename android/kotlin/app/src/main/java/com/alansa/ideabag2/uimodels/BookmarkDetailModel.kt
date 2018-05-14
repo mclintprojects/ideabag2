@@ -11,9 +11,9 @@ class BookmarkDetailModel {
     val idea: Category.Item
         get() = Paper.book().read<List<Category>>("ideas", listOf())[bookmark.categoryId].items[bookmark.ideaId - 1]
 
-    fun setBookmark(category: String, ideaId: Int) {
+    fun setBookmark(categoryLbl: String, ideaId: Int) {
         var categories = Paper.book().read<List<Category>>("ideas", listOf())
-        var category = categories.find { it.categoryLbl == category }
+        var category = categories.find { it.categoryLbl == categoryLbl }
         var categoryId = categories.indexOf(category)
 
         bookmark = bookmarks.find { it.categoryId == categoryId && it.ideaId == ideaId }!!

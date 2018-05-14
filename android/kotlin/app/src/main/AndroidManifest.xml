@@ -26,9 +26,25 @@
         <activity android:name=".views.IdeaDetailActivity" />
         <activity android:name=".views.AddNoteActivity" />
         <activity android:name=".views.BookmarkDetailActivity" />
-        <activity android:name=".views.NotesActivity" android:label="@string/notes" />
+        <activity
+            android:name=".views.NotesActivity"
+            android:label="@string/notes" />
         <activity
             android:name=".views.BookmarksActivity"
             android:label="@string/bookmarks" />
+
+        <service
+            android:name=".services.FCMService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@mipmap/notif_icon" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/accent" />
     </application>
+
 </manifest>

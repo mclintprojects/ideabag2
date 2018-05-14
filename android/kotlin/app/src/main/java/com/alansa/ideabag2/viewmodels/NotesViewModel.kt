@@ -21,9 +21,7 @@ class NotesViewModel : ViewModel() {
         })
     }
 
-    fun deleteNote(note: Note) {
-        var notes = model.deleteNote(note)
-    }
+    fun deleteNote(note: Note) = model.deleteNote(note)
 
     fun refreshNotes() = model.refreshNotes()
 

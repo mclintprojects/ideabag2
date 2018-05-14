@@ -35,7 +35,7 @@ class AddNoteActivity : BaseActivity() {
 
         saveBtn.setOnClickListener {
             if (noteTitle.text.isNullOrEmpty() || noteDetail.text.isNullOrEmpty())
-                Toast.makeText(this, "One or required fields are empty", Toast.LENGTH_LONG).show()
+                Toast.makeText(this, R.string.required, Toast.LENGTH_LONG).show()
             else
                 saveOrUpdateNote()
         }
