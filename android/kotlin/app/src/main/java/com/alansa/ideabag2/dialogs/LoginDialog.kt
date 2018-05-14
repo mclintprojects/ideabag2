@@ -13,7 +13,7 @@ import com.alansa.ideabag2.utils.Validator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.dialog_login.view.*
 
-class LoginDialog(private val onLoginSuccess : () -> Unit) : DialogFragment() {
+class LoginDialog(private val onLoginSuccess: () -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = LayoutInflater.from(activity).inflate(R.layout.dialog_login, null)
 
@@ -37,9 +37,9 @@ class LoginDialog(private val onLoginSuccess : () -> Unit) : DialogFragment() {
                                 view.loadingCircle.visibility = View.GONE
                                 view.loginBtn.isEnabled = true
 
-                                Toast.makeText (activity, if(it.isSuccessful) "Login successful." else it.exception?.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(activity, if (it.isSuccessful) "Login successful." else it.exception?.message, Toast.LENGTH_LONG).show()
 
-                                if(it.isSuccessful) {
+                                if (it.isSuccessful) {
                                     onLoginSuccess()
                                     dismiss()
                                 }

@@ -97,17 +97,21 @@ class IdeaDetailActivity : BaseActivity() {
 
             R.id.shareItem -> shareIdea()
 
-            R.id.viewComments -> viewComment()
+            R.id.viewComments -> viewComments()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun viewComment() {
-
+    private fun viewComments() {
+        val intent = Intent(this, ViewCommentsActivity::class.java)
+        intent.putExtra("categoryId", Global.categoryClickIndex)
+        intent.putExtra("ideaId", viewmodel.idea.get()!!.id)
+        startActivity(intent)
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out)
     }
 
     private fun shareIdea() {
-        var intent = Intent(Intent.ACTION_SEND)
+        val intent = Intent(Intent.ACTION_SEND)
         intent.type = "text/plain"
 
         val idea = viewmodel.idea.get()!!

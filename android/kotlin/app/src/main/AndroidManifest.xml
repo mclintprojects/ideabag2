@@ -32,13 +32,14 @@
         <activity
             android:name=".views.BookmarksActivity"
             android:label="@string/bookmarks" />
+        <activity android:name=".views.ViewCommentsActivity" android:label="View comments"></activity>
 
-        <service
-            android:name=".services.FCMService">
+        <service android:name=".services.FCMService">
             <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
             android:resource="@mipmap/notif_icon" />

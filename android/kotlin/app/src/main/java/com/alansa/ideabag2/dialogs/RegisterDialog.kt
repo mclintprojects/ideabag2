@@ -13,7 +13,7 @@ import com.alansa.ideabag2.utils.Validator
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.dialog_register.view.*
 
-class RegisterDialog(private val onRegisterSuccess : () -> Unit) : DialogFragment() {
+class RegisterDialog(private val onRegisterSuccess: () -> Unit) : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         var view = LayoutInflater.from(activity).inflate(R.layout.dialog_register, null)
 
@@ -39,7 +39,7 @@ class RegisterDialog(private val onRegisterSuccess : () -> Unit) : DialogFragmen
 
                                 Toast.makeText(activity, if (it.isSuccessful) "Sign up successful." else it.exception?.message, Toast.LENGTH_LONG).show()
 
-                                if(it.isSuccessful) {
+                                if (it.isSuccessful) {
                                     onRegisterSuccess()
                                     dismiss()
                                 }
