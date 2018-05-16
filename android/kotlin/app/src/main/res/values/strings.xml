@@ -61,4 +61,5 @@
     <string name="required">One or more required fields are empty</string>
     <string name="view_comments">View comments</string>
     <string name="name">Name</string>
+    <string name="settings">Settings</string>
 </resources>
