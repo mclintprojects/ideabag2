@@ -22,6 +22,7 @@ import com.alansa.ideabag2.extensions.addIfNotExist
 import com.alansa.ideabag2.extensions.empty
 import com.alansa.ideabag2.extensions.tryRemoveItem
 import com.alansa.ideabag2.models.Category
+import com.alansa.ideabag2.utils.AppRateUtil
 import com.alansa.ideabag2.viewmodels.CategoryViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.messaging.FirebaseMessaging
@@ -49,6 +50,8 @@ class CategoryActivity : BaseActivity() {
 
         setupToolbar()
         Paper.init(this)
+        AppRateUtil.init()
+
 
         viewmodel.owner = this
         viewmodel.categories.observe(this, Observer {
@@ -139,12 +142,12 @@ class CategoryActivity : BaseActivity() {
     }
 
     private fun showRegisterDialog() {
-        RegisterDialog() { manageOptionalMenuItems() }
+        RegisterDialog(this) { manageOptionalMenuItems() }
                 .show(supportFragmentManager, String.empty)
     }
 
     private fun showLoginDialog() {
-        LoginDialog() { manageOptionalMenuItems() }
+        LoginDialog(this) { manageOptionalMenuItems() }
                 .show(supportFragmentManager, String.empty)
     }
 
