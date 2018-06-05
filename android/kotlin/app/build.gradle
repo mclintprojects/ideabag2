@@ -15,12 +15,6 @@ android {
         vectorDrawables.useSupportLibrary = true
     }
     signingConfigs {
-        release {
-            storeFile file("C:\\Users\\Mbah Clinton\\AppData\\Local\\Xamarin\\Mono for Android\\Keystore\\ideabaguploadkey\\ideabaguploadkey.keystore")
-            storePassword ".Boyclint1UPLOAD"
-            keyAlias "ideabaguploadkey"
-            keyPassword ".Boyclint1UPLOAD"
-        }
     }
     buildTypes {
         release {
