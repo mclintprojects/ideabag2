@@ -9,8 +9,8 @@ android {
         applicationId "com.alansa.ideabag2"
         minSdkVersion 19
         targetSdkVersion 27
-        versionCode 24
-        versionName "2.9"
+        versionCode 25
+        versionName "3.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary = true
     }
