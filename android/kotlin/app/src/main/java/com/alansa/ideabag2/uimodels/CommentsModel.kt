@@ -9,7 +9,7 @@ import java.util.*
 
 class CommentsModel {
     private val ref = FirebaseDatabase.getInstance().getReference()
-    val comments = MutableLiveData<MutableList<Comment>>()
+    val comments = MutableLiveData<List<Comment>>()
     val _comments = mutableListOf<Comment>()
     private var dataId = String.empty
 
@@ -25,7 +25,7 @@ class CommentsModel {
                     }
                 }
 
-                comments.value = _comments
+                comments.value = _comments.sortedWith(compareBy(Comment::created))
                 onComplete(_comments.size)
             }
 
