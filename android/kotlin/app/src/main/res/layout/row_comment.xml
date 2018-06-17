@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
 
@@ -9,7 +9,6 @@
     </data>
 
     <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
         android:id="@+id/layoutRoot"
         android:layout_width="match_parent"
@@ -37,7 +36,20 @@
                 app:layout_constraintStart_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:text="clintonmbah44@gmail.com" />
+                tools:text="clintonmbah44" />
+
+            <TextView
+                android:id="@+id/dateLbl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:text="@{comment.getDateString()}"
+                android:textColor="@color/primaryText"
+                android:textSize="13sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/deleteBtn"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="12/02/2018" />
 
             <ImageView
                 android:id="@+id/deleteBtn"
@@ -56,14 +68,19 @@
 
         <TextView
             android:id="@+id/commentLbl"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_marginEnd="16dp"
             android:layout_marginStart="16dp"
             android:text="@{comment.comment}"
             android:textColor="@color/primaryTextLight"
             android:textSize="16sp"
+            android:linksClickable="true"
+            android:textColorLink="@color/accent"
+            android:autoLink="all"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
             tools:text="I am a comment" />
