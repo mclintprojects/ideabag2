@@ -22,7 +22,7 @@ let ideasURL =
 
 export default {
 	name: 'app',
-	components: { 'navbar': Navbar },
+	components: { navbar: Navbar },
 	methods: {
 		getData() {
 			var ideasdb = localStorage.getItem('ideasdb');
@@ -48,7 +48,11 @@ export default {
 		setupInterceptors() {
 			axios.interceptors.response.use(res => {
 				if (res.status == 401) {
-					eventbus.showToast('Authorization token expired. Please login again.', 'error', '5000');
+					eventbus.showToast(
+						'Authorization token expired. Please login again.',
+						'error',
+						'5000'
+					);
 					this.$store.dispatch('logout');
 				}
 
@@ -60,13 +64,20 @@ export default {
 		this.$store.dispatch('setCategories', this.getData());
 		axios.defaults.timeout = 12000;
 
-		axios.get(ideasURL).then(response => {
-			this.$store.dispatch('setCategories', response.data);
-			this.$store.dispatch('setLoading', false);
-			this.saveData(response.data);
-		}).catch(error => {
-			eventbus.showToast('Couldn\'t load data. Please check your connection and reload.', 'error', 'long');
-		});
+		axios
+			.get(ideasURL)
+			.then(response => {
+				this.$store.dispatch('setCategories', response.data);
+				this.$store.dispatch('setLoading', false);
+				this.saveData(response.data);
+			})
+			.catch(error => {
+				eventbus.showToast(
+					"Couldn't load data. Please check your connection and reload.",
+					'error',
+					'long'
+				);
+			});
 
 		this.tryLocalLogin();
 		this.setupInterceptors();
@@ -168,7 +179,6 @@ body {
 .appContainer {
 	width: 55%;
 	margin-top: 50px;
-	padding: 0px;
 }
 
 .highlight {
@@ -205,8 +215,7 @@ body {
 	}
 }
 
-@media screen and (max-width: 576px),
-(max-width: 768px) {
+@media screen and (max-width: 576px), (max-width: 768px) {
 	.appContainer {
 		width: 100%;
 	}
