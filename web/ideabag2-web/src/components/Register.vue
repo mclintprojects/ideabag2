@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 label {
 	color: var(--primaryText);
 	font-family: 'Roboto', sans-serif;
