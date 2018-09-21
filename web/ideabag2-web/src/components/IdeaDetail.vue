@@ -24,7 +24,7 @@
 						 id="deleteCommentBtn" src="https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/ic_delete_black_24px.svg" />
 					</div>
 
-					<p class="commentLbl">{{comment.comment}}</p>
+					<p class="commentLbl" v-html="convertUrls(comment.comment)"></p>
 				</li>
 			</ul>
 		</div>
@@ -207,6 +207,20 @@ export default {
 			var date = new Date(milliseconds);
 
 			return date.toLocaleDateString();
+		},
+		convertUrls(comment) {
+			const urlRegex = /^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)?[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$/;
+			const words = [];
+
+			for (const word of comment.split(" ")) {
+				if (urlRegex.test(word)) {
+					words.push(`<a href="${word}">${word}</a>`);
+				} else {
+					words.push(word);
+				}
+			}
+
+			return words.join(" ");
 		}
 	}
 };
@@ -319,5 +333,3 @@ export default {
 	font-size: var(--dateLblSize);
 }
 </style>
-
-
