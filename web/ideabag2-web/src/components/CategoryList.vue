@@ -14,6 +14,8 @@
 				</div>
 			</li>
 		</ul>
+
+		<router-link id="bookmarkBtn" class="appBtn" :to="bookmarks"><img src="../../static/img/outline-bookmark-24px.svg" /></router-link>
 	</div>
 </template>
 
@@ -97,6 +99,15 @@ export default {
 	flex-direction: row;
 	padding: 8px 16px 8px 16px;
 }
+
+#bookmarkBtn {
+	border-radius: 180px;
+	bottom: 20px;
+	display: flex;
+	justify-content: center;
+	height: 60px;
+	position: fixed;
+	right: 20px;
+	width: 60px;
+}
 </style>
-
-
