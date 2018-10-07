@@ -2,7 +2,10 @@
 	<div class="appContainer">
 		<img v-if="isPerformingAction || isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
 		<div id="card" v-if="idea != null">
-			<p id="ideaTitle">{{idea.title}}</p>
+			<div id="card-top-row">
+				<p id="ideaTitle">{{idea.title}}</p>
+				<img id="bookmarkBtn" @click="toggleBookmark()" :src="bookmarkIcon" />
+			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
 		</div>
 
@@ -41,6 +44,7 @@ export default {
 			idea: null,
 			comment: '',
 			comments: [],
+			isBookmarked: false,
 			eyes: [
 				'eyes1',
 				'eyes10',
@@ -89,6 +93,23 @@ export default {
 		},
 		userLoggedIn() {
 			return this.$store.getters.userLoggedIn;
+		},
+		userDataDB() {
+			return this.$store.getters.userDataDB;
+		},
+		bookmarkIcon() {
+			if (this.isBookmarked) {
+				return require("../../static/img/outline-bookmark-24px.svg");
+			} else {
+				return require("../../static/img/outline-bookmark_border-24px.svg");
+			}
+		}
+	},
+	watch: {
+		userDataDB(db) {
+			if (db !== undefined) {
+				this.loadUserData();
+			}
 		}
 	},
 	activated() {
@@ -99,6 +120,10 @@ export default {
 		var ideaIndex = this.$route.params.ideaId;
 
 		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
+
+		if (this.userDataDB !== undefined) {
+			this.loadUserData();
+		}
 
 		this.getComments();
 	},
@@ -207,6 +232,37 @@ export default {
 			var date = new Date(milliseconds);
 
 			return date.toLocaleDateString();
+		},
+		loadUserData() {
+			this.userDataDB.transaction(["bookmarks"], "readonly")
+			.objectStore("bookmarks")
+			.get(this.idea.id)
+			.onsuccess = event => {
+				this.isBookmarked = event.target.result !== undefined;
+			};
+		},
+		toggleBookmark() {
+			if (this.isBookmarked) {
+				this.removeFromBookmarks();
+			} else {
+				this.addToBookmarks();
+			}
+		},
+		addToBookmarks() {
+			const id = this.idea.id;
+			const db = this.userDataDB;
+			db.transaction(["bookmarks"], "readwrite")
+			.objectStore("bookmarks")
+			.add({"ideaId": id})
+			.onsuccess = event => this.isBookmarked = true;
+		},
+		removeFromBookmarks() {
+			const id = this.idea.id;
+			const db = this.userDataDB;
+			db.transaction(["bookmarks"], "readwrite")
+			.objectStore("bookmarks")
+			.delete(id)
+			.onsuccess = event => this.isBookmarked = false;
 		}
 	}
 };
@@ -221,10 +277,21 @@ export default {
 	margin: var(--cardMargin);
 }
 
+#card-top-row {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+}
+
 #ideaTitle {
 	color: rgba(0, 0, 0, 0.8);
 	font-size: var(--ideaTextSize);
 	font-weight: bold;
+}
+
+#bookmarkBtn {
+	cursor: pointer;
+	margin: 0 10px 10px 0;
 }
 
 #ideaDescription {
@@ -318,6 +385,11 @@ export default {
 	color: rgba(0, 0, 0, 0.5);
 	font-size: var(--dateLblSize);
 }
+
+@media screen and (max-width: 768px) {
+	#card-top-row {
+		flex-flow: column nowrap;
+		align-items: flex-start;
+	}
+}
 </style>
-
-
