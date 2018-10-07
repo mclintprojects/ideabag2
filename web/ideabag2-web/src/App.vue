@@ -81,6 +81,19 @@ export default {
 
 		this.tryLocalLogin();
 		this.setupInterceptors();
+
+		const request = indexedDB.open("userData", 1);
+		request.onerror = (event) => {
+			console.log(event.target.error);
+		}
+		request.onupgradeneeded = event => {
+			const db = event.target.result;
+			const bookmarksStore = db.createObjectStore("bookmarks", { keyPath: "ideaId" });
+		}
+		request.onsuccess = event => {
+			const db = event.target.result;
+			this.$store.dispatch("setUserDataDB", db);
+		}
 	}
 };
 </script>

@@ -2,7 +2,8 @@ const state = {
     categories: [],
     isLoading: true,
     selectedIdeaIndex: -1,
-    navbarTitle: 'IdeaBag 2 (BETA)'
+    navbarTitle: 'IdeaBag 2 (BETA)',
+    userDataDB: undefined
 };
 
 const getters = {
@@ -17,6 +18,9 @@ const getters = {
     },
     navbarTitle: state => {
         return state.navbarTitle;
+    },
+    userDataDB: state => {
+      return state.userDataDB;
     }
 };
 
@@ -32,6 +36,9 @@ const mutations = {
     },
     SET_TITLE(state, title) {
         state.navbarTitle = title;
+    },
+    SET_USER_DATA_DB(state, db) {
+      state.userDataDB = db;
     }
 };
 
@@ -47,6 +54,9 @@ const actions = {
     },
     setTitle(context, title) {
         context.commit('SET_TITLE', title);
+    },
+    setUserDataDB(context, db) {
+        context.commit('SET_USER_DATA_DB', db);
     }
 };
 
