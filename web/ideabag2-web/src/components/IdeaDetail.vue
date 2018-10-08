@@ -236,7 +236,7 @@ export default {
 		loadUserData() {
 			this.userDataDB.transaction(["bookmarks"], "readonly")
 			.objectStore("bookmarks")
-			.get(this.idea.id)
+			.get(this.getDataId())
 			.onsuccess = event => {
 				this.isBookmarked = event.target.result !== undefined;
 			};
@@ -249,7 +249,7 @@ export default {
 			}
 		},
 		addToBookmarks() {
-			const id = this.idea.id;
+			const id = this.getDataId();
 			const db = this.userDataDB;
 			db.transaction(["bookmarks"], "readwrite")
 			.objectStore("bookmarks")
@@ -257,7 +257,7 @@ export default {
 			.onsuccess = event => this.isBookmarked = true;
 		},
 		removeFromBookmarks() {
-			const id = this.idea.id;
+			const id = this.getDataId();
 			const db = this.userDataDB;
 			db.transaction(["bookmarks"], "readwrite")
 			.objectStore("bookmarks")
