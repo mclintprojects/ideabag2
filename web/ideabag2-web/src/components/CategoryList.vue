@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 
-		<router-link id="bookmarkBtn" class="appBtn" :to="bookmarks"><img src="../../static/img/outline-bookmark-24px.svg" /></router-link>
+		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><img src="../../static/img/outline-bookmark-24px.svg" /></router-link>
 	</div>
 </template>
 
