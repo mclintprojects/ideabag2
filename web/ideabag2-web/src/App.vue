@@ -10,9 +10,6 @@
 </template>
 
 <script>
-import CategoryList from './components/CategoryList';
-import IdeaList from './components/IdeaList';
-import IdeaDetail from './components/IdeaDetail';
 import Navbar from './components/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
@@ -22,7 +19,7 @@ let ideasURL =
 
 export default {
 	name: 'app',
-	components: { navbar: Navbar },
+	components: { Navbar },
 	methods: {
 		getData() {
 			var ideasdb = localStorage.getItem('ideasdb');
@@ -81,6 +78,19 @@ export default {
 
 		this.tryLocalLogin();
 		this.setupInterceptors();
+
+		const request = indexedDB.open("userData", 1);
+		request.onerror = (event) => {
+			console.log(event.target.error);
+		}
+		request.onupgradeneeded = event => {
+			const db = event.target.result;
+			const bookmarksStore = db.createObjectStore("bookmarks", { keyPath: "ideaId" });
+		}
+		request.onsuccess = event => {
+			const db = event.target.result;
+			this.$store.dispatch("setUserDataDB", db);
+		}
 	}
 };
 </script>
@@ -108,6 +118,9 @@ export default {
 	--dateLblMargin: 32px;
 }
 
+html, body {
+	height: 100%;
+}
 body {
 	background-color: var(--background);
 	font-family: 'Roboto', sans-serif;
@@ -155,6 +168,7 @@ body {
 .main-container {
 	display: flex;
 	justify-content: center;
+	height: 100%;
 }
 
 .primaryLbl {
