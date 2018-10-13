@@ -1,7 +1,12 @@
 <template>
   <div class="appContainer">
     <img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
-    <idea-list :ideas="ideas" />
+    <div id="no-bookmarks" v-if="!isLoading && ideas.length == 0">
+      <img src="../../static/img/outline-bookmark-100px-grey.svg" alt="" />
+      <h2>No bookmarks to show</h2>
+      <p>Ideas that you bookmark will show up here</p>
+    </div>
+    <idea-list v-if="ideas.length > 0" :ideas="ideas" />
   </div>
 </template>
 
@@ -57,3 +62,14 @@ export default {
   }
 };
 </script>
+
+<style scoped>
+#no-bookmarks {
+  color: var(--primaryTextLight);
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  justify-content: center;
+  text-align: center;
+}
+</style>

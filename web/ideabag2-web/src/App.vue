@@ -118,6 +118,9 @@ export default {
 	--dateLblMargin: 32px;
 }
 
+html, body {
+	height: 100%;
+}
 body {
 	background-color: var(--background);
 	font-family: 'Roboto', sans-serif;
@@ -165,6 +168,7 @@ body {
 .main-container {
 	display: flex;
 	justify-content: center;
+	height: 100%;
 }
 
 .primaryLbl {
