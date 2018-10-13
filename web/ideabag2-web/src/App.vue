@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Navbar from './views/Navbar';
+import Navbar from './components/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
 
@@ -19,7 +19,7 @@ let ideasURL =
 
 export default {
 	name: 'app',
-	components: { navbar: Navbar },
+	components: { Navbar },
 	methods: {
 		getData() {
 			var ideasdb = localStorage.getItem('ideasdb');

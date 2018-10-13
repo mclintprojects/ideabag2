@@ -19,9 +19,7 @@ export default {
 			return this.$store.getters.categories.length == 0;
 		}
 	},
-	components: {
-		"idea-list": IdeaList
-	},
+	components: { IdeaList },
 	activated() {
 		if (this.$store.getters.categories) {
 			var title = this.$store.getters.categories[this.$route.params.categoryId].categoryLbl;

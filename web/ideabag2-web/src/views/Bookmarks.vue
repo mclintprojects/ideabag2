@@ -51,9 +51,7 @@ export default {
       this.ideas.push(this.$store.getters.categories[categoryId].items[ideaId]);
     }
   },
-  components: {
-    "idea-list": IdeaList
-  },
+  components: { IdeaList },
   activated() {
     this.$store.dispatch('setTitle', "Bookmarks");
     if (this.userDataDB !== undefined) {
