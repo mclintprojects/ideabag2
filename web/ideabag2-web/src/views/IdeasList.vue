@@ -78,5 +78,3 @@ export default {
 	font-size: var(--badgeTextSize);
 }
 </style>
-
-
