@@ -3,7 +3,7 @@ const state = {
     isLoading: true,
     selectedIdeaIndex: -1,
     navbarTitle: 'IdeaBag 2 (BETA)',
-    userDataDB: undefined
+    userDataDB: null
 };
 
 const getters = {
