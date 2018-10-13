@@ -10,10 +10,7 @@
 </template>
 
 <script>
-import CategoryList from './components/CategoryList';
-import IdeaList from './components/IdeaList';
-import IdeaDetail from './components/IdeaDetail';
-import Navbar from './components/Navbar';
+import Navbar from './views/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
 

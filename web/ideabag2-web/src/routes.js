@@ -1,9 +1,9 @@
-import CategoryList from './components/CategoryList';
-import IdeaList from './components/IdeaList';
-import IdeaDetail from './components/IdeaDetail';
-import Bookmarks from "./components/Bookmarks";
-import Login from './components/Login';
-import Register from './components/Register';
+import CategoryList from './views/CategoryList';
+import IdeaList from './views/IdeaList';
+import IdeaDetail from './views/IdeaDetail';
+import Bookmarks from "./views/Bookmarks";
+import Login from './views/Login';
+import Register from './views/Register';
 
 export const routes = [
 	{ path: '', component: CategoryList },
