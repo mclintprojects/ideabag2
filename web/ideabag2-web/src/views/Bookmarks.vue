@@ -29,7 +29,7 @@ export default {
   },
   watch: {
     userDataDB(db) {
-      if (db !== undefined) {
+      if (db !== null) {
         this.loadIdeas();
       }
     }
@@ -46,15 +46,15 @@ export default {
       }
     },
     loadIdea(id) {
-      const categoryId = id[0];
-      const ideaId = id[3] - 1;
+      const categoryId = id.split("C")[0];
+      const ideaId = id.split("-")[1].split("I")[0] - 1;
       this.ideas.push(this.$store.getters.categories[categoryId].items[ideaId]);
     }
   },
   components: { IdeaList },
   activated() {
     this.$store.dispatch('setTitle', "Bookmarks");
-    if (this.userDataDB !== undefined) {
+    if (this.userDataDB !== null) {
       this.loadIdeas();
     }
   }
