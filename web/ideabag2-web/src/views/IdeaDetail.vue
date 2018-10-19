@@ -107,7 +107,7 @@ export default {
 	},
 	watch: {
 		userDataDB(db) {
-			if (db !== undefined) {
+			if (db !== null) {
 				this.loadUserData();
 			}
 		}
@@ -121,7 +121,7 @@ export default {
 
 		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
 
-		if (this.userDataDB !== undefined) {
+		if (this.userDataDB !== null) {
 			this.loadUserData();
 		}
 
