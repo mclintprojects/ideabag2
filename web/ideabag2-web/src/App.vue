@@ -101,6 +101,9 @@ export default {
 	--primaryDark: #c67100;
 	--background: #37474f;
 	--highlight: #2c393f;
+	--undecided: #bababa;
+	--in-progress: #F9bf3b;
+	--done: #2ecc71;
 	--primaryText: rgba(255, 255, 255, 0.8);
 	--primaryTextLight: rgba(255, 255, 255, 0.54);
 	--primaryTextSize: 18px;
