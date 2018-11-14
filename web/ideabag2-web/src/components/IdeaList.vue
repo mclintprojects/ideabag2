@@ -1,7 +1,7 @@
 <template>
   <ul id="ideaList">
-		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{highlight: index == selectedIndex}">
-			<div class="ideaItem">
+		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{highlight: index == selectedIndex, 'progress-undecided': idea.progress == 'undecided', 'progress-in-progress': idea.progress == 'in-progress', 'progress-done': idea.progress == 'done'}">
+			<div :class="'ideaItem progress-' + idea.progress">
 				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
 				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
 			</div>
@@ -41,6 +41,7 @@ export default {
 }
 
 #ideaList li {
+  border-left: 7px solid transparent;
 	padding: 8px 16px 8px 16px;
 }
 
@@ -63,5 +64,14 @@ export default {
 	padding: var(--badgePadding);
 	color: rgba(0, 0, 0, 0.54);
 	font-size: var(--badgeTextSize);
+}
+.progress-undecided {
+  border-left: 8px solid var(--undecided) !important;
+}
+.progress-in-progress {
+  border-left: 8px solid var(--in-progress) !important;
+}
+.progress-done {
+  border-left: 8px solid var(--done) !important;
 }
 </style>
