@@ -85,7 +85,9 @@ export default {
 		}
 		request.onupgradeneeded = event => {
 			const db = event.target.result;
-			const bookmarksStore = db.createObjectStore("bookmarks", { keyPath: "ideaId" });
+			const ideasStore = db.createObjectStore("ideas", {keyPath: "id"});
+
+			const bookmarkIndex = ideasStore.createIndex("bookmarked", "bookmarked");
 		}
 		request.onsuccess = event => {
 			const db = event.target.result;

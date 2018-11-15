@@ -233,12 +233,19 @@ export default {
 
 			return date.toLocaleDateString();
 		},
+		addNewIdea(ideaId, bookmarked) {
+
+		},
 		loadUserData() {
-			this.userDataDB.transaction(["bookmarks"], "readonly")
-			.objectStore("bookmarks")
+			this.userDataDB.transaction(["ideas"], "readonly")
+			.objectStore("ideas")
 			.get(this.getDataId())
 			.onsuccess = event => {
-				this.isBookmarked = event.target.result !== undefined;
+				if (event.target.result) {
+					this.isBookmarked = event.target.result.bookmarked;
+				} else {
+					this.isBookmarked = false;
+				}
 			};
 		},
 		toggleBookmark() {
@@ -251,18 +258,29 @@ export default {
 		addToBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			db.transaction(["bookmarks"], "readwrite")
-			.objectStore("bookmarks")
-			.add({"ideaId": id})
-			.onsuccess = event => this.isBookmarked = true;
+			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas")
+
+			objectStore.get(id).onsuccess = event => {
+				if (event.target.result === undefined) {
+					objectStore.add({"id": id, "bookmarked": 1, "progress": "undecided"})
+					.onsuccess = event => this.isBookmarked = true;
+				} else {
+					event.target.result.bookmarked = 1;
+					objectStore.put(event.target.result)
+					.onsuccess = event => this.isBookmarked = true;
+				}
+			}
 		},
 		removeFromBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			db.transaction(["bookmarks"], "readwrite")
-			.objectStore("bookmarks")
-			.delete(id)
-			.onsuccess = event => this.isBookmarked = false;
+			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
+			objectStore.get(id)
+			.onsuccess = event => {
+				event.target.result.bookmarked = 0;
+				objectStore.put(event.target.result)
+				.onsuccess = event =>	this.isBookmarked = false;
+			}
 		}
 	}
 };

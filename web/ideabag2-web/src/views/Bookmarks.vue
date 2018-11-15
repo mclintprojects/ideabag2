@@ -37,10 +37,14 @@ export default {
   methods: {
     loadIdeas() {
       this.ideas = [];
-      this.userDataDB.transaction(["bookmarks"]).objectStore("bookmarks").openCursor().onsuccess = (event) => {
+      const objectStore = this.userDataDB.transaction(["ideas"])
+      .objectStore("ideas")
+      .index("bookmarked")
+      .openKeyCursor(IDBKeyRange.only(1))
+      .onsuccess = event => {
         const cursor = event.target.result;
         if (cursor) {
-          this.loadIdea(cursor.value.ideaId);
+          this.loadIdea(cursor.primaryKey);
           cursor.continue();
         }
       }
