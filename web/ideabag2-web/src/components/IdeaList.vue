@@ -1,7 +1,7 @@
 <template>
   <ul id="ideaList">
-		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{highlight: index == selectedIndex, 'progress-undecided': idea.progress == 'undecided', 'progress-in-progress': idea.progress == 'in-progress', 'progress-done': idea.progress == 'done'}">
-			<div :class="'ideaItem progress-' + idea.progress">
+		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
+			<div :class="'ideaItem'">
 				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
 				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
 			</div>
@@ -10,10 +10,15 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
   computed: {
     selectedIndex() {
 			return this.$store.getters.selectedIdeaIndex;
+		},
+    userDataDB() {
+			return this.$store.getters.userDataDB;
 		}
   },
   props: {
@@ -22,13 +27,50 @@ export default {
       required: true
     }
   },
+  watch: {
+    userDataDB(db) {
+      if (db !== null && this.ideas.length > 0) {
+        this.loadProgressData();
+      }
+    },
+    ideas(ideas) {
+      if (this.userDataDB !== null && ideas.length > 0) {
+        this.loadProgressData();
+      }
+    }
+  },
   methods: {
+    loadProgressData() {
+      for (let i = 0; i < this.ideas.length; i++) {
+        this.userDataDB.transaction(["ideas"])
+        .objectStore("ideas")
+        .get(this.getDataId(this.ideas[i].id))
+        .onsuccess = event => {
+          if (this.ideas.length > i) {
+            if (event.target.result !== undefined) {
+              Vue.set(this.ideas[i], "progress", event.target.result.progress);
+            } else {
+              Vue.set(this.ideas[i], "progress", "undecided");
+            }
+          }
+        }
+      }
+    },
+    getDataId(ideaId) {
+			var categoryId = this.$route.params.categoryId;
+			return `${categoryId}C-${ideaId}I`;
+		},
     notifyIdeaClicked(idea, index) {
       const categoryId = this.$store.getters.categories.findIndex(x => x.categoryLbl == idea.category);
 			this.$router.push({ name: 'ideas', params: { categoryId: categoryId, ideaId: idea.id - 1 } });
 
 			this.$store.dispatch('setSelectedIdeaIndex', index);
 		}
+  },
+  activated() {
+    if (this.userDataDB !== null && this.ideas.length > 0) {
+      this.loadProgressData();
+    }
   }
 };
 </script>
