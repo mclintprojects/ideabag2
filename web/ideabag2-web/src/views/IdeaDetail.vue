@@ -4,7 +4,27 @@
 		<div id="card" v-if="idea != null">
 			<div id="card-top-row">
 				<p id="ideaTitle">{{idea.title}}</p>
-				<img id="bookmarkBtn" @click="toggleBookmark()" :src="bookmarkIcon" />
+				<div>
+					<img id="bookmarkBtn" @click="toggleBookmark()" :src="bookmarkIcon" />
+					<button class="appBtnOutline" @click="$modal.show('progress-modal')">Update progress</button>
+					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']">
+						<h3>Set idea progress</h3>
+						<ul class="progress-list">
+							<li @click="setProgress('done');$modal.hide('progress-modal')">
+								<img :src="ICON_DONE" alt="">
+								<span>Done</span>
+							</li>
+							<li @click="setProgress('in-progress');$modal.hide('progress-modal')">
+								<img :src="ICON_IN_PROGRESS" alt="">
+								<span>In Progress</span>
+							</li>
+							<li @click="setProgress('undecided');$modal.hide('progress-modal')">
+								<img :src="ICON_UNDECIDED" alt="" />
+								<span>Undecided</span>
+							</li>
+						</ul>
+					</modal>
+				</div>
 			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
 		</div>
@@ -45,6 +65,9 @@ export default {
 			comment: '',
 			comments: [],
 			isBookmarked: false,
+			ICON_DONE: require("../../static/img/baseline-check_box-24px.svg"),
+			ICON_IN_PROGRESS: require("../../static/img/baseline-check_box_outline_blank-24px.svg"),
+			ICON_UNDECIDED: require("../../static/img/baseline-indeterminate_check_box-24px.svg"),
 			eyes: [
 				'eyes1',
 				'eyes10',
@@ -281,10 +304,30 @@ export default {
 				objectStore.put(event.target.result)
 				.onsuccess = event =>	this.isBookmarked = false;
 			}
+		},
+		setProgress(progress) {
+			const id = this.getDataId();
+			const db = this.userDataDB;
+			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
+			objectStore.get(id)
+			.onsuccess = event => {
+				if (event.target.result === undefined) {
+					objectStore.add({"id": id, "bookmarked": 0, "progress": progress});
+				} else {
+					event.target.result.progress = progress;
+					objectStore.put(event.target.result);
+				}
+			}
 		}
 	}
 };
 </script>
+
+<style>
+	.progress-modal > h3 {
+		text-align: center;
+	}
+</style>
 
 <style scoped>
 #card {
@@ -299,6 +342,7 @@ export default {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
+	margin-bottom: 1rem;
 }
 
 #ideaTitle {
@@ -310,6 +354,21 @@ export default {
 #bookmarkBtn {
 	cursor: pointer;
 	margin: 0 10px 10px 0;
+}
+.progress-list {
+	padding: 0;
+	margin: 0;
+}
+.progress-list > li {
+	border-top: 1px solid black;
+	cursor: pointer;
+	font-size: 1.7rem;
+	list-style-type: none;
+	padding: 2rem 3rem;
+	width: 100%;
+}
+.progress-list > li:hover {
+	background-color: rgba(0, 0, 0, 0.2);
 }
 
 #ideaDescription {

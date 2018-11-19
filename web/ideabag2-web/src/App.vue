@@ -162,6 +162,19 @@ body {
 	cursor: not-allowed;
 }
 
+.appBtnOutline {
+	background-color: transparent;
+	border: solid 2px white;
+	border-radius: 2px;
+	color: white;
+	padding: 1rem;
+}
+
+.appBtnOutline:hover {
+	background-color: white;
+	color: var(--primary);
+}
+
 #backBtn {
 	margin-left: 16px;
 }
