@@ -7,20 +7,17 @@
 				<div>
 					<img id="bookmarkBtn" @click="toggleBookmark()" :src="bookmarkIcon" />
 					<button class="appBtnOutline" @click="$modal.show('progress-modal')">Update progress</button>
-					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']">
+					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
 						<h3>Set idea progress</h3>
 						<ul class="progress-list">
 							<li @click="setProgress('done');$modal.hide('progress-modal')">
-								<img :src="ICON_DONE" alt="">
-								<span>Done</span>
+								<input class="progress-radiobutton" type="radio" name="progress" value="done" /> Done
 							</li>
 							<li @click="setProgress('in-progress');$modal.hide('progress-modal')">
-								<img :src="ICON_IN_PROGRESS" alt="">
-								<span>In Progress</span>
+								<input class="progress-radiobutton" type="radio" name="progress" value="in-progress" /> In Progress
 							</li>
 							<li @click="setProgress('undecided');$modal.hide('progress-modal')">
-								<img :src="ICON_UNDECIDED" alt="" />
-								<span>Undecided</span>
+								<input class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/> Undecided
 							</li>
 						</ul>
 					</modal>
@@ -65,9 +62,7 @@ export default {
 			comment: '',
 			comments: [],
 			isBookmarked: false,
-			ICON_DONE: require("../../static/img/baseline-check_box-24px.svg"),
-			ICON_IN_PROGRESS: require("../../static/img/baseline-check_box_outline_blank-24px.svg"),
-			ICON_UNDECIDED: require("../../static/img/baseline-indeterminate_check_box-24px.svg"),
+			progress: "undecided",
 			eyes: [
 				'eyes1',
 				'eyes10',
@@ -312,10 +307,22 @@ export default {
 			objectStore.get(id)
 			.onsuccess = event => {
 				if (event.target.result === undefined) {
-					objectStore.add({"id": id, "bookmarked": 0, "progress": progress});
+					objectStore.add({"id": id, "bookmarked": 0, "progress": progress})
+					.onsuccess = event => this.progress = progress;
 				} else {
 					event.target.result.progress = progress;
-					objectStore.put(event.target.result);
+					objectStore.put(event.target.result)
+					.onsuccess = event => this.progress = progress;
+				}
+			}
+		},
+		updateProgressRadiobuttons() {
+			const radiobuttons = document.getElementsByClassName("progress-radiobutton");
+			for (let i = 0; i < radiobuttons.length; i++) {
+				if (radiobuttons[i].value === this.progress) {
+					radiobuttons[i].checked = true;
+				} else {
+					radiobuttons[i].checked = false;
 				}
 			}
 		}
@@ -369,6 +376,9 @@ export default {
 }
 .progress-list > li:hover {
 	background-color: rgba(0, 0, 0, 0.2);
+}
+.progress-list > li > input {
+	cursor: pointer;
 }
 
 #ideaDescription {
