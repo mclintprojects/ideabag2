@@ -275,16 +275,11 @@ export default {
 			.get(this.getDataId())
 			.onsuccess = event => {
 				if (event.target.result) {
-					if (event.target.result.progress !== undefined) {
-						this.progress = event.target.result.progress;
-					} else {
-						this.progress = "undecided";
-					}
-					if (event.target.result.bookmarked !== undefined) {
-						this.isBookmarked = event.target.result.bookmarked;
-					} else {
-						this.isBookmarked = false;
-					}
+					this.progress = event.target.result.progress;
+					this.isBookmarked = event.target.result.bookmarked;
+				} else {
+					this.progress = "undecided";
+					this.isBookmarked = false;
 				}
 			};
 		},
