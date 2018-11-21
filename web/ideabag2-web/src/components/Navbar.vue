@@ -60,7 +60,7 @@ export default {
 			eventbus.showToast("You're logged out now.", 'success');
 		},
 		isRootRoute() {
-			var route = this.$route.path;
+			constroute = this.$route.path;
 			if (route == '/') return true;
 			else return false;
 		}

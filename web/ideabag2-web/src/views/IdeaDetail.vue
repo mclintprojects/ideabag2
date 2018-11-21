@@ -67,7 +67,7 @@ export default {
 			comment: '',
 			comments: [],
 			isBookmarked: false,
-			progress: "undecided",
+			progress: 'undecided',
 			bookmarkButtonHovered: false,
 			eyes: [
 				'eyes1',
@@ -124,22 +124,27 @@ export default {
 		bookmarkIcon() {
 			if (this.isBookmarked) {
 				if (this.bookmarkButtonHovered) {
-					return require("../../static/img/outline-bookmark_colored-24px.svg");
+					return require('../../static/img/outline-bookmark_colored-24px.svg');
 				} else {
-					return require("../../static/img/outline-bookmark-24px.svg");
+					return require('../../static/img/outline-bookmark-24px.svg');
 				}
 			} else {
 				if (this.bookmarkButtonHovered) {
-					return require("../../static/img/outline-bookmark_border_colored-24px.svg");
+					return require('../../static/img/outline-bookmark_border_colored-24px.svg');
 				} else {
-					return require("../../static/img/outline-bookmark_border-24px.svg");
+					return require('../../static/img/outline-bookmark_border-24px.svg');
 				}
 			}
+		},
+		dataId() {
+			return `${this.idea.categoryId - 1}C-${this.idea.id}I`;
 		}
 	},
 	watch: {
 		progress(progress) {
-			document.getElementById("progress-bar").style.backgroundColor = `var(--${progress})`;
+			document.getElementById(
+				'progress-bar'
+			).style.backgroundColor = `var(--${progress})`;
 		},
 		userDataDB(db) {
 			if (db !== null) {
@@ -151,10 +156,12 @@ export default {
 		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
 		this.$store.dispatch('setTitle', 'Idea details');
 
-		var categoryId = this.$route.params.categoryId;
-		var ideaId = this.$route.params.ideaId;
+		const categoryIndex = this.$route.params.categoryId;
+		const ideaIndex = this.$route.params.ideaId;
 
-		this.idea = this.$store.getters.categories[categoryId - 1].items[ideaId - 1];
+		this.idea = this.$store.getters.categories[categoryId - 1].items[
+			ideaId - 1
+		];
 
 		if (this.userDataDB !== null) {
 			this.loadUserData();
@@ -169,16 +176,16 @@ export default {
 		postComment() {
 			if (this.userLoggedIn) {
 				this.$store.dispatch('isPerformingAction', true);
-				var dataId = this.getDataId();
+				const dataId = this.getDataId();
 
-				var comment = {
+				const comment = {
 					userId: this.userId,
 					author: this.email,
 					comment: this.comment,
 					created: new Date().getTime()
 				};
 
-				var url = `/${dataId}/comments.json?auth=${this.token}`;
+				const url = `/${dataId}/comments.json?auth=${this.token}`;
 
 				axios
 					.post(url, comment)
@@ -198,7 +205,7 @@ export default {
 			}
 		},
 		getAvatar() {
-			var face = this.getRandomFace();
+			const face = this.getRandomFace();
 			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
 				face.mouth
 			}/ffa000`;
@@ -207,24 +214,26 @@ export default {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		},
 		getRandomFace() {
-			var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
-			var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
-			var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
+			const eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
+			const nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
+			const mouth = this.mouths[
+				this.getRandomNumber(0, this.mouths.length - 1)
+			];
 
 			return { eye, nose, mouth };
 		},
 		getComments() {
 			this.$store.dispatch('isPerformingAction', true);
-			var dataId = this.getDataId();
+			const dataId = this.getDataId();
 
 			axios
 				.get(`/${dataId}/comments.json`)
 				.then(response => {
 					if (response.data != null) {
-						var keys = Object.keys(response.data);
+						const keys = Object.keys(response.data);
 
-						for (var i = 0; i < keys.length; i++) {
-							var comment = response.data[keys[i]];
+						for (let i = 0; i < keys.length; i++) {
+							const comment = response.data[keys[i]];
 							comment.id = keys[i];
 
 							this.comments.push(comment);
@@ -238,13 +247,10 @@ export default {
 					this.$store.dispatch('isPerformingAction', false);
 				});
 		},
-		getDataId() {
-			return `${this.idea.categoryId}C-${this.idea.id}I`;
-		},
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
-			var dataId = this.getDataId();
-			var url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
+			const dataId = this.dataId();
+			const url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
 
 			axios
 				.delete(url)
@@ -266,24 +272,28 @@ export default {
 		},
 		addNewIdea(ideaId, bookmarked, progress) {
 			const bookmarkedBinary = bookmarked ? 1 : 0;
-			this.userDataDB.transaction(["ideas"], "readwrite")
-			.objectStore("ideas")
-			.add({"id": ideaId, "bookmarked": bookmarkedBinary, "progress": progress})
-			.onsuccess = event => {
+			this.userDataDB
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas')
+				.add({
+					id: ideaId,
+					bookmarked: bookmarkedBinary,
+					progress: progress
+				}).onsuccess = event => {
 				this.isBookmarked = bookmarked;
 				this.progress = progress;
-			}
+			};
 		},
 		loadUserData() {
-			this.userDataDB.transaction(["ideas"], "readonly")
-			.objectStore("ideas")
-			.get(this.getDataId())
-			.onsuccess = event => {
+			this.userDataDB
+				.transaction(['ideas'], 'readonly')
+				.objectStore('ideas')
+				.get(this.getDataId()).onsuccess = event => {
 				if (event.target.result) {
 					this.progress = event.target.result.progress;
 					this.isBookmarked = event.target.result.bookmarked;
 				} else {
-					this.progress = "undecided";
+					this.progress = 'undecided';
 					this.isBookmarked = false;
 				}
 			};
@@ -298,46 +308,52 @@ export default {
 		addToBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
 
 			objectStore.get(id).onsuccess = event => {
 				if (event.target.result === undefined) {
-					this.addNewIdea(id, true, "undecided");
+					this.addNewIdea(id, true, 'undecided');
 				} else {
 					event.target.result.bookmarked = 1;
-					objectStore.put(event.target.result)
-					.onsuccess = event => this.isBookmarked = true;
+					objectStore.put(event.target.result).onsuccess = event =>
+						(this.isBookmarked = true);
 				}
-			}
+			};
 		},
 		removeFromBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
-			objectStore.get(id)
-			.onsuccess = event => {
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(id).onsuccess = event => {
 				event.target.result.bookmarked = 0;
-				objectStore.put(event.target.result)
-				.onsuccess = event =>	this.isBookmarked = false;
-			}
+				objectStore.put(event.target.result).onsuccess = event =>
+					(this.isBookmarked = false);
+			};
 		},
 		setProgress(progress) {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
-			objectStore.get(id)
-			.onsuccess = event => {
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(id).onsuccess = event => {
 				if (event.target.result === undefined) {
 					this.addNewIdea(id, false, progress);
 				} else {
 					event.target.result.progress = progress;
-					objectStore.put(event.target.result)
-					.onsuccess = event => this.progress = progress;
+					objectStore.put(event.target.result).onsuccess = event =>
+						(this.progress = progress);
 				}
-			}
+			};
 		},
 		updateProgressRadiobuttons() {
-			const radiobuttons = document.getElementsByClassName("progress-radiobutton");
+			const radiobuttons = document.getElementsByClassName(
+				'progress-radiobutton'
+			);
 			for (let i = 0; i < radiobuttons.length; i++) {
 				if (radiobuttons[i].value === this.progress) {
 					radiobuttons[i].checked = true;
@@ -351,9 +367,9 @@ export default {
 </script>
 
 <style>
-	.progress-modal > h3 {
-		text-align: center;
-	}
+.progress-modal > h3 {
+	text-align: center;
+}
 </style>
 
 <style scoped>
@@ -394,7 +410,8 @@ export default {
 .progress-list > li:hover {
 	background-color: rgba(0, 0, 0, 0.2);
 }
-.progress-list > li > input, .progress-list > li > label {
+.progress-list > li > input,
+.progress-list > li > label {
 	cursor: pointer;
 }
 
