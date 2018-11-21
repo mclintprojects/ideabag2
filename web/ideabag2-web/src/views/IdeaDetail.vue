@@ -99,9 +99,9 @@ export default {
 		},
 		bookmarkIcon() {
 			if (this.isBookmarked) {
-				return require("../../static/img/outline-bookmark-24px.svg");
+				return require('../../static/img/outline-bookmark-24px.svg');
 			} else {
-				return require("../../static/img/outline-bookmark_border-24px.svg");
+				return require('../../static/img/outline-bookmark_border-24px.svg');
 			}
 		}
 	},
@@ -116,8 +116,8 @@ export default {
 		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
 		this.$store.dispatch('setTitle', 'Idea details');
 
-		var categoryIndex = this.$route.params.categoryId;
-		var ideaIndex = this.$route.params.ideaId;
+		const categoryIndex = this.$route.params.categoryId;
+		const ideaIndex = this.$route.params.ideaId;
 
 		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
 
@@ -134,16 +134,16 @@ export default {
 		postComment() {
 			if (this.userLoggedIn) {
 				this.$store.dispatch('isPerformingAction', true);
-				var dataId = this.getDataId();
+				const dataId = this.getDataId();
 
-				var comment = {
+				const comment = {
 					userId: this.userId,
 					author: this.email,
 					comment: this.comment,
 					created: new Date().getTime()
 				};
 
-				var url = `/${dataId}/comments.json?auth=${this.token}`;
+				const url = `/${dataId}/comments.json?auth=${this.token}`;
 
 				axios
 					.post(url, comment)
@@ -163,7 +163,7 @@ export default {
 			}
 		},
 		getAvatar() {
-			var face = this.getRandomFace();
+			const face = this.getRandomFace();
 			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
 				face.mouth
 			}/ffa000`;
@@ -172,24 +172,26 @@ export default {
 			return Math.floor(Math.random() * (max - min + 1)) + min;
 		},
 		getRandomFace() {
-			var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
-			var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
-			var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
+			const eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
+			const nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
+			const mouth = this.mouths[
+				this.getRandomNumber(0, this.mouths.length - 1)
+			];
 
 			return { eye, nose, mouth };
 		},
 		getComments() {
 			this.$store.dispatch('isPerformingAction', true);
-			var dataId = this.getDataId();
+			const dataId = this.getDataId();
 
 			axios
 				.get(`/${dataId}/comments.json`)
 				.then(response => {
 					if (response.data != null) {
-						var keys = Object.keys(response.data);
+						const keys = Object.keys(response.data);
 
-						for (var i = 0; i < keys.length; i++) {
-							var comment = response.data[keys[i]];
+						for (let i = 0; i < keys.length; i++) {
+							const comment = response.data[keys[i]];
 							comment.id = keys[i];
 
 							this.comments.push(comment);
@@ -204,14 +206,14 @@ export default {
 				});
 		},
 		getDataId() {
-			var categoryId = this.$route.params.categoryId;
-			var ideaId = this.idea.id;
+			const categoryId = this.$route.params.categoryId;
+			const ideaId = this.idea.id;
 			return `${categoryId}C-${ideaId}I`;
 		},
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
-			var dataId = this.getDataId();
-			var url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
+			const dataId = this.getDataId();
+			const url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
 
 			axios
 				.delete(url)
@@ -234,10 +236,10 @@ export default {
 			return date.toLocaleDateString();
 		},
 		loadUserData() {
-			this.userDataDB.transaction(["bookmarks"], "readonly")
-			.objectStore("bookmarks")
-			.get(this.getDataId())
-			.onsuccess = event => {
+			this.userDataDB
+				.transaction(['bookmarks'], 'readonly')
+				.objectStore('bookmarks')
+				.get(this.getDataId()).onsuccess = event => {
 				this.isBookmarked = event.target.result !== undefined;
 			};
 		},
@@ -251,18 +253,18 @@ export default {
 		addToBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			db.transaction(["bookmarks"], "readwrite")
-			.objectStore("bookmarks")
-			.add({"ideaId": id})
-			.onsuccess = event => this.isBookmarked = true;
+			db
+				.transaction(['bookmarks'], 'readwrite')
+				.objectStore('bookmarks')
+				.add({ ideaId: id }).onsuccess = event => (this.isBookmarked = true);
 		},
 		removeFromBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			db.transaction(["bookmarks"], "readwrite")
-			.objectStore("bookmarks")
-			.delete(id)
-			.onsuccess = event => this.isBookmarked = false;
+			db
+				.transaction(['bookmarks'], 'readwrite')
+				.objectStore('bookmarks')
+				.delete(id).onsuccess = event => (this.isBookmarked = false);
 		}
 	}
 };
