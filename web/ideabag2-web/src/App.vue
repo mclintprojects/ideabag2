@@ -22,7 +22,7 @@ export default {
 	components: { Navbar },
 	methods: {
 		getData() {
-			var ideasdb = localStorage.getItem('ideasdb');
+			const ideasdb = localStorage.getItem('ideasdb');
 
 			if (ideasdb) {
 				this.$store.dispatch('setLoading', false);
@@ -33,7 +33,7 @@ export default {
 			return [];
 		},
 		tryLocalLogin() {
-			var loginData = localStorage.getItem('loginData');
+			const loginData = localStorage.getItem('loginData');
 
 			if (loginData) {
 				this.$store.dispatch('loginUserLocal', JSON.parse(loginData));
@@ -79,20 +79,19 @@ export default {
 		this.tryLocalLogin();
 		this.setupInterceptors();
 
-		const request = indexedDB.open("userData", 1);
-		request.onerror = (event) => {
+		const request = indexedDB.open('userData', 1);
+		request.onerror = event => {
 			console.log(event.target.error);
-		}
+		};
 		request.onupgradeneeded = event => {
 			const db = event.target.result;
-			const ideasStore = db.createObjectStore("ideas", {keyPath: "id"});
-
-			const bookmarkIndex = ideasStore.createIndex("bookmarked", "bookmarked");
-		}
+			const ideasStore = db.createObjectStore('ideas', { keyPath: 'id' });
+			ideasStore.createIndex('bookmarked', 'bookmarked');
+		};
 		request.onsuccess = event => {
 			const db = event.target.result;
-			this.$store.dispatch("setUserDataDB", db);
-		}
+			this.$store.dispatch('setUserDataDB', db);
+		};
 	}
 };
 </script>
@@ -104,7 +103,7 @@ export default {
 	--background: #37474f;
 	--highlight: #2c393f;
 	--undecided: #bababa;
-	--in-progress: #F9bf3b;
+	--in-progress: #f9bf3b;
 	--done: #2ecc71;
 	--primaryText: rgba(255, 255, 255, 0.8);
 	--primaryTextLight: rgba(255, 255, 255, 0.54);
@@ -123,7 +122,8 @@ export default {
 	--dateLblMargin: 32px;
 }
 
-html, body {
+html,
+body {
 	height: 100%;
 }
 body {
