@@ -176,7 +176,6 @@ export default {
 		postComment() {
 			if (this.userLoggedIn) {
 				this.$store.dispatch('isPerformingAction', true);
-				const dataId = this.getDataId();
 
 				const comment = {
 					userId: this.userId,
@@ -185,7 +184,7 @@ export default {
 					created: new Date().getTime()
 				};
 
-				const url = `/${dataId}/comments.json?auth=${this.token}`;
+				const url = `/${this.dataId}/comments.json?auth=${this.token}`;
 
 				axios
 					.post(url, comment)
@@ -224,10 +223,9 @@ export default {
 		},
 		getComments() {
 			this.$store.dispatch('isPerformingAction', true);
-			const dataId = this.getDataId();
 
 			axios
-				.get(`/${dataId}/comments.json`)
+				.get(`/${this.dataId}/comments.json`)
 				.then(response => {
 					if (response.data != null) {
 						const keys = Object.keys(response.data);
@@ -249,8 +247,9 @@ export default {
 		},
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
-			const dataId = this.dataId();
-			const url = `${dataId}/comments/${commentId}.json?auth=${this.token}`;
+			const url = `${this.dataId}/comments/${commentId}.json?auth=${
+				this.token
+			}`;
 
 			axios
 				.delete(url)
@@ -270,25 +269,11 @@ export default {
 		getTimestamp(milliseconds) {
 			return new Date(milliseconds).toLocaleDateString();
 		},
-		addNewIdea(ideaId, bookmarked, progress) {
-			const bookmarkedBinary = bookmarked ? 1 : 0;
-			this.userDataDB
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas')
-				.add({
-					id: ideaId,
-					bookmarked: bookmarkedBinary,
-					progress: progress
-				}).onsuccess = event => {
-				this.isBookmarked = bookmarked;
-				this.progress = progress;
-			};
-		},
 		loadUserData() {
 			this.userDataDB
 				.transaction(['bookmarks'], 'readonly')
 				.objectStore('bookmarks')
-				.get(this.getDataId()).onsuccess = event => {
+				.get(this.dataId).onsuccess = event => {
 				this.isBookmarked = event.target.result !== undefined;
 			};
 		},
@@ -300,28 +285,26 @@ export default {
 			}
 		},
 		addToBookmarks() {
-			const id = this.getDataId();
 			const db = this.userDataDB;
 			db
 				.transaction(['bookmarks'], 'readwrite')
 				.objectStore('bookmarks')
-				.add({ ideaId: id }).onsuccess = event => (this.isBookmarked = true);
+				.add({ ideaId: this.dataId }).onsuccess = event =>
+				(this.isBookmarked = true);
 		},
 		removeFromBookmarks() {
-			const id = this.getDataId();
 			const db = this.userDataDB;
 			db
 				.transaction(['bookmarks'], 'readwrite')
 				.objectStore('bookmarks')
-				.delete(id).onsuccess = event => (this.isBookmarked = false);
+				.delete(this.dataId).onsuccess = event => (this.isBookmarked = false);
 		},
 		setProgress(progress) {
-			const id = this.getDataId();
 			const db = this.userDataDB;
 			const objectStore = db
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
+			objectStore.get(this.dataId).onsuccess = event => {
 				if (event.target.result === undefined) {
 					this.addNewIdea(id, false, progress);
 				} else {
