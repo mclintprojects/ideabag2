@@ -262,12 +262,17 @@ export default {
 				});
 		},
 		getTimestamp(milliseconds) {
-			var date = new Date(milliseconds);
-
-			return date.toLocaleDateString();
+			return new Date(milliseconds).toLocaleDateString();
 		},
-		addNewIdea(ideaId, bookmarked) {
-
+		addNewIdea(ideaId, bookmarked, progress) {
+			const bookmarkedBinary = bookmarked ? 1 : 0;
+			this.userDataDB.transaction(["ideas"], "readwrite")
+			.objectStore("ideas")
+			.add({"id": ideaId, "bookmarked": bookmarkedBinary, "progress": progress})
+			.onsuccess = event => {
+				this.isBookmarked = bookmarked;
+				this.progress = progress;
+			}
 		},
 		loadUserData() {
 			this.userDataDB.transaction(["ideas"], "readonly")
@@ -293,12 +298,11 @@ export default {
 		addToBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas")
+			const objectStore = db.transaction(["ideas"], "readwrite").objectStore("ideas");
 
 			objectStore.get(id).onsuccess = event => {
 				if (event.target.result === undefined) {
-					objectStore.add({"id": id, "bookmarked": 1, "progress": "undecided"})
-					.onsuccess = event => this.isBookmarked = true;
+					this.addNewIdea(id, true, "undecided");
 				} else {
 					event.target.result.bookmarked = 1;
 					objectStore.put(event.target.result)
@@ -324,8 +328,7 @@ export default {
 			objectStore.get(id)
 			.onsuccess = event => {
 				if (event.target.result === undefined) {
-					objectStore.add({"id": id, "bookmarked": 0, "progress": progress})
-					.onsuccess = event => this.progress = progress;
+					this.addNewIdea(id, false, progress);
 				} else {
 					event.target.result.progress = progress;
 					objectStore.put(event.target.result)
