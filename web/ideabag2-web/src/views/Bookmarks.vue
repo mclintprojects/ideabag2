@@ -51,8 +51,8 @@ export default {
     },
     loadIdea(id) {
       const categoryId = id.split("C")[0];
-      const ideaId = id.split("-")[1].split("I")[0] - 1;
-      this.ideas.push(this.$store.getters.categories[categoryId].items[ideaId]);
+      const ideaId = id.split("-")[1].split("I")[0];
+      this.ideas.push(this.$store.getters.categories[categoryId - 1].items[ideaId - 1]);
     }
   },
   components: { IdeaList },
