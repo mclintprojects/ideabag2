@@ -75,7 +75,7 @@ const actions = {
       });
   },
   loginUserLocal(context, loginData) {
-    var expiresIn = localStorage.getItem('expiresIn');
+    const expiresIn = localStorage.getItem('expiresIn');
     if (expiresIn <= new Date().getTime()) {
       context.commit('LOGOUT');
       eventbus.showToast(

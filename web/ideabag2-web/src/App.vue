@@ -22,7 +22,7 @@ export default {
 	components: { Navbar },
 	methods: {
 		getData() {
-			var ideasdb = localStorage.getItem('ideasdb');
+			const ideasdb = localStorage.getItem('ideasdb');
 
 			if (ideasdb) {
 				this.$store.dispatch('setLoading', false);
@@ -33,7 +33,7 @@ export default {
 			return [];
 		},
 		tryLocalLogin() {
-			var loginData = localStorage.getItem('loginData');
+			const loginData = localStorage.getItem('loginData');
 
 			if (loginData) {
 				this.$store.dispatch('loginUserLocal', JSON.parse(loginData));
@@ -79,18 +79,20 @@ export default {
 		this.tryLocalLogin();
 		this.setupInterceptors();
 
-		const request = indexedDB.open("userData", 1);
-		request.onerror = (event) => {
+		const request = indexedDB.open('userData', 1);
+		request.onerror = event => {
 			console.log(event.target.error);
-		}
+		};
 		request.onupgradeneeded = event => {
 			const db = event.target.result;
-			const bookmarksStore = db.createObjectStore("bookmarks", { keyPath: "ideaId" });
-		}
+			const bookmarksStore = db.createObjectStore('bookmarks', {
+				keyPath: 'ideaId'
+			});
+		};
 		request.onsuccess = event => {
 			const db = event.target.result;
-			this.$store.dispatch("setUserDataDB", db);
-		}
+			this.$store.dispatch('setUserDataDB', db);
+		};
 	}
 };
 </script>
@@ -118,7 +120,8 @@ export default {
 	--dateLblMargin: 32px;
 }
 
-html, body {
+html,
+body {
 	height: 100%;
 }
 body {
