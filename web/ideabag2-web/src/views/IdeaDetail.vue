@@ -10,15 +10,15 @@
 					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
 						<h3>Set idea progress</h3>
 						<ul class="progress-list">
-							<li @click="setProgress('done');$modal.hide('progress-modal')">
+							<li @click="setProgress('done');">
 								<input id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
 								<label for="progress-done">Done</label>
 							</li>
-							<li @click="setProgress('in-progress');$modal.hide('progress-modal')">
+							<li @click="setProgress('in-progress');">
 								<input id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
 								<label for="in-progress">In Progress</label>
 							</li>
-							<li @click="setProgress('undecided');$modal.hide('progress-modal')">
+							<li @click="setProgress('undecided');">
 								<input id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
 								<label for="progress-undecided">Undecided</label>
 							</li>
@@ -349,6 +349,8 @@ export default {
 						(this.progress = progress);
 				}
 			};
+
+			this.$modal.hide('progress-modal');
 		},
 		updateProgressRadiobuttons() {
 			const radiobuttons = document.getElementsByClassName(
