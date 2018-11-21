@@ -134,10 +134,10 @@ export default {
 		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
 		this.$store.dispatch('setTitle', 'Idea details');
 
-		var categoryIndex = this.$route.params.categoryId;
-		var ideaIndex = this.$route.params.ideaId;
+		var categoryId = this.$route.params.categoryId;
+		var ideaId = this.$route.params.ideaId;
 
-		this.idea = this.$store.getters.categories[categoryIndex].items[ideaIndex];
+		this.idea = this.$store.getters.categories[categoryId - 1].items[ideaId - 1];
 
 		if (this.userDataDB !== null) {
 			this.loadUserData();
@@ -222,9 +222,7 @@ export default {
 				});
 		},
 		getDataId() {
-			var categoryId = this.$route.params.categoryId;
-			var ideaId = this.idea.id;
-			return `${categoryId}C-${ideaId}I`;
+			return `${this.idea.categoryId}C-${this.idea.id}I`;
 		},
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
@@ -261,8 +259,7 @@ export default {
 			.onsuccess = event => {
 				if (event.target.result) {
 					this.isBookmarked = event.target.result.bookmarked;
-				} else {
-					this.isBookmarked = false;
+					this.progress = event.target.result.progress;
 				}
 			};
 		},

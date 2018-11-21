@@ -46,7 +46,7 @@ export default {
 	methods: {
 		notifyCategoryClicked(index) {
 			this.selectedIndex = index;
-			this.$router.push({ name: 'categories', params: { categoryId: index } });
+			this.$router.push({ name: 'categories', params: { categoryId: index + 1 } });
 		}
 	},
 	activated() {

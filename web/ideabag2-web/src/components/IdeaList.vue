@@ -44,7 +44,7 @@ export default {
       for (let i = 0; i < this.ideas.length; i++) {
         this.userDataDB.transaction(["ideas"])
         .objectStore("ideas")
-        .get(this.getDataId(this.ideas[i].id))
+        .get(`${this.ideas[i].categoryId}C-${this.ideas[i].id}I`)
         .onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
@@ -56,13 +56,8 @@ export default {
         }
       }
     },
-    getDataId(ideaId) {
-			var categoryId = this.$route.params.categoryId;
-			return `${categoryId}C-${ideaId}I`;
-		},
     notifyIdeaClicked(idea, index) {
-      const categoryId = this.$store.getters.categories.findIndex(x => x.categoryLbl == idea.category);
-			this.$router.push({ name: 'ideas', params: { categoryId: categoryId, ideaId: idea.id - 1 } });
+			this.$router.push({ name: 'ideas', params: { categoryId: idea.categoryId, ideaId: idea.id } });
 
 			this.$store.dispatch('setSelectedIdeaIndex', index);
 		}
