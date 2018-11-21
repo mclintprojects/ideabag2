@@ -22,11 +22,11 @@ export default {
 	components: { IdeaList },
 	activated() {
 		if (this.$store.getters.categories) {
-			var title = this.$store.getters.categories[this.$route.params.categoryId].categoryLbl;
+			const categoryId = this.$route.params.categoryId
+			var title = this.$store.getters.categories[categoryId - 1].categoryLbl;
 			this.$store.dispatch('setTitle', title);
 
-			var index = this.$route.params.categoryId;
-			this.ideas = this.$store.getters.categories[index].items;
+			this.ideas = this.$store.getters.categories[categoryId - 1].items;
 		}
 	}
 };
