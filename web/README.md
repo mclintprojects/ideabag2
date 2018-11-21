@@ -1,19 +1,18 @@
-# Ideabag 2
+# ideabag2-web
 
-This is the open source repository for https://ideabag2.firebaseapp.com/
+> A web version of the Programming Ideas 2 android app
 
-## Information
+## Build Setup
 
-This app is built in Visual Studio Code with Vue.js
+``` bash
+# install dependencies
+npm install
 
-## Prerequisites
+# serve with hot reload at localhost:8080
+npm run dev
 
-1.  Node.js
-2.  firebase-cli (If you want to deploy to firebase)
+# build for production with minification
+npm run build
+```
 
-## Building and running the app
-
-1.  Clone the project to your computer.
-2.  Navigate to '\ideabag2\web\ideabag2-web', open cmd and run `npm install`
-3.  After all the npm dependencies are installed, run `npm run dev`
-4.  The web app should now be running and visible at `localhost/8080`
+For detailed explanation on how things work, consult the [docs for vue-loader](http://vuejs.github.io/vue-loader).
