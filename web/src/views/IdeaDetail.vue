@@ -124,15 +124,15 @@ export default {
 		bookmarkIcon() {
 			if (this.isBookmarked) {
 				if (this.bookmarkButtonHovered) {
-					('img/outline-bookmark_colored-24px.svg');
+					('/img/outline-bookmark_colored-24px.svg');
 				} else {
-					('img/outline-bookmark-24px.svg');
+					('/img/outline-bookmark-24px.svg');
 				}
 			} else {
 				if (this.bookmarkButtonHovered) {
-					return 'img/outline-bookmark_border_colored-24px.svg';
+					return '/img/outline-bookmark_border_colored-24px.svg';
 				} else {
-					return 'img/outline-bookmark_border-24px.svg';
+					return '/img/outline-bookmark_border-24px.svg';
 				}
 			}
 		},
@@ -156,8 +156,8 @@ export default {
 		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
 		this.$store.dispatch('setTitle', 'Idea details');
 
-		const categoryIndex = this.$route.params.categoryId;
-		const ideaIndex = this.$route.params.ideaId;
+		const categoryId = this.$route.params.categoryId;
+		const ideaId = this.$route.params.ideaId;
 
 		this.idea = this.$store.getters.categories[categoryId - 1].items[
 			ideaId - 1
@@ -286,16 +286,10 @@ export default {
 		},
 		loadUserData() {
 			this.userDataDB
-				.transaction(['ideas'], 'readonly')
-				.objectStore('ideas')
+				.transaction(['bookmarks'], 'readonly')
+				.objectStore('bookmarks')
 				.get(this.getDataId()).onsuccess = event => {
-				if (event.target.result) {
-					this.progress = event.target.result.progress;
-					this.isBookmarked = event.target.result.bookmarked;
-				} else {
-					this.progress = 'undecided';
-					this.isBookmarked = false;
-				}
+				this.isBookmarked = event.target.result !== undefined;
 			};
 		},
 		toggleBookmark() {
@@ -308,31 +302,18 @@ export default {
 		addToBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-
-			objectStore.get(id).onsuccess = event => {
-				if (event.target.result === undefined) {
-					this.addNewIdea(id, true, 'undecided');
-				} else {
-					event.target.result.bookmarked = 1;
-					objectStore.put(event.target.result).onsuccess = event =>
-						(this.isBookmarked = true);
-				}
-			};
+			db
+				.transaction(['bookmarks'], 'readwrite')
+				.objectStore('bookmarks')
+				.add({ ideaId: id }).onsuccess = event => (this.isBookmarked = true);
 		},
 		removeFromBookmarks() {
 			const id = this.getDataId();
 			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
-				event.target.result.bookmarked = 0;
-				objectStore.put(event.target.result).onsuccess = event =>
-					(this.isBookmarked = false);
-			};
+			db
+				.transaction(['bookmarks'], 'readwrite')
+				.objectStore('bookmarks')
+				.delete(id).onsuccess = event => (this.isBookmarked = false);
 		},
 		setProgress(progress) {
 			const id = this.getDataId();
