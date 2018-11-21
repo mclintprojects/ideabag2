@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 
-		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><img src="../../static/img/outline-bookmark-24px.svg" /></router-link>
+		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><img src="img/outline-bookmark-24px.svg" /></router-link>
 	</div>
 </template>
 
@@ -46,7 +46,10 @@ export default {
 	methods: {
 		notifyCategoryClicked(index) {
 			this.selectedIndex = index;
-			this.$router.push({ name: 'categories', params: { categoryId: index + 1 } });
+			this.$router.push({
+				name: 'categories',
+				params: { categoryId: index + 1 }
+			});
 		}
 	},
 	activated() {

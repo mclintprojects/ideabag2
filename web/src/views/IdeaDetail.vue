@@ -124,15 +124,15 @@ export default {
 		bookmarkIcon() {
 			if (this.isBookmarked) {
 				if (this.bookmarkButtonHovered) {
-					return require('../../static/img/outline-bookmark_colored-24px.svg');
+					('img/outline-bookmark_colored-24px.svg');
 				} else {
-					return require('../../static/img/outline-bookmark-24px.svg');
+					('img/outline-bookmark-24px.svg');
 				}
 			} else {
 				if (this.bookmarkButtonHovered) {
-					return require('../../static/img/outline-bookmark_border_colored-24px.svg');
+					return 'img/outline-bookmark_border_colored-24px.svg';
 				} else {
-					return require('../../static/img/outline-bookmark_border-24px.svg');
+					return 'img/outline-bookmark_border-24px.svg';
 				}
 			}
 		},
