@@ -167,7 +167,8 @@ body {
 	border: solid 2px white;
 	border-radius: 2px;
 	color: white;
-	padding: 1rem;
+	margin: 0.5rem;
+	height: 40px;
 }
 
 .appBtnOutline:hover {
@@ -276,10 +277,6 @@ body {
 
 	#deleteBtn {
 		width: 104px;
-	}
-
-	#commentBar {
-		margin: 0px 16px 0px 16px;
 	}
 }
 </style>

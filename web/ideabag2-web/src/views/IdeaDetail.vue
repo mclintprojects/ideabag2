@@ -5,19 +5,22 @@
 			<div id="card-top-row">
 				<p id="ideaTitle">{{idea.title}}</p>
 				<div>
-					<img id="bookmarkBtn" @click="toggleBookmark()" :src="bookmarkIcon" />
+					<button class="appBtnOutline" @click="toggleBookmark()" @mouseover="bookmarkButtonHovered = true" @mouseleave="bookmarkButtonHovered = false"><img :src="bookmarkIcon" /></button>
 					<button class="appBtnOutline" @click="$modal.show('progress-modal')">Update progress</button>
 					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
 						<h3>Set idea progress</h3>
 						<ul class="progress-list">
 							<li @click="setProgress('done');$modal.hide('progress-modal')">
-								<input class="progress-radiobutton" type="radio" name="progress" value="done" /> Done
+								<input id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
+								<label for="progress-done">Done</label>
 							</li>
 							<li @click="setProgress('in-progress');$modal.hide('progress-modal')">
-								<input class="progress-radiobutton" type="radio" name="progress" value="in-progress" /> In Progress
+								<input id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
+								<label for="in-progress">In Progress</label>
 							</li>
 							<li @click="setProgress('undecided');$modal.hide('progress-modal')">
-								<input class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/> Undecided
+								<input id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
+								<label for="progress-undecided">Undecided</label>
 							</li>
 						</ul>
 					</modal>
@@ -25,6 +28,8 @@
 			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
 		</div>
+
+		<div id="progress-bar"></div>
 
 		<div id="commentBar">
 			<textarea id="commentTb" v-model="comment" placeholder="Post a comment"></textarea>
@@ -63,6 +68,7 @@ export default {
 			comments: [],
 			isBookmarked: false,
 			progress: "undecided",
+			bookmarkButtonHovered: false,
 			eyes: [
 				'eyes1',
 				'eyes10',
@@ -117,13 +123,24 @@ export default {
 		},
 		bookmarkIcon() {
 			if (this.isBookmarked) {
-				return require("../../static/img/outline-bookmark-24px.svg");
+				if (this.bookmarkButtonHovered) {
+					return require("../../static/img/outline-bookmark_colored-24px.svg");
+				} else {
+					return require("../../static/img/outline-bookmark-24px.svg");
+				}
 			} else {
-				return require("../../static/img/outline-bookmark_border-24px.svg");
+				if (this.bookmarkButtonHovered) {
+					return require("../../static/img/outline-bookmark_border_colored-24px.svg");
+				} else {
+					return require("../../static/img/outline-bookmark_border-24px.svg");
+				}
 			}
 		}
 	},
 	watch: {
+		progress(progress) {
+			document.getElementById("progress-bar").style.backgroundColor = `var(--${progress})`;
+		},
 		userDataDB(db) {
 			if (db !== null) {
 				this.loadUserData();
@@ -258,8 +275,16 @@ export default {
 			.get(this.getDataId())
 			.onsuccess = event => {
 				if (event.target.result) {
-					this.isBookmarked = event.target.result.bookmarked;
-					this.progress = event.target.result.progress;
+					if (event.target.result.progress !== undefined) {
+						this.progress = event.target.result.progress;
+					} else {
+						this.progress = "undecided";
+					}
+					if (event.target.result.bookmarked !== undefined) {
+						this.isBookmarked = event.target.result.bookmarked;
+					} else {
+						this.isBookmarked = false;
+					}
 				}
 			};
 		},
@@ -346,6 +371,7 @@ export default {
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: space-between;
+	align-items: center;
 	margin-bottom: 1rem;
 }
 
@@ -355,10 +381,6 @@ export default {
 	font-weight: bold;
 }
 
-#bookmarkBtn {
-	cursor: pointer;
-	margin: 0 10px 10px 0;
-}
 .progress-list {
 	padding: 0;
 	margin: 0;
@@ -374,7 +396,7 @@ export default {
 .progress-list > li:hover {
 	background-color: rgba(0, 0, 0, 0.2);
 }
-.progress-list > li > input {
+.progress-list > li > input, .progress-list > li > label {
 	cursor: pointer;
 }
 
@@ -383,6 +405,12 @@ export default {
 	font-size: 16px;
 	white-space: pre-wrap;
 	word-wrap: break-word;
+}
+
+#progress-bar {
+	background-color: var(--undecided);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	height: 10px;
 }
 
 #comments {
@@ -474,6 +502,12 @@ export default {
 	#card-top-row {
 		flex-flow: column nowrap;
 		align-items: flex-start;
+	}
+	#progress-bar {
+		margin: 0 16px;
+	}
+	#commentBar {
+		margin: 0px 16px;
 	}
 }
 </style>
