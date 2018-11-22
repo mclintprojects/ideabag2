@@ -332,8 +332,9 @@ export default {
 					this.addNewIdea(id, false, progress);
 				} else {
 					event.target.result.progress = progress;
-					objectStore.put(event.target.result).onsuccess = event =>
-						(this.progress = progress);
+					objectStore.put(event.target.result).onsuccess = event => {
+						this.progress = progress;
+					};
 				}
 			};
 			this.$modal.hide('progress-modal');
