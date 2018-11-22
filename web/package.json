@@ -3,7 +3,7 @@
   "description": "A web version of the Programming Ideas 2 android app",
   "version": "1.0.0",
   "author": "Mbah Clinton",
-  "license": "MIT",
+  "license": "GNU General Public License",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
