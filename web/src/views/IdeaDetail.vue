@@ -137,7 +137,7 @@ export default {
 			}
 		},
 		dataId() {
-			return `${this.idea.categoryId - 1}C-${this.idea.id}I`;
+			return `${this.idea.categoryId}C-${this.idea.id}I`;
 		}
 	},
 	watch: {
@@ -336,6 +336,7 @@ export default {
 						(this.progress = progress);
 				}
 			};
+			this.$modal.hide('progress-modal');
 		},
 		updateProgressRadiobuttons() {
 			const radiobuttons = document.getElementsByClassName(

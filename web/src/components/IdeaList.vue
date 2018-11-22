@@ -1,6 +1,6 @@
 <template>
   <ul id="ideaList">
-		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{highlight: index == selectedIndex}">
+		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
 			<div class="ideaItem">
 				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
 				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
@@ -10,10 +10,15 @@
 </template>
 
 <script>
+import Vue from "vue";
+
 export default {
 	computed: {
 		selectedIndex() {
 			return this.$store.getters.selectedIdeaIndex;
+		},
+    userDataDB() {
+			return this.$store.getters.userDataDB;
 		}
 	},
 	props: {
@@ -22,7 +27,35 @@ export default {
 			required: true
 		}
 	},
-	methods: {
+  watch: {
+    userDataDB(db) {
+      if (db !== null && this.ideas.length > 0) {
+        this.loadProgressData();
+      }
+    },
+    ideas(ideas) {
+      if (this.userDataDB !== null && ideas.length > 0) {
+        this.loadProgressData();
+      }
+    }
+  },
+  methods: {
+    loadProgressData() {
+      for (let i = 0; i < this.ideas.length; i++) {
+        this.userDataDB.transaction(["ideas"])
+        .objectStore("ideas")
+        .get(`${this.ideas[i].categoryId}C-${this.ideas[i].id}I`)
+        .onsuccess = event => {
+          if (this.ideas.length > i) {
+            if (event.target.result !== undefined) {
+              Vue.set(this.ideas[i], "progress", event.target.result.progress);
+            } else {
+              Vue.set(this.ideas[i], "progress", "undecided");
+            }
+          }
+        }
+      }
+    },
 		notifyIdeaClicked(idea, index) {
 			const categoryId =
 				this.$store.getters.categories.findIndex(
@@ -34,7 +67,17 @@ export default {
 			});
 			this.$store.dispatch('setSelectedIdeaIndex', index);
 		}
-	}
+	},
+  activated() {
+    if (this.userDataDB !== null && this.ideas.length > 0) {
+      this.loadProgressData();
+    }
+  },
+  created() {
+    if (this.userDataDB !== null && this.ideas.length > 0) {
+      this.loadProgressData();
+    }
+  }
 };
 </script>
 
@@ -45,6 +88,7 @@ export default {
 	padding: 0px;
 }
 #ideaList li {
+  border-left: 8px solid transparent;
 	padding: 8px 16px 8px 16px;
 }
 #ideaList li:hover {
@@ -58,6 +102,15 @@ export default {
 	overflow: hidden;
 	white-space: nowrap;
 	padding: 0px;
+}
+.progress-undecided {
+  border-left: 8px solid var(--undecided) !important;
+}
+.progress-in-progress {
+  border-left: 8px solid var(--in-progress) !important;
+}
+.progress-done {
+  border-left: 8px solid var(--done) !important;
 }
 .badge {
 	background-color: var(--primary);

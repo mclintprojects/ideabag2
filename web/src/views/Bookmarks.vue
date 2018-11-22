@@ -37,17 +37,17 @@ export default {
 	methods: {
 		loadIdeas() {
 			this.ideas = [];
-			const objectStore = (this.userDataDB
+			this.userDataDB
 				.transaction(['ideas'])
 				.objectStore('ideas')
 				.index('bookmarked')
 				.openKeyCursor(IDBKeyRange.only(1)).onsuccess = event => {
-				const cursor = event.target.result;
-				if (cursor) {
-					this.loadIdea(cursor.primaryKey);
-					cursor.continue();
-				}
-			});
+  				const cursor = event.target.result;
+  				if (cursor) {
+  					this.loadIdea(cursor.primaryKey);
+  					cursor.continue();
+  				}
+  			};
 		},
 		loadIdea(id) {
 			const categoryId = id.split('C')[0];
