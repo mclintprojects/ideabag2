@@ -2,7 +2,7 @@ const state = {
   categories: [],
   isLoading: true,
   selectedIdeaIndex: -1,
-  navbarTitle: "IdeaBag 2 (BETA)",
+  navbarTitle: 'IdeaBag 2 (BETA)',
   userDataDB: null
 };
 
@@ -44,19 +44,19 @@ const mutations = {
 
 const actions = {
   setLoading(context, isLoading) {
-    context.commit("SET_LOADING", isLoading);
+    context.commit('SET_LOADING', isLoading);
   },
   setCategories(context, categories) {
-    context.commit("SET_CATEGORIES", categories);
+    context.commit('SET_CATEGORIES', categories);
   },
   setSelectedIdeaIndex(context, index) {
-    context.commit("SET_SELECTED_IDEA_INDEX", index);
+    context.commit('SET_SELECTED_IDEA_INDEX', index);
   },
   setTitle(context, title) {
-    context.commit("SET_TITLE", title);
+    context.commit('SET_TITLE', title);
   },
   setUserDataDB(context, db) {
-    context.commit("SET_USER_DATA_DB", db);
+    context.commit('SET_USER_DATA_DB', db);
   }
 };
 

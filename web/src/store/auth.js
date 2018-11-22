@@ -1,11 +1,11 @@
-import instance from "../axios-auth";
-import eventbus from "../eventbus";
-import config from "../config";
+import instance from '../axios-auth';
+import eventbus from '../eventbus';
+import config from '../config';
 
 const state = {
-  userId: "",
-  userEmail: "",
-  token: "",
+  userId: '',
+  userEmail: '',
+  token: '',
   isPerformingAction: false,
   userLoggedIn: false
 };
@@ -35,9 +35,9 @@ const mutations = {
     state.userEmail = loginData.email;
     state.userLoggedIn = true;
 
-    localStorage.setItem("loginData", JSON.stringify(loginData));
+    localStorage.setItem('loginData', JSON.stringify(loginData));
     localStorage.setItem(
-      "expiresIn",
+      'expiresIn',
       new Date().getTime() + parseInt(loginData.expiresIn) * 1000
     );
   },
@@ -46,91 +46,91 @@ const mutations = {
   },
   LOGOUT(state) {
     state.userLoggedIn = false;
-    state.userEmail = "";
-    state.token = "";
+    state.userEmail = '';
+    state.token = '';
 
-    localStorage.removeItem("loginData");
+    localStorage.removeItem('loginData');
   }
 };
 
 const actions = {
   signUpUser(context, data) {
     data.returnSecureToken = true;
-    context.dispatch("isPerformingAction", true);
+    context.dispatch('isPerformingAction', true);
 
     instance
       .post(`/signupNewUser?key=${config.apiKey}`, data)
       .then(res => {
-        context.commit("LOGIN_USER", res.data);
+        context.commit('LOGIN_USER', res.data);
 
-        eventbus.$emit("registration-success", "Created account successfully");
-        context.dispatch("isPerformingAction", false);
+        eventbus.$emit('registration-success', 'Created account successfully');
+        context.dispatch('isPerformingAction', false);
       })
       .catch(error => {
         eventbus.$emit(
-          "registration-failure",
+          'registration-failure',
           error.response.data.error.message
         );
-        context.dispatch("isPerformingAction", false);
+        context.dispatch('isPerformingAction', false);
       });
   },
   loginUserLocal(context, loginData) {
-    const expiresIn = localStorage.getItem("expiresIn");
+    const expiresIn = localStorage.getItem('expiresIn');
     if (expiresIn <= new Date().getTime()) {
-      context.commit("LOGOUT");
+      context.commit('LOGOUT');
       eventbus.showToast(
-        "Authorization token has expired. Please log in again.",
-        "error",
-        "5000"
+        'Authorization token has expired. Please log in again.',
+        'error',
+        '5000'
       );
     } else {
-      context.commit("LOGIN_USER", loginData);
+      context.commit('LOGIN_USER', loginData);
     }
   },
   loginUser(context, loginData) {
-    context.dispatch("isPerformingAction", true);
+    context.dispatch('isPerformingAction', true);
     loginData.returnSecureToken = true;
 
     instance
       .post(`/verifyPassword?key=${config.apiKey}`, loginData)
       .then(res => {
-        context.commit("LOGIN_USER", res.data);
+        context.commit('LOGIN_USER', res.data);
 
-        eventbus.$emit("login-success", "Login successful");
-        context.dispatch("isPerformingAction", false);
+        eventbus.$emit('login-success', 'Login successful');
+        context.dispatch('isPerformingAction', false);
       })
       .catch(error => {
-        eventbus.$emit("login-failure", error.response.data.error.message);
-        context.dispatch("isPerformingAction", false);
+        eventbus.$emit('login-failure', error.response.data.error.message);
+        context.dispatch('isPerformingAction', false);
       });
   },
   isPerformingAction(context, isPerformingAction) {
-    context.commit("IS_LOGGING_IN", isPerformingAction);
+    context.commit('IS_LOGGING_IN', isPerformingAction);
   },
   logout(context) {
-    context.commit("LOGOUT");
+    context.commit('LOGOUT');
   },
   registerUser(context, loginData) {
-    context.dispatch("isPerformingAction", true);
+    context.dispatch('isPerformingAction', true);
     loginData.returnSecureToken = true;
 
     instance
       .post(
-        "/signupNewUser?key=AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck",
+        '/signupNewUser?key=AIzaSyCzIvIOojv9gOcQrLqFvRSd9naA-gzm6ck',
         loginData
       )
       .then(res => {
-        context.commit("LOGIN_USER", res.data);
+        context.commit('LOGIN_USER', res.data);
 
-        eventbus.$emit("registration-success", "Account created successfully");
-        context.dispatch("isPerformingAction", false);
+        eventbus.$emit('registration-success', 'Account created successfully');
+        context.dispatch('isPerformingAction', false);
       })
       .catch(error => {
         eventbus.$emit(
-          "registration-failure",
+          'registration-failure',
           error.response.data.error.message
         );
-        context.dispatch("isPerformingAction", false);
+        context.dispatch('isPerformingAction', false);
       });
   }
 };

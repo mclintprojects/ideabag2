@@ -25,7 +25,6 @@
     "@vue/cli-plugin-babel": "^3.0.3",
     "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-service": "^3.0.3",
-    "@vue/eslint-config-prettier": "^4.0.0",
     "autoprefixer": "^9.3.1",
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",

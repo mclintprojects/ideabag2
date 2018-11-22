@@ -37,7 +37,7 @@
 </template>
 
 <script>
-import eventbus from "../eventbus";
+import eventbus from '../eventbus';
 
 export default {
   data() {
@@ -56,12 +56,12 @@ export default {
       this.$router.go(-1);
     },
     logout() {
-      this.$store.dispatch("logout");
-      eventbus.showToast("You're logged out now.", "success");
+      this.$store.dispatch('logout');
+      eventbus.showToast("You're logged out now.", 'success');
     },
     isRootRoute() {
       const route = this.$route.path;
-      if (route == "/") return true;
+      if (route == '/') return true;
       else return false;
     }
   },

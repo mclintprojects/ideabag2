@@ -2,9 +2,17 @@
   "env": {
     "node": true
   },
-  "rules": {},
+  "rules": {
+    "quotes": [
+      2,
+      "single",
+      {
+        "avoidEscape": true
+      }
+    ]
+  },
   "root": true,
-  "extends": ["plugin:vue/essential", "@vue/prettier"],
+  "extends": ["plugin:vue/essential"],
   "parserOptions": {
     "parser": "babel-eslint"
   }
