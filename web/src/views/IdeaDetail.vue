@@ -11,15 +11,15 @@
 						<h3>Set idea progress</h3>
 						<ul class="progress-list">
 							<li @click="setProgress('done');">
-								<input id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
+								<input v-model="progress" id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
 								<label for="progress-done">Done</label>
 							</li>
 							<li @click="setProgress('in-progress');">
-								<input id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
+								<input v-model="progress" id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
 								<label for="in-progress">In Progress</label>
 							</li>
 							<li @click="setProgress('undecided');">
-								<input id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
+								<input v-model="progress" id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
 								<label for="progress-undecided">Undecided</label>
 							</li>
 						</ul>
