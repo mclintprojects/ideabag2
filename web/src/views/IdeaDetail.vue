@@ -57,48 +57,48 @@
 </template>
 
 <script>
-import eventbus from "../eventbus";
-import axios from "axios";
+import eventbus from '../eventbus';
+import axios from 'axios';
 
 export default {
   data() {
     return {
       idea: null,
-      comment: "",
+      comment: '',
       comments: [],
       isBookmarked: false,
-      progress: "undecided",
+      progress: 'undecided',
       bookmarkButtonHovered: false,
       eyes: [
-        "eyes1",
-        "eyes10",
-        "eyes2",
-        "eyes3",
-        "eyes4",
-        "eyes5",
-        "eyes6",
-        "eyes7",
-        "eyes9"
+        'eyes1',
+        'eyes10',
+        'eyes2',
+        'eyes3',
+        'eyes4',
+        'eyes5',
+        'eyes6',
+        'eyes7',
+        'eyes9'
       ],
       noses: [
-        "nose2",
-        "nose3",
-        "nose4",
-        "nose5",
-        "nose6",
-        "nose7",
-        "nose8",
-        "nose9"
+        'nose2',
+        'nose3',
+        'nose4',
+        'nose5',
+        'nose6',
+        'nose7',
+        'nose8',
+        'nose9'
       ],
       mouths: [
-        "mouth1",
-        "mouth10",
-        "mouth11",
-        "mouth3",
-        "mouth5",
-        "mouth6",
-        "mouth7",
-        "mouth9"
+        'mouth1',
+        'mouth10',
+        'mouth11',
+        'mouth3',
+        'mouth5',
+        'mouth6',
+        'mouth7',
+        'mouth9'
       ]
     };
   },
@@ -124,15 +124,15 @@ export default {
     bookmarkIcon() {
       if (this.isBookmarked) {
         if (this.bookmarkButtonHovered) {
-          return "/img/outline-bookmark_colored-24px.svg";
+          return '/img/outline-bookmark_colored-24px.svg';
         } else {
-          return "/img/outline-bookmark-24px.svg";
+          return '/img/outline-bookmark-24px.svg';
         }
       } else {
         if (this.bookmarkButtonHovered) {
-          return "/img/outline-bookmark_border_colored-24px.svg";
+          return '/img/outline-bookmark_border_colored-24px.svg';
         } else {
-          return "/img/outline-bookmark_border-24px.svg";
+          return '/img/outline-bookmark_border-24px.svg';
         }
       }
     },
@@ -143,7 +143,7 @@ export default {
   watch: {
     progress(progress) {
       document.getElementById(
-        "progress-bar"
+        'progress-bar'
       ).style.backgroundColor = `var(--${progress})`;
     },
     userDataDB(db) {
@@ -153,8 +153,8 @@ export default {
     }
   },
   activated() {
-    axios.defaults.baseURL = "https://ideabag2.firebaseio.com";
-    this.$store.dispatch("setTitle", "Idea details");
+    axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
+    this.$store.dispatch('setTitle', 'Idea details');
 
     const categoryId = this.$route.params.categoryId;
     const ideaId = this.$route.params.ideaId;
@@ -175,7 +175,7 @@ export default {
   methods: {
     postComment() {
       if (this.userLoggedIn) {
-        this.$store.dispatch("isPerformingAction", true);
+        this.$store.dispatch('isPerformingAction', true);
         var comment = {
           userId: this.userId,
           author: this.email,
@@ -186,17 +186,17 @@ export default {
         axios
           .post(url, comment)
           .then(response => {
-            this.$store.dispatch("isPerformingAction", false);
+            this.$store.dispatch('isPerformingAction', false);
             comment.id = response.data.name;
             this.comments.push(comment);
-            this.comment = "";
+            this.comment = '';
           })
           .catch(error => {
-            this.$store.dispatch("isPerformingAction", false);
-            eventbus.showToast(error.response.data.error, "error");
+            this.$store.dispatch('isPerformingAction', false);
+            eventbus.showToast(error.response.data.error, 'error');
           });
       } else {
-        eventbus.showToast("Log in to post a comment", "error", "long");
+        eventbus.showToast('Log in to post a comment', 'error', 'long');
       }
     },
     getAvatar() {
@@ -215,7 +215,7 @@ export default {
       return { eye, nose, mouth };
     },
     getComments() {
-      this.$store.dispatch("isPerformingAction", true);
+      this.$store.dispatch('isPerformingAction', true);
       axios
         .get(`/${this.dataId}/comments.json`)
         .then(response => {
@@ -227,32 +227,32 @@ export default {
               this.comments.push(comment);
             }
           }
-          this.$store.dispatch("isPerformingAction", false);
+          this.$store.dispatch('isPerformingAction', false);
         })
         .catch(() => {
-          eventbus.showToast("Getting comments failed. Please retry.", "error");
-          this.$store.dispatch("isPerformingAction", false);
+          eventbus.showToast('Getting comments failed. Please retry.', 'error');
+          this.$store.dispatch('isPerformingAction', false);
         });
     },
     getDataId() {
       return `${this.idea.categoryId}C-${this.idea.id}I`;
     },
     deleteComment(commentId, index) {
-      this.$store.dispatch("isPerformingAction", true);
+      this.$store.dispatch('isPerformingAction', true);
       var url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
       axios
         .delete(url)
         .then(() => {
-          eventbus.showToast("Comment deleted successfully", "success");
+          eventbus.showToast('Comment deleted successfully', 'success');
           this.comments.splice(index, 1);
-          this.$store.dispatch("isPerformingAction", false);
+          this.$store.dispatch('isPerformingAction', false);
         })
         .catch(() => {
           eventbus.showToast(
-            "Failed to delete comment. Please retry.",
-            "error"
+            'Failed to delete comment. Please retry.',
+            'error'
           );
-          this.$store.dispatch("isPerformingAction", false);
+          this.$store.dispatch('isPerformingAction', false);
         });
     },
     getTimestamp(milliseconds) {
@@ -261,8 +261,8 @@ export default {
     addNewIdea(ideaId, bookmarked, progress) {
       const bookmarkedBinary = bookmarked ? 1 : 0;
       this.userDataDB
-        .transaction(["ideas"], "readwrite")
-        .objectStore("ideas")
+        .transaction(['ideas'], 'readwrite')
+        .objectStore('ideas')
         .add({
           id: ideaId,
           bookmarked: bookmarkedBinary,
@@ -274,14 +274,14 @@ export default {
     },
     loadUserData() {
       this.userDataDB
-        .transaction(["ideas"], "readonly")
-        .objectStore("ideas")
+        .transaction(['ideas'], 'readonly')
+        .objectStore('ideas')
         .get(this.dataId).onsuccess = event => {
         if (event.target.result) {
           this.progress = event.target.result.progress;
           this.isBookmarked = event.target.result.bookmarked;
         } else {
-          this.progress = "undecided";
+          this.progress = 'undecided';
           this.isBookmarked = false;
         }
       };
@@ -297,11 +297,11 @@ export default {
       const id = this.dataId;
       const db = this.userDataDB;
       const objectStore = db
-        .transaction(["ideas"], "readwrite")
-        .objectStore("ideas");
+        .transaction(['ideas'], 'readwrite')
+        .objectStore('ideas');
       objectStore.get(id).onsuccess = event => {
         if (event.target.result === undefined) {
-          this.addNewIdea(id, true, "undecided");
+          this.addNewIdea(id, true, 'undecided');
         } else {
           event.target.result.bookmarked = 1;
           objectStore.put(event.target.result).onsuccess = () =>
@@ -313,8 +313,8 @@ export default {
       const id = this.dataId;
       const db = this.userDataDB;
       const objectStore = db
-        .transaction(["ideas"], "readwrite")
-        .objectStore("ideas");
+        .transaction(['ideas'], 'readwrite')
+        .objectStore('ideas');
       objectStore.get(id).onsuccess = event => {
         event.target.result.bookmarked = 0;
         objectStore.put(event.target.result).onsuccess = () =>
@@ -325,8 +325,8 @@ export default {
       const id = this.dataId;
       const db = this.userDataDB;
       const objectStore = db
-        .transaction(["ideas"], "readwrite")
-        .objectStore("ideas");
+        .transaction(['ideas'], 'readwrite')
+        .objectStore('ideas');
       objectStore.get(id).onsuccess = event => {
         if (event.target.result === undefined) {
           this.addNewIdea(id, false, progress);
@@ -337,11 +337,11 @@ export default {
           };
         }
       };
-      this.$modal.hide("progress-modal");
+      this.$modal.hide('progress-modal');
     },
     updateProgressRadiobuttons() {
       const radiobuttons = document.getElementsByClassName(
-        "progress-radiobutton"
+        'progress-radiobutton'
       );
       for (let i = 0; i < radiobuttons.length; i++) {
         if (radiobuttons[i].value === this.progress) {

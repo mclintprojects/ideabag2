@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import Vue from "vue";
+import Vue from 'vue';
 
 export default {
   computed: {
@@ -43,16 +43,16 @@ export default {
     loadProgressData() {
       for (let i = 0; i < this.ideas.length; i++) {
         this.userDataDB
-          .transaction(["ideas"])
-          .objectStore("ideas")
+          .transaction(['ideas'])
+          .objectStore('ideas')
           .get(
             `${this.ideas[i].categoryId - 1}C-${this.ideas[i].id}I`
           ).onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
-              Vue.set(this.ideas[i], "progress", event.target.result.progress);
+              Vue.set(this.ideas[i], 'progress', event.target.result.progress);
             } else {
-              Vue.set(this.ideas[i], "progress", "undecided");
+              Vue.set(this.ideas[i], 'progress', 'undecided');
             }
           }
         };
@@ -64,10 +64,10 @@ export default {
           x => x.categoryLbl == idea.category
         ) + 1;
       this.$router.push({
-        name: "ideas",
+        name: 'ideas',
         params: { categoryId: categoryId, ideaId: idea.id }
       });
-      this.$store.dispatch("setSelectedIdeaIndex", index);
+      this.$store.dispatch('setSelectedIdeaIndex', index);
     }
   },
   activated() {
