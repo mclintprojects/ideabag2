@@ -1,13 +1,11 @@
 {
   "name": "ideabag2",
-  "description": "A web version of the Programming Ideas 2 android app",
   "version": "1.0.0",
-  "author": "Mbah Clinton",
-  "license": "GNU General Public License",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
   "dependencies": {
     "axios": "^0.18.0",
@@ -18,22 +16,30 @@
     "vue2-animate": "^1.0.4",
     "vuex": "^3.0.1"
   },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.3",
+    "@vue/cli-plugin-eslint": "^3.1.5",
     "@vue/cli-service": "^3.0.3",
-    "vue-template-compiler": "^2.5.17",
-    "autoprefixer": "^9.3.1"
+    "@vue/eslint-config-prettier": "^4.0.0",
+    "autoprefixer": "^9.3.1",
+    "babel-eslint": "^10.0.1",
+    "eslint": "^5.8.0",
+    "eslint-plugin-vue": "^5.0.0-0",
+    "vue-template-compiler": "^2.5.17"
   },
   "postcss": {
     "plugins": {
       "autoprefixer": {}
     }
   },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 8"
+  ],
+  "license": "GNU General Public License",
+  "author": "Mbah Clinton",
+  "description": "A web version of the Programming Ideas 2 android app",
   "engines": {
     "node": ">= 6.0.0",
     "npm": ">= 3.0.0"

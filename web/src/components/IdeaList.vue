@@ -10,114 +10,114 @@
 </template>
 
 <script>
-import Vue from 'vue';
+import Vue from "vue";
 
 export default {
-	computed: {
-		selectedIndex() {
-			return this.$store.getters.selectedIdeaIndex;
-		},
-		userDataDB() {
-			return this.$store.getters.userDataDB;
-		}
-	},
-	props: {
-		ideas: {
-			type: Array,
-			required: true
-		}
-	},
-	watch: {
-		userDataDB(db) {
-			if (db !== null && this.ideas.length > 0) {
-				this.loadProgressData();
-			}
-		},
-		ideas(ideas) {
-			if (this.userDataDB !== null && ideas.length > 0) {
-				this.loadProgressData();
-			}
-		}
-	},
-	methods: {
-		loadProgressData() {
-			for (let i = 0; i < this.ideas.length; i++) {
-				this.userDataDB
-					.transaction(['ideas'])
-					.objectStore('ideas')
-					.get(
-						`${this.ideas[i].categoryId - 1}C-${this.ideas[i].id}I`
-					).onsuccess = event => {
-					if (this.ideas.length > i) {
-						if (event.target.result !== undefined) {
-							Vue.set(this.ideas[i], 'progress', event.target.result.progress);
-						} else {
-							Vue.set(this.ideas[i], 'progress', 'undecided');
-						}
-					}
-				};
-			}
-		},
-		notifyIdeaClicked(idea, index) {
-			const categoryId =
-				this.$store.getters.categories.findIndex(
-					x => x.categoryLbl == idea.category
-				) + 1;
-			this.$router.push({
-				name: 'ideas',
-				params: { categoryId: categoryId, ideaId: idea.id }
-			});
-			this.$store.dispatch('setSelectedIdeaIndex', index);
-		}
-	},
-	activated() {
-		if (this.userDataDB !== null && this.ideas.length > 0) {
-			this.loadProgressData();
-		}
-	},
-	created() {
-		if (this.userDataDB !== null && this.ideas.length > 0) {
-			this.loadProgressData();
-		}
-	}
+  computed: {
+    selectedIndex() {
+      return this.$store.getters.selectedIdeaIndex;
+    },
+    userDataDB() {
+      return this.$store.getters.userDataDB;
+    }
+  },
+  props: {
+    ideas: {
+      type: Array,
+      required: true
+    }
+  },
+  watch: {
+    userDataDB(db) {
+      if (db !== null && this.ideas.length > 0) {
+        this.loadProgressData();
+      }
+    },
+    ideas(ideas) {
+      if (this.userDataDB !== null && ideas.length > 0) {
+        this.loadProgressData();
+      }
+    }
+  },
+  methods: {
+    loadProgressData() {
+      for (let i = 0; i < this.ideas.length; i++) {
+        this.userDataDB
+          .transaction(["ideas"])
+          .objectStore("ideas")
+          .get(
+            `${this.ideas[i].categoryId - 1}C-${this.ideas[i].id}I`
+          ).onsuccess = event => {
+          if (this.ideas.length > i) {
+            if (event.target.result !== undefined) {
+              Vue.set(this.ideas[i], "progress", event.target.result.progress);
+            } else {
+              Vue.set(this.ideas[i], "progress", "undecided");
+            }
+          }
+        };
+      }
+    },
+    notifyIdeaClicked(idea, index) {
+      const categoryId =
+        this.$store.getters.categories.findIndex(
+          x => x.categoryLbl == idea.category
+        ) + 1;
+      this.$router.push({
+        name: "ideas",
+        params: { categoryId: categoryId, ideaId: idea.id }
+      });
+      this.$store.dispatch("setSelectedIdeaIndex", index);
+    }
+  },
+  activated() {
+    if (this.userDataDB !== null && this.ideas.length > 0) {
+      this.loadProgressData();
+    }
+  },
+  created() {
+    if (this.userDataDB !== null && this.ideas.length > 0) {
+      this.loadProgressData();
+    }
+  }
 };
 </script>
 
 <style scoped>
 #ideaList {
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
 }
 #ideaList li {
-	border-left: 8px solid transparent;
-	padding: 8px 16px 8px 16px;
+  border-left: 8px solid transparent;
+  padding: 8px 16px 8px 16px;
 }
 #ideaList li:hover {
-	background-color: var(--highlight);
-	cursor: pointer;
+  background-color: var(--highlight);
+  cursor: pointer;
 }
 #ideaTitle {
-	font-size: var(--primaryTextSize);
-	margin: 0px 0px 4px 0px;
-	text-overflow: ellipsis;
-	overflow: hidden;
-	white-space: nowrap;
-	padding: 0px;
+  font-size: var(--primaryTextSize);
+  margin: 0px 0px 4px 0px;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  padding: 0px;
 }
 .progress-undecided {
-	border-left: 8px solid var(--undecided) !important;
+  border-left: 8px solid var(--undecided) !important;
 }
 .progress-in-progress {
-	border-left: 8px solid var(--in-progress) !important;
+  border-left: 8px solid var(--in-progress) !important;
 }
 .progress-done {
-	border-left: 8px solid var(--done) !important;
+  border-left: 8px solid var(--done) !important;
 }
 .badge {
-	background-color: var(--primary);
-	padding: var(--badgePadding);
-	color: rgba(0, 0, 0, 0.54);
-	font-size: var(--badgeTextSize);
+  background-color: var(--primary);
+  padding: var(--badgePadding);
+  color: rgba(0, 0, 0, 0.54);
+  font-size: var(--badgeTextSize);
 }
 </style>

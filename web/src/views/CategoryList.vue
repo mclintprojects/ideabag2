@@ -21,96 +21,96 @@
 
 <script>
 export default {
-	data() {
-		return {
-			icons: [
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/numbers.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/text.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/network.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/enterprise.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/cpu.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/web.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/file.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/database.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png',
-				'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png'
-			],
-			selectedIndex: 0
-		};
-	},
-	computed: {
-		categories() {
-			return this.$store.getters.categories;
-		}
-	},
-	methods: {
-		notifyCategoryClicked(index) {
-			this.selectedIndex = index;
-			this.$router.push({
-				name: 'categories',
-				params: { categoryId: index + 1 }
-			});
-		}
-	},
-	activated() {
-		this.$store.dispatch('setSelectedIdeaIndex', -1);
-		this.$store.dispatch('setTitle', 'IdeaBag 2');
-	}
+  data() {
+    return {
+      icons: [
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/numbers.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/text.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/network.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/enterprise.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/cpu.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221459/web.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/file.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/database.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png",
+        "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png"
+      ],
+      selectedIndex: 0
+    };
+  },
+  computed: {
+    categories() {
+      return this.$store.getters.categories;
+    }
+  },
+  methods: {
+    notifyCategoryClicked(index) {
+      this.selectedIndex = index;
+      this.$router.push({
+        name: "categories",
+        params: { categoryId: index + 1 }
+      });
+    }
+  },
+  activated() {
+    this.$store.dispatch("setSelectedIdeaIndex", -1);
+    this.$store.dispatch("setTitle", "IdeaBag 2");
+  }
 };
 </script>
 
 <style scoped>
 .categoryIcon {
-	width: var(--categoryIconSize);
+  width: var(--categoryIconSize);
 }
 
 .categoryIconBg {
-	background: rgba(0, 0, 0, 0.8);
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	width: var(--categoryIconBgSize);
-	height: var(--categoryIconBgSize);
-	border-radius: 180px;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: var(--categoryIconBgSize);
+  height: var(--categoryIconBgSize);
+  border-radius: 180px;
 }
 
 .categoryContent {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	margin-left: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 16px;
 }
 
 #categoryList {
-	list-style-type: none;
-	margin: 0px;
-	padding: 0px;
+  list-style-type: none;
+  margin: 0px;
+  padding: 0px;
 }
 
 #categoryList li:hover {
-	background-color: var(--highlight);
-	cursor: pointer;
+  background-color: var(--highlight);
+  cursor: pointer;
 }
 
 #categoryTitle {
-	font-size: var(--primaryTextSize);
-	margin: 0px;
+  font-size: var(--primaryTextSize);
+  margin: 0px;
 }
 
 .categoryItem {
-	display: flex;
-	flex-direction: row;
-	padding: 8px 16px 8px 16px;
+  display: flex;
+  flex-direction: row;
+  padding: 8px 16px 8px 16px;
 }
 
 #bookmarkBtn {
-	border-radius: 180px;
-	bottom: 20px;
-	display: flex;
-	justify-content: center;
-	height: 60px;
-	position: fixed;
-	right: 20px;
-	width: 60px;
+  border-radius: 180px;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+  height: 60px;
+  position: fixed;
+  right: 20px;
+  width: 60px;
 }
 </style>
