@@ -336,6 +336,7 @@ export default {
 						(this.progress = progress);
 				}
 			};
+			this.$modal.hide('progress-modal');
 		},
 		updateProgressRadiobuttons() {
 			const radiobuttons = document.getElementsByClassName(
