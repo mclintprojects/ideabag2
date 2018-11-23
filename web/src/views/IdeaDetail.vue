@@ -137,7 +137,7 @@ export default {
       }
     },
     dataId() {
-      return `${this.idea.categoryId - 1}C-${this.idea.id}I`;
+      return `${this.idea.categoryId}C-${this.idea.id}I`;
     }
   },
   watch: {
