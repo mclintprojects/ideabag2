@@ -10,47 +10,47 @@
 </template>
 
 <script>
-import Navbar from "./components/Navbar";
-import axios from "axios";
-import eventbus from "./eventbus";
+import Navbar from './components/Navbar';
+import axios from 'axios';
+import eventbus from './eventbus';
 
 let ideasURL =
-  "https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt";
+  'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
 
 export default {
-  name: "app",
+  name: 'app',
   components: { Navbar },
   methods: {
     getData() {
-      const ideasdb = localStorage.getItem("ideasdb");
+      const ideasdb = localStorage.getItem('ideasdb');
 
       if (ideasdb) {
-        this.$store.dispatch("setLoading", false);
-        eventbus.showToast("Loaded offline cache.", "info");
+        this.$store.dispatch('setLoading', false);
+        eventbus.showToast('Loaded offline cache.', 'info');
         return JSON.parse(ideasdb);
       }
 
       return [];
     },
     tryLocalLogin() {
-      const loginData = localStorage.getItem("loginData");
+      const loginData = localStorage.getItem('loginData');
 
       if (loginData) {
-        this.$store.dispatch("loginUserLocal", JSON.parse(loginData));
+        this.$store.dispatch('loginUserLocal', JSON.parse(loginData));
       }
     },
     saveData(ideasdb) {
-      localStorage.setItem("ideasdb", JSON.stringify(ideasdb));
+      localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
     },
     setupInterceptors() {
       axios.interceptors.response.use(res => {
         if (res.status == 401) {
           eventbus.showToast(
-            "Authorization token expired. Please login again.",
-            "error",
-            "5000"
+            'Authorization token expired. Please login again.',
+            'error',
+            '5000'
           );
-          this.$store.dispatch("logout");
+          this.$store.dispatch('logout');
         }
 
         return res;
@@ -58,36 +58,36 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch("setCategories", this.getData());
+    this.$store.dispatch('setCategories', this.getData());
     axios.defaults.timeout = 12000;
 
     axios
       .get(ideasURL)
       .then(response => {
-        this.$store.dispatch("setCategories", response.data);
-        this.$store.dispatch("setLoading", false);
+        this.$store.dispatch('setCategories', response.data);
+        this.$store.dispatch('setLoading', false);
         this.saveData(response.data);
       })
       .catch(() => {
         eventbus.showToast(
           "Couldn't load data. Please check your connection and reload.",
-          "error",
-          "long"
+          'error',
+          'long'
         );
       });
 
     this.tryLocalLogin();
     this.setupInterceptors();
 
-    const request = indexedDB.open("userData", 1);
+    const request = indexedDB.open('userData', 1);
     request.onupgradeneeded = event => {
       const db = event.target.result;
-      const ideasStore = db.createObjectStore("ideas", { keyPath: "id" });
-      ideasStore.createIndex("bookmarked", "bookmarked");
+      const ideasStore = db.createObjectStore('ideas', { keyPath: 'id' });
+      ideasStore.createIndex('bookmarked', 'bookmarked');
     };
     request.onsuccess = event => {
       const db = event.target.result;
-      this.$store.dispatch("setUserDataDB", db);
+      this.$store.dispatch('setUserDataDB', db);
     };
   }
 };
