@@ -13,7 +13,6 @@
 import Navbar from './components/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
-import { create } from 'domain';
 
 let ideasURL =
 	'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
