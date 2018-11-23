@@ -46,7 +46,7 @@ export default {
           .transaction(['ideas'])
           .objectStore('ideas')
           .get(
-            `${this.ideas[i].categoryId - 1}C-${this.ideas[i].id}I`
+            `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
           ).onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
