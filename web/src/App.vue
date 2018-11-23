@@ -21,11 +21,6 @@ let ideasURL =
 export default {
 	name: 'app',
 	components: { Navbar },
-	data() {
-		return {
-			dbVersion: 1
-		};
-	},
 	methods: {
 		getData() {
 			const ideasdb = localStorage.getItem('ideasdb');
@@ -80,10 +75,8 @@ export default {
 					);
 				});
 		},
-		createDb(recreateDb = false) {
-			if (recreateDb) this.dbVersion = this.dbVersion + 1;
-
-			const request = indexedDB.open('userData', 1);
+		createDb(version = 1) {
+			const request = indexedDB.open('userData', version);
 
 			request.onupgradeneeded = event => {
 				const db = event.target.result;
@@ -93,7 +86,8 @@ export default {
 
 			request.onsuccess = event => {
 				const db = event.target.result;
-				if (!db.objectStoreNames.contains('ideas')) this.createDb(true);
+				if (!db.objectStoreNames.contains('ideas'))
+					this.createDb(db.version + 1);
 				this.$store.dispatch('setUserDataDB', db);
 			};
 		}
