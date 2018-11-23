@@ -61,457 +61,457 @@ import eventbus from '../eventbus';
 import axios from 'axios';
 
 export default {
-  data() {
-    return {
-      idea: null,
-      comment: '',
-      comments: [],
-      isBookmarked: false,
-      progress: 'undecided',
-      bookmarkButtonHovered: false,
-      eyes: [
-        'eyes1',
-        'eyes10',
-        'eyes2',
-        'eyes3',
-        'eyes4',
-        'eyes5',
-        'eyes6',
-        'eyes7',
-        'eyes9'
-      ],
-      noses: [
-        'nose2',
-        'nose3',
-        'nose4',
-        'nose5',
-        'nose6',
-        'nose7',
-        'nose8',
-        'nose9'
-      ],
-      mouths: [
-        'mouth1',
-        'mouth10',
-        'mouth11',
-        'mouth3',
-        'mouth5',
-        'mouth6',
-        'mouth7',
-        'mouth9'
-      ]
-    };
-  },
-  computed: {
-    isLoading() {
-      return this.$store.getters.categories.length == 0;
-    },
-    isPerformingAction() {
-      return this.$store.getters.isPerformingAction;
-    },
-    token() {
-      return this.$store.getters.token;
-    },
-    email() {
-      return this.$store.getters.userEmail;
-    },
-    userLoggedIn() {
-      return this.$store.getters.userLoggedIn;
-    },
-    userDataDB() {
-      return this.$store.getters.userDataDB;
-    },
-    bookmarkIcon() {
-      if (this.isBookmarked) {
-        if (this.bookmarkButtonHovered) {
-          return '/img/outline-bookmark_colored-24px.svg';
-        } else {
-          return '/img/outline-bookmark-24px.svg';
-        }
-      } else {
-        if (this.bookmarkButtonHovered) {
-          return '/img/outline-bookmark_border_colored-24px.svg';
-        } else {
-          return '/img/outline-bookmark_border-24px.svg';
-        }
-      }
-    },
-    dataId() {
-      return `${this.idea.categoryId - 1}C-${this.idea.id}I`;
-    }
-  },
-  watch: {
-    progress(progress) {
-      document.getElementById(
-        'progress-bar'
-      ).style.backgroundColor = `var(--${progress})`;
-    },
-    userDataDB(db) {
-      if (db !== null) {
-        this.loadUserData();
-      }
-    }
-  },
-  activated() {
-    axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
-    this.$store.dispatch('setTitle', 'Idea details');
+	data() {
+		return {
+			idea: null,
+			comment: '',
+			comments: [],
+			isBookmarked: false,
+			progress: 'undecided',
+			bookmarkButtonHovered: false,
+			eyes: [
+				'eyes1',
+				'eyes10',
+				'eyes2',
+				'eyes3',
+				'eyes4',
+				'eyes5',
+				'eyes6',
+				'eyes7',
+				'eyes9'
+			],
+			noses: [
+				'nose2',
+				'nose3',
+				'nose4',
+				'nose5',
+				'nose6',
+				'nose7',
+				'nose8',
+				'nose9'
+			],
+			mouths: [
+				'mouth1',
+				'mouth10',
+				'mouth11',
+				'mouth3',
+				'mouth5',
+				'mouth6',
+				'mouth7',
+				'mouth9'
+			]
+		};
+	},
+	computed: {
+		isLoading() {
+			return this.$store.getters.categories.length == 0;
+		},
+		isPerformingAction() {
+			return this.$store.getters.isPerformingAction;
+		},
+		token() {
+			return this.$store.getters.token;
+		},
+		email() {
+			return this.$store.getters.userEmail;
+		},
+		userLoggedIn() {
+			return this.$store.getters.userLoggedIn;
+		},
+		userDataDB() {
+			return this.$store.getters.userDataDB;
+		},
+		bookmarkIcon() {
+			if (this.isBookmarked) {
+				if (this.bookmarkButtonHovered) {
+					return '/img/outline-bookmark_colored-24px.svg';
+				} else {
+					return '/img/outline-bookmark-24px.svg';
+				}
+			} else {
+				if (this.bookmarkButtonHovered) {
+					return '/img/outline-bookmark_border_colored-24px.svg';
+				} else {
+					return '/img/outline-bookmark_border-24px.svg';
+				}
+			}
+		},
+		dataId() {
+			return `${this.idea.categoryId}C-${this.idea.id}I`;
+		}
+	},
+	watch: {
+		progress(progress) {
+			document.getElementById(
+				'progress-bar'
+			).style.backgroundColor = `var(--${progress})`;
+		},
+		userDataDB(db) {
+			if (db !== null) {
+				this.loadUserData();
+			}
+		}
+	},
+	activated() {
+		axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
+		this.$store.dispatch('setTitle', 'Idea details');
 
-    const categoryId = this.$route.params.categoryId;
-    const ideaId = this.$route.params.ideaId;
+		const categoryId = this.$route.params.categoryId;
+		const ideaId = this.$route.params.ideaId;
 
-    this.idea = this.$store.getters.categories[categoryId - 1].items[
-      ideaId - 1
-    ];
+		this.idea = this.$store.getters.categories[categoryId - 1].items[
+			ideaId - 1
+		];
 
-    if (this.userDataDB !== null) {
-      this.loadUserData();
-    }
+		if (this.userDataDB !== null) {
+			this.loadUserData();
+		}
 
-    this.getComments();
-  },
-  deactivated() {
-    this.comments.length = 0;
-  },
-  methods: {
-    postComment() {
-      if (this.userLoggedIn) {
-        this.$store.dispatch('isPerformingAction', true);
-        var comment = {
-          userId: this.userId,
-          author: this.email,
-          comment: this.comment,
-          created: new Date().getTime()
-        };
-        var url = `/${this.dataId}/comments.json?auth=${this.token}`;
-        axios
-          .post(url, comment)
-          .then(response => {
-            this.$store.dispatch('isPerformingAction', false);
-            comment.id = response.data.name;
-            this.comments.push(comment);
-            this.comment = '';
-          })
-          .catch(error => {
-            this.$store.dispatch('isPerformingAction', false);
-            eventbus.showToast(error.response.data.error, 'error');
-          });
-      } else {
-        eventbus.showToast('Log in to post a comment', 'error', 'long');
-      }
-    },
-    getAvatar() {
-      var face = this.getRandomFace();
-      return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
-        face.mouth
-      }/ffa000`;
-    },
-    getRandomNumber(min, max) {
-      return Math.floor(Math.random() * (max - min + 1)) + min;
-    },
-    getRandomFace() {
-      var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
-      var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
-      var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
-      return { eye, nose, mouth };
-    },
-    getComments() {
-      this.$store.dispatch('isPerformingAction', true);
-      axios
-        .get(`/${this.dataId}/comments.json`)
-        .then(response => {
-          if (response.data != null) {
-            var keys = Object.keys(response.data);
-            for (var i = 0; i < keys.length; i++) {
-              var comment = response.data[keys[i]];
-              comment.id = keys[i];
-              this.comments.push(comment);
-            }
-          }
-          this.$store.dispatch('isPerformingAction', false);
-        })
-        .catch(() => {
-          eventbus.showToast('Getting comments failed. Please retry.', 'error');
-          this.$store.dispatch('isPerformingAction', false);
-        });
-    },
-    getDataId() {
-      return `${this.idea.categoryId}C-${this.idea.id}I`;
-    },
-    deleteComment(commentId, index) {
-      this.$store.dispatch('isPerformingAction', true);
-      var url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
-      axios
-        .delete(url)
-        .then(() => {
-          eventbus.showToast('Comment deleted successfully', 'success');
-          this.comments.splice(index, 1);
-          this.$store.dispatch('isPerformingAction', false);
-        })
-        .catch(() => {
-          eventbus.showToast(
-            'Failed to delete comment. Please retry.',
-            'error'
-          );
-          this.$store.dispatch('isPerformingAction', false);
-        });
-    },
-    getTimestamp(milliseconds) {
-      return new Date(milliseconds).toLocaleDateString();
-    },
-    addNewIdea(ideaId, bookmarked, progress) {
-      const bookmarkedBinary = bookmarked ? 1 : 0;
-      this.userDataDB
-        .transaction(['ideas'], 'readwrite')
-        .objectStore('ideas')
-        .add({
-          id: ideaId,
-          bookmarked: bookmarkedBinary,
-          progress: progress
-        }).onsuccess = () => {
-        this.isBookmarked = bookmarked;
-        this.progress = progress;
-      };
-    },
-    loadUserData() {
-      this.userDataDB
-        .transaction(['ideas'], 'readonly')
-        .objectStore('ideas')
-        .get(this.dataId).onsuccess = event => {
-        if (event.target.result) {
-          this.progress = event.target.result.progress;
-          this.isBookmarked = event.target.result.bookmarked;
-        } else {
-          this.progress = 'undecided';
-          this.isBookmarked = false;
-        }
-      };
-    },
-    toggleBookmark() {
-      if (this.isBookmarked) {
-        this.removeFromBookmarks();
-      } else {
-        this.addToBookmarks();
-      }
-    },
-    addToBookmarks() {
-      const id = this.dataId;
-      const db = this.userDataDB;
-      const objectStore = db
-        .transaction(['ideas'], 'readwrite')
-        .objectStore('ideas');
-      objectStore.get(id).onsuccess = event => {
-        if (event.target.result === undefined) {
-          this.addNewIdea(id, true, 'undecided');
-        } else {
-          event.target.result.bookmarked = 1;
-          objectStore.put(event.target.result).onsuccess = () =>
-            (this.isBookmarked = true);
-        }
-      };
-    },
-    removeFromBookmarks() {
-      const id = this.dataId;
-      const db = this.userDataDB;
-      const objectStore = db
-        .transaction(['ideas'], 'readwrite')
-        .objectStore('ideas');
-      objectStore.get(id).onsuccess = event => {
-        event.target.result.bookmarked = 0;
-        objectStore.put(event.target.result).onsuccess = () =>
-          (this.isBookmarked = false);
-      };
-    },
-    setProgress(progress) {
-      const id = this.dataId;
-      const db = this.userDataDB;
-      const objectStore = db
-        .transaction(['ideas'], 'readwrite')
-        .objectStore('ideas');
-      objectStore.get(id).onsuccess = event => {
-        if (event.target.result === undefined) {
-          this.addNewIdea(id, false, progress);
-        } else {
-          event.target.result.progress = progress;
-          objectStore.put(event.target.result).onsuccess = () => {
-            this.progress = progress;
-          };
-        }
-      };
-      this.$modal.hide('progress-modal');
-    },
-    updateProgressRadiobuttons() {
-      const radiobuttons = document.getElementsByClassName(
-        'progress-radiobutton'
-      );
-      for (let i = 0; i < radiobuttons.length; i++) {
-        if (radiobuttons[i].value === this.progress) {
-          radiobuttons[i].checked = true;
-        } else {
-          radiobuttons[i].checked = false;
-        }
-      }
-    }
-  }
+		this.getComments();
+	},
+	deactivated() {
+		this.comments.length = 0;
+	},
+	methods: {
+		postComment() {
+			if (this.userLoggedIn) {
+				this.$store.dispatch('isPerformingAction', true);
+				var comment = {
+					userId: this.userId,
+					author: this.email,
+					comment: this.comment,
+					created: new Date().getTime()
+				};
+				var url = `/${this.dataId}/comments.json?auth=${this.token}`;
+				axios
+					.post(url, comment)
+					.then(response => {
+						this.$store.dispatch('isPerformingAction', false);
+						comment.id = response.data.name;
+						this.comments.push(comment);
+						this.comment = '';
+					})
+					.catch(error => {
+						this.$store.dispatch('isPerformingAction', false);
+						eventbus.showToast(error.response.data.error, 'error');
+					});
+			} else {
+				eventbus.showToast('Log in to post a comment', 'error', 'long');
+			}
+		},
+		getAvatar() {
+			var face = this.getRandomFace();
+			return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
+				face.mouth
+			}/ffa000`;
+		},
+		getRandomNumber(min, max) {
+			return Math.floor(Math.random() * (max - min + 1)) + min;
+		},
+		getRandomFace() {
+			var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
+			var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
+			var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
+			return { eye, nose, mouth };
+		},
+		getComments() {
+			this.$store.dispatch('isPerformingAction', true);
+			axios
+				.get(`${this.idea.categoryId - 1}C-${this.idea.id}I/comments.json`)
+				.then(response => {
+					if (response.data != null) {
+						var keys = Object.keys(response.data);
+						for (var i = 0; i < keys.length; i++) {
+							var comment = response.data[keys[i]];
+							comment.id = keys[i];
+							this.comments.push(comment);
+						}
+					}
+					this.$store.dispatch('isPerformingAction', false);
+				})
+				.catch(() => {
+					eventbus.showToast('Getting comments failed. Please retry.', 'error');
+					this.$store.dispatch('isPerformingAction', false);
+				});
+		},
+		getDataId() {
+			return `${this.idea.categoryId}C-${this.idea.id}I`;
+		},
+		deleteComment(commentId, index) {
+			this.$store.dispatch('isPerformingAction', true);
+			var url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
+			axios
+				.delete(url)
+				.then(() => {
+					eventbus.showToast('Comment deleted successfully', 'success');
+					this.comments.splice(index, 1);
+					this.$store.dispatch('isPerformingAction', false);
+				})
+				.catch(() => {
+					eventbus.showToast(
+						'Failed to delete comment. Please retry.',
+						'error'
+					);
+					this.$store.dispatch('isPerformingAction', false);
+				});
+		},
+		getTimestamp(milliseconds) {
+			return new Date(milliseconds).toLocaleDateString();
+		},
+		addNewIdea(ideaId, bookmarked, progress) {
+			const bookmarkedBinary = bookmarked ? 1 : 0;
+			this.userDataDB
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas')
+				.add({
+					id: ideaId,
+					bookmarked: bookmarkedBinary,
+					progress: progress
+				}).onsuccess = () => {
+				this.isBookmarked = bookmarked;
+				this.progress = progress;
+			};
+		},
+		loadUserData() {
+			this.userDataDB
+				.transaction(['ideas'], 'readonly')
+				.objectStore('ideas')
+				.get(this.dataId).onsuccess = event => {
+				if (event.target.result) {
+					this.progress = event.target.result.progress;
+					this.isBookmarked = event.target.result.bookmarked;
+				} else {
+					this.progress = 'undecided';
+					this.isBookmarked = false;
+				}
+			};
+		},
+		toggleBookmark() {
+			if (this.isBookmarked) {
+				this.removeFromBookmarks();
+			} else {
+				this.addToBookmarks();
+			}
+		},
+		addToBookmarks() {
+			const id = this.dataId;
+			const db = this.userDataDB;
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(id).onsuccess = event => {
+				if (event.target.result === undefined) {
+					this.addNewIdea(id, true, 'undecided');
+				} else {
+					event.target.result.bookmarked = 1;
+					objectStore.put(event.target.result).onsuccess = () =>
+						(this.isBookmarked = true);
+				}
+			};
+		},
+		removeFromBookmarks() {
+			const id = this.dataId;
+			const db = this.userDataDB;
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(id).onsuccess = event => {
+				event.target.result.bookmarked = 0;
+				objectStore.put(event.target.result).onsuccess = () =>
+					(this.isBookmarked = false);
+			};
+		},
+		setProgress(progress) {
+			const id = this.dataId;
+			const db = this.userDataDB;
+			const objectStore = db
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(id).onsuccess = event => {
+				if (event.target.result === undefined) {
+					this.addNewIdea(id, false, progress);
+				} else {
+					event.target.result.progress = progress;
+					objectStore.put(event.target.result).onsuccess = () => {
+						this.progress = progress;
+					};
+				}
+			};
+			this.$modal.hide('progress-modal');
+		},
+		updateProgressRadiobuttons() {
+			const radiobuttons = document.getElementsByClassName(
+				'progress-radiobutton'
+			);
+			for (let i = 0; i < radiobuttons.length; i++) {
+				if (radiobuttons[i].value === this.progress) {
+					radiobuttons[i].checked = true;
+				} else {
+					radiobuttons[i].checked = false;
+				}
+			}
+		}
+	}
 };
 </script>
 
 <style>
 .progress-modal > h3 {
-  text-align: center;
+	text-align: center;
 }
 </style>
 
 <style scoped>
 #card {
-  border: 2px solid transparent;
-  border-radius: 10px 10px 0px 0px;
-  background-color: var(--primary);
-  padding: 16px;
-  margin: var(--cardMargin);
+	border: 2px solid transparent;
+	border-radius: 10px 10px 0px 0px;
+	background-color: var(--primary);
+	padding: 16px;
+	margin: var(--cardMargin);
 }
 
 #card-top-row {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
 }
 
 #ideaTitle {
-  color: rgba(0, 0, 0, 0.8);
-  font-size: var(--ideaTextSize);
-  font-weight: bold;
+	color: rgba(0, 0, 0, 0.8);
+	font-size: var(--ideaTextSize);
+	font-weight: bold;
 }
 
 .progress-list {
-  padding: 0;
-  margin: 0;
+	padding: 0;
+	margin: 0;
 }
 .progress-list > li {
-  border-top: 1px solid black;
-  cursor: pointer;
-  font-size: 1.7rem;
-  list-style-type: none;
-  padding: 2rem 3rem;
-  width: 100%;
+	border-top: 1px solid black;
+	cursor: pointer;
+	font-size: 1.7rem;
+	list-style-type: none;
+	padding: 2rem 3rem;
+	width: 100%;
 }
 .progress-list > li:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+	background-color: rgba(0, 0, 0, 0.2);
 }
 .progress-list > li > input,
 .progress-list > li > label {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 #ideaDescription {
-  color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
-  white-space: pre-wrap;
-  word-wrap: break-word;
+	color: rgba(0, 0, 0, 0.54);
+	font-size: 16px;
+	white-space: pre-wrap;
+	word-wrap: break-word;
 }
 
 #progress-bar {
-  background-color: var(--undecided);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 10px;
+	background-color: var(--undecided);
+	border: 1px solid rgba(0, 0, 0, 0.2);
+	height: 10px;
 }
 
 #comments {
-  margin-top: 40px;
+	margin-top: 40px;
 }
 
 #comments > ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0px;
+	list-style-type: none;
+	margin: 0;
+	padding: 0px;
 }
 
 #commentBar {
-  background-color: white;
-  padding: 16px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+	background-color: white;
+	padding: 16px;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
 }
 
 .comment {
-  padding: var(--commentPadding);
-  border-bottom: solid 5px var(--primary);
-  background-color: white;
-  margin-bottom: 8px;
+	padding: var(--commentPadding);
+	border-bottom: solid 5px var(--primary);
+	background-color: white;
+	margin-bottom: 8px;
 }
 
 .comment img {
-  width: var(--avatarSize);
-  border-radius: 50%;
+	width: var(--avatarSize);
+	border-radius: 50%;
 }
 
 #commentTb {
-  height: 80px;
-  margin: auto;
-  width: 100%;
-  border: solid 0px transparent;
-  background-color: white;
-  resize: none;
-  font-size: 16px;
+	height: 80px;
+	margin: auto;
+	width: 100%;
+	border: solid 0px transparent;
+	background-color: white;
+	resize: none;
+	font-size: 16px;
 }
 
 .commentLbl {
-  background-color: transparent;
-  font-size: 16px;
-  font-family: "Roboto", "Arial";
-  color: rgba(0, 0, 0, 0.54);
-  white-space: pre-wrap;
-  word-wrap: break-word;
-  margin-top: 4px;
+	background-color: transparent;
+	font-size: 16px;
+	font-family: 'Roboto', 'Arial';
+	color: rgba(0, 0, 0, 0.54);
+	white-space: pre-wrap;
+	word-wrap: break-word;
+	margin-top: 4px;
 }
 
 #deleteCommentBtn {
-  cursor: pointer;
-  margin-top: 4px;
+	cursor: pointer;
+	margin-top: 4px;
 }
 
 .top-row {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
 }
 
 .top-row > div {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
 }
 
 #authorLbl {
-  margin: 0;
-  padding: 0;
-  margin-left: 16px;
-  color: rgba(0, 0, 0, 0.8);
-  font-size: var(--authorLblSize);
-  font-weight: bold;
+	margin: 0;
+	padding: 0;
+	margin-left: 16px;
+	color: rgba(0, 0, 0, 0.8);
+	font-size: var(--authorLblSize);
+	font-weight: bold;
 }
 
 #dateLbl {
-  margin: 0;
-  padding: 0;
-  margin-left: var(--dateLblMargin);
-  color: rgba(0, 0, 0, 0.5);
-  font-size: var(--dateLblSize);
+	margin: 0;
+	padding: 0;
+	margin-left: var(--dateLblMargin);
+	color: rgba(0, 0, 0, 0.5);
+	font-size: var(--dateLblSize);
 }
 
 @media screen and (max-width: 768px) {
-  #card-top-row {
-    flex-flow: column nowrap;
-    align-items: flex-start;
-  }
-  #progress-bar {
-    margin: 0 16px;
-  }
-  #commentBar {
-    margin: 0px 16px;
-  }
+	#card-top-row {
+		flex-flow: column nowrap;
+		align-items: flex-start;
+	}
+	#progress-bar {
+		margin: 0 16px;
+	}
+	#commentBar {
+		margin: 0px 16px;
+	}
 }
 </style>
