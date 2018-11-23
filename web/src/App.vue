@@ -92,11 +92,8 @@ export default {
 			};
 
 			request.onsuccess = event => {
-				console.log('success');
 				const db = event.target.result;
-				if (!db.objectStoreNames.contains('ideas')) {
-					this.createDb(true);
-				}
+				if (!db.objectStoreNames.contains('ideas')) this.createDb(true);
 				this.$store.dispatch('setUserDataDB', db);
 			};
 		}
