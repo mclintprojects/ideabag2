@@ -149,6 +149,10 @@ export default {
 			ideaId - 1
 		];
 
+		if (this.userDataDB !== null) {
+			this.loadUserData();
+		}
+
 		this.getComments();
 	},
 	deactivated() {
@@ -262,7 +266,6 @@ export default {
 		setProgress(progress) {
 			this.updateProgress(this.dataId, progress);
 			this.progress = progress;
-			this.$modal.hide('progress-modal-1');
 		}
 	}
 };
