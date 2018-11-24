@@ -157,14 +157,9 @@ export default {
 
 		const categoryId = this.$route.params.categoryId;
 		const ideaId = this.$route.params.ideaId;
-
 		this.idea = this.$store.getters.categories[categoryId - 1].items[
 			ideaId - 1
 		];
-
-		if (this.userDataDB !== null) {
-			this.loadUserData();
-		}
 
 		this.getComments();
 	},
@@ -271,30 +266,14 @@ export default {
 		toggleBookmark() {
 			if (this.isBookmarked) {
 				this.removeFromBookmarks(this.dataId);
-				this.isBookmarked = false;
 			} else {
 				this.addToBookmarks(this.dataId);
-				this.isBookmarked = true;
 			}
+			this.isBookmarked = !this.isBookmarked;
 		},
 		setProgress(progress) {
-			const id = this.dataId;
-			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
-				if (event.target.result === undefined) {
-					this.addNewIdea(id, false, progress);
-					this.isBookmarked = false;
-					this.progress = progress;
-				} else {
-					event.target.result.progress = progress;
-					objectStore.put(event.target.result).onsuccess = () => {
-						this.progress = progress;
-					};
-				}
-			};
+			this.updateProgress(this.dataId, progress);
+			this.progress = progress;
 			this.$modal.hide('progress-modal');
 		},
 		updateProgressRadiobuttons() {

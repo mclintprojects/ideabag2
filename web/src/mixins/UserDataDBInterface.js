@@ -5,24 +5,24 @@ export default {
     }
   },
   methods: {
-    addToBookmarks(id) {
+    addToBookmarks(ideaId) {
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
+			objectStore.get(ideaId).onsuccess = event => {
 				if (event.target.result === undefined) {
-					this.addNewIdea(id, true, 'undecided');
+					this.addNewIdea(ideaId, true, 'undecided');
 				} else {
 					event.target.result.bookmarked = 1;
 					objectStore.put(event.target.result)
 				}
 			};
 		},
-    removeFromBookmarks(id) {
+    removeFromBookmarks(ideaId) {
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
+			objectStore.get(ideaId).onsuccess = event => {
 				event.target.result.bookmarked = 0;
 				objectStore.put(event.target.result)
 			};
@@ -37,6 +37,19 @@ export default {
 					bookmarked: bookmarkedBinary,
 					progress: progress
 				})
-    }
+    },
+    updateProgress(ideaId, progress) {
+			const objectStore = this.userDataDB
+				.transaction(['ideas'], 'readwrite')
+				.objectStore('ideas');
+			objectStore.get(ideaId).onsuccess = event => {
+				if (event.target.result === undefined) {
+					this.addNewIdea(ideaId, false, progress);
+				} else {
+					event.target.result.progress = progress;
+					objectStore.put(event.target.result)
+				}
+			};
+		}
   }
 }
