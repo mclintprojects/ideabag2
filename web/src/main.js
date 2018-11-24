@@ -4,12 +4,12 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 import { store } from './store/store';
 import Toasted from 'vue-toasted';
-import vmodal from 'vue-js-modal';
+import VModal from 'vue-js-modal';
 import Popper from 'vue-popperjs';
 
 Vue.use(VueRouter);
 Vue.use(Toasted);
-Vue.use(vmodal);
+Vue.use(VModal);
 Vue.use(Popper);
 
 const router = new VueRouter({ routes, mode: 'history' });
