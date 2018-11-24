@@ -6,24 +6,8 @@
 				<p id="ideaTitle">{{idea.title}}</p>
 				<div>
 					<button class="appBtnOutline" @click="toggleBookmark()" @mouseover="bookmarkButtonHovered = true" @mouseleave="bookmarkButtonHovered = false"><img :src="bookmarkIcon" /></button>
-					<button class="appBtnOutline" @click="$modal.show('progress-modal')">Update progress</button>
-					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
-						<h3>Set idea progress</h3>
-						<ul class="progress-list">
-							<li @click="setProgress('done');">
-								<input v-model="progress" id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
-								<label for="progress-done">Done</label>
-							</li>
-							<li @click="setProgress('in-progress');">
-								<input v-model="progress" id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
-								<label for="in-progress">In Progress</label>
-							</li>
-							<li @click="setProgress('undecided');">
-								<input v-model="progress" id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
-								<label for="progress-undecided">Undecided</label>
-							</li>
-						</ul>
-					</modal>
+					<button class="appBtnOutline" @click="$modal.show('progress-modal-0')">Update progress</button>
+					<progress-modal @update-progress="setProgress" :progress="progress"></progress-modal>
 				</div>
 			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
@@ -59,8 +43,14 @@
 <script>
 import eventbus from '../eventbus';
 import axios from 'axios';
+import UserDataDBInterface from '../mixins/UserDataDBInterface';
+import ProgressModal from '../components/ProgressModal';
 
 export default {
+	mixins: [UserDataDBInterface],
+	components: {
+		'progress-modal': ProgressModal
+	},
 	data() {
 		return {
 			idea: null,
@@ -118,9 +108,6 @@ export default {
 		userLoggedIn() {
 			return this.$store.getters.userLoggedIn;
 		},
-		userDataDB() {
-			return this.$store.getters.userDataDB;
-		},
 		bookmarkIcon() {
 			if (this.isBookmarked) {
 				if (this.bookmarkButtonHovered) {
@@ -158,7 +145,6 @@ export default {
 
 		const categoryId = this.$route.params.categoryId;
 		const ideaId = this.$route.params.ideaId;
-
 		this.idea = this.$store.getters.categories[categoryId - 1].items[
 			ideaId - 1
 		];
@@ -234,9 +220,6 @@ export default {
 					this.$store.dispatch('isPerformingAction', false);
 				});
 		},
-		getDataId() {
-			return `${this.idea.categoryId}C-${this.idea.id}I`;
-		},
 		deleteComment(commentId, index) {
 			this.$store.dispatch('isPerformingAction', true);
 			var url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
@@ -258,20 +241,6 @@ export default {
 		getTimestamp(milliseconds) {
 			return new Date(milliseconds).toLocaleDateString();
 		},
-		addNewIdea(ideaId, bookmarked, progress) {
-			const bookmarkedBinary = bookmarked ? 1 : 0;
-			this.userDataDB
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas')
-				.add({
-					id: ideaId,
-					bookmarked: bookmarkedBinary,
-					progress: progress
-				}).onsuccess = () => {
-				this.isBookmarked = bookmarked;
-				this.progress = progress;
-			};
-		},
 		loadUserData() {
 			this.userDataDB
 				.transaction(['ideas'], 'readonly')
@@ -288,78 +257,19 @@ export default {
 		},
 		toggleBookmark() {
 			if (this.isBookmarked) {
-				this.removeFromBookmarks();
+				this.removeFromBookmarks(this.dataId);
 			} else {
-				this.addToBookmarks();
+				this.addToBookmarks(this.dataId);
 			}
-		},
-		addToBookmarks() {
-			const id = this.dataId;
-			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
-				if (event.target.result === undefined) {
-					this.addNewIdea(id, true, 'undecided');
-				} else {
-					event.target.result.bookmarked = 1;
-					objectStore.put(event.target.result).onsuccess = () =>
-						(this.isBookmarked = true);
-				}
-			};
-		},
-		removeFromBookmarks() {
-			const id = this.dataId;
-			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
-				event.target.result.bookmarked = 0;
-				objectStore.put(event.target.result).onsuccess = () =>
-					(this.isBookmarked = false);
-			};
+			this.isBookmarked = !this.isBookmarked;
 		},
 		setProgress(progress) {
-			const id = this.dataId;
-			const db = this.userDataDB;
-			const objectStore = db
-				.transaction(['ideas'], 'readwrite')
-				.objectStore('ideas');
-			objectStore.get(id).onsuccess = event => {
-				if (event.target.result === undefined) {
-					this.addNewIdea(id, false, progress);
-				} else {
-					event.target.result.progress = progress;
-					objectStore.put(event.target.result).onsuccess = () => {
-						this.progress = progress;
-					};
-				}
-			};
-			this.$modal.hide('progress-modal');
-		},
-		updateProgressRadiobuttons() {
-			const radiobuttons = document.getElementsByClassName(
-				'progress-radiobutton'
-			);
-			for (let i = 0; i < radiobuttons.length; i++) {
-				if (radiobuttons[i].value === this.progress) {
-					radiobuttons[i].checked = true;
-				} else {
-					radiobuttons[i].checked = false;
-				}
-			}
+			this.updateProgress(this.dataId, progress);
+			this.progress = progress;
 		}
 	}
 };
 </script>
-
-<style>
-.progress-modal > h3 {
-	text-align: center;
-}
-</style>
 
 <style scoped>
 #card {
@@ -382,26 +292,6 @@ export default {
 	color: rgba(0, 0, 0, 0.8);
 	font-size: var(--ideaTextSize);
 	font-weight: bold;
-}
-
-.progress-list {
-	padding: 0;
-	margin: 0;
-}
-.progress-list > li {
-	border-top: 1px solid black;
-	cursor: pointer;
-	font-size: 1.7rem;
-	list-style-type: none;
-	padding: 2rem 3rem;
-	width: 100%;
-}
-.progress-list > li:hover {
-	background-color: rgba(0, 0, 0, 0.2);
-}
-.progress-list > li > input,
-.progress-list > li > label {
-	cursor: pointer;
 }
 
 #ideaDescription {

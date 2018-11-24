@@ -180,6 +180,11 @@ body {
 	background-color: white;
 	color: var(--primary);
 }
+.icon-button {
+	border: none;
+	background-color: transparent;
+	padding: 1rem;
+}
 
 #backBtn {
 	margin-left: 16px;
