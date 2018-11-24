@@ -2,17 +2,9 @@
   <modal :name="'progress-modal-' + id" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
     <h3>Set idea progress</h3>
     <ul class="progress-list">
-      <li @click.stop="$emit('update-progress', 'done')">
-        <input v-model="progress" id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
-        <label for="progress-done">Done</label>
-      </li>
-      <li @click.stop="$emit('update-progress', 'in-progress')">
-        <input v-model="progress" id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
-        <label for="in-progress">In Progress</label>
-      </li>
-      <li @click.stop="$emit('update-progress', 'undecided')">
-        <input v-model="progress" id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
-        <label for="progress-undecided">Undecided</label>
+      <li @click.stop="chooseProgress(progressState)" v-for="(progressState, index) in ['done', 'in-progress', 'undecided']" :key="index">
+        <input v-model="progress" :id="'progress-' + progressState" class="progress-radiobutton" type="radio" name="progress" :value="progressState" />
+        <label :for="'progress-' + progressState"> {{ progressState | variableToInterfaceFriendly }}</label>
       </li>
     </ul>
   </modal>
@@ -42,7 +34,18 @@ export default {
 					radiobuttons[i].checked = false;
 				}
 			}
-		}
+		},
+    chooseProgress(progress) {
+      this.$emit('update-progress', progress);
+      this.$modal.hide('progress-modal-' + this.id);
+    }
+  },
+  filters: {
+    variableToInterfaceFriendly(value) {
+      value = value.replace('-', ' ')
+      value = value.charAt(0).toUpperCase() + value.slice(1);
+      return value;
+    }
   }
 };
 </script>

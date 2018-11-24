@@ -116,7 +116,6 @@ export default {
       this.openPopper = context;
     },
     setProgress(idea, progress) {
-      this.$modal.hide('progress-modal-' + idea.id);
       this.ideas[idea.id - 1].progress = progress;
       this.updateProgress(this.getDataId(idea), progress);
     }
