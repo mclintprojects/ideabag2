@@ -1,7 +1,7 @@
 <template>
   <ul id="ideaList">
-		<li v-for="(idea, index) in ideas" :key="index" @click="notifyIdeaClicked(idea, index)" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
-			<div class="ideaItem">
+		<li v-for="(idea, index) in ideas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
+			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
         <div>
   				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
   				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
@@ -15,9 +15,9 @@
             </div>
             <img slot="reference" src="../../public/img/baseline-more_vert-24px.svg" alt="Idea actions" @click.stop>
           </popper>
-          <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
         </div>
 			</div>
+      <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
 		</li>
 	</ul>
 </template>
