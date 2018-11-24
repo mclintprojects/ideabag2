@@ -11,9 +11,11 @@
             <div class="popper idea-actions">
               <button @click.stop="toggleBookmark(index)" v-show="idea.bookmarked">Remove bookmark</button>
               <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
+              <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
             </div>
             <img slot="reference" src="../../public/img/baseline-more_vert-24px.svg" alt="Idea actions" @click.stop>
           </popper>
+          <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
         </div>
 			</div>
 		</li>
@@ -24,11 +26,13 @@
 import Vue from 'vue';
 import Popper from 'vue-popperjs';
 import UserDataDBInterface from '../mixins/UserDataDBInterface';
+import ProgressModal from '../components/ProgressModal';
 
 export default {
   mixins: [UserDataDBInterface],
   components: {
-    'popper': Popper
+    'popper': Popper,
+    'progress-modal': ProgressModal
   },
   data() {
     return {
@@ -59,6 +63,9 @@ export default {
     }
   },
   methods: {
+    getDataId(idea) {
+      return `${idea.categoryId}C-${idea.id}I`;
+    },
     loadIdeaData() {
       for (let i = 0; i < this.ideas.length; i++) {
         this.userDataDB
@@ -107,6 +114,11 @@ export default {
         this.openPopper.doClose();
       }
       this.openPopper = context;
+    },
+    setProgress(idea, progress) {
+      this.$modal.hide('progress-modal-' + idea.id);
+      this.ideas[idea.id - 1].progress = progress;
+      this.updateProgress(this.getDataId(idea), progress);
     }
   },
   activated() {
