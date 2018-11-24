@@ -15,7 +15,7 @@ export default {
   props: {
     id: {
       type: Number,
-      default: 1
+      default: 0
     },
     progress: {
       type: String,

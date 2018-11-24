@@ -6,8 +6,8 @@
 				<p id="ideaTitle">{{idea.title}}</p>
 				<div>
 					<button class="appBtnOutline" @click="toggleBookmark()" @mouseover="bookmarkButtonHovered = true" @mouseleave="bookmarkButtonHovered = false"><img :src="bookmarkIcon" /></button>
-					<button class="appBtnOutline" @click="$modal.show('progress-modal-1')">Update progress</button>
-					<progress-modal @update-progress="setProgress" :progress="progress" :id="idea.id"></progress-modal>
+					<button class="appBtnOutline" @click="$modal.show('progress-modal-0')">Update progress</button>
+					<progress-modal @update-progress="setProgress" :progress="progress"></progress-modal>
 				</div>
 			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
