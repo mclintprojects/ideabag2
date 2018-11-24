@@ -6,24 +6,8 @@
 				<p id="ideaTitle">{{idea.title}}</p>
 				<div>
 					<button class="appBtnOutline" @click="toggleBookmark()" @mouseover="bookmarkButtonHovered = true" @mouseleave="bookmarkButtonHovered = false"><img :src="bookmarkIcon" /></button>
-					<button class="appBtnOutline" @click="$modal.show('progress-modal')">Update progress</button>
-					<modal name="progress-modal" height="auto" :adaptive="true" :classes="['v--modal', 'progress-modal']" @opened='updateProgressRadiobuttons'>
-						<h3>Set idea progress</h3>
-						<ul class="progress-list">
-							<li @click="setProgress('done');">
-								<input v-model="progress" id="progress-done" class="progress-radiobutton" type="radio" name="progress" value="done" />
-								<label for="progress-done">Done</label>
-							</li>
-							<li @click="setProgress('in-progress');">
-								<input v-model="progress" id="in-progress" class="progress-radiobutton" type="radio" name="progress" value="in-progress" />
-								<label for="in-progress">In Progress</label>
-							</li>
-							<li @click="setProgress('undecided');">
-								<input v-model="progress" id="progress-undecided" class="progress-radiobutton" type="radio" name="progress" value="undecided" checked/>
-								<label for="progress-undecided">Undecided</label>
-							</li>
-						</ul>
-					</modal>
+					<button class="appBtnOutline" @click="$modal.show('progress-modal-1')">Update progress</button>
+					<progress-modal @update-progress="setProgress" :progress="progress" :id="idea.id"></progress-modal>
 				</div>
 			</div>
 			<p id="ideaDescription">{{idea.description}}</p>
@@ -60,9 +44,13 @@
 import eventbus from '../eventbus';
 import axios from 'axios';
 import UserDataDBInterface from '../mixins/UserDataDBInterface';
+import ProgressModal from '../components/ProgressModal';
 
 export default {
 	mixins: [UserDataDBInterface],
+	components: {
+		'progress-modal': ProgressModal
+	},
 	data() {
 		return {
 			idea: null,
@@ -274,29 +262,11 @@ export default {
 		setProgress(progress) {
 			this.updateProgress(this.dataId, progress);
 			this.progress = progress;
-			this.$modal.hide('progress-modal');
-		},
-		updateProgressRadiobuttons() {
-			const radiobuttons = document.getElementsByClassName(
-				'progress-radiobutton'
-			);
-			for (let i = 0; i < radiobuttons.length; i++) {
-				if (radiobuttons[i].value === this.progress) {
-					radiobuttons[i].checked = true;
-				} else {
-					radiobuttons[i].checked = false;
-				}
-			}
+			this.$modal.hide('progress-modal-1');
 		}
 	}
 };
 </script>
-
-<style>
-.progress-modal > h3 {
-	text-align: center;
-}
-</style>
 
 <style scoped>
 #card {
@@ -319,26 +289,6 @@ export default {
 	color: rgba(0, 0, 0, 0.8);
 	font-size: var(--ideaTextSize);
 	font-weight: bold;
-}
-
-.progress-list {
-	padding: 0;
-	margin: 0;
-}
-.progress-list > li {
-	border-top: 1px solid black;
-	cursor: pointer;
-	font-size: 1.7rem;
-	list-style-type: none;
-	padding: 2rem 3rem;
-	width: 100%;
-}
-.progress-list > li:hover {
-	background-color: rgba(0, 0, 0, 0.2);
-}
-.progress-list > li > input,
-.progress-list > li > label {
-	cursor: pointer;
 }
 
 #ideaDescription {
