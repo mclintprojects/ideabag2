@@ -13,7 +13,9 @@
               <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
               <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
             </div>
-            <img slot="reference" src="../../public/img/baseline-more_vert-24px.svg" alt="Idea actions" @click.stop>
+            <button class="icon-button" slot="reference" @click.stop>
+              <img src="../../public/img/baseline-more_vert-24px.svg" alt="Idea actions">
+            </button>
           </popper>
         </div>
 			</div>
