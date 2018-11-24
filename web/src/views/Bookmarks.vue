@@ -6,7 +6,7 @@
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
     </div>
-    <idea-list v-if="ideas.length > 0" :ideas="ideas" />
+    <idea-list @needs-update="loadIdeas" v-if="ideas.length > 0" :ideas="ideas" />
   </div>
 </template>
 

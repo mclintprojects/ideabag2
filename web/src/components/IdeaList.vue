@@ -108,6 +108,7 @@ export default {
         idea.bookmarked = true;
       }
       this.openPopper.doClose();
+      this.$emit('needs-update');
     },
     openNewPopper(context) {
       if (this.openPopper && this.openPopper !== context) {
