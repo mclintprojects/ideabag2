@@ -1,8 +1,8 @@
 <template>
   <div class="appContainer">
-    <img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+    <font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
     <div id="no-bookmarks" v-if="!isLoading && ideas.length == 0">
-      <img src="img/outline-bookmark-100px-grey.svg" alt="" />
+      <font-awesome-icon :icon="['fas', 'bookmark']" size="6x"></font-awesome-icon>
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
     </div>
@@ -74,6 +74,6 @@ export default {
   flex-flow: column nowrap;
   height: 100%;
   justify-content: center;
-  text-align: center;
+  align-items: center;
 }
 </style>

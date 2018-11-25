@@ -138,7 +138,7 @@ body {
 }
 
 #loadingCircle {
-	width: 36px;
+	color: white;
 	position: absolute;
 	left: 50%;
 	top: 50%;
@@ -183,6 +183,7 @@ body {
 .icon-button {
 	border: none;
 	background-color: transparent;
+	color: white;
 	padding: 1rem;
 }
 

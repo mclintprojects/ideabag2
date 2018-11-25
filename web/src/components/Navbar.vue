@@ -10,8 +10,8 @@
                         <span class="icon-bar"></span>
                     </button>
                     <div id="toolbar" class="navbar-brand">
-                        <img v-if="!isRootComponent" @click="navigateAway" id="backBtn" src="https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/ic_arrow_back_white_24px.svg" />
-                        <h4>{{title}}</h4>
+                      <button id="backBtn" class="icon-button" v-if="!isRootComponent" @click="navigateAway"><font-awesome-icon icon="arrow-left" fixed-width></font-awesome-icon></button>
+                      <h4>{{title}}</h4>
                     </div>
                 </div>
 
