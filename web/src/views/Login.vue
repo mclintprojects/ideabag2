@@ -10,7 +10,7 @@
         </div>
         <button @click="loginUser" class="appBtn" :disabled="this.$store.getters.isPerformingAction">Login</button>
 
-        <img v-if="this.$store.getters.isPerformingAction" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+        <font-awesome-icon id="loadingCircle" v-if="this.$store.getters.isPerformingAction" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
     </div>
 </template>
 
