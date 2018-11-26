@@ -1,11 +1,11 @@
 <template>
 	<div class="appContainer">
-		<img v-if="isPerformingAction || isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<font-awesome-icon id="loadingCircle" v-if="isPerformingAction || isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
 		<div id="card" v-if="idea != null">
 			<div id="card-top-row">
 				<p id="ideaTitle">{{idea.title}}</p>
 				<div>
-					<button class="appBtnOutline" @click="toggleBookmark()" @mouseover="bookmarkButtonHovered = true" @mouseleave="bookmarkButtonHovered = false"><img :src="bookmarkIcon" /></button>
+					<button class="appBtnOutline" @click="toggleBookmark()"><font-awesome-icon :icon="[bookmarkIconPrefix, 'bookmark']" size="lg" fixed-width></font-awesome-icon></button>
 					<button class="appBtnOutline" @click="$modal.show('progress-modal-0')">Update progress</button>
 					<progress-modal @update-progress="setProgress" :progress="progress"></progress-modal>
 				</div>
@@ -29,8 +29,7 @@
 							<p id="authorLbl">{{comment.author}}</p>
 							<p id="dateLbl">{{getTimestamp(comment.created)}}</p>
 						</div>
-						<img @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email"
-						 id="deleteCommentBtn" src="https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/ic_delete_black_24px.svg" />
+						<button id="deleteCommentBtn" class="icon-button" @click="deleteComment(comment.id, index)" :disabled="isPerformingAction" v-if="comment.author == email"><font-awesome-icon icon="trash" size="lg" fixed-width></font-awesome-icon></button>
 					</div>
 
 					<p class="commentLbl">{{comment.comment}}</p>
@@ -108,19 +107,11 @@ export default {
 		userLoggedIn() {
 			return this.$store.getters.userLoggedIn;
 		},
-		bookmarkIcon() {
+		bookmarkIconPrefix() {
 			if (this.isBookmarked) {
-				if (this.bookmarkButtonHovered) {
-					return '/img/outline-bookmark_colored-24px.svg';
-				} else {
-					return '/img/outline-bookmark-24px.svg';
-				}
+				return 'fas'; // Solid icon
 			} else {
-				if (this.bookmarkButtonHovered) {
-					return '/img/outline-bookmark_border_colored-24px.svg';
-				} else {
-					return '/img/outline-bookmark_border-24px.svg';
-				}
+				return 'far'; // Regular icon (only outline)
 			}
 		},
 		dataId() {
@@ -358,6 +349,7 @@ export default {
 }
 
 #deleteCommentBtn {
+	color: black;
 	cursor: pointer;
 	margin-top: 4px;
 }

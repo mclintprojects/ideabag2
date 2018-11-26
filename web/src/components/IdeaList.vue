@@ -14,7 +14,7 @@
               <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
             </div>
             <button class="icon-button" slot="reference" @click.stop>
-              <img src="../../public/img/baseline-more_vert-24px.svg" alt="Idea actions">
+              <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
             </button>
           </popper>
         </div>
