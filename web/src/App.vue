@@ -138,10 +138,12 @@ body {
 }
 
 #loadingCircle {
+  width: 36px;
+  height: 36px;
 	color: white;
 	position: absolute;
-	left: 50%;
-	top: 50%;
+	left: calc(50% - 36px);
+	top: calc(50% - 36px);
 }
 
 .appBtn {
