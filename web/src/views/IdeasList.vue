@@ -1,6 +1,6 @@
 <template>
 	<div class="appContainer">
-		<img v-if="isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
 		<idea-list :ideas="ideas" />
 	</div>
 </template>

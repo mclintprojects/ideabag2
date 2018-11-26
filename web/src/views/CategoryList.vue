@@ -1,6 +1,6 @@
 <template>
 	<div class="appContainer">
-		<img v-if="$store.getters.isLoading" id="loadingCircle" src="https://samherbert.net/svg-loaders/svg-loaders/oval.svg" />
+		<font-awesome-icon id="loadingCircle" v-if="$store.getters.isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
 		<ul id="categoryList">
 			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
 				<div class="categoryItem">
@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 
-		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><img src="img/outline-bookmark-24px.svg" /></router-link>
+		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
 	</div>
 </template>
 
@@ -104,10 +104,12 @@ export default {
 }
 
 #bookmarkBtn {
+	color: white;
   border-radius: 180px;
   bottom: 20px;
   display: flex;
   justify-content: center;
+	align-items: center;
   height: 60px;
   position: fixed;
   right: 20px;
