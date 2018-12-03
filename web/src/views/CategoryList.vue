@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 
-		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
+		<router-link @click.native="hideBookmarkButton = true" id="bookmarkBtn" class="appBtn" to="bookmarks" v-show="!hideBookmarkButton"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
 	</div>
 </template>
 
@@ -35,7 +35,8 @@ export default {
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png',
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png'
       ],
-      selectedIndex: 0
+      selectedIndex: 0,
+			hideBookmarkButton: false
     };
   },
   computed: {
@@ -55,6 +56,7 @@ export default {
   activated() {
     this.$store.dispatch('setSelectedIdeaIndex', -1);
     this.$store.dispatch('setTitle', 'IdeaBag 2');
+		setTimeout(() => this.hideBookmarkButton = false, 200);
   }
 };
 </script>
