@@ -40,6 +40,9 @@ export default {
       this.$modal.hide('progress-modal-' + this.id);
     }
   },
+  deactivated() {
+    this.$modal.hide('progress-modal-' + this.id);
+  },
   filters: {
     variableToInterfaceFriendly(value) {
       value = value.replace('-', ' ')
