@@ -15,7 +15,7 @@
 			</li>
 		</ul>
 
-		<router-link @click.native="hideBookmarkButton = true" id="bookmarkBtn" class="appBtn" to="bookmarks" v-show="!hideBookmarkButton"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
+		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks" v-show="!hideBookmarkButton"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
 	</div>
 </template>
 
@@ -57,7 +57,10 @@ export default {
     this.$store.dispatch('setSelectedIdeaIndex', -1);
     this.$store.dispatch('setTitle', 'IdeaBag 2');
 		setTimeout(() => this.hideBookmarkButton = false, 200);
-  }
+  },
+	deactivated() {
+		this.hideBookmarkButton = true;
+	}
 };
 </script>
 
