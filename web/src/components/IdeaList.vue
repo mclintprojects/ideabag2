@@ -15,7 +15,7 @@
               <div class="popper idea-actions">
                 <button @click.stop="toggleBookmark(index)" v-show="idea.bookmarked">Remove bookmark</button>
                 <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
-                <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
+                <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
               </div>
               <button class="icon-button" slot="reference" @click.stop>
                 <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
@@ -23,7 +23,7 @@
             </popper>
           </div>
   			</div>
-        <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
+        <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, index, event)" :progress="idea.progress" :id="getDataId(idea)"></progress-modal>
   		</li>
   	</ul>
   </div>
@@ -127,8 +127,8 @@ export default {
       }
       this.openPopper = context;
     },
-    setProgress(idea, progress) {
-      this.ideas[idea.id - 1].progress = progress;
+    setProgress(idea, index, progress) {
+      this.ideas[index].progress = progress;
       this.ideaProgress = this.getIdeaProgress();
       this.updateProgress(this.getDataId(idea), progress);
     },
