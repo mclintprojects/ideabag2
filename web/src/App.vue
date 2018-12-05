@@ -112,6 +112,7 @@ export default {
 	--done: #2ecc71;
 	--primaryText: rgba(255, 255, 255, 0.8);
 	--primaryTextLight: rgba(255, 255, 255, 0.54);
+	--progress-bar-background: #2b2b2b;
 	--primaryTextSize: 18px;
 	--ideaTextSize: 22px;
 	--categoryIconSize: 36px;
