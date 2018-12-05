@@ -1,27 +1,32 @@
 <template>
-  <ul id="ideaList">
-		<li v-for="(idea, index) in ideas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
-			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
-        <div>
-  				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
-  				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
-        </div>
-        <div>
-          <popper trigger="click" :options="{placement: 'left'}" @created="openNewPopper">
-            <div class="popper idea-actions">
-              <button @click.stop="toggleBookmark(index)" v-show="idea.bookmarked">Remove bookmark</button>
-              <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
-              <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
-            </div>
-            <button class="icon-button" slot="reference" @click.stop>
-              <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
-            </button>
-          </popper>
-        </div>
-			</div>
-      <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
-		</li>
-	</ul>
+  <div>
+    <div id="progress-bar">
+      <div id="progress" :style="{width: ideaProgress + '%'}"></div>
+    </div>
+    <ul id="ideaList">
+  		<li v-for="(idea, index) in ideas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
+  			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
+          <div>
+    				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
+    				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
+          </div>
+          <div>
+            <popper trigger="click" :options="{placement: 'left'}" @created="openNewPopper">
+              <div class="popper idea-actions">
+                <button @click.stop="toggleBookmark(index)" v-show="idea.bookmarked">Remove bookmark</button>
+                <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
+                <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + idea.id)">Update progress</button>
+              </div>
+              <button class="icon-button" slot="reference" @click.stop>
+                <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
+              </button>
+            </popper>
+          </div>
+  			</div>
+        <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, event)" :progress="idea.progress" :id="idea.id"></progress-modal>
+  		</li>
+  	</ul>
+  </div>
 </template>
 
 <script>
@@ -38,7 +43,8 @@ export default {
   },
   data() {
     return {
-      openPopper: null
+      openPopper: null,
+      ideaProgress: 0
     }
   },
   computed: {
@@ -84,6 +90,9 @@ export default {
               Vue.set(this.ideas[i], 'progress', 'undecided');
               Vue.set(this.ideas[i], 'bookmarked', false);
             }
+            if (i == this.ideas.length - 1) {
+              this.ideaProgress = this.getIdeaProgress();
+            }
           }
         };
       }
@@ -120,7 +129,15 @@ export default {
     },
     setProgress(idea, progress) {
       this.ideas[idea.id - 1].progress = progress;
+      this.ideaProgress = this.getIdeaProgress();
       this.updateProgress(this.getDataId(idea), progress);
+    },
+    getIdeaProgress() {
+      const completedIdeas = this.ideas.reduce((accumulator, idea) => {
+        if (idea.progress === 'done') return accumulator + 1;
+        else return accumulator;
+      }, 0);
+      return completedIdeas / this.ideas.length * 100;
     }
   },
   activated() {
@@ -137,6 +154,15 @@ export default {
 </script>
 
 <style scoped>
+#progress-bar {
+  background-color: var(--progress-bar-background);
+  width: 100%;
+  height: 10px;
+}
+#progress {
+  background-color: var(--primaryDark);
+  height: 100%;
+}
 #ideaList {
   list-style-type: none;
   margin: 0px;
