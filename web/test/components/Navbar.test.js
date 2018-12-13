@@ -1,5 +1,9 @@
+import { mount } from '@vue/test-utils';
+import Navbar from '../../src/components/Navbar.vue';
+
 describe('Navbar.vue', () => {
-  test('it should mount for testing', () => {
-    expect(1).toEqual(1);
+  test('it should render content correctly', () => {
+    const wrapper = mount(Navbar);
+    expect(wrapper.find('#toolbar > h4').text()).toEqual('Ideabag 2 (BETA)');
   });
 });
