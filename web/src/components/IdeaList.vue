@@ -10,11 +10,16 @@
     				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
     				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
           </div>
-          <div>
-            <popper trigger="click" :options="{placement: 'left'}" @created="openNewPopper">
-              <div class="popper idea-actions">
-                <button @click.stop="toggleBookmark(index)" v-show="idea.bookmarked">Remove bookmark</button>
-                <button @click.stop="toggleBookmark(index)" v-show="!idea.bookmarked">Bookmark</button>
+          <div class="idea-buttons">
+            <div v-show="largeScreen">
+              <button class="appBtnOutline" @click.stop="toggleBookmark(index)">
+                <font-awesome-icon :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
+              </button>
+              <button class="appBtnOutline" @click.stop="$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
+            </div>
+            <popper trigger="click" :options="{placement: 'left'}" v-show="!largeScreen" @created="openNewPopper">
+              <div class="popper idea-menu-actions">
+                <button @click.stop="openPopper.doClose();toggleBookmark(index)">{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
                 <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
               </div>
               <button class="icon-button" slot="reference" @click.stop>
@@ -44,6 +49,8 @@ export default {
   data() {
     return {
       openPopper: null,
+      mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
+      largeScreen: window.matchMedia('only screen and (min-width: 1200px)').matches,
       ideaProgress: 0
     }
   },
@@ -118,7 +125,6 @@ export default {
         this.addToBookmarks(id);
         idea.bookmarked = true;
       }
-      this.openPopper.doClose();
       this.$emit('needs-update');
     },
     openNewPopper(context) {
@@ -138,12 +144,19 @@ export default {
         else return accumulator;
       }, 0);
       return completedIdeas / this.ideas.length * 100;
+    },
+    handleResize(mediaQueryList) {
+      this.largeScreen = mediaQueryList.matches;
     }
   },
   activated() {
+    this.mediaQueryList.addListener(this.handleResize);
     if (this.userDataDB !== null && this.ideas.length > 0) {
       this.loadIdeaData();
     }
+  },
+  deactivated() {
+    this.mediaQueryList.removeListener(this.handleResize);
   },
   created() {
     if (this.userDataDB !== null && this.ideas.length > 0) {
@@ -204,18 +217,23 @@ export default {
   color: rgba(0, 0, 0, 0.54);
   font-size: var(--badgeTextSize);
 }
-.idea-actions {
+.idea-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.idea-menu-actions {
   border: none;
   display: flex;
   flex-flow: column;
   padding: 0;
 }
-.idea-actions > button {
+.idea-menu-actions > button {
   background-color: transparent;
   border: none;
   padding: 1rem;
 }
-.idea-actions > button:hover {
+.idea-menu-actions > button:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
 </style>
