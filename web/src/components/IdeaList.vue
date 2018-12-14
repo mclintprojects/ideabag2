@@ -4,55 +4,81 @@
       <div id="progress" :style="{width: ideaProgress + '%'}"></div>
     </div>
     <ul id="ideaList">
-  		<li v-for="(idea, index) in ideas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
-  			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
+      <li
+        v-for="(idea, index) in ideas"
+        :key="index"
+        :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}"
+      >
+        <div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
           <div>
-    				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
-    				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
+            <p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
+            <p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
           </div>
           <div class="idea-buttons">
             <div v-show="largeScreen">
               <button class="appBtnOutline" @click.stop="toggleBookmark(index)">
-                <font-awesome-icon :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
+                <font-awesome-icon
+                  :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
+                  size="lg"
+                  fixed-width
+                ></font-awesome-icon>
               </button>
-              <button class="appBtnOutline" @click.stop="$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
+              <button
+                class="appBtnOutline"
+                @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
+              >Update progress</button>
             </div>
-            <popper trigger="click" :options="{placement: 'left'}" v-show="!largeScreen" @created="openNewPopper">
+            <popper
+              trigger="click"
+              :options="{placement: 'left'}"
+              v-show="!largeScreen"
+              @created="openNewPopper"
+            >
               <div class="popper idea-menu-actions">
-                <button @click.stop="openPopper.doClose();toggleBookmark(index)">{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
-                <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
+                <button
+                  @click.stop="openPopper.doClose();toggleBookmark(index)"
+                >{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
+                <button
+                  @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))"
+                >Update progress</button>
               </div>
               <button class="icon-button" slot="reference" @click.stop>
                 <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
               </button>
             </popper>
           </div>
-  			</div>
-        <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, index, event)" :progress="idea.progress" :id="getDataId(idea)"></progress-modal>
-  		</li>
-  	</ul>
+        </div>
+        <progress-modal
+          v-if="idea.progress"
+          @update-progress="event => setProgress(idea, index, event)"
+          :progress="idea.progress"
+          :id="getDataId(idea)"
+        ></progress-modal>
+      </li>
+    </ul>
   </div>
 </template>
 
 <script>
-import Vue from 'vue';
-import Popper from 'vue-popperjs';
-import UserDataDBInterface from '../mixins/UserDataDBInterface';
-import ProgressModal from '../components/ProgressModal';
+import Vue from "vue";
+import Popper from "vue-popperjs";
+import UserDataDBInterface from "../mixins/UserDataDBInterface";
+import ProgressModal from "../components/ProgressModal";
 
 export default {
   mixins: [UserDataDBInterface],
   components: {
-    'popper': Popper,
-    'progress-modal': ProgressModal
+    popper: Popper,
+    "progress-modal": ProgressModal
   },
   data() {
     return {
       openPopper: null,
-      mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
-      largeScreen: window.matchMedia('only screen and (min-width: 1200px)').matches,
+      mediaQueryList: window.matchMedia("only screen and (min-width: 1200px)"),
+      largeScreen: window.matchMedia("only screen and (min-width: 1200px)")
+        .matches,
       ideaProgress: 0
-    }
+    };
   },
   computed: {
     selectedIndex() {
@@ -66,15 +92,11 @@ export default {
     }
   },
   watch: {
-    userDataDB(db) {
-      if (db !== null && this.ideas.length > 0) {
-        this.loadIdeaData();
-      }
+    userDataDB() {
+      this.loadIdeaData();
     },
     ideas(ideas) {
-      if (this.userDataDB !== null && ideas.length > 0) {
-        this.loadIdeaData();
-      }
+      this.loadIdeaData();
     }
   },
   methods: {
@@ -82,26 +104,36 @@ export default {
       return `${idea.categoryId}C-${idea.id}I`;
     },
     loadIdeaData() {
-      for (let i = 0; i < this.ideas.length; i++) {
-        this.userDataDB
-          .transaction(['ideas'])
-          .objectStore('ideas')
-          .get(
-            `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
-          ).onsuccess = event => {
-          if (this.ideas.length > i) {
-            if (event.target.result !== undefined) {
-              Vue.set(this.ideas[i], 'progress', event.target.result.progress);
-              Vue.set(this.ideas[i], 'bookmarked', event.target.result.bookmarked ? true : false);
-            } else {
-              Vue.set(this.ideas[i], 'progress', 'undecided');
-              Vue.set(this.ideas[i], 'bookmarked', false);
+      if (this.userDataDB && this.ideas.length > 0) {
+        for (let i = 0; i < this.ideas.length; i++) {
+          this.userDataDB
+            .transaction(["ideas"])
+            .objectStore("ideas")
+            .get(
+              `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
+            ).onsuccess = event => {
+            if (this.ideas.length > i) {
+              if (event.target.result !== undefined) {
+                Vue.set(
+                  this.ideas[i],
+                  "progress",
+                  event.target.result.progress
+                );
+                Vue.set(
+                  this.ideas[i],
+                  "bookmarked",
+                  event.target.result.bookmarked ? true : false
+                );
+              } else {
+                Vue.set(this.ideas[i], "progress", "undecided");
+                Vue.set(this.ideas[i], "bookmarked", false);
+              }
+              if (i == this.ideas.length - 1) {
+                this.ideaProgress = this.getIdeaProgress();
+              }
             }
-            if (i == this.ideas.length - 1) {
-              this.ideaProgress = this.getIdeaProgress();
-            }
-          }
-        };
+          };
+        }
       }
     },
     notifyIdeaClicked(idea, index) {
@@ -110,10 +142,10 @@ export default {
           x => x.categoryLbl == idea.category
         ) + 1;
       this.$router.push({
-        name: 'ideas',
+        name: "ideas",
         params: { categoryId: categoryId, ideaId: idea.id }
       });
-      this.$store.dispatch('setSelectedIdeaIndex', index);
+      this.$store.dispatch("setSelectedIdeaIndex", index);
     },
     toggleBookmark(index) {
       const idea = this.ideas[index];
@@ -125,7 +157,7 @@ export default {
         this.addToBookmarks(id);
         idea.bookmarked = true;
       }
-      this.$emit('needs-update');
+      this.$emit("needs-update");
     },
     openNewPopper(context) {
       if (this.openPopper && this.openPopper !== context) {
@@ -140,10 +172,10 @@ export default {
     },
     getIdeaProgress() {
       const completedIdeas = this.ideas.reduce((accumulator, idea) => {
-        if (idea.progress === 'done') return accumulator + 1;
+        if (idea.progress === "done") return accumulator + 1;
         else return accumulator;
       }, 0);
-      return completedIdeas / this.ideas.length * 100;
+      return (completedIdeas / this.ideas.length) * 100;
     },
     handleResize(mediaQueryList) {
       this.largeScreen = mediaQueryList.matches;
@@ -151,17 +183,13 @@ export default {
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
-    if (this.userDataDB !== null && this.ideas.length > 0) {
-      this.loadIdeaData();
-    }
+    this.loadIdeaData();
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
   },
   created() {
-    if (this.userDataDB !== null && this.ideas.length > 0) {
-      this.loadIdeaData();
-    }
+    this.loadIdeaData();
   }
 };
 </script>
