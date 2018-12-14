@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/mclintprojects/ideabag2.svg?branch=master)](https://travis-ci.org/mclintprojects/ideabag2)
+
 # Idea Bag 2
 
 Idea Bag 2 open source repository.
