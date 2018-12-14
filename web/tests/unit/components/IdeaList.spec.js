@@ -32,8 +32,12 @@ describe('IdeaList.vue', () => {
     });
 
     expect(wrapper.findAll('.ideaItem').length).toEqual(ideas.length);
-    expect(wrapper.find('#ideaTitle').text()).toEqual(ideas[0].title);
-    expect(wrapper.find('#ideaDifficulty').text()).toEqual(ideas[0].difficulty);
+    expect(wrapper.find('#ideaList li:first-child #ideaTitle').text()).toEqual(
+      ideas[0].title
+    );
+    expect(
+      wrapper.find('#ideaList li:first-child #ideaDifficulty').text()
+    ).toEqual(ideas[0].difficulty);
     expect(
       wrapper
         .find('#ideaList li:first-child')
