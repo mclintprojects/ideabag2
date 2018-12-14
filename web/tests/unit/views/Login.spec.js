@@ -1,10 +1,6 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import StoreFactory from '../StoreFactory';
 import Login from '../../../src/views/Login';
-import Toasted from 'vue-toasted';
-import Vue from 'vue';
-
-Vue.use(Toasted);
 
 describe('Login.vue', () => {
   let store, actions;
