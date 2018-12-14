@@ -79,21 +79,4 @@ describe('Navbar.vue', () => {
     expect(wrapper.find('#links li:first-child').text()).toEqual('Login');
     expect(wrapper.find('#links li:last-child').text()).toEqual('Signup');
   });
-
-  test('It should logout correctly', () => {
-    let actions = {
-      logout: jest.fn()
-    };
-    let store = StoreFactory({ userLoggedIn: () => true }, actions);
-
-    let wrapper = shallowMount(Navbar, {
-      store,
-      localVue,
-      stubs: ['router-link', 'font-awesome-icon'],
-      mocks: { $route: { path: '/' } }
-    });
-
-    wrapper.find('#links li:last-child > a').trigger('click');
-    expect(actions.logout).toHaveBeenCalled();
-  });
 });
