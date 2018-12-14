@@ -1,14 +1,18 @@
-import { shallowMount } from '@vue/test-utils';
+import { shallowMount, createLocalVue } from '@vue/test-utils';
 import StoreFactory from '../StoreFactory';
 import Login from '../../../src/views/Login';
+import Toasted from 'vue-toasted';
+import Vue from 'vue';
+
+Vue.use(Toasted);
 
 describe('Login.vue', () => {
-  let store;
-  let actions = {
-    loginUser: jest.fn()
-  };
+  let store, actions;
 
   beforeEach(() => {
+    actions = {
+      loginUser: jest.fn()
+    };
     store = StoreFactory({}, actions);
   });
 
@@ -24,4 +28,17 @@ describe('Login.vue', () => {
 
     expect(actions.loginUser).toHaveBeenCalled();
   });
+
+  /*test('It should not attempt login if username or password is not provided', () => {
+    const wrapper = shallowMount(Login, {
+      store,
+      stubs: ['font-awesome-icon']
+    });
+
+    wrapper.find('#emailTb').setValue('');
+    wrapper.find('#passwordTb').setValue('');
+    wrapper.find('.appBtn').trigger('click');
+
+    expect(actions.loginUser).toHaveBeenCalledTimes(0);
+  });*/
 });
