@@ -1,11 +1,7 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import IdeaList from '../../../src/components/IdeaList';
 import Vuex from 'vuex';
 import StoreFactory from '../StoreFactory';
-import { wrap } from 'module';
-
-let localVue = createLocalVue();
-localVue.use(Vuex);
 
 global.window.matchMedia = () => {
   return { matches: true };
@@ -28,10 +24,9 @@ describe('IdeaList.vue', () => {
     ];
   });
 
-  test('It should correctly render ideas', () => {
+  test('It should correctly render the list of ideas', () => {
     const wrapper = shallowMount(IdeaList, {
       store,
-      localVue,
       stubs: ['popper', 'progress-modal', 'font-awesome-icon'],
       propsData: { ideas }
     });

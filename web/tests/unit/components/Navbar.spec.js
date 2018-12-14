@@ -1,12 +1,10 @@
-import { shallowMount, createLocalVue } from '@vue/test-utils';
+import { shallowMount } from '@vue/test-utils';
 import Navbar from '../../../src/components/Navbar.vue';
-import Vuex from 'vuex';
 import StoreFactory from '../StoreFactory';
 
-const localVue = createLocalVue();
-localVue.use(Vuex);
-
 describe('Navbar.vue', () => {
+  const actions = { logout: jest.fn() };
+
   let store;
   beforeEach(() => {
     store = StoreFactory({ navbarTitle: () => 'Ideabag 2 (TEST)' });
@@ -15,7 +13,6 @@ describe('Navbar.vue', () => {
   test('It should render app title correctly', () => {
     const wrapper = shallowMount(Navbar, {
       store,
-      localVue,
       stubs: ['router-link', 'font-awesome-icon'],
       mocks: { $route: { path: '/' } }
     });
@@ -26,7 +23,6 @@ describe('Navbar.vue', () => {
   test('It should not render back button if root route', () => {
     const wrapper = shallowMount(Navbar, {
       store,
-      localVue,
       stubs: ['router-link', 'font-awesome-icon'],
       mocks: { $route: { path: '/' } }
     });
@@ -37,7 +33,6 @@ describe('Navbar.vue', () => {
   test('It should render back button if not root route', () => {
     const wrapper = shallowMount(Navbar, {
       store,
-      localVue,
       stubs: ['router-link', 'font-awesome-icon'],
       mocks: { $route: { path: '/categories/1' } }
     });
@@ -53,7 +48,6 @@ describe('Navbar.vue', () => {
 
     const wrapper = shallowMount(Navbar, {
       store,
-      localVue,
       stubs: ['router-link', 'font-awesome-icon'],
       mocks: { $route: { path: '/' } }
     });
@@ -71,7 +65,6 @@ describe('Navbar.vue', () => {
 
     const wrapper = shallowMount(Navbar, {
       store,
-      localVue,
       stubs: ['router-link', 'font-awesome-icon'],
       mocks: { $route: { path: '/' } }
     });
@@ -79,4 +72,17 @@ describe('Navbar.vue', () => {
     expect(wrapper.find('#links li:first-child').text()).toEqual('Login');
     expect(wrapper.find('#links li:last-child').text()).toEqual('Signup');
   });
+
+  /*test('It should correctly logout', () => {
+    store = StoreFactory({ userLoggedIn: () => true }, actions);
+
+    const wrapper = shallowMount(Navbar, {
+      store,
+      stubs: ['router-link', 'font-awesome-icon'],
+      mocks: { $route: { path: '/' } }
+    });
+
+    wrapper.find('#links li:last-child > a').trigger('click');
+    expect(actions.logout).toHaveBeenCalled();
+  });*/
 });
