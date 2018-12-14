@@ -50,7 +50,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-push": "npm run lint && git add ."
+      "pre-push": "npm test && npm run lint && git add ."
     }
   },
   "license": "GNU General Public License",
