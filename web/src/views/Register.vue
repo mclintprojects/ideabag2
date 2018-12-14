@@ -38,42 +38,42 @@
 </template>
 
 <script>
-import eventbus from "../eventbus";
+import eventbus from '../eventbus';
 
 export default {
   data() {
     return {
       formData: {
-        email: "",
-        password: ""
+        email: '',
+        password: ''
       },
       errorCodes: {
-        INVALID_PASSWORD: "Your password needs to be longer.",
-        EMAIL_EXISTS: "A user with that email address already exists.",
-        "TOO_MANY_ATTEMPTS_TRY_LATER:":
-          "Too many attempts. Please try again in a few minutes."
+        INVALID_PASSWORD: 'Your password needs to be longer.',
+        EMAIL_EXISTS: 'A user with that email address already exists.',
+        'TOO_MANY_ATTEMPTS_TRY_LATER:':
+          'Too many attempts. Please try again in a few minutes.'
       }
     };
   },
   methods: {
     registerUser() {
       if (this.formData.email.length > 0 && this.formData.password.length > 0) {
-        this.$store.dispatch("registerUser", this.formData);
+        this.$store.dispatch('registerUser', this.formData);
       } else {
-        eventbus.showToast("One or more required fields is empty.", "error");
+        eventbus.showToast('One or more required fields is empty.', 'error');
       }
     }
   },
   activated() {
-    eventbus.$on("registration-success", message => {
-      eventbus.showToast(message, "success");
+    eventbus.$on('registration-success', message => {
+      eventbus.showToast(message, 'success');
       this.$router.go(-1);
     });
 
-    eventbus.$on("registration-failure", message => {
+    eventbus.$on('registration-failure', message => {
       if (this.errorCodes.hasOwnProperty(message))
-        eventbus.showToast(this.errorCodes[message], "error");
-      else eventbus.showToast(message, "error");
+        eventbus.showToast(this.errorCodes[message], 'error');
+      else eventbus.showToast(message, 'error');
     });
   }
 };
