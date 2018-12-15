@@ -1,5 +1,5 @@
 <template>
-  <div class="appContainer">
+  <div class="full-width-container">
     <font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
     <div id="no-bookmarks" v-if="!isLoading && ideas.length == 0">
       <font-awesome-icon :icon="['fas', 'bookmark']" size="6x"></font-awesome-icon>
