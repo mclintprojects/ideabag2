@@ -220,6 +220,29 @@ body {
 	color: var(--primaryTextLight);
 }
 
+.modal-list {
+	padding: 0;
+	margin: 0;
+}
+.modal-list > li {
+	border-top: 1px solid black;
+	cursor: pointer;
+	font-size: 1.7rem;
+	list-style-type: none;
+	padding: 2rem 3rem;
+	width: 100%;
+}
+.modal-list > li:hover {
+	background-color: rgba(0, 0, 0, 0.2);
+}
+.modal-list > li > input,
+.modal-list > li > label {
+	cursor: pointer;
+}
+.modal-list > li > label {
+	padding-left: 1rem;
+}
+
 .col-xs-3,
 .col-xs-6,
 .row {

@@ -4,14 +4,14 @@ import VueRouter from 'vue-router';
 import { routes } from './routes';
 import { store } from './store/store';
 import { library as fontAwesomeLibrary } from '@fortawesome/fontawesome-svg-core';
-import { faSpinner, faBookmark, faEllipsisV, faArrowLeft, faTrash } from '@fortawesome/free-solid-svg-icons';
+import { faSpinner, faBookmark, faEllipsisV, faArrowLeft, faTrash, faSort } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Toasted from 'vue-toasted';
 import VModal from 'vue-js-modal';
 import Popper from 'vue-popperjs';
 
-fontAwesomeLibrary.add(faSpinner, faBookmark, farBookmark, faEllipsisV, faArrowLeft, faTrash);
+fontAwesomeLibrary.add(faSpinner, faBookmark, farBookmark, faEllipsisV, faArrowLeft, faTrash, faSort);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 Vue.use(VueRouter);
