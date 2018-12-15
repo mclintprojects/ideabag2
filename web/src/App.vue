@@ -151,21 +151,19 @@ body {
 	background-color: var(--primary);
 	border: solid 0px transparent;
 	border-radius: 2px;
+	color: white;
 	width: 100px;
 	height: 40px;
 	transition: all 1s;
 }
-
 .appBtn:hover {
 	background-color: var(--primaryDark);
 	cursor: pointer;
 }
-
 .appBtn:disabled {
 	background-color: gray;
 	color: black;
 }
-
 .appBtn:disabled:hover {
 	cursor: not-allowed;
 }
@@ -178,10 +176,20 @@ body {
 	margin: 0.5rem;
 	height: 40px;
 }
-
 .appBtnOutline:hover {
 	background-color: white;
 	color: var(--primary);
+}
+.floating-action-button {
+  border-radius: 180px;
+  bottom: 20px;
+  display: flex;
+  justify-content: center;
+	align-items: center;
+  height: 60px;
+  position: fixed;
+  right: 20px;
+  width: 60px;
 }
 .icon-button {
 	border: none;
@@ -225,7 +233,11 @@ body {
 
 .appContainer {
 	width: 55%;
+	margin: 0 auto;
 	margin-top: 50px;
+}
+.full-width-container {
+	width: 100%;
 }
 
 .highlight {
