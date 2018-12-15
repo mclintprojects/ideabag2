@@ -33,6 +33,17 @@
     		</li>
     	</ul>
     </div>
+    <button class="appBtn floating-action-button" @click="$modal.show('sort-modal')">
+      <font-awesome-icon icon="sort" size="lg" fixed-width></font-awesome-icon>
+    </button>
+    <modal name="sort-modal" height="auto" :adaptive="true">
+      <ul class="modal-list">
+        <li v-for="difficulty, index in ['all', 'beginner', 'intermediate', 'expert']" :key="index" @click="$modal.hide('sort-modal');difficultyFilter = difficulty">
+          <input v-model="difficultyFilter" :id="'difficulty' + difficulty" type="radio" name="difficulty" :value="difficulty">
+          <label :for="'difficulty' + difficulty">{{ difficulty | capitalize }}</label>
+        </li>
+      </ul>
+    </modal>
   </div>
 </template>
 
@@ -53,7 +64,8 @@ export default {
       openPopper: null,
       mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
       largeScreen: window.matchMedia('only screen and (min-width: 1200px)').matches,
-      ideaProgress: 0
+      ideaProgress: 0,
+      difficultyFilter: "all"
     }
   },
   computed: {
@@ -163,6 +175,11 @@ export default {
   created() {
     if (this.userDataDB !== null && this.ideas.length > 0) {
       this.loadIdeaData();
+    }
+  },
+  filters: {
+    capitalize(string) {
+      return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
 };
