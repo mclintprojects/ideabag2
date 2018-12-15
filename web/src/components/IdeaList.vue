@@ -34,7 +34,7 @@
     	</ul>
     </div>
     <button class="appBtn floating-action-button" @click="$modal.show('sort-modal')">
-      <font-awesome-icon icon="sort" size="lg" fixed-width></font-awesome-icon>
+      <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
       <ul class="modal-list">
