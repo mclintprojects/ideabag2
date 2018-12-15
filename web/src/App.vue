@@ -158,6 +158,7 @@ body {
 }
 .appBtn:hover {
 	background-color: var(--primaryDark);
+	color: white;
 	cursor: pointer;
 }
 .appBtn:disabled {
