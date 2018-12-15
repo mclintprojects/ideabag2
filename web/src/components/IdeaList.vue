@@ -5,7 +5,7 @@
         <div id="progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
       <ul id="ideaList">
-    		<li v-for="(idea, index) in ideas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
+    		<li v-for="(idea, index) in ideas" :key="index" v-show="difficultyFilter === 'All' || idea.difficulty === difficultyFilter" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
     			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
             <div>
       				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
@@ -38,9 +38,9 @@
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
       <ul class="modal-list">
-        <li v-for="difficulty, index in ['all', 'beginner', 'intermediate', 'expert']" :key="index" @click="$modal.hide('sort-modal');difficultyFilter = difficulty">
+        <li v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']" :key="index" @click="$modal.hide('sort-modal');difficultyFilter = difficulty">
           <input v-model="difficultyFilter" :id="'difficulty' + difficulty" type="radio" name="difficulty" :value="difficulty">
-          <label :for="'difficulty' + difficulty">{{ difficulty | capitalize }}</label>
+          <label :for="'difficulty' + difficulty">{{ difficulty }}</label>
         </li>
       </ul>
     </modal>
@@ -65,7 +65,7 @@ export default {
       mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
       largeScreen: window.matchMedia('only screen and (min-width: 1200px)').matches,
       ideaProgress: 0,
-      difficultyFilter: "all"
+      difficultyFilter: 'All'
     }
   },
   computed: {
@@ -175,11 +175,6 @@ export default {
   created() {
     if (this.userDataDB !== null && this.ideas.length > 0) {
       this.loadIdeaData();
-    }
-  },
-  filters: {
-    capitalize(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
     }
   }
 };
