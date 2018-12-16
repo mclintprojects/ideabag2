@@ -1,21 +1,23 @@
 <template>
-	<div class="appContainer">
+	<div class="full-space-container">
 		<font-awesome-icon id="loadingCircle" v-if="$store.getters.isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-		<ul id="categoryList">
-			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
-				<div class="categoryItem">
-					<div class="categoryIconBg">
-						<img class="categoryIcon" :src="icons[index]" />
+		<div class="appContainer">
+			<ul id="categoryList">
+				<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
+					<div class="categoryItem">
+						<div class="categoryIconBg">
+							<img class="categoryIcon" :src="icons[index]" />
+						</div>
+						<div class="categoryContent">
+							<p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
+							<p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
+						</div>
 					</div>
-					<div class="categoryContent">
-						<p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
-						<p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
-					</div>
-				</div>
-			</li>
-		</ul>
+				</li>
+			</ul>
+		</div>
 
-		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks" v-show="!hideBookmarkButton"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
+		<router-link class="appBtn floating-action-button" to="bookmarks"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
 	</div>
 </template>
 
@@ -35,8 +37,7 @@ export default {
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png',
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png'
       ],
-      selectedIndex: 0,
-			hideBookmarkButton: false
+      selectedIndex: 0
     };
   },
   computed: {
@@ -56,11 +57,7 @@ export default {
   activated() {
     this.$store.dispatch('setSelectedIdeaIndex', -1);
     this.$store.dispatch('setTitle', 'IdeaBag 2');
-		setTimeout(() => this.hideBookmarkButton = false, 200);
-  },
-	deactivated() {
-		this.hideBookmarkButton = true;
-	}
+  }
 };
 </script>
 
@@ -87,8 +84,9 @@ export default {
 }
 
 #categoryList {
+	width: 100%;
   list-style-type: none;
-  margin: 0px;
+	margin: 0px;
   padding: 0px;
 }
 
@@ -106,18 +104,5 @@ export default {
   display: flex;
   flex-direction: row;
   padding: 8px 16px 8px 16px;
-}
-
-#bookmarkBtn {
-	color: white;
-  border-radius: 180px;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-	align-items: center;
-  height: 60px;
-  position: fixed;
-  right: 20px;
-  width: 60px;
 }
 </style>
