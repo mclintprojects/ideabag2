@@ -243,6 +243,14 @@ body {
 .modal-list > li > label {
 	padding-left: 1rem;
 }
+.no-ideas-to-display {
+	color: var(--primaryTextLight);
+  display: flex;
+  flex-flow: column nowrap;
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
 .col-xs-3,
 .col-xs-6,
@@ -256,11 +264,13 @@ body {
 }
 
 .appContainer {
+	height: 100%;
 	width: 55%;
 	margin: 0 auto;
-	margin-top: 50px;
+	padding-top: 50px;
 }
-.full-width-container {
+.full-space-container {
+	height: 100%;
 	width: 100%;
 }
 

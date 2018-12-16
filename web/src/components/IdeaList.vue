@@ -1,11 +1,11 @@
 <template>
-  <div class="full-width-container">
+  <div class="full-space-container">
     <div class="appContainer">
-      <div id="progress-bar">
+      <div id="progress-bar" v-show="filteredIdeas.length !== 0">
         <div id="progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
       <ul id="ideaList">
-    		<li v-for="(idea, index) in ideas" :key="index" v-show="difficultyFilter === 'All' || idea.difficulty === difficultyFilter" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
+    		<li v-for="(idea, index) in filteredIdeas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
     			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
             <div>
       				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
@@ -32,6 +32,11 @@
           <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, index, event)" :progress="idea.progress" :id="getDataId(idea)"></progress-modal>
     		</li>
     	</ul>
+      <div class="no-ideas-to-display" v-show="ideas.length !== 0 && filteredIdeas.length === 0">
+        <font-awesome-icon icon="filter" size="6x"></font-awesome-icon>
+        <h2>No Ideas that match the filter</h2>
+        <p>There are no Ideas that match the current filter settings</p>
+      </div>
     </div>
     <button class="appBtn floating-action-button" @click="$modal.show('sort-modal')">
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
@@ -71,6 +76,19 @@ export default {
   computed: {
     selectedIndex() {
       return this.$store.getters.selectedIdeaIndex;
+    },
+    filteredIdeas() {
+      if (this.difficultyFilter === "All") {
+        return this.ideas;
+      }
+
+      let filteredIdeas = [];
+      for (let idea of this.ideas) {
+        if (idea.difficulty === this.difficultyFilter) {
+          filteredIdeas.push(idea);
+        }
+      }
+      return filteredIdeas;
     }
   },
   props: {

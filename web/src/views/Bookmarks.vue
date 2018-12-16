@@ -1,12 +1,12 @@
 <template>
-  <div class="full-width-container">
+  <div class="full-space-container">
     <font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-    <div id="no-bookmarks" v-if="!isLoading && ideas.length == 0">
+    <div class="no-ideas-to-display" v-if="!isLoading && ideas.length == 0">
       <font-awesome-icon :icon="['fas', 'bookmark']" size="6x"></font-awesome-icon>
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
     </div>
-    <idea-list @needs-update="loadIdeas" v-if="ideas.length > 0" :ideas="ideas" />
+    <idea-list @needs-update="loadIdeas" v-if="!isLoading && ideas.length > 0" :ideas="ideas" />
   </div>
 </template>
 
@@ -68,12 +68,5 @@ export default {
 </script>
 
 <style scoped>
-#no-bookmarks {
-  color: var(--primaryTextLight);
-  display: flex;
-  flex-flow: column nowrap;
-  height: 100%;
-  justify-content: center;
-  align-items: center;
-}
+
 </style>
