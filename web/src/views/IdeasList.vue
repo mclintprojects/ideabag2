@@ -1,5 +1,5 @@
 <template>
-	<div class="appContainer">
+	<div class="full-space-container">
 		<font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
 		<idea-list :ideas="ideas" />
 	</div>
