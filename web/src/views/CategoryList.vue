@@ -1,5 +1,5 @@
 <template>
-	<div class="full-width-container">
+	<div class="full-space-container">
 		<font-awesome-icon id="loadingCircle" v-if="$store.getters.isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
 		<div class="appContainer">
 			<ul id="categoryList">
