@@ -78,7 +78,7 @@ export default {
       return this.$store.getters.selectedIdeaIndex;
     },
     filteredIdeas() {
-      if (this.difficultyFilter === "All") {
+      if (this.difficultyFilter === 'All') {
         return this.ideas;
       }
 
