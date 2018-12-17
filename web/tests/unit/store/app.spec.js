@@ -1,12 +1,15 @@
 import app from '../../../src/store/app';
 
 describe('app.js', () => {
-  let state, mutations;
+  let state, mutations, actions, commit;
 
   beforeAll(() => {
     state = app.state;
     mutations = app.mutations;
+    actions = app.actions;
   });
+
+  beforeEach(() => (commit = jest.fn()));
 
   it('should correctly set Navbar title', () => {
     let title = 'Test title';
@@ -37,5 +40,30 @@ describe('app.js', () => {
     let db = { id: 1 };
     mutations.SET_USER_DATA_DB(state, db);
     expect(state.userDataDB.id).toEqual(db.id);
+  });
+
+  it('should correctly call the SET_LOADING mutation', () => {
+    actions.setLoading({ commit }, true);
+    expect(commit).toHaveBeenCalledWith('SET_LOADING', true);
+  });
+
+  it('should correctly call the SET_CATEGORIES mutation', () => {
+    actions.setCategories({ commit }, [1, 2]);
+    expect(commit).toHaveBeenCalledWith('SET_CATEGORIES', [1, 2]);
+  });
+
+  it('should correctly call the SET_SELECTED_IDEA_INDEX mutation', () => {
+    actions.setSelectedIdeaIndex({ commit }, 1);
+    expect(commit).toHaveBeenCalledWith('SET_SELECTED_IDEA_INDEX', 1);
+  });
+
+  it('should correctly call the SET_TITLE mutation', () => {
+    actions.setTitle({ commit }, 'Test title');
+    expect(commit).toHaveBeenCalledWith('SET_TITLE', 'Test title');
+  });
+
+  it('should correctly call the SET_USER_DATA_DB mutation', () => {
+    actions.setUserDataDB({ commit }, {});
+    expect(commit).toHaveBeenCalledWith('SET_USER_DATA_DB', {});
   });
 });
