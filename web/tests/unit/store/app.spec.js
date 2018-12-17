@@ -1,15 +1,32 @@
 import app from '../../../src/store/app';
 
 describe('app.js', () => {
-  let state, mutations, actions, commit;
+  let state, getters, mutations, actions, commit;
 
   beforeAll(() => {
     state = app.state;
+    getters = app.getters;
     mutations = app.mutations;
     actions = app.actions;
   });
 
   beforeEach(() => (commit = jest.fn()));
+
+  it('should correctly map getters from state', () => {
+    let s = {
+      navbarTitle: 'Test title',
+      isLoading: true,
+      selectedIdeaIndex: 1,
+      categories: [],
+      userDataDB: null
+    };
+
+    expect(getters.navbarTitle(s)).toEqual(s.navbarTitle);
+    expect(getters.isLoading(s)).toEqual(s.isLoading);
+    expect(getters.selectedIdeaIndex(s)).toEqual(s.selectedIdeaIndex);
+    expect(getters.categories(s)).toEqual(s.categories);
+    expect(getters.userDataDB(s)).toEqual(s.userDataDB);
+  });
 
   it('should correctly set Navbar title', () => {
     let title = 'Test title';
