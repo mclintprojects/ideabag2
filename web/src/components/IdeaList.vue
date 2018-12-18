@@ -91,25 +91,25 @@
 </template>
 
 <script>
-import Vue from "vue";
-import Popper from "vue-popperjs";
-import UserDataDBInterface from "../mixins/UserDataDBInterface";
-import ProgressModal from "../components/ProgressModal";
+import Vue from 'vue';
+import Popper from 'vue-popperjs';
+import UserDataDBInterface from '../mixins/UserDataDBInterface';
+import ProgressModal from '../components/ProgressModal';
 
 export default {
   mixins: [UserDataDBInterface],
   components: {
     popper: Popper,
-    "progress-modal": ProgressModal
+    'progress-modal': ProgressModal
   },
   data() {
     return {
       openPopper: null,
-      mediaQueryList: window.matchMedia("only screen and (min-width: 1200px)"),
-      largeScreen: window.matchMedia("only screen and (min-width: 1200px)")
+      mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
+      largeScreen: window.matchMedia('only screen and (min-width: 1200px)')
         .matches,
       ideaProgress: 0,
-      difficultyFilter: "All"
+      difficultyFilter: 'All'
     };
   },
   computed: {
@@ -117,7 +117,7 @@ export default {
       return this.$store.getters.selectedIdeaIndex;
     },
     filteredIdeas() {
-      if (this.difficultyFilter === "All") {
+      if (this.difficultyFilter === 'All') {
         return this.ideas;
       }
 
@@ -158,22 +158,22 @@ export default {
     loadIdeaData() {
       for (let i = 0; i < this.ideas.length; i++) {
         this.userDataDB
-          .transaction(["ideas"])
-          .objectStore("ideas")
+          .transaction(['ideas'])
+          .objectStore('ideas')
           .get(
             `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
           ).onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
-              Vue.set(this.ideas[i], "progress", event.target.result.progress);
+              Vue.set(this.ideas[i], 'progress', event.target.result.progress);
               Vue.set(
                 this.ideas[i],
-                "bookmarked",
+                'bookmarked',
                 event.target.result.bookmarked ? true : false
               );
             } else {
-              Vue.set(this.ideas[i], "progress", "undecided");
-              Vue.set(this.ideas[i], "bookmarked", false);
+              Vue.set(this.ideas[i], 'progress', 'undecided');
+              Vue.set(this.ideas[i], 'bookmarked', false);
             }
             if (i == this.ideas.length - 1) {
               this.ideaProgress = this.getIdeaProgress();
@@ -188,10 +188,10 @@ export default {
           x => x.categoryLbl == idea.category
         ) + 1;
       this.$router.push({
-        name: "ideas",
+        name: 'ideas',
         params: { categoryId: categoryId, ideaId: idea.id }
       });
-      this.$store.dispatch("setSelectedIdeaIndex", index);
+      this.$store.dispatch('setSelectedIdeaIndex', index);
     },
     toggleBookmark(index) {
       const idea = this.ideas[index];
@@ -203,7 +203,7 @@ export default {
         this.addToBookmarks(id);
         idea.bookmarked = true;
       }
-      this.$emit("needs-update");
+      this.$emit('needs-update');
     },
     openNewPopper(context) {
       if (this.openPopper && this.openPopper !== context) {
@@ -218,7 +218,7 @@ export default {
     },
     getIdeaProgress() {
       const completedIdeas = this.ideas.reduce((accumulator, idea) => {
-        if (idea.progress === "done") return accumulator + 1;
+        if (idea.progress === 'done') return accumulator + 1;
         else return accumulator;
       }, 0);
       return (completedIdeas / this.ideas.length) * 100;

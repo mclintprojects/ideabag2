@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import IdeaList from "../components/IdeaList";
+import IdeaList from '../components/IdeaList';
 
 export default {
   data() {
@@ -24,7 +24,7 @@ export default {
     if (this.$store.getters.categories) {
       const categoryId = this.$route.params.categoryId;
       const title = this.$store.getters.categories[categoryId - 1].categoryLbl;
-      this.$store.dispatch("setTitle", title);
+      this.$store.dispatch('setTitle', title);
 
       this.ideas = this.$store.getters.categories[categoryId - 1].items;
     }

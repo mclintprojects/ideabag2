@@ -1,17 +1,40 @@
 <template>
-    <div class="appContainer">
-        <div class="form-group ">
-            <label for="emailTb ">Email address</label>
-            <input v-model="formData.email" id="emailTb" type="email" class="form-control " placeholder="Enter email ">
-        </div>
-        <div class="form-group ">
-            <label for="passwordTb ">Password</label>
-            <input v-model="formData.password" type="password" class="form-control " id="passwordTb " placeholder="Password ">
-        </div>
-        <button @click="loginUser" class="appBtn" :disabled="this.$store.getters.isPerformingAction">Login</button>
-
-        <font-awesome-icon id="loadingCircle" v-if="this.$store.getters.isPerformingAction" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
+  <div class="appContainer">
+    <div class="form-group">
+      <label for="emailTb">Email address</label>
+      <input
+        v-model="formData.email"
+        id="emailTb"
+        type="email"
+        class="form-control"
+        placeholder="Enter email"
+      >
     </div>
+    <div class="form-group">
+      <label for="passwordTb">Password</label>
+      <input
+        v-model="formData.password"
+        type="password"
+        class="form-control"
+        id="passwordTb"
+        placeholder="Password"
+      >
+    </div>
+    <button
+      @click="loginUser"
+      class="appBtn"
+      :disabled="this.$store.getters.isPerformingAction"
+    >Login</button>
+
+    <font-awesome-icon
+      id="loadingCircle"
+      v-if="this.$store.getters.isPerformingAction"
+      icon="spinner"
+      size="3x"
+      spin
+      fixed-with
+    ></font-awesome-icon>
+  </div>
 </template>
 
 <script>
@@ -66,7 +89,8 @@ label {
 
 .appContainer {
   padding: 16px;
-  padding-top: 50px;
+  padding-top: 100px;
+  width: 40%;
 }
 
 .form-control {
