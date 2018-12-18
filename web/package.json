@@ -50,7 +50,7 @@
   ],
   "husky": {
     "hooks": {
-      "pre-commit": "npm run lint"
+      "pre-commit": "npm run lint && cd .. && git add ."
     }
   },
   "license": "GNU General Public License",
