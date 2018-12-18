@@ -94,6 +94,7 @@ export default {
 	created() {
 		this.$store.dispatch('setCategories', this.getData());
 		this.downloadIdeas();
+		this.$store.dispatch('getNewIdeas');
 		this.tryLocalLogin();
 		this.setupInterceptors();
 		this.createDb();
