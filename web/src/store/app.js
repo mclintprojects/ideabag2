@@ -1,5 +1,8 @@
+import axios from 'axios';
+
 const state = {
   categories: [],
+  newIdeas: [],
   isLoading: true,
   selectedIdeaIndex: -1,
   navbarTitle: 'IdeaBag 2 (BETA)',
@@ -9,6 +12,9 @@ const state = {
 const getters = {
   categories: state => {
     return state.categories;
+  },
+  newIdeas: state => {
+    return state.newIdeas;
   },
   isLoading: state => {
     return state.isLoading;
@@ -39,6 +45,10 @@ const mutations = {
   },
   SET_USER_DATA_DB(state, db) {
     state.userDataDB = db;
+  },
+  SET_NEW_IDEAS(state, newIdeas) {
+    state.newIdeas = newIdeas;
+    localStorage.setItem('newIdeas', JSON.stringify(newIdeas));
   }
 };
 
@@ -57,6 +67,21 @@ const actions = {
   },
   setUserDataDB(context, db) {
     context.commit('SET_USER_DATA_DB', db);
+  },
+  async getNewIdeas({ commit }) {
+    const response = await axios.get(
+      'https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt'
+    );
+
+    if (response.status == 200) {
+      const ideas = response.data.split(',').map(e => {
+        return {
+          categoryId: parseInt(e[0]) + 1,
+          ideaId: parseInt(e[2])
+        };
+      });
+      commit('SET_NEW_IDEAS', ideas);
+    }
   }
 };
 
