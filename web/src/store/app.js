@@ -75,9 +75,10 @@ const actions = {
 
     if (response.status == 200) {
       const ideas = response.data.split(',').map(e => {
+        const d = e.split('-');
         return {
-          categoryId: parseInt(e[0]) + 1,
-          ideaId: parseInt(e[2])
+          categoryId: parseInt(d[0]),
+          ideaId: parseInt(d[1])
         };
       });
       commit('SET_NEW_IDEAS', ideas);
