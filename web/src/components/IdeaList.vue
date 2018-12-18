@@ -5,33 +5,61 @@
         <div id="progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
       <ul id="ideaList">
-    		<li v-for="(idea, index) in filteredIdeas" :key="index" :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}">
-    			<div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
+        <li
+          v-for="(idea, index) in filteredIdeas"
+          :key="index"
+          :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}"
+        >
+          <div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
             <div>
-      				<p id="ideaTitle" class="primaryLbl">{{idea.title}}</p>
-      				<p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
+              <p id="ideaTitle" class="primaryLbl">
+                {{idea.title}}
+                <span v-if="isNewIdea(idea)">New</span>
+              </p>
+              <p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
                 <button class="appBtnOutline" @click.stop="toggleBookmark(index)">
-                  <font-awesome-icon :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
+                  <font-awesome-icon
+                    :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
+                    size="lg"
+                    fixed-width
+                  ></font-awesome-icon>
                 </button>
-                <button class="appBtnOutline" @click.stop="$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
+                <button
+                  class="appBtnOutline"
+                  @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
+                >Update progress</button>
               </div>
-              <popper trigger="click" :options="{placement: 'left'}" v-show="!largeScreen" @created="openNewPopper">
+              <popper
+                trigger="click"
+                :options="{placement: 'left'}"
+                v-show="!largeScreen"
+                @created="openNewPopper"
+              >
                 <div class="popper idea-menu-actions">
-                  <button @click.stop="openPopper.doClose();toggleBookmark(index)">{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
-                  <button @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))">Update progress</button>
+                  <button
+                    @click.stop="openPopper.doClose();toggleBookmark(index)"
+                  >{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
+                  <button
+                    @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))"
+                  >Update progress</button>
                 </div>
                 <button class="icon-button" slot="reference" @click.stop>
                   <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
                 </button>
               </popper>
             </div>
-    			</div>
-          <progress-modal v-if="idea.progress" @update-progress="event => setProgress(idea, index, event)" :progress="idea.progress" :id="getDataId(idea)"></progress-modal>
-    		</li>
-    	</ul>
+          </div>
+          <progress-modal
+            v-if="idea.progress"
+            @update-progress="event => setProgress(idea, index, event)"
+            :progress="idea.progress"
+            :id="getDataId(idea)"
+          ></progress-modal>
+        </li>
+      </ul>
       <div class="no-ideas-to-display" v-show="ideas.length !== 0 && filteredIdeas.length === 0">
         <font-awesome-icon icon="filter" size="6x"></font-awesome-icon>
         <h2>No Ideas that match the filter</h2>
@@ -43,8 +71,18 @@
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
       <ul class="modal-list">
-        <li v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']" :key="index" @click="$modal.hide('sort-modal');difficultyFilter = difficulty">
-          <input v-model="difficultyFilter" :id="'difficulty' + difficulty" type="radio" name="difficulty" :value="difficulty">
+        <li
+          v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']"
+          :key="index"
+          @click="$modal.hide('sort-modal');difficultyFilter = difficulty"
+        >
+          <input
+            v-model="difficultyFilter"
+            :id="'difficulty' + difficulty"
+            type="radio"
+            name="difficulty"
+            :value="difficulty"
+          >
           <label :for="'difficulty' + difficulty">{{ difficulty }}</label>
         </li>
       </ul>
@@ -61,17 +99,18 @@ import ProgressModal from '../components/ProgressModal';
 export default {
   mixins: [UserDataDBInterface],
   components: {
-    'popper': Popper,
+    popper: Popper,
     'progress-modal': ProgressModal
   },
   data() {
     return {
       openPopper: null,
       mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
-      largeScreen: window.matchMedia('only screen and (min-width: 1200px)').matches,
+      largeScreen: window.matchMedia('only screen and (min-width: 1200px)')
+        .matches,
       ideaProgress: 0,
       difficultyFilter: 'All'
-    }
+    };
   },
   computed: {
     selectedIndex() {
@@ -89,6 +128,9 @@ export default {
         }
       }
       return filteredIdeas;
+    },
+    newIdeas() {
+      return this.$store.getters.newIdeas;
     }
   },
   props: {
@@ -124,7 +166,11 @@ export default {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
               Vue.set(this.ideas[i], 'progress', event.target.result.progress);
-              Vue.set(this.ideas[i], 'bookmarked', event.target.result.bookmarked ? true : false);
+              Vue.set(
+                this.ideas[i],
+                'bookmarked',
+                event.target.result.bookmarked ? true : false
+              );
             } else {
               Vue.set(this.ideas[i], 'progress', 'undecided');
               Vue.set(this.ideas[i], 'bookmarked', false);
@@ -175,10 +221,17 @@ export default {
         if (idea.progress === 'done') return accumulator + 1;
         else return accumulator;
       }, 0);
-      return completedIdeas / this.ideas.length * 100;
+      return (completedIdeas / this.ideas.length) * 100;
     },
     handleResize(mediaQueryList) {
       this.largeScreen = mediaQueryList.matches;
+    },
+    isNewIdea(idea) {
+      return (
+        this.newIdeas.findIndex(
+          i => i.categoryId == idea.categoryId && i.ideaId == idea.id
+        ) != -1
+      );
     }
   },
   activated() {
@@ -228,6 +281,15 @@ export default {
   overflow: hidden;
   white-space: nowrap;
   padding: 0px;
+}
+#ideaTitle > span {
+  font-size: 11px;
+  margin-left: 8px;
+  color: rgba(0, 0, 0, 0.54);
+  background: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  text-transform: uppercase;
 }
 .ideaItem {
   display: flex;

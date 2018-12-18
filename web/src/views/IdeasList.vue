@@ -1,8 +1,8 @@
 <template>
-	<div class="full-space-container">
-		<font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-		<idea-list :ideas="ideas" />
-	</div>
+  <div class="full-space-container">
+    <font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
+    <idea-list :ideas="ideas"/>
+  </div>
 </template>
 
 <script>
