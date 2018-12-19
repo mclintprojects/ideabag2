@@ -87,12 +87,6 @@ label {
   font-family: "Roboto", sans-serif;
 }
 
-.container-app {
-  padding: 16px;
-  padding-top: 100px;
-  width: 40%;
-}
-
 form-input {
   border: solid 0px transparent;
   border-radius: 2px;
