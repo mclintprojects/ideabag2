@@ -305,7 +305,7 @@ export default {
 }
 
 .idea__difficulty {
-  border-radius: 4px;
+  border-radius: 0.4rem;
 }
 
 .progress--undecided {
