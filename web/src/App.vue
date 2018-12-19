@@ -131,7 +131,7 @@ export default {
 
 * {
   font-family: "Roboto", sans-serif;
-  font-display: fallback;
+  font-size: 60%;
 }
 
 html,
@@ -146,8 +146,8 @@ body {
 }
 
 #loader {
-  width: 36px;
-  height: 36px;
+  width: 3.6rem;
+  height: 3.6rem;
   color: white;
   position: absolute;
   left: calc(50% - 36px);
@@ -233,6 +233,7 @@ body {
   padding: 0;
   margin: 0;
 }
+
 .modal-list > li {
   border-top: 1px solid black;
   cursor: pointer;
