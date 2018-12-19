@@ -196,20 +196,14 @@ body {
 .icon-button {
   border: none;
   background-color: transparent;
+  cursor: pointer;
   color: white;
   padding: 1rem;
 }
 
-#backBtn {
-  margin-left: 16px;
-}
-
-#backBtn:hover {
-  cursor: pointer;
-}
-
 .main-container {
   display: flex;
+  flex-flow: column;
   justify-content: center;
   height: 100%;
 }
@@ -251,13 +245,6 @@ body {
   height: 100%;
   justify-content: center;
   align-items: center;
-}
-
-.col-xs-3,
-.col-xs-6,
-.row {
-  margin: 0px;
-  padding: 0px;
 }
 
 #componentHolder {
@@ -328,12 +315,6 @@ body {
     --authorLblSize: 13px;
     --dateLblSize: 10px;
     --dateLblMargin: 16px;
-  }
-
-  .col-xs-2,
-  .col-xs-8 {
-    padding: 0;
-    margin: 0;
   }
 
   #deleteBtn {
