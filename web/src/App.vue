@@ -163,10 +163,11 @@ p {
   border: solid 0rem transparent;
   border-radius: 0.2rem;
   color: white;
-  width: 10rem;
   height: 4rem;
+  min-width: 10rem;
   transition: all 1s;
   text-transform: uppercase;
+  font-size: 1.4rem;
 }
 
 .button:hover {
@@ -298,6 +299,10 @@ p {
   border-radius: 0.4rem;
   padding-left: 0.8rem;
   margin-bottom: 1.6rem;
+}
+
+.form-section__input::placeholder {
+  font-size: 1.4rem;
 }
 
 .form-section__label {

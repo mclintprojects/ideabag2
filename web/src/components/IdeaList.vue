@@ -189,7 +189,7 @@ export default {
         ) + 1;
       this.$router.push({
         name: 'ideas',
-        params: { categoryId: categoryId, ideaId: idea.class }
+        params: { categoryId: categoryId, ideaId: idea.id }
       });
       this.$store.dispatch('setSelectedIdeaIndex', index);
     },
