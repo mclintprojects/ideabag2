@@ -114,19 +114,19 @@ export default {
   --primaryText: rgba(255, 255, 255, 0.8);
   --primaryTextLight: rgba(255, 255, 255, 0.54);
   --progress-bar-background: #2b2b2b;
-  --primaryTextSize: 18px;
-  --ideaTextSize: 22px;
-  --categoryIconSize: 36px;
-  --categoryIconBgSize: 72px;
-  --badgePadding: 8px;
-  --ideaDescriptionTextSize: 16px;
-  --badgeTextSize: 12px;
-  --avatarSize: 30px;
-  --commentPadding: 16px;
-  --cardMargin: 16px 0px 0px 0px;
-  --authorLblSize: 16px;
-  --dateLblSize: 13px;
-  --dateLblMargin: 32px;
+  --primaryTextSize: 1.8rem;
+  --ideaTextSize: 2.2rem;
+  --categoryIconSize: 3.6rem;
+  --categoryIconBgSize: 7.2rem;
+  --badgePadding: 0.8rem;
+  --ideaDescriptionTextSize: 1.6rem;
+  --badgeTextSize: 1.2rem;
+  --avatarSize: 3rem;
+  --commentPadding: 1.6rem;
+  --cardMargin: 1.6rem 0rem 0rem 0rem;
+  --authorLblSize: 1.6rem;
+  --dateLblSize: 1.3rem;
+  --dateLblMargin: 3.2rem;
 }
 
 * {
@@ -137,12 +137,16 @@ export default {
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0px;
 }
 
 body {
   background-color: var(--background);
-  font-family: "Roboto", sans-serif;
-  overflow-x: hidden;
+}
+
+p {
+  font-size: 1.4rem;
 }
 
 #loader {
@@ -150,17 +154,17 @@ body {
   height: 3.6rem;
   color: white;
   position: absolute;
-  left: calc(50% - 36px);
-  top: calc(50% - 36px);
+  left: calc(50% - 3.6rem);
+  top: calc(50% - 3.6rem);
 }
 
 .button {
   background-color: var(--primary);
-  border: solid 0px transparent;
-  border-radius: 2px;
+  border: solid 0rem transparent;
+  border-radius: 0.2rem;
   color: white;
-  width: 100px;
-  height: 40px;
+  width: 10rem;
+  height: 4rem;
   transition: all 1s;
   text-transform: uppercase;
 }
@@ -182,11 +186,11 @@ body {
 
 .button--outlined {
   background-color: transparent;
-  border: solid 2px white;
-  border-radius: 2px;
+  border: solid 0.2rem white;
+  border-radius: 0.2rem;
   color: white;
   margin: 0.5rem;
-  height: 40px;
+  height: 4rem;
 }
 
 .button--outlined:hover {
@@ -195,15 +199,16 @@ body {
 }
 
 .floating-action-button {
-  border-radius: 180px;
-  bottom: 20px;
+  border-radius: 18rem;
+  bottom: 2rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  height: 6rem;
   position: fixed;
-  right: 20px;
-  width: 60px;
+  right: 2rem;
+  font-size: 1.4rem;
+  width: 6rem;
 }
 
 .icon-button {
@@ -211,6 +216,7 @@ body {
   background-color: transparent;
   cursor: pointer;
   color: white;
+  font-size: 1.2rem;
   padding: 1rem;
 }
 
@@ -235,7 +241,7 @@ body {
 }
 
 .modal-list > li {
-  border-top: 1px solid black;
+  border-top: 0.1rem solid black;
   cursor: pointer;
   font-size: 1.7rem;
   list-style-type: none;
@@ -265,15 +271,15 @@ body {
   align-items: center;
 }
 
-#component-holder {
-  margin-top: 70px;
+.component-holder {
+  margin-top: 7rem;
 }
 
 .container-app {
   height: 100%;
   width: 55%;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 5rem;
 }
 
 .container-full {
@@ -287,16 +293,16 @@ body {
 }
 
 .form-section__input {
-  height: 35px;
-  border: 1px solid whitesmoke;
-  border-radius: 4px;
-  padding-left: 8px;
-  margin-bottom: 16px;
+  height: 3.5rem;
+  border: 0.1rem solid whitesmoke;
+  border-radius: 0.4rem;
+  padding-left: 0.8rem;
+  margin-bottom: 1.6rem;
 }
 
 .form-section__label {
-  font-size: 16px;
-  margin-bottom: 4px;
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
 }
 
 .highlight {
@@ -313,7 +319,7 @@ body {
 
 @keyframes slide-in {
   from {
-    transform: translateX(-100px);
+    transform: translateX(-10rem);
     opacity: 0;
   }
   to {
@@ -328,34 +334,34 @@ body {
     opacity: 1;
   }
   to {
-    transform: translateX(-100px);
+    transform: translateX(-10rem);
     opacity: 0;
   }
 }
 
-@media screen and (max-width: 576px), (max-width: 768px) {
+@media screen and (max-width: 57.6rem), (max-width: 76.8rem) {
   .container-app {
     width: 100% !important;
   }
 
   :root {
-    --primaryTextSize: 16px;
-    --ideaTextSize: 18px;
-    --ideaDescriptionTextSize: 13px;
-    --categoryIconSize: 28px;
-    --categoryIconBgSize: 56px;
-    --badgePadding: 4px;
-    --badgeTextSize: 10px;
-    --avatarSize: 24px;
-    --commentPadding: 8px;
-    --cardMargin: 16px 16px 0px 16px;
-    --authorLblSize: 13px;
-    --dateLblSize: 10px;
-    --dateLblMargin: 16px;
+    --primaryTextSize: 1.6rem;
+    --ideaTextSize: 1.8rem;
+    --ideaDescriptionTextSize: 1.3rem;
+    --categoryIconSize: 2.8rem;
+    --categoryIconBgSize: 5.6rem;
+    --badgePadding: 0.4rem;
+    --badgeTextSize: 1rem;
+    --avatarSize: 2.4rem;
+    --commentPadding: 0.8rem;
+    --cardMargin: 1.6rem 1.6rem 0rem 1.6rem;
+    --authorLblSize: 1.3rem;
+    --dateLblSize: 1rem;
+    --dateLblMargin: 1.6rem;
   }
 
-  #button--delete {
-    width: 104px;
+  .button--delete {
+    width: 10.4rem;
   }
 }
 </style>
