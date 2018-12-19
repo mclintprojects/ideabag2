@@ -129,17 +129,22 @@ export default {
   --dateLblMargin: 32px;
 }
 
+* {
+  font-family: "Roboto", sans-serif;
+}
+
 html,
 body {
   height: 100%;
 }
+
 body {
   background-color: var(--background);
   font-family: "Roboto", sans-serif;
   overflow-x: hidden;
 }
 
-#loadingCircle {
+#loader {
   width: 36px;
   height: 36px;
   color: white;
@@ -148,7 +153,7 @@ body {
   top: calc(50% - 36px);
 }
 
-.appBtn {
+.button {
   background-color: var(--primary);
   border: solid 0px transparent;
   border-radius: 2px;
@@ -156,21 +161,25 @@ body {
   width: 100px;
   height: 40px;
   transition: all 1s;
+  text-transform: uppercase;
 }
-.appBtn:hover {
+
+.button:hover {
   background-color: var(--primaryDark);
   color: white;
   cursor: pointer;
 }
-.appBtn:disabled {
+
+.button:disabled {
   background-color: gray;
   color: black;
 }
-.appBtn:disabled:hover {
+
+.button:disabled:hover {
   cursor: not-allowed;
 }
 
-.appBtnOutline {
+.button--outlined {
   background-color: transparent;
   border: solid 2px white;
   border-radius: 2px;
@@ -178,10 +187,12 @@ body {
   margin: 0.5rem;
   height: 40px;
 }
-.appBtnOutline:hover {
+
+.button--outlined:hover {
   background-color: white;
   color: var(--primary);
 }
+
 .floating-action-button {
   border-radius: 180px;
   bottom: 20px;
@@ -193,6 +204,7 @@ body {
   right: 20px;
   width: 60px;
 }
+
 .icon-button {
   border: none;
   background-color: transparent;
@@ -201,18 +213,18 @@ body {
   padding: 1rem;
 }
 
-.main-container {
+.container-main {
   display: flex;
   flex-flow: column;
   justify-content: center;
   height: 100%;
 }
 
-.primaryLbl {
+.text--primary {
   color: var(--primaryText);
 }
 
-.secondaryLbl {
+.text--secondary {
   color: var(--primaryTextLight);
 }
 
@@ -228,16 +240,20 @@ body {
   padding: 2rem 3rem;
   width: 100%;
 }
+
 .modal-list > li:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }
+
 .modal-list > li > input,
 .modal-list > li > label {
   cursor: pointer;
 }
+
 .modal-list > li > label {
   padding-left: 1rem;
 }
+
 .no-ideas-to-display {
   color: var(--primaryTextLight);
   display: flex;
@@ -247,19 +263,38 @@ body {
   align-items: center;
 }
 
-#componentHolder {
+#component-holder {
   margin-top: 70px;
 }
 
-.appContainer {
+.container-app {
   height: 100%;
   width: 55%;
   margin: 0 auto;
   padding-top: 50px;
 }
-.full-space-container {
+
+.container-full {
   height: 100%;
   width: 100%;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section__input {
+  height: 35px;
+  border: 1px solid whitesmoke;
+  border-radius: 4px;
+  padding-left: 8px;
+  margin-bottom: 16px;
+}
+
+.form-section__label {
+  font-size: 16px;
+  margin-bottom: 4px;
 }
 
 .highlight {
@@ -297,7 +332,7 @@ body {
 }
 
 @media screen and (max-width: 576px), (max-width: 768px) {
-  .appContainer {
+  .container-app {
     width: 100% !important;
   }
 
@@ -317,7 +352,7 @@ body {
     --dateLblMargin: 16px;
   }
 
-  #deleteBtn {
+  #button--delete {
     width: 104px;
   }
 }

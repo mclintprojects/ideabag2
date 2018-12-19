@@ -1,28 +1,28 @@
 <template>
-  <div class="appContainer">
-    <div class="form-group">
-      <label for="emailTb">Email address</label>
+  <div class="container-app">
+    <div class="form-section">
+      <label class="form-section__label" for="emailTb">Email address</label>
       <input
+        class="form-section__input"
         v-model="formData.email"
         id="emailTb"
         type="email"
-        class="form-control"
         placeholder="Enter email"
       >
     </div>
-    <div class="form-group">
-      <label for="passwordTb">Password</label>
+    <div class="form-section">
+      <label class="form-section__label" for="passwordTb">Password</label>
       <input
+        class="form-section__input"
         v-model="formData.password"
         type="password"
-        class="form-control"
         id="passwordTb"
         placeholder="Password"
       >
     </div>
     <button
       @click="loginUser"
-      class="appBtn"
+      class="button"
       :disabled="this.$store.getters.isPerformingAction"
     >Login</button>
 
@@ -81,30 +81,30 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 label {
   color: var(--primaryText);
   font-family: "Roboto", sans-serif;
 }
 
-.appContainer {
+.container-app {
   padding: 16px;
   padding-top: 100px;
   width: 40%;
 }
 
-.form-control {
+form-input {
   border: solid 0px transparent;
   border-radius: 2px;
   height: 40px;
   font-weight: normal;
 }
 
-.form-control:focus {
+input:focus {
   box-shadow: 0px 0px 0px transparent;
 }
 
-#loadingCircle {
+#loader {
   position: initial;
   margin-left: 20px;
 }
