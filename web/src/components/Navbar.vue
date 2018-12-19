@@ -76,7 +76,7 @@ export default {
 <style>
 .navbar {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: space-between;
   background-color: var(--primary);
   position: fixed;
@@ -89,7 +89,7 @@ export default {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: 5rem;
 }
 
 .toolbar-left {
