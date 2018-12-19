@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="container-main">
     <navbar></navbar>
     <transition name="slide" mode="out-in">
       <keep-alive>
@@ -131,6 +131,7 @@ export default {
 
 * {
   font-family: "Roboto", sans-serif;
+  font-display: fallback;
 }
 
 html,
