@@ -1,26 +1,26 @@
 <template>
-  <div class="full-space-container">
-    <div class="appContainer">
+  <div class="container-full">
+    <div class="container-app">
       <div id="progress-bar" v-show="filteredIdeas.length !== 0">
-        <div id="progress" :style="{width: ideaProgress + '%'}"></div>
+        <div id="progress-bar-progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
-      <ul id="ideaList">
+      <ul id="ideas">
         <li
           v-for="(idea, index) in filteredIdeas"
           :key="index"
           :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}"
         >
-          <div class="ideaItem" @click="notifyIdeaClicked(idea, index)">
+          <div class="idea" @click="notifyIdeaClicked(idea, index)">
             <div>
-              <p id="ideaTitle" class="primaryLbl">
+              <p id="idea-title" class="text-primary">
                 {{idea.title}}
                 <span v-if="isNewIdea(idea)">New</span>
               </p>
-              <p id="ideaDifficulty" class="badge secondaryLbl">{{idea.difficulty}}</p>
+              <p id="idea-difficulty" class="badge text-secondary">{{idea.difficulty}}</p>
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
-                <button class="appBtnOutline" @click.stop="toggleBookmark(index)">
+                <button class="button button-outlined" @click.stop="toggleBookmark(index)">
                   <font-awesome-icon
                     :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
                     size="lg"
@@ -28,7 +28,7 @@
                   ></font-awesome-icon>
                 </button>
                 <button
-                  class="appBtnOutline"
+                  class="button button-outlined"
                   @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
                 >Update progress</button>
               </div>
@@ -66,11 +66,11 @@
         <p>There are no Ideas that match the current filter settings</p>
       </div>
     </div>
-    <button class="appBtn floating-action-button" @click="$modal.show('sort-modal')">
+    <button class="button floating-action-button" @click="$modal.show('sort-modal')">
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
-      <ul class="modal-list">
+      <ul class="sort-modal-list">
         <li
           v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']"
           :key="index"
@@ -251,30 +251,35 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 #progress-bar {
   background-color: var(--progress-bar-background);
   width: 100%;
   height: 10px;
 }
-#progress {
+#progress-bar-progress {
   background-color: var(--primaryDark);
   height: 100%;
 }
-#ideaList {
+#ideas {
   list-style-type: none;
   margin: 0px;
   padding: 0px;
 }
-#ideaList li {
+#ideas li {
   border-left: 8px solid transparent;
   padding: 8px 16px 8px 16px;
 }
-#ideaList li:hover {
+#ideas li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
-#ideaTitle {
+.idea {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#idea-title {
   font-size: var(--primaryTextSize);
   margin: 0px 0px 4px 0px;
   text-overflow: ellipsis;
@@ -282,7 +287,7 @@ export default {
   white-space: nowrap;
   padding: 0px;
 }
-#ideaTitle > span {
+#idea-title > span {
   font-size: 11px;
   margin-left: 8px;
   color: rgba(0, 0, 0, 0.54);
@@ -290,11 +295,6 @@ export default {
   padding: 4px 8px;
   border-radius: 4px;
   text-transform: uppercase;
-}
-.ideaItem {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
 }
 .progress-undecided {
   border-left: 8px solid var(--undecided) !important;
