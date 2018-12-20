@@ -151,13 +151,14 @@ p {
   font-size: 1.4rem;
 }
 
-#loader {
+.loader {
   width: 3.6rem;
   height: 3.6rem;
   color: white;
   position: absolute;
   left: calc(50% - 3.6rem);
   top: calc(50% - 3.6rem);
+  font-size: 1.8rem;
 }
 
 .button {
@@ -214,6 +215,8 @@ p {
   right: 1.6rem;
   font-size: 1.4rem;
   min-width: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .icon-button {
@@ -227,9 +230,8 @@ p {
 
 .container-main {
   display: flex;
-  flex-flow: column;
-  justify-content: center;
-  height: 100%;
+  flex-direction: column;
+  min-height: 100%;
 }
 
 .text--primary {
@@ -245,25 +247,26 @@ p {
   margin: 0;
 }
 
-.modal-list > li {
-  border-top: 0.1rem solid black;
+.modal-list-item {
+  border-top: 0.1rem solid rgb(192, 192, 192);
   cursor: pointer;
-  font-size: 1.7rem;
   list-style-type: none;
-  padding: 2rem 3rem;
+  padding: 3rem 3rem;
   width: 100%;
 }
 
-.modal-list > li:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+.modal-list-item:hover {
+  background-color: rgba(218, 218, 218, 0.2) !important;
 }
 
-.modal-list > li > input,
-.modal-list > li > label {
+.modal-list-item__field,
+.modal-list-item__label {
   cursor: pointer;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.4rem;
 }
 
-.modal-list > li > label {
+.modal-list-item__label {
   padding-left: 1rem;
 }
 
@@ -281,14 +284,14 @@ p {
 }
 
 .container-app {
-  height: 100%;
+  min-height: 100%;
   width: 55%;
   margin: 0 auto;
   padding-top: 5rem;
 }
 
 .container-full {
-  height: 100%;
+  min-height: 100%;
   width: 100%;
 }
 
@@ -376,6 +379,10 @@ p {
 
   .button--delete {
     width: 10.4rem;
+  }
+
+  .v-modal {
+    top: 20rem !important;
   }
 }
 </style>

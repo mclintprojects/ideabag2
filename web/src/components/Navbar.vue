@@ -112,7 +112,8 @@ nav > a {
   color: var(--primaryText);
   text-decoration: none;
   font-size: 1.6rem;
-  padding: 1rem;
+  margin-left: 1.6rem;
+  margin-bottom: 1.6rem;
 }
 
 nav > a:hover,
@@ -129,10 +130,13 @@ nav > a:focus {
   nav {
     flex-flow: row;
     align-items: center;
+    margin-right: 1.6rem;
   }
 
   nav > a {
-    padding: 0 1.5rem;
+    margin: 0;
+    margin-left: 2.4rem;
+    padding: 0;
   }
 }
 </style>
