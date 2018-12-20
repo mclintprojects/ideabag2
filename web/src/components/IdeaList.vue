@@ -16,9 +16,7 @@
                 {{idea.title}}
                 <span v-if="isNewIdea(idea)">New</span>
               </p>
-              <div>
-                <p class="idea__difficulty">{{idea.difficulty}}</p>
-              </div>
+              <p class="idea__difficulty">{{idea.difficulty}}</p>
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
@@ -273,12 +271,12 @@ export default {
   padding: 0rem;
 }
 
-.ideas li {
+.ideas > li {
   border-left: 0.8rem solid transparent;
   padding: 0.8rem 1.6rem 0.8rem 1.6rem;
 }
 
-.ideas li:hover {
+.ideas > li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
@@ -291,11 +289,10 @@ export default {
 
 .idea__title {
   font-size: var(--primaryTextSize);
-  margin: 0rem 0rem 0.4rem 0rem;
+  margin-bottom: 0.4rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding: 0rem;
 }
 
 .idea__title > span {
@@ -347,10 +344,6 @@ export default {
   font-size: 1.4rem;
   text-align: left;
   color: rgba(0, 0, 0, 0.8);
-}
-
-.idea-menu-actions button:hover {
-  cursor: pointer;
 }
 
 .idea-menu-actions > button {
