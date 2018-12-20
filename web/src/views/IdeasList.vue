@@ -1,6 +1,6 @@
 <template>
-  <div class="full-space-container">
-    <font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
+  <div class="container-full">
+    <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-width></font-awesome-icon>
     <idea-list :ideas="ideas"/>
   </div>
 </template>
@@ -22,11 +22,11 @@ export default {
   components: { IdeaList },
   activated() {
     if (this.$store.getters.categories) {
-      const categoryId = this.$route.params.categoryId;
-      const title = this.$store.getters.categories[categoryId - 1].categoryLbl;
+      const categoryIndex = this.$route.params.categoryId - 1;
+      const title = this.$store.getters.categories[categoryIndex].categoryLbl;
       this.$store.dispatch('setTitle', title);
 
-      this.ideas = this.$store.getters.categories[categoryId - 1].items;
+      this.ideas = this.$store.getters.categories[categoryIndex].items;
     }
   }
 };
