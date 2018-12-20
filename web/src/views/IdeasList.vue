@@ -22,16 +22,12 @@ export default {
   },
   components: { IdeaList },
   activated() {
-    const categoryIndex = this.$route.params.categoryId - 1;
-    const title = this.$store.getters.categories[categoryIndex].categoryLbl;
-    this.$store.dispatch('setTitle', title);
-
-    this.ideas = this.$store.getters.categories[categoryIndex].items;
-    this.ideasLoaded = true;
-  },
-  deactivated() {
-    this.ideas = []
-    this.ideasLoaded = false;
+    if (this.$store.getters.categories) {
+      const categoryIndex = this.$route.params.categoryId - 1;
+      this.ideas = this.$store.getters.categories[categoryIndex].items;
+      const title = this.$store.getters.categories[categoryIndex].categoryLbl;
+      this.$store.dispatch('setTitle', title);
+    }
   }
 };
 </script>
