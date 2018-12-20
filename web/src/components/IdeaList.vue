@@ -122,7 +122,9 @@ export default {
       if (this.difficultyFilter === 'All') {
         return this.ideas;
       }
-      return this.ideas.filter(idea => idea.difficulty === this.difficultyFilter);
+      return this.ideas.filter(
+        idea => idea.difficulty === this.difficultyFilter
+      );
     },
     newIdeas() {
       return this.$store.getters.newIdeas;
@@ -134,35 +136,52 @@ export default {
       required: true
     }
   },
+  watch: {
+    userDataDB(db) {
+      if (db !== null && this.ideas.length > 0) {
+        this.loadIdeaData();
+      }
+    },
+    ideas() {
+      if (this.ideas.length > 0) this.loadIdeaData();
+    }
+  },
   methods: {
     getDataId(idea) {
       return `${idea.categoryId}C-${idea.id}I`;
     },
+    getIdeaData(callback) {
+      const data = [];
+
+      const transaction = this.userDataDB
+        .transaction(['ideas'])
+        .objectStore('ideas');
+
+      transaction.openCursor().onsuccess = ({ target }) => {
+        var cursor = target.result;
+        if (cursor) {
+          data.push(cursor.value);
+          cursor.continue();
+        } else callback(data);
+      };
+    },
     loadIdeaData() {
-      for (let i = 0; i < this.ideas.length; i++) {
-        this.userDataDB
-          .transaction(['ideas'])
-          .objectStore('ideas')
-          .get(this.getDataId(this.ideas[i]))
-          .onsuccess = event => {
-          if (this.ideas.length > i) {
-            if (event.target.result !== undefined) {
-              Vue.set(this.ideas[i], 'progress', event.target.result.progress);
-              Vue.set(
-                this.ideas[i],
-                'bookmarked',
-                event.target.result.bookmarked ? true : false
-              );
-            } else {
-              Vue.set(this.ideas[i], 'progress', 'undecided');
-              Vue.set(this.ideas[i], 'bookmarked', false);
-            }
-            if (i == this.ideas.length - 1) {
-              this.ideaProgress = this.getIdeaProgress();
-            }
-          }
-        };
-      }
+      const data = this.getIdeaData(data => {
+        data.forEach(d => {
+          const idData = d.id.split('-');
+          const ideaIndex = parseInt(idData[1].replace('I', '')) - 1;
+          const categoryIndex = parseInt(idData[0].replace('C', '')) - 1;
+
+          Vue.set(this.ideas[ideaIndex], 'progress', d.progress);
+          Vue.set(
+            this.ideas[ideaIndex],
+            'bookmarked',
+            d.bookmarked ? true : false
+          );
+        });
+
+        this.setIdeaProgress();
+      });
     },
     notifyIdeaClicked(idea, index) {
       const categoryId =
@@ -198,12 +217,12 @@ export default {
       this.ideaProgress = this.getIdeaProgress();
       this.updateProgress(this.getDataId(idea), progress);
     },
-    getIdeaProgress() {
+    setIdeaProgress() {
       const completedIdeas = this.ideas.reduce((accumulator, idea) => {
         if (idea.progress === 'done') return accumulator + 1;
         else return accumulator;
       }, 0);
-      return (completedIdeas / this.ideas.length) * 100;
+      this.ideaProgress = (completedIdeas / this.ideas.length) * 100;
     },
     handleResize(mediaQueryList) {
       this.largeScreen = mediaQueryList.matches;
@@ -218,13 +237,9 @@ export default {
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
-    this.loadIdeaData();
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
-  },
-  created() {
-    this.loadIdeaData();
   }
 };
 </script>
