@@ -17,8 +17,8 @@
         v-if="this.$store.getters.userLoggedIn"
         href="#"
       >Welcome, {{this.$store.getters.userEmail}}!</a>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Login</router-link>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Signup</router-link>
+      <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Log in</router-link>
+      <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Join</router-link>
       <a v-if="this.$store.getters.userLoggedIn" href="#" @click="logout">Log out</a>
     </nav>
   </div>

@@ -132,6 +132,8 @@ export default {
 * {
   font-family: "Roboto", sans-serif;
   font-size: 60%;
+  margin: 0;
+  padding: 0;
 }
 
 html,
@@ -200,16 +202,17 @@ p {
 }
 
 .floating-action-button {
-  border-radius: 18rem;
-  bottom: 2rem;
+  border-radius: 50%;
+  bottom: 1.6rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 6rem;
+  width: 5.6rem;
+  height: 5.6rem;
   position: fixed;
-  right: 2rem;
+  right: 1.6rem;
   font-size: 1.4rem;
-  width: 6rem;
+  min-width: 0;
 }
 
 .icon-button {
@@ -299,10 +302,11 @@ p {
   border-radius: 0.4rem;
   padding-left: 0.8rem;
   margin-bottom: 1.6rem;
+  font-size: 1.4rem;
 }
 
-.form-section__input::placeholder {
-  font-size: 1.4rem;
+.form-section__input:focus {
+  box-shadow: 0px 0px 0px transparent;
 }
 
 .form-section__label {
