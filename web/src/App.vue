@@ -127,6 +127,7 @@ export default {
   --authorLblSize: 1.6rem;
   --dateLblSize: 1.3rem;
   --dateLblMargin: 1.6rem;
+  --buttonOutlinedHover: #ffa20060;
 }
 
 * {
@@ -139,8 +140,6 @@ export default {
 html,
 body {
   height: 100%;
-  margin: 0;
-  padding: 0;
 }
 
 body {
@@ -149,6 +148,10 @@ body {
 
 p {
   font-size: 1.4rem;
+}
+
+button {
+  cursor: pointer;
 }
 
 .loader {
@@ -199,7 +202,7 @@ p {
 }
 
 .button--outlined:hover {
-  background-color: #ffa20060;
+  background-color: var(--buttonOutlinedHover);
   color: var(--primary);
 }
 
@@ -356,7 +359,7 @@ p {
   }
 }
 
-@media screen and (max-width: 57.6rem), (max-width: 76.8rem) {
+@media screen and (max-width: 76.8rem) {
   .container-app {
     width: 100% !important;
   }

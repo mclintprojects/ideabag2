@@ -124,11 +124,11 @@ nav > a:focus {
 
 @media only screen and (min-width: 76.8rem) {
   .navbar {
-    flex-flow: row;
+    flex-direction: row;
   }
 
   nav {
-    flex-flow: row;
+    flex-direction: row;
     align-items: center;
     margin-right: 1.6rem;
   }

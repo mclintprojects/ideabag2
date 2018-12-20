@@ -100,8 +100,6 @@ export default {
 .categories {
   width: 100%;
   list-style-type: none;
-  margin: 0rem;
-  padding: 0rem;
 }
 
 .categories li:hover {
@@ -116,6 +114,6 @@ export default {
 .category {
   display: flex;
   flex-direction: row;
-  padding: 0.8rem 1.6rem 0.8rem 1.6rem;
+  padding: 0.8rem 1.6rem;
 }
 </style>
