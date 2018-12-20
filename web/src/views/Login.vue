@@ -1,7 +1,7 @@
 <template>
   <div class="container-app">
     <div class="form-section">
-      <label class="form-section__label" for="emailTb">Email address</label>
+      <label class="form-section__label text--secondary" for="emailTb">Email address</label>
       <input
         class="form-section__input"
         v-model="formData.email"
@@ -11,7 +11,7 @@
       >
     </div>
     <div class="form-section">
-      <label class="form-section__label" for="passwordTb">Password</label>
+      <label class="form-section__label text--secondary" for="passwordTb">Password</label>
       <input
         class="form-section__input"
         v-model="formData.password"
@@ -67,6 +67,7 @@ export default {
     }
   },
   activated() {
+    this.$store.dispatch('setTitle', 'Log in');
     eventbus.$on('login-success', message => {
       eventbus.showToast(message, 'success');
       this.$router.go(-1);
@@ -80,26 +81,3 @@ export default {
   }
 };
 </script>
-
-<style>
-label {
-  color: var(--primaryText);
-  font-family: "Roboto", sans-serif;
-}
-
-form-input {
-  border: solid 0px transparent;
-  border-radius: 2px;
-  height: 40px;
-  font-weight: normal;
-}
-
-input:focus {
-  box-shadow: 0px 0px 0px transparent;
-}
-
-#loader {
-  position: initial;
-  margin-left: 20px;
-}
-</style>

@@ -87,21 +87,21 @@ export default {
   align-items: center;
   width: var(--categoryIconBgSize);
   height: var(--categoryIconBgSize);
-  border-radius: 180px;
+  border-radius: 18rem;
 }
 
 .category-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 16px;
+  margin-left: 1.6rem;
 }
 
 #categories {
   width: 100%;
   list-style-type: none;
-  margin: 0px;
-  padding: 0px;
+  margin: 0rem;
+  padding: 0rem;
 }
 
 #categories li:hover {
@@ -111,12 +111,11 @@ export default {
 
 #category__title {
   font-size: var(--primaryTextSize);
-  margin: 0px;
 }
 
 .category {
   display: flex;
   flex-direction: row;
-  padding: 8px 16px 8px 16px;
+  padding: 0.8rem 1.6rem 0.8rem 1.6rem;
 }
 </style>
