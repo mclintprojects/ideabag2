@@ -146,6 +146,9 @@ export default {
       if (db !== null && this.ideas.length > 0) {
         this.loadIdeaData();
       }
+    },
+    ideas() {
+      if (this.ideas.length > 0) this.loadIdeaData();
     }
   },
   methods: {
@@ -239,9 +242,6 @@ export default {
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
-    if (this.userDataDB !== null && this.ideas.length > 0) {
-      this.loadIdeaData();
-    }
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
