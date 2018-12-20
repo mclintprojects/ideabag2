@@ -37,6 +37,7 @@
     </div>
 
     <div class="comments">
+      <p class="text--primary">Comments</p>
       <ul>
         <li class="comment" v-for="(comment, index) in comments" :key="index">
           <div class="top-row">
@@ -285,12 +286,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .card {
-  border: 2px solid transparent;
-  border-radius: 10px 10px 0px 0px;
-  background-color: var(--primary);
-  padding: 16px;
+  background-color: white;
+  padding: 1.6rem;
   margin: var(--cardMargin);
 }
 
@@ -306,35 +305,38 @@ export default {
   color: rgba(0, 0, 0, 0.8);
   font-size: var(--ideaTextSize);
   font-weight: bold;
-  font-size: 2rem;
 }
 
 .idea-detail__description {
   color: rgba(0, 0, 0, 0.54);
-  font-size: 16px;
+  font-size: 1.6rem;
+  line-height: 2.2rem;
   white-space: pre-wrap;
   word-wrap: break-word;
 }
 
 .container-progress {
   background-color: var(--undecided);
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  height: 10px;
+  height: 0.5rem;
 }
 
 .comments {
-  margin-top: 40px;
+  margin-top: 2.4rem;
+}
+
+.comments > p {
+  margin-bottom: 0.8rem;
 }
 
 .comments > ul {
   list-style-type: none;
   margin: 0;
-  padding: 0px;
+  padding: 0rem;
 }
 
 .container-comment {
   background-color: white;
-  padding: 16px;
+  padding: 1.6rem;
   display: flex;
   flex-direction: row;
   justify-content: center;
@@ -342,9 +344,9 @@ export default {
 
 .comment {
   padding: var(--commentPadding);
-  border-bottom: solid 5px var(--primary);
+  border-bottom: solid 0.3rem var(--primary);
   background-color: white;
-  margin-bottom: 8px;
+  margin-bottom: 1.6rem;
 }
 
 .comment__avatar {
@@ -353,29 +355,29 @@ export default {
 }
 
 .comment__textarea {
-  height: 80px;
+  height: 8rem;
   margin: auto;
   width: 100%;
-  border: solid 0px transparent;
+  border: solid 0rem transparent;
   background-color: white;
   resize: none;
-  font-size: 16px;
+  font-size: 1.6rem;
 }
 
 .comment__label {
   background-color: transparent;
-  font-size: 16px;
+  font-size: 1.6rem;
   font-family: "Roboto", "Arial";
   color: rgba(0, 0, 0, 0.54);
   white-space: pre-wrap;
   word-wrap: break-word;
-  margin-top: 4px;
+  margin-top: 0.4rem;
 }
 
 .button-delete-comment {
   color: black;
   cursor: pointer;
-  margin-top: 4px;
+  margin-top: 0.4rem;
 }
 
 .top-row {
@@ -394,7 +396,7 @@ export default {
 .comment__author {
   margin: 0;
   padding: 0;
-  margin-left: 16px;
+  margin-left: 1.6rem;
   color: rgba(0, 0, 0, 0.8);
   font-size: var(--authorLblSize);
   font-weight: bold;
@@ -408,18 +410,18 @@ export default {
   font-size: var(--dateLblSize);
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 76.8rem) {
   .card-top-row {
     flex-flow: column nowrap;
     align-items: flex-start;
   }
 
   .container-progress {
-    margin: 0 16px;
+    margin: 0 1.6rem;
   }
 
   .container-comment {
-    margin: 0px 16px;
+    margin: 0rem 1.6rem;
   }
 }
 </style>
