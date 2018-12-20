@@ -56,6 +56,8 @@
             </button>
           </div>
 
+          <hr>
+
           <p class="comment__label">{{comment.comment}}</p>
         </li>
       </ul>
@@ -144,8 +146,8 @@ export default {
   },
   watch: {
     progress(progress) {
-      document.getElementById(
-        'progress-bar'
+      document.getElementsByClassName(
+        'container-progress'
       ).style.backgroundColor = `var(--${progress})`;
     },
     userDataDB(db) {
@@ -349,6 +351,13 @@ export default {
   margin-bottom: 1.6rem;
 }
 
+.comment hr {
+  margin-top: 0.8rem;
+  background-color: rgb(218, 218, 218);
+  border: none;
+  height: 0.1rem;
+}
+
 .comment__avatar {
   width: var(--avatarSize);
   border-radius: 50%;
@@ -367,7 +376,6 @@ export default {
 .comment__label {
   background-color: transparent;
   font-size: 1.6rem;
-  font-family: "Roboto", "Arial";
   color: rgba(0, 0, 0, 0.54);
   white-space: pre-wrap;
   word-wrap: break-word;

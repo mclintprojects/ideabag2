@@ -16,7 +16,9 @@
                 {{idea.title}}
                 <span v-if="isNewIdea(idea)">New</span>
               </p>
-              <p class="idea__difficulty">{{idea.difficulty}}</p>
+              <div>
+                <p class="idea__difficulty">{{idea.difficulty}}</p>
+              </div>
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
@@ -305,11 +307,13 @@ export default {
 }
 
 .idea__difficulty {
+  display: inline-block;
   border-radius: 0.4rem;
   background-color: var(--primary);
   padding: var(--badgePadding);
   color: rgba(0, 0, 0, 0.54);
   font-size: var(--badgeTextSize);
+  text-transform: uppercase;
 }
 
 .progress--undecided {

@@ -32,7 +32,7 @@
       icon="spinner"
       size="3x"
       spin
-      fixed-with
+      fixed-width
     ></font-awesome-icon>
   </div>
 </template>
