@@ -118,9 +118,9 @@ export default {
   --ideaTextSize: 2.2rem;
   --categoryIconSize: 3.6rem;
   --categoryIconBgSize: 7.2rem;
-  --badgePadding: 0.8rem;
+  --badgePadding: 0.4rem 0.8rem;
   --ideaDescriptionTextSize: 1.6rem;
-  --badgeTextSize: 1.2rem;
+  --badgeTextSize: 1rem;
   --avatarSize: 3rem;
   --commentPadding: 1.6rem;
   --cardMargin: 1.6rem 0rem 0rem 0rem;
@@ -130,7 +130,7 @@ export default {
 }
 
 * {
-  font-family: "Roboto", sans-serif;
+  font-family: "Sarabun", sans-serif;
   font-size: 60%;
   margin: 0;
   padding: 0;
@@ -140,7 +140,7 @@ html,
 body {
   height: 100%;
   margin: 0;
-  padding: 0px;
+  padding: 0;
 }
 
 body {
@@ -311,7 +311,7 @@ p {
 }
 
 .form-section__input:focus {
-  box-shadow: 0px 0px 0px transparent;
+  box-shadow: 0rem 0rem 0rem transparent;
 }
 
 .form-section__label {
