@@ -141,18 +141,6 @@ export default {
       required: true
     }
   },
-  watch: {
-    userDataDB(db) {
-      if (db !== null && this.ideas.length > 0) {
-        this.loadIdeaData();
-      }
-    },
-    ideas(ideas) {
-      if (this.userDataDB !== null && ideas.length > 0) {
-        this.loadIdeaData();
-      }
-    }
-  },
   methods: {
     getDataId(idea) {
       return `${idea.categoryId}C-${idea.id}I`;
@@ -162,9 +150,8 @@ export default {
         this.userDataDB
           .transaction(['ideas'])
           .objectStore('ideas')
-          .get(
-            `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
-          ).onsuccess = event => {
+          .get(this.getDataId(this.ideas[i]))
+          .onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
               Vue.set(this.ideas[i], 'progress', event.target.result.progress);
@@ -197,7 +184,7 @@ export default {
     },
     toggleBookmark(index) {
       const idea = this.ideas[index];
-      const id = `${idea.categoryId}C-${idea.id}I`;
+      const id = this.getDataId(idea);
       if (idea.bookmarked) {
         this.removeFromBookmarks(id);
         idea.bookmarked = false;
@@ -238,17 +225,13 @@ export default {
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
-    if (this.userDataDB !== null && this.ideas.length > 0) {
-      this.loadIdeaData();
-    }
+    this.loadIdeaData();
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
   },
   created() {
-    if (this.userDataDB !== null && this.ideas.length > 0) {
-      this.loadIdeaData();
-    }
+    this.loadIdeaData();
   }
 };
 </script>
