@@ -9,7 +9,7 @@
       fixed-width
     ></font-awesome-icon>
     <div class="container-app">
-      <ul id="categories">
+      <ul class="categories">
         <li
           v-for="(category, index) in categories"
           :key="index"
@@ -18,10 +18,10 @@
         >
           <div class="category">
             <div class="category__icon-container">
-              <img class="category__icon" :src="icons[index]">
+              <img class="category__icon" :src="icons[index]" alt="category_icon">
             </div>
             <div class="category-content">
-              <p id="category__title" class="text--primary">{{category.categoryLbl}}</p>
+              <p class="category__title text--primary">{{category.categoryLbl}}</p>
               <p class="text--secondary">Ideas: {{category.categoryCount}}</p>
             </div>
           </div>
@@ -97,19 +97,19 @@ export default {
   margin-left: 1.6rem;
 }
 
-#categories {
+.categories {
   width: 100%;
   list-style-type: none;
   margin: 0rem;
   padding: 0rem;
 }
 
-#categories li:hover {
+.categories li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
 
-#category__title {
+.category__title {
   font-size: var(--primaryTextSize);
 }
 
