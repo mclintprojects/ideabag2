@@ -62,6 +62,13 @@ export default {
       axios
         .get(ideasURL)
         .then(response => {
+          response.data.forEach(c => {
+            c.items.forEach(i => {
+              i.progress = 'undecided';
+              i.bookmarked = false;
+            });
+          });
+
           this.$store.dispatch('setCategories', response.data);
           this.$store.dispatch('setLoading', false);
           this.saveData(response.data);
