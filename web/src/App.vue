@@ -126,7 +126,7 @@ export default {
   --cardMargin: 1.6rem 0rem 0rem 0rem;
   --authorLblSize: 1.6rem;
   --dateLblSize: 1.3rem;
-  --dateLblMargin: 3.2rem;
+  --dateLblMargin: 1.6rem;
 }
 
 * {
@@ -163,13 +163,15 @@ p {
 .button {
   background-color: var(--primary);
   border: solid 0rem transparent;
-  border-radius: 0.2rem;
+  border-radius: 0.4rem;
   color: white;
   height: 4rem;
-  min-width: 10rem;
+  min-width: 8rem;
   transition: all 1s;
   text-transform: uppercase;
   font-size: 1.4rem;
+  padding: 0 1.6rem;
+  font-weight: 600;
 }
 
 .button:hover {
@@ -180,7 +182,7 @@ p {
 
 .button:disabled {
   background-color: gray;
-  color: black;
+  color: #9a9a9a;
 }
 
 .button:disabled:hover {
@@ -189,15 +191,14 @@ p {
 
 .button--outlined {
   background-color: transparent;
-  border: solid 0.2rem white;
-  border-radius: 0.2rem;
-  color: white;
+  border: solid 0.1rem var(--primary);
+  color: var(--primary);
   margin: 0.5rem;
   height: 4rem;
 }
 
 .button--outlined:hover {
-  background-color: white;
+  background-color: #ffa20060;
   color: var(--primary);
 }
 
@@ -289,6 +290,10 @@ p {
 .container-full {
   height: 100%;
   width: 100%;
+}
+
+.container-extra-padding {
+  padding-top: 10rem;
 }
 
 .form-section {

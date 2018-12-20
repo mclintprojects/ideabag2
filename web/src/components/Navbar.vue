@@ -5,7 +5,7 @@
         <button class="icon-button" v-if="!isRootComponent" @click="navigateAway">
           <font-awesome-icon icon="arrow-left" size="lg" fixed-width></font-awesome-icon>
         </button>
-        <h4 class="toolbar-left__title">{{title}}</h4>
+        <h4 class="toolbar-left__title text--primary">{{title}}</h4>
       </div>
       <button class="icon-button" v-show="!bigScreen" @click="collapse = !collapse">
         <font-awesome-icon icon="bars" size="2x" fixed-width></font-awesome-icon>
@@ -94,12 +94,12 @@ export default {
 
 .toolbar-left {
   display: flex;
+  align-items: center;
 }
 
 .toolbar-left__title {
   font-size: 1.8rem;
   margin-left: 1.6rem;
-  color: rgba(255, 255, 255, 0.8);
 }
 
 nav {
