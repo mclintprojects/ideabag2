@@ -1,6 +1,6 @@
 <template>
   <div class="container-full">
-    <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
+    <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-width></font-awesome-icon>
     <idea-list :ideas="ideas"/>
   </div>
 </template>

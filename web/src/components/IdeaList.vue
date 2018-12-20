@@ -22,7 +22,7 @@
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
-                <button class="button button-outlined" @click.stop="toggleBookmark(index)">
+                <button class="button button--outlined" @click.stop="toggleBookmark(index)">
                   <font-awesome-icon
                     :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
                     size="lg"
@@ -30,7 +30,7 @@
                   ></font-awesome-icon>
                 </button>
                 <button
-                  class="button button-outlined"
+                  class="button button--outlined"
                   @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
                 >Update progress</button>
               </div>
@@ -58,7 +58,7 @@
             v-if="idea.progress"
             @update-progress="event => setProgress(idea, index, event)"
             :progress="idea.progress"
-            :class="getDataId(idea)"
+            :id="getDataId(idea)"
           ></progress-modal>
         </li>
       </ul>
@@ -72,20 +72,22 @@
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
-      <ul class="sort-modal-list">
+      <ul class="modal-list">
         <li
+          class="modal-list-item"
           v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']"
           :key="index"
           @click="$modal.hide('sort-modal');difficultyFilter = difficulty"
         >
           <input
+            class="modal-list-item__field"
             v-model="difficultyFilter"
             :class="'difficulty' + difficulty"
             type="radio"
             name="difficulty"
             :value="difficulty"
           >
-          <label :for="'difficulty' + difficulty">{{ difficulty }}</label>
+          <label class="modal-list-item__label" :for="'difficulty' + difficulty">{{ difficulty }}</label>
         </li>
       </ul>
     </modal>
@@ -107,8 +109,8 @@ export default {
   data() {
     return {
       openPopper: null,
-      mediaQueryList: window.matchMedia('only screen and (min-width: 1200rem)'),
-      largeScreen: window.matchMedia('only screen and (min-width: 1200rem)')
+      mediaQueryList: window.matchMedia('only screen and (min-width: 120rem)'),
+      largeScreen: window.matchMedia('only screen and (min-width: 120rem)')
         .matches,
       ideaProgress: 0,
       difficultyFilter: 'All'
@@ -155,7 +157,7 @@ export default {
   },
   methods: {
     getDataId(idea) {
-      return `${idea.categoryId}C-${idea.class}I`;
+      return `${idea.categoryId}C-${idea.id}I`;
     },
     loadIdeaData() {
       for (let i = 0; i < this.ideas.length; i++) {
@@ -163,7 +165,7 @@ export default {
           .transaction(['ideas'])
           .objectStore('ideas')
           .get(
-            `${this.ideas[i].categoryId}C-${this.ideas[i].class}I`
+            `${this.ideas[i].categoryId}C-${this.ideas[i].id}I`
           ).onsuccess = event => {
           if (this.ideas.length > i) {
             if (event.target.result !== undefined) {
@@ -197,7 +199,7 @@ export default {
     },
     toggleBookmark(index) {
       const idea = this.ideas[index];
-      const id = `${idea.categoryId}C-${idea.class}I`;
+      const id = `${idea.categoryId}C-${idea.id}I`;
       if (idea.bookmarked) {
         this.removeFromBookmarks(id);
         idea.bookmarked = false;
@@ -231,7 +233,7 @@ export default {
     isNewIdea(idea) {
       return (
         this.newIdeas.findIndex(
-          i => i.categoryId == idea.categoryId && i.ideaId == idea.class
+          i => i.categoryId == idea.categoryId && i.ideaId == idea.id
         ) != -1
       );
     }

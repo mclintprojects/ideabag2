@@ -1,12 +1,12 @@
 <template>
   <div class="container-full">
     <font-awesome-icon
-      id="loader"
+      class="loader"
       v-if="$store.getters.isLoading"
       icon="spinner"
       size="3x"
       spin
-      fixed-with
+      fixed-width
     ></font-awesome-icon>
     <div class="container-app">
       <ul id="categories">

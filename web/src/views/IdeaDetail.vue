@@ -148,7 +148,7 @@ export default {
     progress(progress) {
       document.getElementsByClassName(
         'container-progress'
-      ).style.backgroundColor = `var(--${progress})`;
+      )[0].style.backgroundColor = `var(--${progress})`;
     },
     userDataDB(db) {
       if (db !== null) {
@@ -419,17 +419,17 @@ export default {
 }
 
 @media screen and (max-width: 76.8rem) {
+  .card {
+    margin: 0;
+  }
+
   .card-top-row {
     flex-flow: column nowrap;
     align-items: flex-start;
   }
 
-  .container-progress {
-    margin: 0 1.6rem;
-  }
-
-  .container-comment {
-    margin: 0rem 1.6rem;
+  .comments > p {
+    display: none;
   }
 }
 </style>
