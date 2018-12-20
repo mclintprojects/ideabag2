@@ -1,7 +1,7 @@
 <template>
   <div class="container-full">
     <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-width></font-awesome-icon>
-    <idea-list :ideas="ideas"/>
+    <idea-list v-if="!isLoading && ideasLoaded" :ideas="ideas"/>
   </div>
 </template>
 
@@ -11,12 +11,13 @@ import IdeaList from '../components/IdeaList';
 export default {
   data() {
     return {
-      ideas: []
+      ideas: [],
+      ideasLoaded: false
     };
   },
   computed: {
     isLoading() {
-      return this.$store.getters.categories.length == 0;
+      return this.$store.getters.isLoading;
     }
   },
   components: { IdeaList },
