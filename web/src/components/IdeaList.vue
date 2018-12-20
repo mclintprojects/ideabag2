@@ -122,14 +122,9 @@ export default {
       if (this.difficultyFilter === 'All') {
         return this.ideas;
       }
-
-      let filteredIdeas = [];
-      for (let idea of this.ideas) {
-        if (idea.difficulty === this.difficultyFilter) {
-          filteredIdeas.push(idea);
-        }
-      }
-      return filteredIdeas;
+      return this.ideas.filter(
+        idea => idea.difficulty === this.difficultyFilter
+      );
     },
     newIdeas() {
       return this.$store.getters.newIdeas;
@@ -201,7 +196,7 @@ export default {
     },
     toggleBookmark(index) {
       const idea = this.ideas[index];
-      const id = `${idea.categoryId}C-${idea.id}I`;
+      const id = this.getDataId(idea);
       if (idea.bookmarked) {
         this.removeFromBookmarks(id);
         idea.bookmarked = false;

@@ -6,7 +6,7 @@
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
     </div>
-    <idea-list @needs-update="loadIdeas" v-if="!isLoading && ideas.length > 0" :ideas="ideas"/>
+    <idea-list @needs-update="loadIdeas" v-if="!isLoading && ideasLoaded" :ideas="ideas"/>
   </div>
 </template>
 
@@ -16,7 +16,8 @@ import IdeaList from '../components/IdeaList';
 export default {
   data() {
     return {
-      ideas: []
+      ideas: [],
+      ideasLoaded: false
     };
   },
   computed: {
@@ -27,16 +28,8 @@ export default {
       return this.$store.getters.userDataDB;
     }
   },
-  watch: {
-    userDataDB(db) {
-      if (db !== null) {
-        this.loadIdeas();
-      }
-    }
-  },
   methods: {
     loadIdeas() {
-      this.ideas = [];
       this.userDataDB
         .transaction(['ideas'])
         .objectStore('ideas')
@@ -46,6 +39,8 @@ export default {
         if (cursor) {
           this.loadIdea(cursor.primaryKey);
           cursor.continue();
+        } else {
+          this.ideasLoaded = true;
         }
       };
     },
@@ -60,12 +55,11 @@ export default {
   components: { IdeaList },
   activated() {
     this.$store.dispatch('setTitle', 'Bookmarks');
-    if (this.userDataDB !== null) {
-      this.loadIdeas();
-    }
+    this.loadIdeas();
+  },
+  deactivated() {
+    this.ideas = [];
+    this.ideasLoaded = false;
   }
 };
 </script>
-
-<style scoped>
-</style>

@@ -1,11 +1,13 @@
 <template>
   <div class="container-main">
     <navbar></navbar>
-    <transition name="slide" mode="out-in">
-      <keep-alive>
-        <router-view></router-view>
-      </keep-alive>
-    </transition>
+    <main>
+      <transition name="slide" mode="out-in">
+        <keep-alive>
+          <router-view></router-view>
+        </keep-alive>
+      </transition>
+    </main>
   </div>
 </template>
 
@@ -161,6 +163,10 @@ button {
   cursor: pointer;
 }
 
+main {
+  padding-top: 5rem;
+}
+
 .loader {
   width: 3.6rem;
   height: 3.6rem;
@@ -289,15 +295,10 @@ button {
   align-items: center;
 }
 
-.component-holder {
-  margin-top: 7rem;
-}
-
 .container-app {
   min-height: 100%;
   width: 55%;
   margin: 0 auto;
-  padding-top: 5rem;
 }
 
 .container-full {
