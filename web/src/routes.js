@@ -1,12 +1,12 @@
-import CategoryList from './views/CategoryList';
-import IdeasList from './views/IdeasList';
-import IdeaDetail from './views/IdeaDetail';
-import Bookmarks from './views/Bookmarks';
-import Login from './views/Login';
-import Register from './views/Register';
+const CategoryList = () => import('./views/CategoryList');
+const IdeasList = () => import('./views/IdeasList');
+const IdeaDetail = () => import('./views/IdeaDetail');
+const Bookmarks = () => import('./views/Bookmarks');
+const Login = () => import('./views/Login');
+const Register = () => import('./views/Register');
 
 export const routes = [
-  { path: '', component: CategoryList },
+  { path: '/', component: CategoryList },
   { path: '/categories/:categoryId', component: IdeasList, name: 'categories' },
   {
     path: '/categories/:categoryId/ideas/:ideaId',

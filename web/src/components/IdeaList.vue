@@ -1,26 +1,28 @@
 <template>
   <div class="container-full">
     <div class="container-app">
-      <div id="progress-bar" v-show="filteredIdeas.length !== 0">
-        <div id="progress-bar-progress" :style="{width: ideaProgress + '%'}"></div>
+      <div class="progress-bar" v-show="filteredIdeas.length !== 0">
+        <div class="progress-bar-progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
-      <ul id="ideas">
+      <ul class="ideas">
         <li
           v-for="(idea, index) in filteredIdeas"
           :key="index"
-          :class="{'highlight': index === selectedIndex, 'progress-undecided': idea.progress === 'undecided', 'progress-in-progress': idea.progress === 'in-progress', 'progress-done': idea.progress === 'done'}"
+          :class="{'highlight': index === selectedIndex, 'progress--undecided': idea.progress === 'undecided', 'progress--in-progress': idea.progress === 'in-progress', 'progress--done': idea.progress === 'done'}"
         >
           <div class="idea" @click="notifyIdeaClicked(idea, index)">
             <div>
-              <p id="idea-title" class="text-primary">
+              <p class="idea__title text--primary">
                 {{idea.title}}
                 <span v-if="isNewIdea(idea)">New</span>
               </p>
-              <p id="idea-difficulty" class="badge text-secondary">{{idea.difficulty}}</p>
+              <div>
+                <p class="idea__difficulty">{{idea.difficulty}}</p>
+              </div>
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
-                <button class="button button-outlined" @click.stop="toggleBookmark(index)">
+                <button class="button button--outlined" @click.stop="toggleBookmark(index)">
                   <font-awesome-icon
                     :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
                     size="lg"
@@ -28,7 +30,7 @@
                   ></font-awesome-icon>
                 </button>
                 <button
-                  class="button button-outlined"
+                  class="button button--outlined"
                   @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
                 >Update progress</button>
               </div>
@@ -70,20 +72,22 @@
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
     <modal name="sort-modal" height="auto" :adaptive="true">
-      <ul class="sort-modal-list">
+      <ul class="modal-list">
         <li
+          class="modal-list-item"
           v-for="(difficulty, index) in ['All', 'Beginner', 'Intermediate', 'Expert']"
           :key="index"
           @click="$modal.hide('sort-modal');difficultyFilter = difficulty"
         >
           <input
+            class="modal-list-item__field"
             v-model="difficultyFilter"
-            :id="'difficulty' + difficulty"
+            :class="'difficulty' + difficulty"
             type="radio"
             name="difficulty"
             :value="difficulty"
           >
-          <label :for="'difficulty' + difficulty">{{ difficulty }}</label>
+          <label class="modal-list-item__label" :for="'difficulty' + difficulty">{{ difficulty }}</label>
         </li>
       </ul>
     </modal>
@@ -105,8 +109,8 @@ export default {
   data() {
     return {
       openPopper: null,
-      mediaQueryList: window.matchMedia('only screen and (min-width: 1200px)'),
-      largeScreen: window.matchMedia('only screen and (min-width: 1200px)')
+      mediaQueryList: window.matchMedia('only screen and (min-width: 120rem)'),
+      largeScreen: window.matchMedia('only screen and (min-width: 120rem)')
         .matches,
       ideaProgress: 0,
       difficultyFilter: 'All'
@@ -252,81 +256,109 @@ export default {
 </script>
 
 <style>
-#progress-bar {
+.progress-bar {
   background-color: var(--progress-bar-background);
   width: 100%;
-  height: 10px;
+  height: 1rem;
 }
-#progress-bar-progress {
+
+.progress-bar-progress {
   background-color: var(--primaryDark);
   height: 100%;
 }
-#ideas {
+
+.ideas {
   list-style-type: none;
-  margin: 0px;
-  padding: 0px;
+  margin: 0rem;
+  padding: 0rem;
 }
-#ideas li {
-  border-left: 8px solid transparent;
-  padding: 8px 16px 8px 16px;
+
+.ideas li {
+  border-left: 0.8rem solid transparent;
+  padding: 0.8rem 1.6rem 0.8rem 1.6rem;
 }
-#ideas li:hover {
+
+.ideas li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
+
 .idea {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
-#idea-title {
+
+.idea__title {
   font-size: var(--primaryTextSize);
-  margin: 0px 0px 4px 0px;
+  margin: 0rem 0rem 0.4rem 0rem;
   text-overflow: ellipsis;
   overflow: hidden;
   white-space: nowrap;
-  padding: 0px;
+  padding: 0rem;
 }
-#idea-title > span {
-  font-size: 11px;
-  margin-left: 8px;
+
+.idea__title > span {
+  font-size: 1.1rem;
+  margin-left: 0.8rem;
   color: rgba(0, 0, 0, 0.54);
   background: white;
-  padding: 4px 8px;
-  border-radius: 4px;
+  padding: 0.4rem 0.8rem;
+  border-radius: 0.4rem;
   text-transform: uppercase;
 }
-.progress-undecided {
-  border-left: 8px solid var(--undecided) !important;
-}
-.progress-in-progress {
-  border-left: 8px solid var(--in-progress) !important;
-}
-.progress-done {
-  border-left: 8px solid var(--done) !important;
-}
-.badge {
+
+.idea__difficulty {
+  display: inline-block;
+  border-radius: 0.4rem;
   background-color: var(--primary);
   padding: var(--badgePadding);
   color: rgba(0, 0, 0, 0.54);
   font-size: var(--badgeTextSize);
+  text-transform: uppercase;
 }
+
+.progress--undecided {
+  border-left: 0.8rem solid var(--undecided) !important;
+}
+
+.progress--in-progress {
+  border-left: 0.8rem solid var(--in-progress) !important;
+}
+
+.progress--done {
+  border-left: 0.8rem solid var(--done) !important;
+}
+
 .idea-buttons {
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .idea-menu-actions {
   border: none;
-  display: flex;
-  flex-flow: column;
+  display: flex !important;
+  flex-direction: column;
   padding: 0;
 }
+
+.idea-menu-actions button {
+  font-size: 1.4rem;
+  text-align: left;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.idea-menu-actions button:hover {
+  cursor: pointer;
+}
+
 .idea-menu-actions > button {
   background-color: transparent;
   border: none;
   padding: 1rem;
 }
+
 .idea-menu-actions > button:hover {
   background-color: rgba(0, 0, 0, 0.2);
 }

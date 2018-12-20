@@ -1,11 +1,11 @@
 <template>
-  <div id="navbar">
-    <div id="toolbar">
-      <div id="left-toolbar-items">
+  <div class="navbar">
+    <div class="toolbar">
+      <div class="toolbar-left">
         <button class="icon-button" v-if="!isRootComponent" @click="navigateAway">
           <font-awesome-icon icon="arrow-left" size="lg" fixed-width></font-awesome-icon>
         </button>
-        <h4 id="title">{{title}}</h4>
+        <h4 class="toolbar-left__title text--primary">{{title}}</h4>
       </div>
       <button class="icon-button" v-show="!bigScreen" @click="collapse = !collapse">
         <font-awesome-icon icon="bars" size="2x" fixed-width></font-awesome-icon>
@@ -13,9 +13,12 @@
     </div>
 
     <nav v-show="!collapse || bigScreen">
-      <a v-if="this.$store.getters.userLoggedIn" href="#">Welcome, {{this.$store.getters.userEmail}}!</a>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Login</router-link>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Signup</router-link>
+      <a
+        v-if="this.$store.getters.userLoggedIn"
+        href="#"
+      >Welcome, {{this.$store.getters.userEmail}}!</a>
+      <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Log in</router-link>
+      <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Join</router-link>
       <a v-if="this.$store.getters.userLoggedIn" href="#" @click="logout">Log out</a>
     </nav>
   </div>
@@ -71,53 +74,69 @@ export default {
 </script>
 
 <style>
-#navbar {
-  background-color: var(--primary);
+.navbar {
   display: flex;
-  flex-flow: column;
+  flex-direction: column;
   justify-content: space-between;
+  background-color: var(--primary);
   position: fixed;
-  top: 0px;
+  top: 0rem;
+  left: 0rem;
   width: 100%;
-  padding: 0 1rem;
 }
-#toolbar {
+
+.toolbar {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  height: 50px;
+  height: 5rem;
 }
-#left-toolbar-items {
+
+.toolbar-left {
   display: flex;
+  align-items: center;
 }
-#title {
-  margin-left: 16px;
-  color: rgba(255, 255, 255, 0.8);
+
+.toolbar-left__title {
+  font-size: 1.8rem;
+  margin-left: 1.6rem;
 }
+
 nav {
   display: flex;
-  flex-flow: column wrap;
+  flex-direction: column;
   align-items: flex-start;
 }
+
 nav > a {
   color: var(--primaryText);
-  padding: 1rem;
+  text-decoration: none;
+  font-size: 1.6rem;
+  margin-left: 1.6rem;
+  margin-bottom: 1.6rem;
 }
-nav > a:hover, nav > a:focus {
+
+nav > a:hover,
+nav > a:focus {
   color: rgba(0, 0, 0, 0.54);
   text-decoration: none;
 }
 
-@media only screen and (min-width: 768px) {
-  #navbar {
+@media only screen and (min-width: 76.8rem) {
+  .navbar {
     flex-flow: row;
   }
+
   nav {
     flex-flow: row;
     align-items: center;
+    margin-right: 1.6rem;
   }
+
   nav > a {
-    padding: 0 1.5rem;
+    margin: 0;
+    margin-left: 2.4rem;
+    padding: 0;
   }
 }
 </style>

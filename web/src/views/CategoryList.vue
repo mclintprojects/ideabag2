@@ -1,24 +1,38 @@
 <template>
-	<div class="full-space-container">
-		<font-awesome-icon id="loadingCircle" v-if="$store.getters.isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-		<div class="appContainer">
-			<ul id="categoryList">
-				<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
-					<div class="categoryItem">
-						<div class="categoryIconBg">
-							<img class="categoryIcon" :src="icons[index]" />
-						</div>
-						<div class="categoryContent">
-							<p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
-							<p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
-						</div>
-					</div>
-				</li>
-			</ul>
-		</div>
+  <div class="container-full">
+    <font-awesome-icon
+      class="loader"
+      v-if="$store.getters.isLoading"
+      icon="spinner"
+      size="3x"
+      spin
+      fixed-width
+    ></font-awesome-icon>
+    <div class="container-app">
+      <ul class="categories">
+        <li
+          v-for="(category, index) in categories"
+          :key="index"
+          @click="notifyCategoryClicked(index)"
+          :class="{highlight: index == selectedIndex}"
+        >
+          <div class="category">
+            <div class="category__icon-container">
+              <img class="category__icon" :src="icons[index]" alt="category_icon">
+            </div>
+            <div class="category-content">
+              <p class="category__title text--primary">{{category.categoryLbl}}</p>
+              <p class="text--secondary">Ideas: {{category.categoryCount}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-		<router-link class="appBtn floating-action-button" to="bookmarks"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
-	</div>
+    <router-link class="button floating-action-button" to="bookmarks">
+      <font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -61,48 +75,47 @@ export default {
 };
 </script>
 
-<style scoped>
-.categoryIcon {
+<style>
+.category__icon {
   width: var(--categoryIconSize);
 }
 
-.categoryIconBg {
+.category__icon-container {
   background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--categoryIconBgSize);
   height: var(--categoryIconBgSize);
-  border-radius: 180px;
+  border-radius: 18rem;
 }
 
-.categoryContent {
+.category-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 16px;
+  margin-left: 1.6rem;
 }
 
-#categoryList {
-	width: 100%;
+.categories {
+  width: 100%;
   list-style-type: none;
-	margin: 0px;
-  padding: 0px;
+  margin: 0rem;
+  padding: 0rem;
 }
 
-#categoryList li:hover {
+.categories li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
 
-#categoryTitle {
+.category__title {
   font-size: var(--primaryTextSize);
-  margin: 0px;
 }
 
-.categoryItem {
+.category {
   display: flex;
   flex-direction: row;
-  padding: 8px 16px 8px 16px;
+  padding: 0.8rem 1.6rem 0.8rem 1.6rem;
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div class="main-container">
+  <div class="container-main">
     <navbar></navbar>
     <transition name="slide" mode="out-in">
       <keep-alive>
@@ -114,105 +114,131 @@ export default {
   --primaryText: rgba(255, 255, 255, 0.8);
   --primaryTextLight: rgba(255, 255, 255, 0.54);
   --progress-bar-background: #2b2b2b;
-  --primaryTextSize: 18px;
-  --ideaTextSize: 22px;
-  --categoryIconSize: 36px;
-  --categoryIconBgSize: 72px;
-  --badgePadding: 8px;
-  --ideaDescriptionTextSize: 16px;
-  --badgeTextSize: 12px;
-  --avatarSize: 30px;
-  --commentPadding: 16px;
-  --cardMargin: 16px 0px 0px 0px;
-  --authorLblSize: 16px;
-  --dateLblSize: 13px;
-  --dateLblMargin: 32px;
+  --primaryTextSize: 1.8rem;
+  --ideaTextSize: 2.2rem;
+  --categoryIconSize: 3.6rem;
+  --categoryIconBgSize: 7.2rem;
+  --badgePadding: 0.4rem 0.8rem;
+  --ideaDescriptionTextSize: 1.6rem;
+  --badgeTextSize: 1rem;
+  --avatarSize: 3rem;
+  --commentPadding: 1.6rem;
+  --cardMargin: 1.6rem 0rem 0rem 0rem;
+  --authorLblSize: 1.6rem;
+  --dateLblSize: 1.3rem;
+  --dateLblMargin: 1.6rem;
+}
+
+* {
+  font-family: "Sarabun", sans-serif;
+  font-size: 60%;
+  margin: 0;
+  padding: 0;
 }
 
 html,
 body {
   height: 100%;
+  margin: 0;
+  padding: 0;
 }
+
 body {
   background-color: var(--background);
-  font-family: "Roboto", sans-serif;
-  overflow-x: hidden;
 }
 
-#loadingCircle {
-  width: 36px;
-  height: 36px;
+p {
+  font-size: 1.4rem;
+}
+
+.loader {
+  width: 3.6rem;
+  height: 3.6rem;
   color: white;
   position: absolute;
-  left: calc(50% - 36px);
-  top: calc(50% - 36px);
+  left: calc(50% - 3.6rem);
+  top: calc(50% - 3.6rem);
+  font-size: 1.8rem;
 }
 
-.appBtn {
+.button {
   background-color: var(--primary);
-  border: solid 0px transparent;
-  border-radius: 2px;
+  border: solid 0rem transparent;
+  border-radius: 0.4rem;
   color: white;
-  width: 100px;
-  height: 40px;
+  height: 4rem;
+  min-width: 8rem;
   transition: all 1s;
+  text-transform: uppercase;
+  font-size: 1.4rem;
+  padding: 0 1.6rem;
+  font-weight: 600;
 }
-.appBtn:hover {
+
+.button:hover {
   background-color: var(--primaryDark);
   color: white;
   cursor: pointer;
 }
-.appBtn:disabled {
+
+.button:disabled {
   background-color: gray;
-  color: black;
+  color: #9a9a9a;
 }
-.appBtn:disabled:hover {
+
+.button:disabled:hover {
   cursor: not-allowed;
 }
 
-.appBtnOutline {
+.button--outlined {
   background-color: transparent;
-  border: solid 2px white;
-  border-radius: 2px;
-  color: white;
+  border: solid 0.1rem var(--primary);
+  color: var(--primary);
   margin: 0.5rem;
-  height: 40px;
+  height: 4rem;
 }
-.appBtnOutline:hover {
-  background-color: white;
+
+.button--outlined:hover {
+  background-color: #ffa20060;
   color: var(--primary);
 }
+
 .floating-action-button {
-  border-radius: 180px;
-  bottom: 20px;
+  border-radius: 50%;
+  bottom: 1.6rem;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 60px;
+  width: 5.6rem;
+  height: 5.6rem;
   position: fixed;
-  right: 20px;
-  width: 60px;
+  right: 1.6rem;
+  font-size: 1.4rem;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
 }
+
 .icon-button {
   border: none;
   background-color: transparent;
   cursor: pointer;
   color: white;
+  font-size: 1.2rem;
   padding: 1rem;
 }
 
-.main-container {
+.container-main {
   display: flex;
-  flex-flow: column;
-  justify-content: center;
-  height: 100%;
+  flex-direction: column;
+  min-height: 100%;
 }
 
-.primaryLbl {
+.text--primary {
   color: var(--primaryText);
 }
 
-.secondaryLbl {
+.text--secondary {
   color: var(--primaryTextLight);
 }
 
@@ -220,24 +246,30 @@ body {
   padding: 0;
   margin: 0;
 }
-.modal-list > li {
-  border-top: 1px solid black;
+
+.modal-list-item {
+  border-top: 0.1rem solid rgb(192, 192, 192);
   cursor: pointer;
-  font-size: 1.7rem;
   list-style-type: none;
-  padding: 2rem 3rem;
+  padding: 3rem 3rem;
   width: 100%;
 }
-.modal-list > li:hover {
-  background-color: rgba(0, 0, 0, 0.2);
+
+.modal-list-item:hover {
+  background-color: rgba(218, 218, 218, 0.2) !important;
 }
-.modal-list > li > input,
-.modal-list > li > label {
+
+.modal-list-item__field,
+.modal-list-item__label {
   cursor: pointer;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.4rem;
 }
-.modal-list > li > label {
+
+.modal-list-item__label {
   padding-left: 1rem;
 }
+
 .no-ideas-to-display {
   color: var(--primaryTextLight);
   display: flex;
@@ -247,19 +279,47 @@ body {
   align-items: center;
 }
 
-#componentHolder {
-  margin-top: 70px;
+.component-holder {
+  margin-top: 7rem;
 }
 
-.appContainer {
-  height: 100%;
+.container-app {
+  min-height: 100%;
   width: 55%;
   margin: 0 auto;
-  padding-top: 50px;
+  padding-top: 5rem;
 }
-.full-space-container {
-  height: 100%;
+
+.container-full {
+  min-height: 100%;
   width: 100%;
+}
+
+.container-extra-padding {
+  padding-top: 10rem;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-section__input {
+  height: 3.5rem;
+  border: 0.1rem solid whitesmoke;
+  border-radius: 0.4rem;
+  padding-left: 0.8rem;
+  margin-bottom: 1.6rem;
+  font-size: 1.4rem;
+}
+
+.form-section__input:focus {
+  box-shadow: 0rem 0rem 0rem transparent;
+}
+
+.form-section__label {
+  font-size: 1.6rem;
+  margin-bottom: 0.4rem;
 }
 
 .highlight {
@@ -276,7 +336,7 @@ body {
 
 @keyframes slide-in {
   from {
-    transform: translateX(-100px);
+    transform: translateX(-10rem);
     opacity: 0;
   }
   to {
@@ -291,34 +351,38 @@ body {
     opacity: 1;
   }
   to {
-    transform: translateX(-100px);
+    transform: translateX(-10rem);
     opacity: 0;
   }
 }
 
-@media screen and (max-width: 576px), (max-width: 768px) {
-  .appContainer {
+@media screen and (max-width: 57.6rem), (max-width: 76.8rem) {
+  .container-app {
     width: 100% !important;
   }
 
   :root {
-    --primaryTextSize: 16px;
-    --ideaTextSize: 18px;
-    --ideaDescriptionTextSize: 13px;
-    --categoryIconSize: 28px;
-    --categoryIconBgSize: 56px;
-    --badgePadding: 4px;
-    --badgeTextSize: 10px;
-    --avatarSize: 24px;
-    --commentPadding: 8px;
-    --cardMargin: 16px 16px 0px 16px;
-    --authorLblSize: 13px;
-    --dateLblSize: 10px;
-    --dateLblMargin: 16px;
+    --primaryTextSize: 1.6rem;
+    --ideaTextSize: 1.8rem;
+    --ideaDescriptionTextSize: 1.3rem;
+    --categoryIconSize: 2.8rem;
+    --categoryIconBgSize: 5.6rem;
+    --badgePadding: 0.4rem;
+    --badgeTextSize: 1rem;
+    --avatarSize: 2.4rem;
+    --commentPadding: 0.8rem;
+    --cardMargin: 1.6rem 1.6rem 0rem 1.6rem;
+    --authorLblSize: 1.3rem;
+    --dateLblSize: 1rem;
+    --dateLblMargin: 1.6rem;
   }
 
-  #deleteBtn {
-    width: 104px;
+  .button--delete {
+    width: 10.4rem;
+  }
+
+  .v-modal {
+    top: 20rem !important;
   }
 }
 </style>
