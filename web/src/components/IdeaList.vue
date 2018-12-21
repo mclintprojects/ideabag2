@@ -170,14 +170,16 @@ export default {
         data.forEach(d => {
           const idData = d.id.split('-');
           const ideaIndex = parseInt(idData[1].replace('I', '')) - 1;
-          const categoryIndex = parseInt(idData[0].replace('C', '')) - 1;
+          const categoryId = parseInt(idData[0].replace('C', ''));
 
-          Vue.set(this.ideas[ideaIndex], 'progress', d.progress);
-          Vue.set(
-            this.ideas[ideaIndex],
-            'bookmarked',
-            d.bookmarked ? true : false
-          );
+          if (categoryId == this.ideas[0].categoryId) {
+            Vue.set(this.ideas[ideaIndex], 'progress', d.progress);
+            Vue.set(
+              this.ideas[ideaIndex],
+              'bookmarked',
+              d.bookmarked ? true : false
+            );
+          }
         });
 
         this.setIdeaProgress();
@@ -214,7 +216,7 @@ export default {
     },
     setProgress(idea, index, progress) {
       this.ideas[index].progress = progress;
-      this.ideaProgress = this.getIdeaProgress();
+      this.setIdeaProgress();
       this.updateProgress(this.getDataId(idea), progress);
     },
     setIdeaProgress() {
