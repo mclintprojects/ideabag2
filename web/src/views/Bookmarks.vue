@@ -6,7 +6,7 @@
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
     </div>
-    <idea-list @needs-update="loadIdeas" v-if="!isLoading && ideasLoaded" :ideas="ideas"/>
+    <idea-list @needs-update="loadIdeas" v-if="!isLoading && ideasLoaded && ideas.length > 0" :ideas="ideas"/>
   </div>
 </template>
 
@@ -30,6 +30,7 @@ export default {
   },
   methods: {
     loadIdeas() {
+      this.ideas = [];
       this.userDataDB
         .transaction(['ideas'])
         .objectStore('ideas')
