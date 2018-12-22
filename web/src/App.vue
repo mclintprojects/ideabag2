@@ -165,6 +165,7 @@ button {
 
 main {
   padding-top: 5rem;
+  flex-grow: 2;
 }
 
 .loader {
@@ -293,15 +294,22 @@ main {
   height: 100%;
   justify-content: center;
   align-items: center;
+  font-size: 1.5rem;
+}
+.no-ideas-to-display > h2 {
+  margin-top: 1rem;
+  font-size: 3rem;
 }
 
 .container-app {
+  height: 100%;
   min-height: 100%;
   width: 55%;
   margin: 0 auto;
 }
 
 .container-full {
+  height: 100%;
   min-height: 100%;
   width: 100%;
 }
