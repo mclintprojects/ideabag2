@@ -4,7 +4,7 @@
       <div class="progress-bar" v-show="filteredIdeas.length !== 0">
         <div class="progress-bar-progress" :style="{width: ideaProgress + '%'}"></div>
       </div>
-      <ul class="ideas">
+      <ul class="ideas" v-if="filteredIdeas.length > 0">
         <li
           v-for="(idea, index) in filteredIdeas"
           :key="index"
