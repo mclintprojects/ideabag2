@@ -6,12 +6,15 @@ export default {
   },
   methods: {
     addToBookmarks(ideaId) {
+      const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
+      this.$store.categories[categoryId - 1].items[itemId - 1].bookmarked = true;
+
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
 			objectStore.get(ideaId).onsuccess = event => {
 				if (event.target.result === undefined) {
-					this.addNewIdea(ideaId, true, 'undecided');
+					this.addIdeaToIndexedDB(ideaId, true, 'undecided');
 				} else {
 					event.target.result.bookmarked = 1;
 					objectStore.put(event.target.result)
@@ -19,6 +22,9 @@ export default {
 			};
 		},
     removeFromBookmarks(ideaId) {
+      const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
+      this.$store.categories[categoryId - 1].items[itemId - 1].bookmarked = false;
+
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
@@ -27,7 +33,7 @@ export default {
 				objectStore.put(event.target.result)
 			};
 		},
-    addNewIdea(ideaId, bookmarked, progress) {
+    addIdeaToIndexedDB(ideaId, bookmarked, progress) {
 			const bookmarkedBinary = bookmarked ? 1 : 0;
 			this.userDataDB
 				.transaction(['ideas'], 'readwrite')
@@ -39,12 +45,15 @@ export default {
 				})
     },
     updateProgress(ideaId, progress) {
+      const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
+      this.$store.categories[categoryId - 1].items[itemId - 1].progress = progress;
+
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
 				.objectStore('ideas');
 			objectStore.get(ideaId).onsuccess = event => {
 				if (event.target.result === undefined) {
-					this.addNewIdea(ideaId, false, progress);
+					this.addIdeaToIndexedDB(ideaId, false, progress);
 				} else {
 					event.target.result.progress = progress;
 					objectStore.put(event.target.result)
