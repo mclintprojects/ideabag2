@@ -7,7 +7,7 @@ export default {
   methods: {
     addToBookmarks(ideaId) {
       const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
-      this.$store.categories[categoryId - 1].items[itemId - 1].bookmarked = true;
+      this.$store.getters.categories[categoryId - 1].items[itemId - 1].bookmarked = true;
 
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
@@ -23,7 +23,7 @@ export default {
 		},
     removeFromBookmarks(ideaId) {
       const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
-      this.$store.categories[categoryId - 1].items[itemId - 1].bookmarked = false;
+      this.$store.getters.categories[categoryId - 1].items[itemId - 1].bookmarked = false;
 
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')
@@ -46,7 +46,7 @@ export default {
     },
     updateProgress(ideaId, progress) {
       const [categoryId, itemId] = ideaId.replace('C', '').replace('I', '').split('-');
-      this.$store.categories[categoryId - 1].items[itemId - 1].progress = progress;
+      this.$store.getters.categories[categoryId - 1].items[itemId - 1].progress = progress;
 
 			const objectStore = this.userDataDB
 				.transaction(['ideas'], 'readwrite')

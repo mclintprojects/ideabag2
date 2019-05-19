@@ -26,11 +26,10 @@ export default {
   methods: {
     loadLocalIdeaData() {
       const ideasdb = localStorage.getItem('ideasdb');
-
       if (ideasdb) {
+        this.$store.dispatch('setCategories', JSON.parse(ideasdb));
         this.$store.dispatch('setLoading', false);
         eventbus.showToast('Loaded offline cache.', 'info');
-        this.$store.dispatch('setCategories', JSON.parse(ideasdb));
       }
     },
     loadUserData() {
@@ -50,8 +49,8 @@ export default {
           const cursor = event.target.result;
           if (cursor) {
             const [categoryID, itemID] = cursor.value.id.replace('C', '').replace('I', '').split('-');
-            this.$store.categories[categoryID - 1].items[itemID - 1].progress = cursor.value.progress;
-            this.$store.categories[categoryID - 1].items[itemID - 1].bookmarked = cursor.value.bookmarked === 1;
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].progress = cursor.value.progress;
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].bookmarked = cursor.value.bookmarked === 1;
             cursor.continue();
           }
         }
@@ -68,7 +67,7 @@ export default {
       try {
         const {data} = await axios.get(ideasURL);
 
-        let categories = this.$store.categories;
+        let categories = this.$store.getters.categories;
         if (categories.length === 0) {
           categories = this.initializeCategories(data);
         } else {
