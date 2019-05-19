@@ -190,6 +190,7 @@ export default {
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
+    this.setIdeaProgress();
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
