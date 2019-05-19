@@ -108,8 +108,7 @@ export default {
     return {
       openPopper: null,
       mediaQueryList: window.matchMedia('only screen and (min-width: 120rem)'),
-      largeScreen: window.matchMedia('only screen and (min-width: 120rem)')
-        .matches,
+      largeScreen: window.matchMedia('only screen and (min-width: 120rem)').matches,
       ideaProgress: 0,
       difficultyFilter: 'All'
     };
@@ -136,59 +135,14 @@ export default {
       required: true
     }
   },
-  watch: {
-    userDataDB(db) {
-      if (db !== null && this.ideas.length > 0) {
-        this.loadIdeaData();
-      }
-    },
-    ideas() {
-      if (this.ideas.length > 0) this.loadIdeaData();
-    }
-  },
   methods: {
     getDataId(idea) {
       return `${idea.categoryId}C-${idea.id}I`;
     },
-    getIdeaData(callback) {
-      const data = [];
-
-      const transaction = this.userDataDB
-        .transaction(['ideas'])
-        .objectStore('ideas');
-
-      transaction.openCursor().onsuccess = ({ target }) => {
-        var cursor = target.result;
-        if (cursor) {
-          data.push(cursor.value);
-          cursor.continue();
-        } else callback(data);
-      };
-    },
-    loadIdeaData() {
-      const data = this.getIdeaData(data => {
-        data.forEach(d => {
-          const idData = d.id.split('-');
-          const ideaIndex = parseInt(idData[1].replace('I', '')) - 1;
-          const categoryId = parseInt(idData[0].replace('C', ''));
-
-          if (categoryId == this.ideas[0].categoryId) {
-            Vue.set(this.ideas[ideaIndex], 'progress', d.progress);
-            Vue.set(
-              this.ideas[ideaIndex],
-              'bookmarked',
-              d.bookmarked ? true : false
-            );
-          }
-        });
-
-        this.setIdeaProgress();
-      });
-    },
     notifyIdeaClicked(idea, index) {
       const categoryId =
         this.$store.getters.categories.findIndex(
-          x => x.categoryLbl == idea.category
+          x => x.categoryLbl === idea.category
         ) + 1;
       this.$router.push({
         name: 'ideas',
@@ -197,14 +151,12 @@ export default {
       this.$store.dispatch('setSelectedIdeaIndex', index);
     },
     toggleBookmark(index) {
-      const idea = this.ideas[index];
+      const idea = this.filteredIdeas[index];
       const id = this.getDataId(idea);
       if (idea.bookmarked) {
         this.removeFromBookmarks(id);
-        idea.bookmarked = false;
       } else {
         this.addToBookmarks(id);
-        idea.bookmarked = true;
       }
       this.$emit('needs-update');
     },
@@ -215,9 +167,8 @@ export default {
       this.openPopper = context;
     },
     setProgress(idea, index, progress) {
-      this.ideas[index].progress = progress;
-      this.setIdeaProgress();
       this.updateProgress(this.getDataId(idea), progress);
+      this.setIdeaProgress();
     },
     setIdeaProgress() {
       const completedIdeas = this.ideas.reduce((accumulator, idea) => {
@@ -232,13 +183,14 @@ export default {
     isNewIdea(idea) {
       return (
         this.newIdeas.findIndex(
-          i => i.categoryId == idea.categoryId && i.ideaId == idea.id
-        ) != -1
+          i => i.categoryId === idea.categoryId && i.ideaId === idea.id
+        ) !== -1
       );
     }
   },
   activated() {
     this.mediaQueryList.addListener(this.handleResize);
+    this.setIdeaProgress();
   },
   deactivated() {
     this.mediaQueryList.removeListener(this.handleResize);
@@ -260,8 +212,8 @@ export default {
 
 .ideas {
   list-style-type: none;
-  margin: 0rem;
-  padding: 0rem;
+  margin: 0;
+  padding: 0;
 }
 
 .ideas > li {

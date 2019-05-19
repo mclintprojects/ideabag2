@@ -50,10 +50,9 @@ export default {
     },
     isRootRoute() {
       const route = this.$route.path;
-      if (route == '/') return true;
-      else return false;
+      return route === '/';
     },
-    handleResize(e) {
+    handleResize() {
       this.bigScreen = window.innerWidth >= 992;
     }
   },
@@ -80,8 +79,8 @@ export default {
   justify-content: space-between;
   background-color: var(--primary);
   position: fixed;
-  top: 0rem;
-  left: 0rem;
+  top: 0;
+  left: 0;
   width: 100%;
 }
 
@@ -134,8 +133,7 @@ nav > a:focus {
   }
 
   nav > a {
-    margin: 0;
-    margin-left: 2.4rem;
+    margin: 0 0 0 2.4rem;
     padding: 0;
   }
 }
