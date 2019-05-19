@@ -16,7 +16,7 @@ import Navbar from './components/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
 
-let ideasURL =
+const ideasURL =
   'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
 
 export default {
@@ -46,7 +46,7 @@ export default {
     },
     setupInterceptors() {
       axios.interceptors.response.use(res => {
-        if (res.status == 401) {
+        if (res.status === 401) {
           eventbus.showToast(
             'Authorization token expired. Please login again.',
             'error',
@@ -180,7 +180,7 @@ main {
 
 .button {
   background-color: var(--primary);
-  border: solid 0rem transparent;
+  border: solid 0 transparent;
   border-radius: 0.4rem;
   color: white;
   height: 4rem;
@@ -333,7 +333,7 @@ main {
 }
 
 .form-section__input:focus {
-  box-shadow: 0rem 0rem 0rem transparent;
+  box-shadow: 0 0 0 transparent;
 }
 
 .form-section__label {

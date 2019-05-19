@@ -1,7 +1,7 @@
 <template>
   <div class="container-full">
     <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-width></font-awesome-icon>
-    <div class="no-ideas-to-display" v-if="!isLoading && ideas.length == 0">
+    <div class="no-ideas-to-display" v-if="!isLoading && ideas.length === 0">
       <font-awesome-icon :icon="['fas', 'bookmark']" size="6x"></font-awesome-icon>
       <h2>No bookmarks to show</h2>
       <p>Ideas that you bookmark will show up here</p>
@@ -22,7 +22,7 @@ export default {
   },
   computed: {
     isLoading() {
-      return this.$store.getters.categories.length == 0;
+      return this.$store.getters.categories.length === 0;
     },
     userDataDB() {
       return this.$store.getters.userDataDB;

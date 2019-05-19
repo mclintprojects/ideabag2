@@ -49,11 +49,7 @@ export default {
         'progress-radiobutton'
       );
       for (let i = 0; i < radiobuttons.length; i++) {
-        if (radiobuttons[i].value === this.progress) {
-          radiobuttons[i].checked = true;
-        } else {
-          radiobuttons[i].checked = false;
-        }
+        radiobuttons[i].checked = radiobuttons[i].value === this.progress;
       }
     },
     chooseProgress(progress) {

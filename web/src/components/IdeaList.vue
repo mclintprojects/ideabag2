@@ -158,7 +158,7 @@ export default {
         .objectStore('ideas');
 
       transaction.openCursor().onsuccess = ({ target }) => {
-        var cursor = target.result;
+        const cursor = target.result;
         if (cursor) {
           data.push(cursor.value);
           cursor.continue();
@@ -166,18 +166,18 @@ export default {
       };
     },
     loadIdeaData() {
-      const data = this.getIdeaData(data => {
+      this.getIdeaData(data => {
         data.forEach(d => {
           const idData = d.id.split('-');
           const ideaIndex = parseInt(idData[1].replace('I', '')) - 1;
           const categoryId = parseInt(idData[0].replace('C', ''));
 
-          if (categoryId == this.ideas[0].categoryId) {
+          if (categoryId === this.ideas[0].categoryId) {
             Vue.set(this.ideas[ideaIndex], 'progress', d.progress);
             Vue.set(
               this.ideas[ideaIndex],
               'bookmarked',
-              d.bookmarked ? true : false
+              d.bookmarked
             );
           }
         });
@@ -188,7 +188,7 @@ export default {
     notifyIdeaClicked(idea, index) {
       const categoryId =
         this.$store.getters.categories.findIndex(
-          x => x.categoryLbl == idea.category
+          x => x.categoryLbl === idea.category
         ) + 1;
       this.$router.push({
         name: 'ideas',
@@ -232,8 +232,8 @@ export default {
     isNewIdea(idea) {
       return (
         this.newIdeas.findIndex(
-          i => i.categoryId == idea.categoryId && i.ideaId == idea.id
-        ) != -1
+          i => i.categoryId === idea.categoryId && i.ideaId === idea.id
+        ) !== -1
       );
     }
   },
@@ -260,8 +260,8 @@ export default {
 
 .ideas {
   list-style-type: none;
-  margin: 0rem;
-  padding: 0rem;
+  margin: 0;
+  padding: 0;
 }
 
 .ideas > li {
