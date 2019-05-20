@@ -17,7 +17,7 @@ describe('Navbar.vue', () => {
       mocks: { $route: { path: '/' } }
     });
 
-    expect(wrapper.find('#toolbar > h4').text()).toEqual('Ideabag 2 (TEST)');
+    expect(wrapper.find('.toolbar-left h4').text()).toEqual('Ideabag 2 (TEST)');
   });
 
   test('It should not render back button if root route', () => {
@@ -27,7 +27,9 @@ describe('Navbar.vue', () => {
       mocks: { $route: { path: '/' } }
     });
 
-    expect(wrapper.find('#backBtn').exists()).toEqual(false);
+    expect(wrapper.find('.toolbar-left > .icon-button').exists()).toEqual(
+      false
+    );
   });
 
   test('It should render back button if not root route', () => {
@@ -37,7 +39,7 @@ describe('Navbar.vue', () => {
       mocks: { $route: { path: '/categories/1' } }
     });
 
-    expect(wrapper.find('#backBtn').exists()).toEqual(true);
+    expect(wrapper.find('.toolbar-left > .icon-button').exists()).toEqual(true);
   });
 
   test('It should render correct links when logged in', () => {

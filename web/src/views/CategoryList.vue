@@ -1,22 +1,38 @@
 <template>
-	<div class="appContainer">
-		<font-awesome-icon id="loadingCircle" v-if="$store.getters.isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-		<ul id="categoryList">
-			<li v-for="(category, index) in categories" :key="index" @click="notifyCategoryClicked(index)" :class="{highlight: index == selectedIndex}">
-				<div class="categoryItem">
-					<div class="categoryIconBg">
-						<img class="categoryIcon" :src="icons[index]" />
-					</div>
-					<div class="categoryContent">
-						<p id="categoryTitle" class="primaryLbl">{{category.categoryLbl}}</p>
-						<p class="secondaryLbl">Ideas: {{category.categoryCount}}</p>
-					</div>
-				</div>
-			</li>
-		</ul>
+  <div class="container-full">
+    <font-awesome-icon
+      class="loader"
+      v-if="$store.getters.isLoading"
+      icon="spinner"
+      size="3x"
+      spin
+      fixed-width
+    ></font-awesome-icon>
+    <div class="container-app">
+      <ul class="categories">
+        <li
+          v-for="(category, index) in categories"
+          :key="index"
+          @click="notifyCategoryClicked(index)"
+          :class="{highlight: index === selectedIndex}"
+        >
+          <div class="category">
+            <div class="category__icon-container">
+              <img class="category__icon" :src="icons[index]" alt="category_icon">
+            </div>
+            <div class="category-content">
+              <p class="category__title text--primary">{{category.categoryLbl}}</p>
+              <p class="text--secondary">Ideas: {{category.categoryCount}}</p>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
 
-		<router-link id="bookmarkBtn" class="appBtn" to="bookmarks" v-show="!hideBookmarkButton"><font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon></router-link>
-	</div>
+    <router-link class="button floating-action-button" to="bookmarks">
+      <font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
+    </router-link>
+  </div>
 </template>
 
 <script>
@@ -35,8 +51,7 @@ export default {
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/multimedia.png',
         'https://res.cloudinary.com/mclint-cdn/image/upload/v1523221457/games.png'
       ],
-      selectedIndex: 0,
-			hideBookmarkButton: false
+      selectedIndex: 0
     };
   },
   computed: {
@@ -56,68 +71,49 @@ export default {
   activated() {
     this.$store.dispatch('setSelectedIdeaIndex', -1);
     this.$store.dispatch('setTitle', 'IdeaBag 2');
-		setTimeout(() => this.hideBookmarkButton = false, 200);
-  },
-	deactivated() {
-		this.hideBookmarkButton = true;
-	}
+  }
 };
 </script>
 
-<style scoped>
-.categoryIcon {
+<style>
+.category__icon {
   width: var(--categoryIconSize);
 }
 
-.categoryIconBg {
+.category__icon-container {
   background: rgba(0, 0, 0, 0.8);
   display: flex;
   justify-content: center;
   align-items: center;
   width: var(--categoryIconBgSize);
   height: var(--categoryIconBgSize);
-  border-radius: 180px;
+  border-radius: 18rem;
 }
 
-.categoryContent {
+.category-content {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  margin-left: 16px;
+  margin-left: 1.6rem;
 }
 
-#categoryList {
+.categories {
+  width: 100%;
   list-style-type: none;
-  margin: 0px;
-  padding: 0px;
 }
 
-#categoryList li:hover {
+.categories li:hover {
   background-color: var(--highlight);
   cursor: pointer;
 }
 
-#categoryTitle {
+.category__title {
   font-size: var(--primaryTextSize);
-  margin: 0px;
 }
 
-.categoryItem {
+.category {
   display: flex;
   flex-direction: row;
-  padding: 8px 16px 8px 16px;
-}
-
-#bookmarkBtn {
-	color: white;
-  border-radius: 180px;
-  bottom: 20px;
-  display: flex;
-  justify-content: center;
-	align-items: center;
-  height: 60px;
-  position: fixed;
-  right: 20px;
-  width: 60px;
+  padding: 0.8rem 1.6rem;
 }
 </style>

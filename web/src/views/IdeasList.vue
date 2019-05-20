@@ -1,33 +1,31 @@
 <template>
-	<div class="appContainer">
-		<font-awesome-icon id="loadingCircle" v-if="isLoading" icon="spinner" size="3x" spin fixed-with></font-awesome-icon>
-		<idea-list :ideas="ideas" />
-	</div>
+  <div class="container-full">
+    <font-awesome-icon class="loader" v-if="isLoading" icon="spinner" size="3x" spin fixed-width></font-awesome-icon>
+    <idea-list :ideas="ideas"/>
+  </div>
 </template>
 
 <script>
 import IdeaList from '../components/IdeaList';
 
 export default {
-  data() {
-    return {
-      ideas: []
-    };
-  },
   computed: {
     isLoading() {
-      return this.$store.getters.categories.length == 0;
+      return this.$store.getters.isLoading;
+    },
+    ideas() {
+      if (this.$route.params.categoryId) {
+        return this.$store.getters.categories[this.$route.params.categoryId - 1].items;
+      } else {
+        return [];
+      }
     }
   },
   components: { IdeaList },
   activated() {
-    if (this.$store.getters.categories) {
-      const categoryId = this.$route.params.categoryId;
-      const title = this.$store.getters.categories[categoryId - 1].categoryLbl;
-      this.$store.dispatch('setTitle', title);
-
-      this.ideas = this.$store.getters.categories[categoryId - 1].items;
-    }
+    const categoryIndex = this.$route.params.categoryId - 1;
+    const title = this.$store.getters.categories[categoryIndex].categoryLbl;
+    this.$store.dispatch('setTitle', title);
   }
 };
 </script>

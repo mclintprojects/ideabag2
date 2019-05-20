@@ -1,14 +1,20 @@
+import axios from 'axios';
+
 const state = {
   categories: [],
+  newIdeas: [],
   isLoading: true,
   selectedIdeaIndex: -1,
-  navbarTitle: 'IdeaBag 2 (BETA)',
+  navbarTitle: 'IdeaBag 2',
   userDataDB: null
 };
 
 const getters = {
   categories: state => {
     return state.categories;
+  },
+  newIdeas: state => {
+    return state.newIdeas;
   },
   isLoading: state => {
     return state.isLoading;
@@ -39,6 +45,10 @@ const mutations = {
   },
   SET_USER_DATA_DB(state, db) {
     state.userDataDB = db;
+  },
+  SET_NEW_IDEAS(state, newIdeas) {
+    state.newIdeas = newIdeas;
+    localStorage.setItem('newIdeas', JSON.stringify(newIdeas));
   }
 };
 
@@ -55,8 +65,24 @@ const actions = {
   setTitle({ commit }, title) {
     commit('SET_TITLE', title);
   },
-  setUserDataDB({ commit }, db) {
-    commit('SET_USER_DATA_DB', db);
+  setUserDataDB(context, db) {
+    context.commit('SET_USER_DATA_DB', db);
+  },
+  async getNewIdeas({ commit }) {
+    const response = await axios.get(
+      'https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt'
+    );
+
+    if (response.status === 200) {
+      const ideas = response.data.split(',').map(e => {
+        const d = e.split('-');
+        return {
+          categoryId: parseInt(d[0]),
+          ideaId: parseInt(d[1])
+        };
+      });
+      commit('SET_NEW_IDEAS', ideas);
+    }
   }
 };
 

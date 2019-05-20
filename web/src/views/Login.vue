@@ -1,28 +1,28 @@
 <template>
-  <div class="appContainer">
-    <div class="form-group">
-      <label for="emailTb">Email address</label>
+  <div class="container-app container-extra-padding">
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="emailTb">Email address</label>
       <input
+        class="form-section__input"
         v-model="formData.email"
         id="emailTb"
         type="email"
-        class="form-control"
-        placeholder="Enter email "
+        placeholder="Enter email"
       >
     </div>
-    <div class="form-group">
-      <label for="passwordTb">Password</label>
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="passwordTb">Password</label>
       <input
+        class="form-section__input"
         v-model="formData.password"
         type="password"
-        class="form-control"
         id="passwordTb"
-        placeholder="Password "
+        placeholder="Password"
       >
     </div>
     <button
       @click="loginUser"
-      class="appBtn"
+      class="button"
       :disabled="this.$store.getters.isPerformingAction"
     >Login</button>
 
@@ -32,7 +32,7 @@
       icon="spinner"
       size="3x"
       spin
-      fixed-with
+      fixed-width
     ></font-awesome-icon>
   </div>
 </template>
@@ -67,6 +67,7 @@ export default {
     }
   },
   activated() {
+    this.$store.dispatch('setTitle', 'Log in');
     eventbus.$on('login-success', message => {
       eventbus.showToast(message, 'success');
       this.$router.go(-1);
@@ -80,31 +81,3 @@ export default {
   }
 };
 </script>
-
-<style scoped>
-label {
-  color: var(--primaryText);
-  font-family: "Roboto", sans-serif;
-}
-
-.appContainer {
-  padding: 16px;
-  padding-top: 50px;
-}
-
-.form-control {
-  border: solid 0px transparent;
-  border-radius: 2px;
-  height: 40px;
-  font-weight: normal;
-}
-
-.form-control:focus {
-  box-shadow: 0px 0px 0px transparent;
-}
-
-#loadingCircle {
-  position: initial;
-  margin-left: 20px;
-}
-</style>
