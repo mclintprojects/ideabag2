@@ -27,7 +27,10 @@ export default {
     loadLocalIdeaData() {
       const ideasdb = localStorage.getItem('ideasdb');
       if (ideasdb) {
-        this.$store.dispatch('setCategories', JSON.parse(ideasdb));
+        const ideaData = this.initializeCategories(JSON.parse(ideasdb));
+
+
+        this.$store.dispatch('setCategories', ideaData);
         this.$store.dispatch('setLoading', false);
         eventbus.showToast('Loaded offline cache.', 'info');
       }
