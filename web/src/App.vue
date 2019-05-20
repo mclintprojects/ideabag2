@@ -16,23 +16,107 @@ import Navbar from './components/Navbar';
 import axios from 'axios';
 import eventbus from './eventbus';
 
-let ideasURL =
+const ideasURL =
   'https://docs.google.com/document/d/17V3r4fJ2udoG5woDBW3IVqjxZdfsbZC04G1A-It_DRU/export?format=txt';
+const indexedDBVersion = 1;
 
 export default {
   name: 'app',
   components: { Navbar },
   methods: {
-    getData() {
+    loadLocalIdeaData() {
       const ideasdb = localStorage.getItem('ideasdb');
-
       if (ideasdb) {
+        const ideaData = this.initializeCategories(JSON.parse(ideasdb));
+
+
+        this.$store.dispatch('setCategories', ideaData);
         this.$store.dispatch('setLoading', false);
         eventbus.showToast('Loaded offline cache.', 'info');
-        return JSON.parse(ideasdb);
       }
+    },
+    loadUserData() {
+      const request = indexedDB.open('userData', indexedDBVersion);
 
-      return [];
+      request.onupgradeneeded = this.createIndexedDB;
+      request.onsuccess = event => {
+        const db = event.target.result;
+        // if (!db.objectStoreNames.contains('ideas'))
+        //   this.createDb(db.version + 1);
+        this.$store.dispatch('setUserDataDB', db);
+
+        const ideasStore = db
+          .transaction(['ideas'], 'readonly')
+          .objectStore('ideas');
+        ideasStore.openCursor().onsuccess = event => {
+          const cursor = event.target.result;
+          if (cursor) {
+            const [categoryID, itemID] = cursor.value.id.replace('C', '').replace('I', '').split('-');
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].progress = cursor.value.progress;
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].bookmarked = cursor.value.bookmarked === 1;
+            cursor.continue();
+          }
+        }
+      };
+    },
+    createIndexedDB(event) {
+      const db = event.target.result;
+      const ideasStore = db.createObjectStore('ideas', { keyPath: 'id' });
+      ideasStore.createIndex('bookmarked', 'bookmarked');
+    },
+    async downloadUpdatedIdeaData() {
+      axios.defaults.timeout = 12000;
+
+      try {
+        const {data} = await axios.get(ideasURL);
+
+        let categories = this.$store.getters.categories;
+        if (categories.length === 0) {
+          categories = this.initializeCategories(data);
+        } else {
+          for (const category of data) {
+            // if the category is new
+            if (categories.length < category.id - 1) {
+              categories.push(category);
+              categories[category.id - 1].items = this.initializeItems();
+            } else {
+              for (const item of category.items) {
+                // if the item is new
+                if (category.items.length < item.id - 1) {
+                  categories[category.id - 1].items.push(item);
+                  categories[category.id - 1].items[item.id - 1] = this.initializeItem(item);
+                } else {
+                  categories[category.id - 1].items[item.id - 1].title = item.title;
+                  categories[category.id - 1].items[item.id - 1].difficulty = item.difficulty;
+                  categories[category.id - 1].items[item.id - 1].description = item.description;
+                }
+              }
+            }
+          }
+        }
+        this.$store.dispatch('setCategories', categories);
+        this.$store.dispatch('setLoading', false);
+        this.saveDataLocally(data);
+      } catch(error) {
+        eventbus.showToast("Couldn't load data. Please check your connection and reload.", 'error', 'long')
+      }
+    },
+    initializeCategories(categories) {
+      for (let categoryIndex = 0; categoryIndex < categories.length; categoryIndex++) {
+        categories[categoryIndex].items = this.initializeItems(categories[categoryIndex].items);
+      }
+      return categories;
+    },
+    initializeItems(items) {
+      for (let itemIndex = 0; itemIndex < items.length; itemIndex++) {
+        items[itemIndex] = this.initializeItem(items[itemIndex]);
+      }
+      return items;
+    },
+    initializeItem(item) {
+      item.progress = 'undecided';
+      item.bookmarked = false;
+      return item;
     },
     tryLocalLogin() {
       const loginData = localStorage.getItem('loginData');
@@ -41,12 +125,12 @@ export default {
         this.$store.dispatch('loginUserLocal', JSON.parse(loginData));
       }
     },
-    saveData(ideasdb) {
+    saveDataLocally(ideasdb) {
       localStorage.setItem('ideasdb', JSON.stringify(ideasdb));
     },
     setupInterceptors() {
       axios.interceptors.response.use(res => {
-        if (res.status == 401) {
+        if (res.status === 401) {
           eventbus.showToast(
             'Authorization token expired. Please login again.',
             'error',
@@ -57,56 +141,15 @@ export default {
 
         return res;
       });
-    },
-    downloadIdeas() {
-      axios.defaults.timeout = 12000;
-
-      axios
-        .get(ideasURL)
-        .then(response => {
-          response.data.forEach(c => {
-            c.items.forEach(i => {
-              i.progress = 'undecided';
-              i.bookmarked = false;
-            });
-          });
-
-          this.$store.dispatch('setCategories', response.data);
-          this.$store.dispatch('setLoading', false);
-          this.saveData(response.data);
-        })
-        .catch(() => {
-          eventbus.showToast(
-            "Couldn't load data. Please check your connection and reload.",
-            'error',
-            'long'
-          );
-        });
-    },
-    createDb(version = 1) {
-      const request = indexedDB.open('userData', version);
-
-      request.onupgradeneeded = event => {
-        const db = event.target.result;
-        const ideasStore = db.createObjectStore('ideas', { keyPath: 'id' });
-        ideasStore.createIndex('bookmarked', 'bookmarked');
-      };
-
-      request.onsuccess = event => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains('ideas'))
-          this.createDb(db.version + 1);
-        this.$store.dispatch('setUserDataDB', db);
-      };
     }
   },
   created() {
-    this.$store.dispatch('setCategories', this.getData());
-    this.downloadIdeas();
+    this.loadLocalIdeaData();
+    this.loadUserData();
+    this.downloadUpdatedIdeaData();
     this.$store.dispatch('getNewIdeas');
     this.tryLocalLogin();
     this.setupInterceptors();
-    this.createDb();
   }
 };
 </script>
@@ -180,7 +223,7 @@ main {
 
 .button {
   background-color: var(--primary);
-  border: solid 0rem transparent;
+  border: solid 0 transparent;
   border-radius: 0.4rem;
   color: white;
   height: 4rem;
@@ -333,7 +376,7 @@ main {
 }
 
 .form-section__input:focus {
-  box-shadow: 0rem 0rem 0rem transparent;
+  box-shadow: 0 0 0 transparent;
 }
 
 .form-section__label {

@@ -9,24 +9,23 @@
 import IdeaList from '../components/IdeaList';
 
 export default {
-  data() {
-    return {
-      ideas: []
-    };
-  },
   computed: {
     isLoading() {
       return this.$store.getters.isLoading;
+    },
+    ideas() {
+      if (this.$route.params.categoryId) {
+        return this.$store.getters.categories[this.$route.params.categoryId - 1].items;
+      } else {
+        return [];
+      }
     }
   },
   components: { IdeaList },
   activated() {
-    if (this.$store.getters.categories) {
-      const categoryIndex = this.$route.params.categoryId - 1;
-      this.ideas = this.$store.getters.categories[categoryIndex].items;
-      const title = this.$store.getters.categories[categoryIndex].categoryLbl;
-      this.$store.dispatch('setTitle', title);
-    }
+    const categoryIndex = this.$route.params.categoryId - 1;
+    const title = this.$store.getters.categories[categoryIndex].categoryLbl;
+    this.$store.dispatch('setTitle', title);
   }
 };
 </script>

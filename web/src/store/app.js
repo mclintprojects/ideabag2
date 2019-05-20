@@ -5,7 +5,7 @@ const state = {
   newIdeas: [],
   isLoading: true,
   selectedIdeaIndex: -1,
-  navbarTitle: 'IdeaBag 2 (BETA)',
+  navbarTitle: 'IdeaBag 2',
   userDataDB: null
 };
 
@@ -73,7 +73,7 @@ const actions = {
       'https://docs.google.com/document/d/1JHIGHjD7A_sGVelLongEV3I-n-i-e3am-q7x96eRyOA/export?format=txt'
     );
 
-    if (response.status == 200) {
+    if (response.status === 200) {
       const ideas = response.data.split(',').map(e => {
         const d = e.split('-');
         return {
