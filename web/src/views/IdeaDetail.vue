@@ -19,13 +19,13 @@
             class="button button--outlined"
             @click="$modal.show('progress-modal-0')"
           >Update progress</button>
-          <progress-modal @update-progress="setProgress" :progress="idea.progress"></progress-modal>
+          <progress-modal @update-progress="setProgress" :progress="progress"></progress-modal>
         </div>
       </div>
       <p class="idea-detail__description">{{idea.description}}</p>
     </div>
 
-    <div class="container-progress" :style="'background-color: var(--' + idea.progress + ')'"></div>
+    <div class="container-progress"></div>
 
     <div class="container-comment">
       <textarea class="comment__textarea" v-model="comment" placeholder="Post a comment"></textarea>
@@ -50,7 +50,7 @@
               class="button-delete-comment icon-button"
               @click="deleteComment(comment.id, index)"
               :disabled="isPerformingAction"
-              v-if="comment.author === email"
+              v-if="comment.author == email"
             >
               <font-awesome-icon icon="trash" size="lg" fixed-width></font-awesome-icon>
             </button>
@@ -78,8 +78,11 @@ export default {
   },
   data() {
     return {
+      idea: null,
       comment: '',
       comments: [],
+      isBookmarked: false,
+      progress: 'undecided',
       bookmarkButtonHovered: false,
       eyes: [
         'eyes1',
@@ -115,26 +118,8 @@ export default {
     };
   },
   computed: {
-    idea() {
-      const categoryId = this.$route.params.categoryId;
-      const ideaId = this.$route.params.ideaId;
-      if (categoryId && ideaId) {
-        return this.$store.getters.categories[categoryId - 1].items[ideaId - 1];
-      } else {
-        return {
-          category: 'Numbers',
-          categoryId: 1,
-          title: '',
-          difficulty: 'Beginner',
-          id: 1,
-          description: '',
-          progress: 'undecided',
-          bookmarked: false
-        };
-      }
-    },
     isLoading() {
-      return this.$store.getters.categories.length === 0;
+      return this.$store.getters.categories.length == 0;
     },
     isPerformingAction() {
       return this.$store.getters.isPerformingAction;
@@ -149,7 +134,7 @@ export default {
       return this.$store.getters.userLoggedIn;
     },
     bookmarkIconPrefix() {
-      if (this.idea.bookmarked) {
+      if (this.isBookmarked) {
         return 'fas'; // Solid icon
       } else {
         return 'far'; // Regular icon (only outline)
@@ -159,9 +144,31 @@ export default {
       return `${this.idea.categoryId}C-${this.idea.id}I`;
     }
   },
+  watch: {
+    progress(progress) {
+      document.getElementsByClassName(
+        'container-progress'
+      )[0].style.backgroundColor = `var(--${progress})`;
+    },
+    userDataDB(db) {
+      if (db !== null) {
+        this.loadUserData();
+      }
+    }
+  },
   activated() {
     axios.defaults.baseURL = 'https://ideabag2.firebaseio.com';
     this.$store.dispatch('setTitle', 'Idea details');
+
+    const categoryId = this.$route.params.categoryId;
+    const ideaId = this.$route.params.ideaId;
+    this.idea = this.$store.getters.categories[categoryId - 1].items[
+      ideaId - 1
+    ];
+
+    if (this.userDataDB !== null) {
+      this.loadUserData();
+    }
 
     this.getComments();
   },
@@ -172,13 +179,13 @@ export default {
     postComment() {
       if (this.userLoggedIn) {
         this.$store.dispatch('isPerformingAction', true);
-        const comment = {
+        var comment = {
           userId: this.userId,
           author: this.email,
           comment: this.comment,
           created: new Date().getTime()
         };
-        const url = `/${this.dataId}/comments.json?auth=${this.token}`;
+        var url = `/${this.dataId}/comments.json?auth=${this.token}`;
         axios
           .post(url, comment)
           .then(response => {
@@ -196,7 +203,7 @@ export default {
       }
     },
     getAvatar() {
-      const face = this.getRandomFace();
+      var face = this.getRandomFace();
       return `https://api.adorable.io/avatars/face/${face.eye}/${face.nose}/${
         face.mouth
       }/ffa000`;
@@ -205,9 +212,9 @@ export default {
       return Math.floor(Math.random() * (max - min + 1)) + min;
     },
     getRandomFace() {
-      const eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
-      const nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
-      const mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
+      var eye = this.eyes[this.getRandomNumber(0, this.eyes.length - 1)];
+      var nose = this.noses[this.getRandomNumber(0, this.noses.length - 1)];
+      var mouth = this.mouths[this.getRandomNumber(0, this.mouths.length - 1)];
       return { eye, nose, mouth };
     },
     getComments() {
@@ -216,9 +223,9 @@ export default {
         .get(`${this.idea.categoryId - 1}C-${this.idea.id}I/comments.json`)
         .then(response => {
           if (response.data != null) {
-            const keys = Object.keys(response.data);
-            for (let i = 0; i < keys.length; i++) {
-              const comment = response.data[keys[i]];
+            var keys = Object.keys(response.data);
+            for (var i = 0; i < keys.length; i++) {
+              var comment = response.data[keys[i]];
               comment.id = keys[i];
               this.comments.push(comment);
             }
@@ -232,7 +239,7 @@ export default {
     },
     deleteComment(commentId, index) {
       this.$store.dispatch('isPerformingAction', true);
-      const url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
+      var url = `${this.dataId}/comments/${commentId}.json?auth=${this.token}`;
       axios
         .delete(url)
         .then(() => {
@@ -251,8 +258,22 @@ export default {
     getTimestamp(milliseconds) {
       return new Date(milliseconds).toLocaleDateString();
     },
+    loadUserData() {
+      this.userDataDB
+        .transaction(['ideas'], 'readonly')
+        .objectStore('ideas')
+        .get(this.dataId).onsuccess = event => {
+        if (event.target.result) {
+          this.progress = event.target.result.progress;
+          this.isBookmarked = event.target.result.bookmarked;
+        } else {
+          this.progress = 'undecided';
+          this.isBookmarked = false;
+        }
+      };
+    },
     toggleBookmark() {
-      if (this.idea.bookmarked) {
+      if (this.isBookmarked) {
         this.removeFromBookmarks(this.dataId);
       } else {
         this.addToBookmarks(this.dataId);
@@ -261,6 +282,7 @@ export default {
     },
     setProgress(progress) {
       this.updateProgress(this.dataId, progress);
+      this.progress = progress;
     }
   }
 };
@@ -311,7 +333,7 @@ export default {
 .comments > ul {
   list-style-type: none;
   margin: 0;
-  padding: 0;
+  padding: 0rem;
 }
 
 .container-comment {
@@ -345,7 +367,7 @@ export default {
   height: 8rem;
   margin: auto;
   width: 100%;
-  border: solid 0 transparent;
+  border: solid 0rem transparent;
   background-color: white;
   resize: none;
   font-size: 1.6rem;
@@ -380,16 +402,18 @@ export default {
 }
 
 .comment__author {
+  margin: 0;
   padding: 0;
-  margin: 0 0 0 1.6rem;
+  margin-left: 1.6rem;
   color: rgba(0, 0, 0, 0.8);
   font-size: var(--authorLblSize);
   font-weight: bold;
 }
 
 .comment__date {
+  margin: 0;
   padding: 0;
-  margin: 0 0 0 var(--dateLblMargin);
+  margin-left: var(--dateLblMargin);
   color: rgba(0, 0, 0, 0.5);
   font-size: var(--dateLblSize);
 }

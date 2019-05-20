@@ -1,63 +1,63 @@
 {
-  "name": "ideabag2",
-  "version": "1.0.0",
-  "private": true,
-  "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "test": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
-  },
-  "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^1.2.8",
-    "@fortawesome/free-regular-svg-icons": "^5.5.0",
-    "@fortawesome/free-solid-svg-icons": "^5.5.0",
-    "@fortawesome/vue-fontawesome": "^0.1.2",
-    "axios": "^0.18.0",
-    "vue": "^2.5.17",
-    "vue-js-modal": "^1.3.26",
-    "vue-popperjs": "^1.6.1",
-    "vue-router": "^3.0.1",
-    "vue-toasted": "^1.1.24",
-    "vue2-animate": "^1.0.4",
-    "vuex": "^3.0.1"
-  },
-  "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.3",
-    "@vue/cli-plugin-eslint": "^3.1.5",
-    "@vue/cli-plugin-unit-jest": "^3.2.0",
-    "@vue/cli-service": "^3.0.3",
-    "@vue/test-utils": "^1.0.0-beta.20",
-    "autoprefixer": "^9.3.1",
-    "babel-core": "7.0.0-bridge.0",
-    "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "eslint": "^5.8.0",
-    "eslint-plugin-vue": "^5.0.0-0",
-    "husky": "^1.2.0",
-    "jest": "^23.6.0",
-    "vue-template-compiler": "^2.5.17"
-  },
-  "postcss": {
-    "plugins": {
-      "autoprefixer": {}
-    }
-  },
-  "browserslist": [
-    "> 1%",
-    "last 2 versions",
-    "not ie <= 8"
-  ],
-  "husky": {
-    "hooks": {
-      "pre-commit": "npm run lint && cd .. && git add ."
-    }
-  },
-  "license": "GNU General Public License",
-  "author": "Mbah Clinton",
-  "description": "A web version of the Programming Ideas 2 android app",
-  "engines": {
-    "node": ">= 6.0.0",
-    "npm": ">= 3.0.0"
-  }
+	"name": "ideabag2",
+	"version": "1.0.0",
+	"private": true,
+	"scripts": {
+		"serve": "vue-cli-service serve",
+		"build": "vue-cli-service build",
+		"test": "vue-cli-service test:unit",
+		"lint": "vue-cli-service lint"
+	},
+	"dependencies": {
+		"@fortawesome/fontawesome-svg-core": "^1.2.12",
+		"@fortawesome/free-regular-svg-icons": "^5.6.3",
+		"@fortawesome/free-solid-svg-icons": "^5.6.3",
+		"@fortawesome/vue-fontawesome": "^0.1.5",
+		"axios": "^0.18.0",
+		"vue": "^2.5.22",
+		"vue-js-modal": "^1.3.28",
+		"vue-popperjs": "^1.6.3",
+		"vue-router": "^3.0.2",
+		"vue-toasted": "^1.1.26",
+		"vue2-animate": "^1.0.4",
+		"vuex": "^3.0.1"
+	},
+	"devDependencies": {
+		"@vue/cli-plugin-babel": "^3.3.0",
+		"@vue/cli-plugin-eslint": "^3.3.0",
+		"@vue/cli-plugin-unit-jest": "^3.7.0",
+		"@vue/cli-service": "^3.7.0",
+		"@vue/test-utils": "^1.0.0-beta.28",
+		"autoprefixer": "^9.4.5",
+		"babel-core": "7.0.0-bridge.0",
+		"babel-eslint": "^10.0.1",
+		"babel-jest": "^24.8.0",
+		"eslint": "^5.12.0",
+		"eslint-plugin-vue": "^5.1.0",
+		"husky": "^1.3.1",
+		"jest": "^24.8.0",
+		"vue-template-compiler": "^2.5.22"
+	},
+	"postcss": {
+		"plugins": {
+			"autoprefixer": {}
+		}
+	},
+	"browserslist": [
+		"> 1%",
+		"last 2 versions",
+		"not ie <= 8"
+	],
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint && cd .. && git add ."
+		}
+	},
+	"license": "GNU General Public License",
+	"author": "Mbah Clinton",
+	"description": "A web version of the Programming Ideas 2 android app",
+	"engines": {
+		"node": ">= 6.0.0",
+		"npm": ">= 3.0.0"
+	}
 }

@@ -14,7 +14,7 @@
           v-for="(category, index) in categories"
           :key="index"
           @click="notifyCategoryClicked(index)"
-          :class="{highlight: index === selectedIndex}"
+          :class="{highlight: index == selectedIndex}"
         >
           <div class="category">
             <div class="category__icon-container">
