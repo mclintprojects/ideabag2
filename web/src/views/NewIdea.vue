@@ -1,22 +1,25 @@
 <template>
-  <div class="container-app">
-    <div>
-      <label for="creator">Your name</label>
+  <div class="container-app  container-extra-padding">
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="creator">Your name</label>
       <input
+        class="form-section__input"
         v-model="creator"
         type="text"
         id="creator">
     </div>
-    <div>
-      <label for="title">Enter your idea's title</label>
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="title">Enter your idea's title</label>
       <input
+        class="form-section__input"
         v-model="title"
         type="text"
         id="title">
     </div>
-    <div>
-      <label for="category">Select your idea's category</label>
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="category">Select your idea's category</label>
       <select
+        class="form-section__select"
         v-model="category"
         name="category"
         id="category">
@@ -26,9 +29,10 @@
         </option>
       </select>
     </div>
-    <div>
-      <label for="description">Enter an in depth description of your idea</label>
+    <div class="form-section">
+      <label class="form-section__label text--secondary" for="description">Enter an in depth description of your idea</label>
       <textarea
+        class="form-section__textarea"
         v-model="description"
         name="description"
         id="description"
@@ -72,16 +76,3 @@
     }
   };
 </script>
-
-
-<style scoped>
-  .container-app {
-    color: var(--primaryText);
-    font-size: 1.6rem;
-    display: flex;
-    flex-direction: column;
-  }
-  .container-app > * {
-    font-size: var(--primaryTextSize);
-  }
-</style>

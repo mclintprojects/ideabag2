@@ -11,7 +11,7 @@
     <div class="card" v-if="idea != null">
       <div class="card-top-row">
         <p class="idea-detail__title">{{idea.title}}</p>
-        <div>
+        <div class="idea-detail__buttons">
           <button class="button button--outlined" @click="toggleBookmark()">
             <font-awesome-icon :icon="[bookmarkIconPrefix, 'bookmark']" size="lg" fixed-width></font-awesome-icon>
           </button>
@@ -285,6 +285,10 @@ export default {
   color: rgba(0, 0, 0, 0.8);
   font-size: var(--ideaTextSize);
   font-weight: bold;
+}
+
+.idea-detail__buttons {
+  display: flex;
 }
 
 .idea-detail__description {

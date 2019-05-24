@@ -206,6 +206,10 @@ button {
   cursor: pointer;
 }
 
+select > option {
+  font-size: 1.6rem;
+}
+
 main {
   padding-top: 5rem;
   flex-grow: 2;
@@ -233,6 +237,10 @@ main {
   font-size: 1.4rem;
   padding: 0 1.6rem;
   font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button:hover {
@@ -366,8 +374,7 @@ main {
   flex-direction: column;
 }
 
-.form-section__input {
-  height: 3.5rem;
+.form-section__input, .form-section__textarea, .form-section__select {
   border: 0.1rem solid whitesmoke;
   border-radius: 0.4rem;
   padding-left: 0.8rem;
@@ -375,8 +382,16 @@ main {
   font-size: 1.4rem;
 }
 
+.form-section__input, .form-section__select {
+  height: 3.5rem;
+}
+
 .form-section__input:focus {
   box-shadow: 0 0 0 transparent;
+}
+
+.form-section__textarea {
+  padding-top: 1rem;
 }
 
 .form-section__label {
