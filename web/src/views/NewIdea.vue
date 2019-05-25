@@ -38,7 +38,7 @@
         id="description"
         rows="4"></textarea>
     </div>
-    <a class="button" id="submit-button" :href="`mailto:${emailTo}?subject=${subject}&body=${body}`">Submit Idea</a>
+    <a class="button form__submit-button" :href="`mailto:${emailTo}?subject=${subject}&body=${body}`">Submit Idea</a>
   </div>
 </template>
 
@@ -76,9 +76,3 @@
     }
   };
 </script>
-
-<style scoped>
-  #submit-button {
-    margin-top: 1.6rem;
-  }
-</style>

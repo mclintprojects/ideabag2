@@ -294,7 +294,7 @@ main {
   cursor: pointer;
   color: white;
   font-size: 1.2rem;
-  padding: 1rem;
+  padding: 1.6rem;
 }
 
 .container-main {
@@ -401,6 +401,10 @@ main {
   margin-bottom: 0.8rem;
 }
 
+.form__submit-button {
+  margin-top: 1.6rem;
+}
+
 .highlight {
   background-color: var(--highlight);
 }
@@ -458,6 +462,10 @@ main {
 
   .button--delete {
     width: 10.4rem;
+  }
+
+  .form-section, .form__submit-button {
+    margin: 0 1.6rem;
   }
 
   .v-modal {
