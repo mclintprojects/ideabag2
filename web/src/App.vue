@@ -391,13 +391,13 @@ main {
 }
 
 .form-section__textarea {
-  resize: vertical;
+  resize: none;
   padding-top: 1rem;
 }
 
 .form-section__label {
   font-size: 1.6rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.8rem;
 }
 
 .highlight {
