@@ -183,6 +183,7 @@ export default {
 }
 
 * {
+  box-sizing: border-box;
   font-family: "Sarabun", sans-serif;
   font-size: 60%;
   margin: 0;
