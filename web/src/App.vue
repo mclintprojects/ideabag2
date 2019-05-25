@@ -391,6 +391,7 @@ main {
 }
 
 .form-section__textarea {
+  resize: vertical;
   padding-top: 1rem;
 }
 
