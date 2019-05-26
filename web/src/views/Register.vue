@@ -22,7 +22,7 @@
     </div>
     <button
       @click="registerUser"
-      class="button"
+      class="button form__submit-button"
       :disabled="this.$store.getters.isPerformingAction"
     >Sign up</button>
 

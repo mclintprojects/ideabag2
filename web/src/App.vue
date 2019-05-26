@@ -183,6 +183,7 @@ export default {
 }
 
 * {
+  box-sizing: border-box;
   font-family: "Sarabun", sans-serif;
   font-size: 60%;
   margin: 0;
@@ -204,6 +205,10 @@ p {
 
 button {
   cursor: pointer;
+}
+
+select > option {
+  font-size: 1.6rem;
 }
 
 main {
@@ -233,6 +238,10 @@ main {
   font-size: 1.4rem;
   padding: 0 1.6rem;
   font-weight: 600;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .button:hover {
@@ -285,7 +294,7 @@ main {
   cursor: pointer;
   color: white;
   font-size: 1.2rem;
-  padding: 1rem;
+  padding: 1.6rem;
 }
 
 .container-main {
@@ -366,8 +375,7 @@ main {
   flex-direction: column;
 }
 
-.form-section__input {
-  height: 3.5rem;
+.form-section__input, .form-section__textarea, .form-section__select {
   border: 0.1rem solid whitesmoke;
   border-radius: 0.4rem;
   padding-left: 0.8rem;
@@ -375,13 +383,26 @@ main {
   font-size: 1.4rem;
 }
 
+.form-section__input, .form-section__select {
+  height: 3.5rem;
+}
+
 .form-section__input:focus {
   box-shadow: 0 0 0 transparent;
 }
 
+.form-section__textarea {
+  resize: none;
+  padding-top: 1rem;
+}
+
 .form-section__label {
   font-size: 1.6rem;
-  margin-bottom: 0.4rem;
+  margin-bottom: 0.8rem;
+}
+
+.form__submit-button {
+  margin-top: 1.6rem;
 }
 
 .highlight {
@@ -441,6 +462,10 @@ main {
 
   .button--delete {
     width: 10.4rem;
+  }
+
+  .form-section, .form__submit-button {
+    margin: 0 1.6rem;
   }
 
   .v-modal {

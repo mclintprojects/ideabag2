@@ -278,6 +278,10 @@ export default {
   align-items: center;
 }
 
+.idea-buttons > div {
+  display: flex;
+}
+
 .idea-menu-actions {
   border: none;
   display: flex !important;
