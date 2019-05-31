@@ -62,6 +62,12 @@
         </li>
       </ul>
     </div>
+    <router-link
+      class="button floating-action-button"
+      :to="{ name: 'editnote', params: { categoryId: $route.params.categoryId, ideaId: $route.params.ideaId } }"
+    >
+      <font-awesome-icon :icon="['fas', 'sticky-note']" size="lg" fixed-width></font-awesome-icon>
+    </router-link>
   </div>
 </template>
 

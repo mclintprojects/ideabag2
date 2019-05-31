@@ -11,7 +11,8 @@ import {
   faEllipsisV,
   faArrowLeft,
   faTrash,
-  faFilter
+  faFilter,
+  faStickyNote
 } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -27,7 +28,8 @@ fontAwesomeLibrary.add(
   faEllipsisV,
   faArrowLeft,
   faTrash,
-  faFilter
+  faFilter,
+  faStickyNote
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 

@@ -59,6 +59,9 @@ export default {
 					objectStore.put(event.target.result)
 				}
 			};
-		}
+		},
+    saveNote(ideaId, note) {
+
+    }
   }
 }
