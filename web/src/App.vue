@@ -29,7 +29,6 @@ export default {
       if (ideasdb) {
         const ideaData = this.initializeCategories(JSON.parse(ideasdb));
 
-
         this.$store.dispatch('setCategories', ideaData);
         this.$store.dispatch('setLoading', false);
         eventbus.showToast('Loaded offline cache.', 'info');
@@ -54,6 +53,7 @@ export default {
             const [categoryID, itemID] = cursor.value.id.replace('C', '').replace('I', '').split('-');
             this.$store.getters.categories[categoryID - 1].items[itemID - 1].progress = cursor.value.progress;
             this.$store.getters.categories[categoryID - 1].items[itemID - 1].bookmarked = cursor.value.bookmarked === 1;
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].note = cursor.value.note;
             cursor.continue();
           }
         }
@@ -114,9 +114,12 @@ export default {
       return items;
     },
     initializeItem(item) {
-      item.progress = 'undecided';
-      item.bookmarked = false;
-      return item;
+      return {
+        ...item,
+        progress: 'undecided',
+        bookmarked: false,
+        note: ''
+      }
     },
     tryLocalLogin() {
       const loginData = localStorage.getItem('loginData');

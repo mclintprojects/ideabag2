@@ -20,21 +20,25 @@
     mixins: [UserDataDBInterface],
     data() {
       return {
-        note: ''
+        note: '',
+        categoryId: 1,
+        ideaId: 1,
+        dataId: '1C-1I'
       }
     },
     methods: {
-      dataId(categoryId, ideaId) {
-        return `${categoryId}C-${ideaId}I`;
-      },
       submit() {
-        const ideaId = this.dataId(this.$route.params.categoryId, this.$route.params.ideaId);
-        this.saveNote(ideaId, this.note);
+        this.saveNote(this.dataId, this.note);
         this.$router.go(-1);
       }
     },
     activated() {
       this.$store.dispatch('setTitle', 'Edit note');
+
+      const categoryId = this.$route.params.categoryId;
+      const ideaId = this.$route.params.ideaId;
+      this.dataId = `${categoryId}C-${ideaId}I`;
+      this.note = this.$store.getters.categories[categoryId - 1].items[ideaId - 1].note;
     }
   };
 </script>
