@@ -24,8 +24,12 @@
       }
     },
     methods: {
+      dataId(categoryId, ideaId) {
+        return `${categoryId}C-${ideaId}I`;
+      },
       submit() {
-        this.saveNote(this.$route.params.ideaId, this.note);
+        const ideaId = this.dataId(this.$route.params.categoryId, this.$route.params.ideaId);
+        this.saveNote(ideaId, this.note);
         this.$router.go(-1);
       }
     },
