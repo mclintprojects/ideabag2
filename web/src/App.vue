@@ -161,6 +161,7 @@ export default {
 :root {
   --primary: #ffa000;
   --primaryDark: #c67100;
+  --primaryLight: #fcc35f;
   --background: #37474f;
   --highlight: #2c393f;
   --undecided: #bababa;
@@ -175,6 +176,7 @@ export default {
   --categoryIconBgSize: 7.2rem;
   --badgePadding: 0.4rem 0.8rem;
   --ideaDescriptionTextSize: 1.6rem;
+  --ideaNoteTextSize: 1.6rem;
   --badgeTextSize: 1rem;
   --avatarSize: 3rem;
   --commentPadding: 1.6rem;

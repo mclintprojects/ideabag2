@@ -12,7 +12,8 @@ import {
   faArrowLeft,
   faTrash,
   faFilter,
-  faStickyNote
+  faStickyNote,
+  faPen
 } from '@fortawesome/free-solid-svg-icons';
 import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
@@ -29,7 +30,8 @@ fontAwesomeLibrary.add(
   faArrowLeft,
   faTrash,
   faFilter,
-  faStickyNote
+  faStickyNote,
+  faPen
 );
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
