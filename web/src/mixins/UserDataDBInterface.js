@@ -6,10 +6,10 @@ export default {
   },
   methods: {
     getIdeaIndex(ideaId) {
-      return ideaId.replace('C', '').replace('I', '').split('-')[1] - 1;
+      return ideaId.replace(/[CI]/g, '').split('-')[1] - 1;
     },
     getCategoryIndex(ideaId) {
-      return ideaId.replace('C', '').replace('I', '').split('-')[0] - 1;
+      return ideaId.replace(/[CI]/g, '').split('-')[0] - 1;
     },
     addToBookmarks(ideaId) {
       this.$store.getters.categories[this.getCategoryIndex(ideaId)].items[this.getIdeaIndex(ideaId)].bookmarked = true;
