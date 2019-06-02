@@ -1,5 +1,5 @@
 <template>
-  <div class="container-app  container-extra-padding">
+  <div class="container-app container-extra-padding">
     <div class="form-section">
       <label class="form-section__label text--secondary" for="creator">Your name</label>
       <input

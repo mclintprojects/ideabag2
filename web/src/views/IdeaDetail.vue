@@ -36,6 +36,20 @@
       >Post</button>
     </div>
 
+    <div class="card container-note" v-if="idea.note">
+      <font-awesome-icon class="note__icon" :icon="['fas', 'sticky-note']" fixed-width></font-awesome-icon>
+      <p class="note__text">{{ idea.note }}</p>
+      <router-link
+        class="button note__button"
+        :to="{ name: 'editnote', params: { categoryId: idea.categoryId, ideaId: idea.id } }"
+      >
+        <font-awesome-icon :icon="['fas', 'pen']" size="lg" fixed-width></font-awesome-icon>
+      </router-link>
+      <button class="button note__button" @click="saveNote(dataId, '')">
+        <font-awesome-icon :icon="['fas', 'trash']"></font-awesome-icon>
+      </button>
+    </div>
+
     <div class="comments">
       <p class="text--primary">Comments</p>
       <ul>
@@ -62,6 +76,13 @@
         </li>
       </ul>
     </div>
+
+    <router-link
+      class="button floating-action-button"
+      :to="{ name: 'editnote', params: { categoryId: idea.categoryId, ideaId: idea.id } }"
+    >
+      <font-awesome-icon :icon="['fas', 'sticky-note']" size="lg" fixed-width></font-awesome-icon>
+    </router-link>
   </div>
 </template>
 
@@ -304,6 +325,31 @@ export default {
   height: 0.5rem;
 }
 
+.container-note {
+  background-color: var(--primary);
+  display: grid;
+  grid-template-columns: 5% auto 10% 10%;
+  grid-column-gap: 1.5rem;
+  justify-items: center;
+  align-items: center;
+}
+
+.note__icon {
+  font-size: 2.5rem;
+  color: var(--primaryLight);
+}
+
+.note__text {
+  justify-self: start;
+  font-size: var(--ideaNoteTextSize);
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+}
+
+.note__button {
+  background-color: var(--primaryLight);
+}
+
 .comments {
   margin-top: 2.4rem;
 }
@@ -406,6 +452,17 @@ export default {
   .card-top-row {
     flex-flow: column nowrap;
     align-items: flex-start;
+  }
+
+  .container-note {
+    grid-template-columns: 5% auto 15% 15%;
+  }
+
+  .note__button {
+    border-radius: 50%;
+    min-width: 0;
+    width: 5rem;
+    height: 5rem;
   }
 
   .comments > p {

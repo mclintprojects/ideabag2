@@ -29,7 +29,6 @@ export default {
       if (ideasdb) {
         const ideaData = this.initializeCategories(JSON.parse(ideasdb));
 
-
         this.$store.dispatch('setCategories', ideaData);
         this.$store.dispatch('setLoading', false);
         eventbus.showToast('Loaded offline cache.', 'info');
@@ -54,6 +53,7 @@ export default {
             const [categoryID, itemID] = cursor.value.id.replace('C', '').replace('I', '').split('-');
             this.$store.getters.categories[categoryID - 1].items[itemID - 1].progress = cursor.value.progress;
             this.$store.getters.categories[categoryID - 1].items[itemID - 1].bookmarked = cursor.value.bookmarked === 1;
+            this.$store.getters.categories[categoryID - 1].items[itemID - 1].note = cursor.value.note;
             cursor.continue();
           }
         }
@@ -114,9 +114,12 @@ export default {
       return items;
     },
     initializeItem(item) {
-      item.progress = 'undecided';
-      item.bookmarked = false;
-      return item;
+      return {
+        ...item,
+        progress: 'undecided',
+        bookmarked: false,
+        note: ''
+      }
     },
     tryLocalLogin() {
       const loginData = localStorage.getItem('loginData');
@@ -158,6 +161,7 @@ export default {
 :root {
   --primary: #ffa000;
   --primaryDark: #c67100;
+  --primaryLight: #fcc35f;
   --background: #37474f;
   --highlight: #2c393f;
   --undecided: #bababa;
@@ -172,6 +176,7 @@ export default {
   --categoryIconBgSize: 7.2rem;
   --badgePadding: 0.4rem 0.8rem;
   --ideaDescriptionTextSize: 1.6rem;
+  --ideaNoteTextSize: 1.6rem;
   --badgeTextSize: 1rem;
   --avatarSize: 3rem;
   --commentPadding: 1.6rem;
