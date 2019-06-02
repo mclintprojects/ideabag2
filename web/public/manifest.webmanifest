@@ -1,0 +1,30 @@
+{
+  "dir": "ltr",
+  "lang": "en",
+  "name": "Idea Bag",
+  "short_name": "Idea Bag",
+  "description": "Provides 175+ ideas of apps to develop to increase your programming proficiency.",
+  "categories": [
+    "education"
+  ],
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#37474f",
+  "theme_color": "#ffa000",
+  "icons": [
+    {
+      "src": "https://res.cloudinary.com/mclint-cdn/image/upload/v1523221458/Icon.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.alansa.ideabag2",
+      "id": "com.alansa.ideabag2"
+    }
+  ]
+}
