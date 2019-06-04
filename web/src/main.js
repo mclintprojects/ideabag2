@@ -20,6 +20,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Toasted from 'vue-toasted';
 import VModal from 'vue-js-modal';
 import Popper from 'vue-popperjs';
+import './registerServiceWorker';
 
 fontAwesomeLibrary.add(
   faSpinner,
