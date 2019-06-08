@@ -158,6 +158,8 @@ export default {
 </script>
 
 <style>
+@import url('https://fonts.googleapis.com/css?family=Sarabun&display=swap');
+
 :root {
   --primary: #ffa000;
   --primaryDark: #c67100;
