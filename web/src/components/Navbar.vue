@@ -2,12 +2,12 @@
   <div class="navbar">
     <div class="toolbar">
       <div class="toolbar-left">
-        <button class="icon-button" v-if="!isRootComponent" @click="navigateAway">
+        <button class="icon-button" v-if="!isRootComponent" @click="navigateAway" aria-label="Go back">
           <font-awesome-icon icon="arrow-left" size="lg" fixed-width></font-awesome-icon>
         </button>
         <h4 class="toolbar-left__title text--primary">{{title}}</h4>
       </div>
-      <button class="icon-button" v-show="!bigScreen" @click="collapse = !collapse">
+      <button class="icon-button" v-show="!bigScreen" @click="collapse = !collapse" aria-label="Open navigation menu">
         <font-awesome-icon icon="bars" size="2x" fixed-width></font-awesome-icon>
       </button>
     </div>

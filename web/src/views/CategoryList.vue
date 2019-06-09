@@ -29,7 +29,7 @@
       </ul>
     </div>
 
-    <router-link class="button floating-action-button" to="bookmarks">
+    <router-link class="button floating-action-button" to="bookmarks" aria-label="bookmarks">
       <font-awesome-icon :icon="['fas', 'bookmark']" size="lg" fixed-width></font-awesome-icon>
     </router-link>
   </div>
