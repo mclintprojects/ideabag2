@@ -54,7 +54,7 @@ export default {
       return route === '/';
     },
     handleResize() {
-      this.bigScreen = window.innerWidth >= 992;
+      this.bigScreen = window.innerWidth >= 1228.8;
     }
   },
   watch: {
