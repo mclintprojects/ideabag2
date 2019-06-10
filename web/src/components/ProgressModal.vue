@@ -2,6 +2,8 @@
   <modal
     :name="'progress-modal-' + id"
     height="auto"
+    width="90%"
+    max-width="992"
     :adaptive="true"
     :classes="['v--modal', 'progress-modal']"
     @opened="updateProgressRadiobuttons"

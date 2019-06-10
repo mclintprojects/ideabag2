@@ -20,7 +20,7 @@
             </div>
             <div class="idea-buttons">
               <div v-show="largeScreen">
-                <button class="button button--outlined" @click.stop="toggleBookmark(index)">
+                <button class="button button--outlined" @click.stop="toggleBookmark(index)" aria-label="Toggle bookmarking" :aria-pressed="idea.bookmarked">
                   <font-awesome-icon
                     :icon="[idea.bookmarked ? 'fas' : 'far', 'bookmark']"
                     size="lg"
@@ -46,7 +46,7 @@
                     @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))"
                   >Update progress</button>
                 </div>
-                <button class="icon-button" slot="reference" @click.stop>
+                <button class="icon-button" slot="reference" @click.stop aria-label="Open menu">
                   <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
                 </button>
               </popper>
@@ -66,10 +66,10 @@
         <p>There are no Ideas that match the current filter settings</p>
       </div>
     </div>
-    <button class="button floating-action-button" @click="$modal.show('sort-modal')">
+    <button class="button floating-action-button" @click="$modal.show('sort-modal')" aria-label="Filter">
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
-    <modal name="sort-modal" height="auto" :adaptive="true">
+    <modal name="sort-modal" height="auto" width="90%" max-width="992" :adaptive="true">
       <ul class="modal-list">
         <li
           class="modal-list-item"

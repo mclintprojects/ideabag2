@@ -12,7 +12,7 @@
       <div class="card-top-row">
         <p class="idea-detail__title">{{idea.title}}</p>
         <div class="idea-detail__buttons">
-          <button class="button button--outlined" @click="toggleBookmark()">
+          <button class="button button--outlined" @click="toggleBookmark()" aria-label="Toggle bookmarking" :aria-pressed="idea.bookmarked">
             <font-awesome-icon :icon="[bookmarkIconPrefix, 'bookmark']" size="lg" fixed-width></font-awesome-icon>
           </button>
           <button
@@ -65,6 +65,7 @@
               @click="deleteComment(comment.id, index)"
               :disabled="isPerformingAction"
               v-if="comment.author === email"
+              aria-label="delete comment"
             >
               <font-awesome-icon icon="trash" size="lg" fixed-width></font-awesome-icon>
             </button>
@@ -80,6 +81,7 @@
     <router-link
       class="button floating-action-button"
       :to="{ name: 'editnote', params: { categoryId: idea.categoryId, ideaId: idea.id } }"
+      aria-label="Edit note"
     >
       <font-awesome-icon :icon="['fas', 'sticky-note']" size="lg" fixed-width></font-awesome-icon>
     </router-link>
