@@ -69,7 +69,7 @@
     <button class="button floating-action-button" @click="$modal.show('sort-modal')" aria-label="Filter">
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
-    <modal name="sort-modal" height="auto" :adaptive="true">
+    <modal name="sort-modal" height="auto" width="90%" max-width="992" :adaptive="true">
       <ul class="modal-list">
         <li
           class="modal-list-item"
