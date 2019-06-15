@@ -7,33 +7,39 @@
         </button>
         <h4 class="toolbar-left__title text--primary">{{title}}</h4>
       </div>
-      <button class="icon-button" v-show="!bigScreen" @click="collapse = !collapse" aria-label="Open navigation menu">
-        <font-awesome-icon icon="bars" size="2x" fixed-width></font-awesome-icon>
-      </button>
     </div>
-
-    <nav v-show="!collapse || bigScreen">
-      <a
-        v-if="this.$store.getters.userLoggedIn"
-        href="#"
-      >Welcome, {{this.$store.getters.userEmail}}!</a>
-      <router-link to="/addidea">Submit idea</router-link>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Log in</router-link>
-      <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Join</router-link>
-      <a v-if="this.$store.getters.userLoggedIn" href="#" @click="logout">Log out</a>
-    </nav>
+    <div class="toolbar-right">
+      <dropdown :visible="menuVisible" :position="['right', 'center', 'right', 'top']" @clickout="menuVisible = false">
+        <button class="icon-button" @click="menuVisible = true" aria-label="Open menu">
+          <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
+        </button>
+        <nav slot="dropdown" class="dropdown-menu" @click="menuVisible = false">
+          <a
+            v-if="this.$store.getters.userLoggedIn"
+            href="#"
+          >Welcome, {{this.$store.getters.userEmail}}!</a>
+          <router-link v-if="!this.$store.getters.userLoggedIn" to="/login">Log in</router-link>
+          <router-link v-if="!this.$store.getters.userLoggedIn" to="/register">Join</router-link>
+          <router-link to="/addidea">Submit idea</router-link>
+          <button v-if="this.$store.getters.userLoggedIn" @click="logout">Log out</button>
+        </nav>
+      </dropdown>
+    </div>
   </div>
 </template>
 
 <script>
 import eventbus from '../eventbus';
+import dropdown from 'vue-my-dropdown';
 
 export default {
+  components: {
+    dropdown
+  },
   data() {
     return {
       isRootComponent: false,
-      collapse: true,
-      bigScreen: false
+      menuVisible: false
     };
   },
   computed: {
@@ -52,9 +58,6 @@ export default {
     isRootRoute() {
       const route = this.$route.path;
       return route === '/';
-    },
-    handleResize() {
-      this.bigScreen = window.innerWidth >= 1228.8;
     }
   },
   watch: {
@@ -64,11 +67,6 @@ export default {
   },
   created() {
     this.isRootComponent = this.isRootRoute();
-    this.handleResize();
-    window.addEventListener('resize', this.handleResize);
-  },
-  destroyed() {
-    window.removeEventListener('resize', this.handleResize);
   }
 };
 </script>
@@ -76,7 +74,7 @@ export default {
 <style>
 .navbar {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: space-between;
   background-color: var(--primary);
   position: fixed;
@@ -100,42 +98,5 @@ export default {
 .toolbar-left__title {
   font-size: 1.8rem;
   margin-left: 1.6rem;
-}
-
-nav {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-}
-
-nav > a {
-  color: var(--primaryText);
-  text-decoration: none;
-  font-size: 1.6rem;
-  margin-left: 1.6rem;
-  margin-bottom: 1.6rem;
-}
-
-nav > a:hover,
-nav > a:focus {
-  color: rgba(0, 0, 0, 0.54);
-  text-decoration: none;
-}
-
-@media only screen and (min-width: 76.8rem) {
-  .navbar {
-    flex-direction: row;
-  }
-
-  nav {
-    flex-direction: row;
-    align-items: center;
-    margin-right: 1.6rem;
-  }
-
-  nav > a {
-    margin: 0 0 0 2.4rem;
-    padding: 0;
-  }
 }
 </style>

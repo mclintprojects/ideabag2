@@ -19,7 +19,6 @@ import { faBookmark as farBookmark } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Toasted from 'vue-toasted';
 import VModal from 'vue-js-modal';
-import Popper from 'vue-popperjs';
 import './registerServiceWorker';
 
 fontAwesomeLibrary.add(
@@ -39,7 +38,6 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 Vue.use(VueRouter);
 Vue.use(Toasted);
 Vue.use(VModal);
-Vue.use(Popper);
 
 const router = new VueRouter({ routes, mode: 'history' });
 
