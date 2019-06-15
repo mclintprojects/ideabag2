@@ -32,24 +32,19 @@
                   @click.stop="$modal.show('progress-modal-' + getDataId(idea))"
                 >Update progress</button>
               </div>
-              <popper
-                trigger="click"
-                :options="{placement: 'left'}"
-                v-show="!largeScreen"
-                @created="openNewPopper"
-              >
-                <div class="popper idea-menu-actions">
-                  <button
-                    @click.stop="openPopper.doClose();toggleBookmark(index)"
-                  >{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
-                  <button
-                    @click.stop="openPopper.doClose();$modal.show('progress-modal-' + getDataId(idea))"
-                  >Update progress</button>
-                </div>
-                <button class="icon-button" slot="reference" @click.stop aria-label="Open menu">
+              <dropdown :visible="showDropdown[index]" :position="dropdownPosition(index)" @clickout="showDropdown.splice(index, 1, false)">
+                <button v-if="!largeScreen" class="icon-button" @click.stop="showDropdown.splice(index, 1, !showDropdown[index])" aria-label="Open menu">
                   <font-awesome-icon icon="ellipsis-v" size="lg" fixed-width></font-awesome-icon>
                 </button>
-              </popper>
+                <div slot="dropdown" class="dropdown-menu">
+                  <button
+                    @click.stop="showDropdown.splice(index, 1, false);toggleBookmark(index)"
+                  >{{ idea.bookmarked ? "Remove bookmark" : "Bookmark" }}</button>
+                  <button
+                    @click.stop="showDropdown.splice(index, 1, false);$modal.show('progress-modal-' + getDataId(idea))"
+                  >Update progress</button>
+                </div>
+              </dropdown>
             </div>
           </div>
           <progress-modal
@@ -69,7 +64,7 @@
     <button class="button floating-action-button" @click="$modal.show('sort-modal')" aria-label="Filter">
       <font-awesome-icon icon="filter" size="lg" fixed-width></font-awesome-icon>
     </button>
-    <modal name="sort-modal" height="auto" width="90%" max-width="992" :adaptive="true">
+    <modal name="sort-modal" height="auto" width="90%" :max-width="992" :adaptive="true">
       <ul class="modal-list">
         <li
           class="modal-list-item"
@@ -93,24 +88,23 @@
 </template>
 
 <script>
-import Vue from 'vue';
-import Popper from 'vue-popperjs';
+import dropdown from 'vue-my-dropdown';
 import UserDataDBInterface from '../mixins/UserDataDBInterface';
 import ProgressModal from '../components/ProgressModal';
 
 export default {
   mixins: [UserDataDBInterface],
   components: {
-    popper: Popper,
+    dropdown,
     'progress-modal': ProgressModal
   },
   data() {
     return {
-      openPopper: null,
       mediaQueryList: window.matchMedia('only screen and (min-width: 120rem)'),
       largeScreen: window.matchMedia('only screen and (min-width: 120rem)').matches,
       ideaProgress: 0,
-      difficultyFilter: 'All'
+      difficultyFilter: 'All',
+      showDropdown: this.ideas.map(() => false)
     };
   },
   computed: {
@@ -160,12 +154,6 @@ export default {
       }
       this.$emit('needs-update');
     },
-    openNewPopper(context) {
-      if (this.openPopper && this.openPopper !== context) {
-        this.openPopper.doClose();
-      }
-      this.openPopper = context;
-    },
     setProgress(idea, index, progress) {
       this.updateProgress(this.getDataId(idea), progress);
       this.setIdeaProgress();
@@ -186,6 +174,13 @@ export default {
           i => i.categoryId === idea.categoryId && i.ideaId === idea.id
         ) !== -1
       );
+    },
+    dropdownPosition(index) {
+      if (index < this.ideas.length - 1) {
+        return ['left', 'top', 'right', 'center'];
+      } else {
+        return ['left', 'top', 'right', 'bottom'];
+      }
     }
   },
   activated() {
@@ -280,28 +275,5 @@ export default {
 
 .idea-buttons > div {
   display: flex;
-}
-
-.idea-menu-actions {
-  border: none;
-  display: flex !important;
-  flex-direction: column;
-  padding: 0;
-}
-
-.idea-menu-actions button {
-  font-size: 1.4rem;
-  text-align: left;
-  color: rgba(0, 0, 0, 0.8);
-}
-
-.idea-menu-actions > button {
-  background-color: transparent;
-  border: none;
-  padding: 1rem;
-}
-
-.idea-menu-actions > button:hover {
-  background-color: rgba(0, 0, 0, 0.2);
 }
 </style>

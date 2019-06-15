@@ -423,6 +423,29 @@ main {
   animation: slide-out 200ms ease-out forwards;
 }
 
+.dropdown-menu {
+  display: flex;
+  flex-direction: column;
+  background-color: #fafafa;
+  color: #212121;
+  box-shadow: rgb(58, 58, 58) 0 0 6px 0;
+}
+
+.dropdown-menu > button, .dropdown-menu > a {
+  width: 16rem;
+  font-size: 1.6rem;
+  color: rgba(0, 0, 0, 0.8);
+  background-color: transparent;
+  border: none;
+  padding: 1rem;
+  text-decoration: none;
+  text-align: left;
+}
+
+.dropdown-menu > button:hover, .dropdown-menu > a:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
 @keyframes slide-in {
   from {
     transform: translateX(-10rem);
