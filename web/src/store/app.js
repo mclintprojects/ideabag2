@@ -53,17 +53,17 @@ const mutations = {
 };
 
 const actions = {
-  setLoading(context, isLoading) {
-    context.commit('SET_LOADING', isLoading);
+  setLoading({ commit }, isLoading) {
+    commit('SET_LOADING', isLoading);
   },
-  setCategories(context, categories) {
-    context.commit('SET_CATEGORIES', categories);
+  setCategories({ commit }, categories) {
+    commit('SET_CATEGORIES', categories);
   },
-  setSelectedIdeaIndex(context, index) {
-    context.commit('SET_SELECTED_IDEA_INDEX', index);
+  setSelectedIdeaIndex({ commit }, index) {
+    commit('SET_SELECTED_IDEA_INDEX', index);
   },
-  setTitle(context, title) {
-    context.commit('SET_TITLE', title);
+  setTitle({ commit }, title) {
+    commit('SET_TITLE', title);
   },
   setUserDataDB(context, db) {
     context.commit('SET_USER_DATA_DB', db);
